@@ -1,29 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          WELCOME TO FREAKING PIADA!!
-        </p>
-        <p>
-          Brought to you by R.A.T.S.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Home from "./Home";
+import CashierGUI from "./CashierGUI";
+
+
+const App = () => {
+  return(
+  <div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/CashierGUI" element={<CashierGUI />} />
+      </Routes>
+  </Router>
+  </div>
+  )
 }
 
 export default App;
+
