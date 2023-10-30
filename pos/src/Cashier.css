@@ -1,0 +1,115 @@
+.Cashier {
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgba(23, 20, 20);
+    font-family:'Times New Roman', Times, serif;
+}
+
+.header {
+    display: inline-block;
+    width: 1700px;
+    height: auto;
+    padding: 0px 50px 0px 50px;
+    margin: 20px 0px 0px 0px;
+    border: 20px solid rgb(0, 0, 0);
+    background-color: rgba(23, 20, 20);
+}
+
+.back-button {
+    display: inline-block;
+    font-size: 50px;
+    background-color: rgba(23, 20, 20, 0);
+    color: white;
+    margin: 0px 100px 0px 0px;
+}
+
+.piada {
+    display: inline-block;
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 100px;
+    font-weight: bold;
+    background-color: rgba(23, 20, 20, 0);
+    color: white;
+    padding: 0px 50px 0px 0px;
+}
+
+.street-food {
+    display: inline-block;
+    color: white;
+    font-size: 50px;
+}
+
+.column {
+    color: white;
+    font-size: 25px;
+    display: flex;
+    width: 250px;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 50px;
+  }
+
+.main-panel {
+    background-color: rgba(23, 20, 20, 0);
+    display: flex;
+    justify-content: center;
+    margin-left: -400px;
+}
+
+.main-buttons {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+    height: 120px;  
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+.order-panel {
+    width: 350px;
+    height: 600px;
+    border: 20px solid rgb(0, 0, 0);
+    display: inline-block;
+    position: fixed;
+    margin-top: 300px;
+    margin-left: -400px;
+    color: white;
+}
+
+.pay-button {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 50px;
+    height: 100px;  
+    width: 300px;
+    padding: 20px 20px 20px 20px;
+}
+
+.order-total {
+    vertical-align: middle;
+    text-decoration: underline;
+    font-weight: bold;
+    text-align: center;
+    font-size: 35px;
+    margin-top: 300px;
+}
+
+.add-to-order {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 50px;
+    height: 100px;  
+    width: 300px;
+    padding: 20px 20px 20px 20px;
+}
