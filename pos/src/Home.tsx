@@ -6,14 +6,14 @@ import './App.css';
 const Home = () => {
     const navigate = useNavigate();
 
-    const go_to_cashier = () => {
-        navigate("\CashierGUI");
+    const go_to_gui = (file : string) => {
+        navigate(file);
     }
 
     return(
         <div className="App">
             <h3> Log in Here: </h3>
-            <button onClick={go_to_cashier}> Cashier GUI </button>
+            <button onClick={() => go_to_gui("/CashierGUI")}> Cashier GUI </button>
         </div>
     )
 }
