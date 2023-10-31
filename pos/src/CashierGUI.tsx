@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 //import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 
-import './App.css';
+import './Cashier.css';
 
 const CashierGUI = () => {
 
     const navigate = useNavigate();
-    let order : string[] = [];
+
     let curr_item = "";
     let curr_size = "";
     let curr_type = "";
     let order_total = 0;
+
+    const [order, setOrder] = useState<string[]>([]);
 
     const makeorderitem = (temp : number, item : string) => {
         if (temp === 0) {
@@ -33,13 +35,12 @@ const CashierGUI = () => {
     // TODO: update order_total based on order item added
     const addorderitem = (item : string) => {
         if (item === "") {
-            order.push(curr_size + " " + curr_item + " " + curr_type);  
+            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
             console.log("Added new order item:", item);
         }
         else {
-            order.push(item);  
+            setOrder(order.concat(item)); 
             console.log("Added new order item:", item);
-        
         }
         curr_size = "";
         curr_item = "";
@@ -52,6 +53,14 @@ const CashierGUI = () => {
         // Add back-end to update database
     }
 
+    const removeAll = () => {
+        for (var i = 0; i < order.length; i++) {
+            order.pop();
+        }
+        setOrder([]);
+        console.log("Removed All Order Items.");
+    }
+
     // TODO: Add customization back-end
 
     const goback = () => {
@@ -59,114 +68,138 @@ const CashierGUI = () => {
     }
 
     return (
-    <div className="App">
-        <button onClick={goback}> Back </button>
-
-        <header>
-            <h1>
+    <div className="Cashier">
+        <header className='header'>
+        <button onClick={goback} className='back-button'> Back </button>
+            <h1 className='piada'>
             PIADA 
             </h1>
-            <p> Italian Street Food</p>
+            <p className='street-food'> Italian Street Food</p>
         </header>
         
-        <h3> Pasta:
+        <h2 className='order-panel'> <br /> <u>Current Order:</u>
+            <ul className='display-order'>
+            {order.map((order) => <li>{order}</li>)}
+            </ul>
+            <p className='order-total'>$ {order_total}</p>
+            <button className='pay-button' onClick={addorder} > Pay </button>
+            <button className='remove-button' onClick={removeAll}> Remove Items </button>
+        </h2>
+        
+        <div className='main-panel'>
+        <h3 className='column'> Pasta:
         <p> 
         <Popup trigger=
-            {<button> Carbonara </button>}
-            position="bottom center" onOpen={() => makeorderitem(0, "Carbonara")}>
-            <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
+            {<button className='main-buttons'> Carbonara </button>} 
+            position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
+            <div className='basic-pop-up'>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM") }> Small </button>
+            <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")}> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")}> Penne </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
             <br /> <br />
-            <button onClick={() => addorderitem("")}> Add to order </button>
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
         </Popup>
 
         <Popup trigger=
-            {<button> Diavolo </button>}
-            position="bottom center" onOpen={() => makeorderitem(0, "Diavolo")}>
-            <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
+            {<button className='main-buttons'> Diavolo </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
+            <div className='basic-pop-up'>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
+            <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
+            <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
             <br /> <br />
-            <button onClick={() => addorderitem("")}> Add to order </button>
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
         </Popup>
 
         <Popup trigger=
-            {<button> Basil Pesto </button>}
-            position="bottom center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
-            <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
+            {<button className='main-buttons'> Basil Pesto </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
+            <div className='basic-pop-up'>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
+            <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
+            <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
             <br /> <br />
-            <button onClick={() => addorderitem("")}> Add to order </button>
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
         </Popup>
 
         <Popup trigger=
-            {<button> Marinara </button>}
-            position="bottom center" onOpen={() => makeorderitem(0, "Marinara")}>
-            <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
+            {<button className='main-buttons'> Marinara </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Marinara")}>
+            <div className='basic-pop-up'>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
+            <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
+            <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
             <br /> <br />
-            <button onClick={() => addorderitem("")}> Add to order </button>
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
         </Popup>
         </p>
         </h3>
 
-        <h3>Piadas 
+        <h3 className='column'>Piadas: 
             <p>
-            <button onClick={() => addorderitem("Avocado Piada")}> Avocado </button>
-            <button onClick={() => addorderitem("BLT Piada")}> BLT </button>
-            <button onClick={() => addorderitem("Chefs Favorite Piada")}> Chef's Favorite </button>
-            <button onClick={() => addorderitem("Mediterranean Piada")}> Mediterranean </button>
+            <button className='main-buttons' onClick={() => addorderitem("Avocado Piada")}> Avocado </button>
+            <button className='main-buttons' onClick={() => addorderitem("BLT Piada")}> BLT </button>
+            <button className='main-buttons' onClick={() => addorderitem("Chefs Favorite Piada")}> Chef's Favorite </button>
+            <button className='main-buttons' onClick={() => addorderitem("Mediterranean Piada")}> Mediterranean </button>
             </p>
         </h3>
 
-        <h3> Salad: 
+        <h3 className='column'> Salad: 
         <p> 
           <Popup trigger=
-              {<button> Deluxe Ceasar </button>}
-              position="bottom center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
-              <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-              <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
-              <br /> <br />
-              <button onClick={() => addorderitem("")}> Add to order </button>
+              {<button className='main-buttons'> Deluxe Ceasar </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
+            <div className='basic-pop-up'>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <br /> <br />
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
           </Popup>
 
           <Popup trigger=
-              {<button> Farmer's Market </button>}
-              position="bottom center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
-              <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-              <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
-              <br /> <br />
-              <button onClick={() => addorderitem("")}> Add to order </button>
+            {<button className='main-buttons'> Farmer's Market </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
+            <div className='basic-pop-up'>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <br /> <br />
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
           </Popup>
 
           <Popup trigger=
-              {<button> Avocado Chop </button>}
-              position="bottom center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
-              <button onClick={() => makeorderitem(1, "SM")}> Small </button>
-              <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
-              <br /> <br />
-              <button onClick={() => addorderitem("")}> Add to order </button>
+            {<button className='main-buttons'> Avocado Chop </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
+            <div className='basic-pop-up'>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <br /> <br />
+            <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
+            </div>
           </Popup>
 
-          <button onClick={() => addorderitem("Power Bowl")}> Power Bowl </button>
+          <button className='main-buttons' onClick={() => addorderitem("Power Bowl")}> Power Bowl </button>
       </p>
       </h3>
+      
 
-      <h3> Other:
+      <h3 className='column'> Other:
       <p>
         <Popup trigger=
-            {<button> Build Your Own </button>} 
+            {<button className='main-buttons'> Build Your Own </button>} 
             modal nested>
             {
                 <div>
@@ -354,7 +387,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button> Sides </button>} 
+            {<button className='main-buttons'> Sides </button>} 
             modal nested>
             {
               <div>
@@ -372,7 +405,7 @@ const CashierGUI = () => {
                   <button onClick={() => addorderitem("Chocolate Chunk Cookie")}> Chocolate Chunk Cookie </button>
                   <button onClick={() => addorderitem("Salted Caramel Cookie")}> Salted Caramel Cookie </button>
                   <br /> <br />
-                  <button onClick={() => addorderitem("")}> Add to order </button>
+                  <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
               </Popup>
               </p>
               </div>
@@ -381,7 +414,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button> Drinks </button>} 
+            {<button className='main-buttons'> Drinks </button>} 
             modal nested>
             {
                 <div>
@@ -400,7 +433,7 @@ const CashierGUI = () => {
                   <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
                   <button onClick={() => makeorderitem(1, "LG")}> Large </button>
                   <br /> <br />
-                  <button onClick={() => addorderitem("Soft Drink")}> Add to order </button>
+                  <button onClick={() => addorderitem("Soft Drink")} className='add-to-order'> Add to order </button>
               </Popup>
               </p>
               </div>
@@ -408,7 +441,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button> Kids </button>} 
+            {<button className='main-buttons'> Kids </button>} 
             modal nested>
             {
                 <div>
@@ -446,13 +479,7 @@ const CashierGUI = () => {
         </Popup>
       </p>
       </h3>
-    
-      <h3>  Current Order:
-        <ul> {order} </ul>
-        <br />
-        <button onClick={addorder} > Pay </button>
-      </h3>
-
+      </div>
     </div>
   );
 }
