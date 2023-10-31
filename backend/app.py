@@ -1,10 +1,12 @@
 import psycopg2
+import psycopg2
 import random
 from datetime import datetime, timedelta
-from flask import jsonify
-from flask import Flask
-app = Flask(__name__)
+from flask import jsonify, Flask
+from flask_cors import CORS  # <-- Add this import
 
+app = Flask(__name__)
+CORS(app)  # <-- Add this to handle CORS for all routes
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
