@@ -6,7 +6,8 @@ from flask import jsonify, Flask
 from flask_cors import CORS  # <-- Add this import
 
 app = Flask(__name__)
-CORS(app)  # <-- Add this to handle CORS for all routes
+CORS(app)  # <-- I added this to handle CORS for all routes
+# cors = CORS(app, resources={r"/submit_order": {"origins": "*"}})
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
@@ -22,4 +23,7 @@ def submit_order():
     conn.commit()
     cur.close()
     conn.close()
-    return jsonify({"message": "success"})
+
+    response = jsonify({"message": "success"})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
