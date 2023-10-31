@@ -1,10 +1,14 @@
 ## Define Routes and Application Logic
 from flask import Flask, request, jsonify
+from flask_cors import CORS 
 import psycopg2
 from datetime import date
 import random
 
 app = Flask(__name__)
+
+# Enable CORS for all routes
+CORS(app)
 
 ## Define database connection
 DB_PARAMS = {
