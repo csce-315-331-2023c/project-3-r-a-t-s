@@ -6,8 +6,8 @@ import './App.css';
 const Home = () => {
     const navigate = useNavigate();
 
-    const go_to_cashier = () => {
-        navigate("\CashierGUI");
+    const go_to_gui = (file : string) => {
+        navigate(file);
     }
 
     const go_to_customer = () => {
