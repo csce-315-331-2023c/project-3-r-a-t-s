@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 //import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,13 @@ import './Cashier.css';
 const CashierGUI = () => {
 
     const navigate = useNavigate();
-    let order : string[] = [];
+
     let curr_item = "";
     let curr_size = "";
     let curr_type = "";
     let order_total = 0;
+
+    const [order, setOrder] = useState<string[]>([]);
 
     const makeorderitem = (temp : number, item : string) => {
         if (temp === 0) {
@@ -33,13 +35,12 @@ const CashierGUI = () => {
     // TODO: update order_total based on order item added
     const addorderitem = (item : string) => {
         if (item === "") {
-            order.push(curr_size + " " + curr_item + " " + curr_type);  
+            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
             console.log("Added new order item:", item);
         }
         else {
-            order.push(item);  
+            setOrder(order.concat(item)); 
             console.log("Added new order item:", item);
-        
         }
         curr_size = "";
         curr_item = "";
@@ -50,6 +51,14 @@ const CashierGUI = () => {
         console.log("Paying for Order");
         console.table(order);
         // Add back-end to update database
+    }
+
+    const removeAll = () => {
+        for (var i = 0; i < order.length; i++) {
+            order.pop();
+        }
+        setOrder([]);
+        console.log("Removed All Order Items.");
     }
 
     // TODO: Add customization back-end
@@ -69,11 +78,12 @@ const CashierGUI = () => {
         </header>
         
         <h2 className='order-panel'> <br /> <u>Current Order:</u>
-            <p>
-            {order}
-            </p>
+            <ul className='display-order'>
+            {order.map((order) => <li>{order}</li>)}
+            </ul>
             <p className='order-total'>$ {order_total}</p>
             <button className='pay-button' onClick={addorder} > Pay </button>
+            <button className='remove-button' onClick={removeAll}> Remove Items </button>
         </h2>
         
         <div className='main-panel'>

@@ -92,13 +92,31 @@
     padding: 20px 20px 20px 20px;
 }
 
+.remove-button {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    margin-top: 20px;
+}
+
 .order-total {
     vertical-align: middle;
     text-decoration: underline;
     font-weight: bold;
     text-align: center;
     font-size: 35px;
-    margin-top: 300px;
+}
+
+.display-order {
+    font-size: 20px;
+    width: auto;
+    height: 250px;
+    text-align: left;
+
 }
 
 .add-to-order {
