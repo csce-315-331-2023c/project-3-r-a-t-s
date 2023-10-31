@@ -6,13 +6,12 @@
 }
 
 .header {
-    display: inline-block;
-    width: 1700px;
-    height: auto;
-    padding: 0px 50px 0px 50px;
-    margin: 20px 0px 0px 0px;
+    display: fixed;
+    width: 1400px;
+    height: 150px;
     border: 20px solid rgb(0, 0, 0);
     background-color: rgba(23, 20, 20);
+    margin-left: 50px;
 }
 
 .back-button {
@@ -20,7 +19,7 @@
     font-size: 50px;
     background-color: rgba(23, 20, 20, 0);
     color: white;
-    margin: 0px 100px 0px 0px;
+    margin: 0px 200px 0px 0px;
 }
 
 .piada {
@@ -32,6 +31,7 @@
     background-color: rgba(23, 20, 20, 0);
     color: white;
     padding: 0px 50px 0px 0px;
+    margin-top: -50px;
 }
 
 .street-food {
@@ -57,28 +57,27 @@
     margin-left: -400px;
 }
 
-.main-buttons {
+.main-buttons   {
     color: black;
     font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     font-weight: bold;
     text-align: center;
     font-size: 25px;
-    height: 120px;  
+    height: 113px;  
     width: 100%;
     margin-bottom: 20px;
-    padding: 20px 20px 20px 20px;
+    margin-left: 10px;
 }
 
 .order-panel {
-    width: 350px;
+    width: 250px;
     height: 600px;
     border: 20px solid rgb(0, 0, 0);
     display: inline-block;
     position: fixed;
-    margin-top: 300px;
-    margin-left: -400px;
     color: white;
+    margin: 0px 0px 0px 440px;
 }
 
 .pay-button {
@@ -89,7 +88,7 @@
     text-align: center;
     font-size: 50px;
     height: 100px;  
-    width: 300px;
+    width: 200px;
     padding: 20px 20px 20px 20px;
 }
 
@@ -104,12 +103,31 @@
 
 .add-to-order {
     color: black;
+    font-size: 18px;
     font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     font-weight: bold;
     text-align: center;
-    font-size: 50px;
-    height: 100px;  
-    width: 300px;
-    padding: 20px 20px 20px 20px;
+    padding: 20px 25px 20px 25px;
+    margin: 0px 0px 5px 20px;
+}
+
+.basic-option-buttons {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    width: 75px;
+    height: 50px;
+    margin: 10px 10px 10px 10px;
+}
+
+.basic-pop-up {
+    border: 5px solid rgb(0, 0, 0);
+}
+
+.sub-menu-panel {
+    
 }
