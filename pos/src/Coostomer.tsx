@@ -49,9 +49,9 @@ const Coostomer: React.FC = () => {
   //     // Add back-end to update database
   // }
   const addorder = async (): Promise<void> => {
-    console.log("Paying for Order");
+    console.log("Paying for Order, testing backend");
 
-    const response = await fetch("https://git.heroku.com/rats-backend.git/submit_order", {
+    const response = await fetch("https://rats-backend-0866dbee4f15.herokuapp.com/submit_order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
