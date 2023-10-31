@@ -4,6 +4,7 @@ import './App.css';
 
 import Home from "./Home";
 import CashierGUI from "./CashierGUI";
+import CustomerGUI from "./CustomerGUI";
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/CashierGUI" element={<CashierGUI />} />
+        <Route path="/CustomerGUI" element={<CustomerGUI />} />
       </Routes>
   </Router>
   </div>
