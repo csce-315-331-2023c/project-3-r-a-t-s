@@ -10,6 +10,7 @@ const CustomerGUI = () => {
 
     const navigate = useNavigate();
     let order: string[] = [];
+    let current_order: string[] = [];
     let curr_item = "";
     let curr_size = "";
     let curr_type = "";
@@ -31,8 +32,11 @@ const CustomerGUI = () => {
 
     const addorderitem = (item : string) => {
         if (item === "") {
-        order.push(curr_size + " " + curr_item + " " + curr_type);  
+        order.push(curr_size + " " + curr_item + " " + curr_type);
+        current_order.push(curr_size + " " + curr_item + " " + curr_type);
+
         console.log("Added new order item:", order.pop());
+        console.log("Current order:", current_order);
 
         curr_size = "";
         curr_item = "";
@@ -170,7 +174,8 @@ const CustomerGUI = () => {
         </h3>
         
         <h3>  Current Order:
-            <ul> {order} </ul>
+            {/* <ul> {order} </ul> */}
+            <ul> {current_order} </ul>
             <br />
             <button onClick={addorder} > Pay </button>
         </h3>
