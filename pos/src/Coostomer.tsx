@@ -5,7 +5,7 @@ import "reactjs-popup/dist/index.css";
 import "./App.css";
 
 const Coostomer: React.FC = () => {
-    const [order, setOrder] = useState<string>("");
+    const [message, setMessage] = useState<string>(""); // Added state for message
 
     useEffect(() => {
         fetch("/api")
@@ -13,15 +13,17 @@ const Coostomer: React.FC = () => {
                 if (response.ok) {
                     return response.json();
                 }
-                throw new Error("Failed to fetch"); // Throw an error if not successful
+                throw new Error("Failed to fetch");
             })
-            .then(data => console.log(data))
-            .catch(error => console.log(error)); // Catch the error here
-    }, []); // Dependency array is empty, so this useEffect runs once after the initial render
+            .then(data => {
+                setMessage(data.message); // Update the state with the fetched message
+            })
+            .catch(error => console.log(error));
+    }, []);
 
     return (
         <div>
-            "Hello World"
+            {message} 
         </div>
     );
 }
