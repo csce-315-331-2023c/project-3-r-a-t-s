@@ -60,6 +60,7 @@ const CashierGUI = () => {
         };
         //const apiUrl = 'https://cashier-backend-9439f60d169d.herokuapp.com';
         // Send a POST request to the Flask API
+        // Run locally with .post('/api/place_order', orderData)
         axios
             .post('https://cashier-backend-9439f60d169d.herokuapp.com/api/place_order', orderData)
             .then((response : AxiosResponse) => {

@@ -5,11 +5,11 @@ import psycopg2
 from datetime import date
 import random
 
-
 app = Flask(__name__)
 
 # Enable CORS for all routes
-CORS(app)
+# Run Locally with CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "https://project-3-r-a-t-3p3k4iapt-teresas-projects-2b34d76d.vercel.app"}})
 
 ## Define database connection
 DB_PARAMS = {
