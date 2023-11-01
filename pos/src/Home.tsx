@@ -10,19 +10,19 @@ const Home = () => {
         navigate(file);
     }
 
-    const go_to_customer = () => {
-        navigate("\CustomerGUI");
+    const change_page = (page : string) => {
+        navigate(page);
     }
 
     return(
         <p>
             <div className="App">
                 <h3> Log in Here: </h3>
-                <button onClick={go_to_cashier}> Cashier GUI </button>
+                <button onClick={() => change_page('\CashierGUI')}> Cashier GUI </button>
             </div>
             <div className="App">
                 <h3> Click here if you're a customer: </h3>
-                <button onClick={go_to_customer}> Customer GUI </button>
+                <button onClick={() => change_page('\CustomerGUI')}> Customer GUI </button>
             </div>
         </p>
     )
