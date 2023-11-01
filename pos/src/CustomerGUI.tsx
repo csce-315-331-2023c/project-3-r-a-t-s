@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 //import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,9 @@ import './App.css';
 const CustomerGUI = () => {
 
     const navigate = useNavigate();
-    let order: string[] = [];
-    let current_order: string[] = [];
+
+    const [order, setOrder] = useState<string[]>([]);
+
     let curr_item = "";
     let curr_size = "";
     let curr_type = "";
@@ -32,26 +33,30 @@ const CustomerGUI = () => {
 
     const addorderitem = (item : string) => {
         if (item === "") {
-        order.push(curr_size + " " + curr_item + " " + curr_type);
-        current_order.push(curr_size + " " + curr_item + " " + curr_type);
-
-        console.log("Added new order item:", order.pop());
-        console.log("Current order:", current_order);
-
+            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
+            console.log("Added new order item:", item);
+        }
+        else {
+            setOrder(order.concat(item)); 
+            console.log("Added new order item:", item);
+        }
         curr_size = "";
         curr_item = "";
         curr_type = "";
-        }
-        else {
-        order.push(item);  
-        console.log("Added new order item:", order.pop());
-        }
-        
+
     }
 
     const addorder = () => {
         console.log("Paying for Order");
         // Add back-end to update database
+    }
+
+    const removeAll = () => {
+        for (var i = 0; i < order.length; i++) {
+            order.pop();
+        }
+        setOrder([]);
+        console.log("Removed All Order Items.");
     }
 
     const goback = () => {
@@ -173,11 +178,295 @@ const CustomerGUI = () => {
         </p>
         </h3>
         
-        <h3>  Current Order:
-            {/* <ul> {order} </ul> */}
-            <ul> {current_order} </ul>
+    <h3> Other:
+      <p>
+        <Popup trigger=
+            {<button> Build Your Own </button>} 
+            modal nested>
+            {
+                <p>
+                <h2> Build Your Own</h2>
+
+                <Popup trigger=
+                {<button> Pasta </button>} 
+                modal nested>
+                {
+                    <p>
+                        <h2>Custom Pasta</h2>
+                        <h3>
+                            Size:
+                            <p>
+                                <button> Small </button>
+                                <button> Regular </button>  
+                            </p>
+                        </h3>
+                        <h3>
+                            Pasta:
+                            <p>
+                                <button> Spaghetti </button>
+                                <button> Penne </button>
+                            </p>
+                        </h3>
+                        <h3> Protein: 
+                            <p>
+                                <button> Italian Sausage </button>
+                                <button> Grilled Chicken </button>
+                                <button> Crispy Chicken </button>
+                                <button> Hot Fried Chicken </button>
+                                <button> Grilled Chicken </button>
+                                <button> Grass-Fed Meatballs </button>
+                                <button> Calamari & Hot Peppers</button>
+                                <button> Grilled Salmon </button>
+                            </p>
+                        </h3>
+                        <h3>
+                            Pasta Sauces:
+                            <p>
+                                <button> Marinara </button>
+                                <button> Alfredo </button>
+                                <button> Diavolo </button>
+                                <button> Basil Pesto </button>
+                            </p>
+                        </h3>
+                        <h3> 
+                            Toppings:
+                            <p>
+                                <button> Cucumbers </button>
+                                <button> Cucumber Salad </button>
+                                <button> Bruschetta Tomatoes </button>
+                                <button> Pickled Red Onions </button>
+                                <button> Romaine </button>
+                                <button> Arugula </button>
+                                <button> Spinach </button>
+                                <button> Chopped Greens </button>
+                                <button> Roasted Sweet Potato </button>
+                                <button> Hummus </button>
+                                <button> Feta </button>
+                                <button> Mozzarella </button>
+                                <button> Parmesan </button>
+                                <button> Sweet & Spicy Peppers</button>
+                                <button> Strawberries </button>
+                                <button> Glazed Pecans </button>
+                                <button> Pancetta(Bacon)</button>
+                                <button> Roasted Broccoli </button>
+                                <button> Sweet Corn & Tomato</button>
+                                <button> Avocado </button>
+                            </p>
+                        </h3>
+                    </p>
+                }
+                </Popup>
+                <Popup trigger=
+                {<button> Piada </button>} 
+                modal nested>
+                {
+                    <p>
+                        <h2> Custom Piada </h2>
+                        <h3> Protein: 
+                            <p>
+                                <button> Italian Sausage </button>
+                                <button> Grilled Chicken </button>
+                                <button> Crispy Chicken </button>
+                                <button> Hot Fried Chicken </button>
+                                <button> Grilled Chicken </button>
+                                <button> Grass-Fed Meatballs </button>
+                                <button> Calamari & Hot Peppers</button>
+                                <button> Grilled Salmon </button>
+                            </p>
+                        </h3>
+                        <h3>
+                            Piada Sauces:
+                            <p>
+                                <button> Marinara </button>
+                                <button> Alfredo </button>
+                                <button> Diavolo </button>
+                                <button> Basil Pesto </button>
+                            </p>
+                        </h3> 
+                        <h3> 
+                            Toppings:
+                            <p>
+                                <button> Cucumbers </button>
+                                <button> Cucumber Salad </button>
+                                <button> Bruschetta Tomatoes </button>
+                                <button> Pickled Red Onions </button>
+                                <button> Romaine </button>
+                                <button> Arugula </button>
+                                <button> Spinach </button>
+                                <button> Chopped Greens </button>
+                                <button> Roasted Sweet Potato </button>
+                                <button> Hummus </button>
+                                <button> Feta </button>
+                                <button> Mozzarella </button>
+                                <button> Parmesan </button>
+                                <button> Sweet & Spicy Peppers</button>
+                                <button> Strawberries </button>
+                                <button> Glazed Pecans </button>
+                                <button> Bacon </button>
+                                <button> Roasted Broccoli </button>
+                                <button> Sweet Corn & Tomato</button>
+                                <button> Avocado </button>
+                            </p>
+                        </h3>
+                    </p>
+                }
+                </Popup>
+                <Popup trigger=
+                {<button> Salad </button>} 
+                modal nested>
+                {
+                    <p>
+                        <h2> Custom Salad </h2>
+                        <h3>
+                            Size:
+                            <p>
+                                <button> Small </button>
+                                <button> Regular </button>  
+                            </p>
+                        </h3>
+                        <h3>
+                            Salad Dressings:
+                            <p>
+                                <button> Creamy Parmesan </button>
+                                <button> Lemon Basil </button>
+                                <button> Classic Caesar </button>
+                                <button> Creamy Basil Parmesan </button>
+                                <button> Oil & Vinegar </button>
+                                <button> Spicy Ranch </button>
+                                <button> Yogurt Harissa </button>
+                            </p>
+                        </h3>
+                        <h3> 
+                            Toppings:
+                            <p>
+                                <button> Cucumbers </button>
+                                <button> Cucumber Salad </button>
+                                <button> Bruschetta Tomatoes </button>
+                                <button> Pickled Red Onions </button>
+                                <button> Romaine </button>
+                                <button> Arugula </button>
+                                <button> Spinach </button>
+                                <button> Chopped Greens </button>
+                                <button> Roasted Sweet Potato </button>
+                                <button> Hummus </button>
+                                <button> Feta </button>
+                                <button> Mozzarella </button>
+                                <button> Parmesan </button>
+                                <button> Sweet & Spicy Peppers</button>
+                                <button> Strawberries </button>
+                                <button> Glazed Pecans </button>
+                                <button> Pancetta(Bacon)</button>
+                                <button> Roasted Broccoli </button>
+                                <button> Sweet Corn & Tomato</button>
+                                <button> Avocado </button>
+                            </p>
+                        </h3>
+                    </p>
+                }
+                </Popup>
+                </p>
+            }
+        </Popup>
+
+        <Popup trigger=
+            {<button> Sides </button>} 
+            modal nested>
+            {
+              <p>
+                <h2> Street Sides</h2>
+              <p>
+                <button onClick={() => addorderitem("Sweet Corn Salad")}> Sweet Corn Salad </button>
+                <button onClick={() => addorderitem("Garlic Dough")}> Garlic Dough </button>
+                <button onClick={() => addorderitem("Meatballs")}> Meatballs </button>
+                <button onClick={() => addorderitem("Pepperoni Piada Stick")}> Pepperoni Piada Stick </button>
+                <button onClick={() => addorderitem("Cup of Lobster Bisque")}> Lobster Bisque </button>
+                <button onClick={() => addorderitem("Chocolate Brownie")}> Sweet Street Chocolate Brownie </button>
+                <Popup trigger=
+                  {<button> Sweet Treet Cookie </button>}
+                  position="bottom center">
+                  <button onClick={() => addorderitem("Chocolate Chunk Cookie")}> Chocolate Chunk Cookie </button>
+                  <button onClick={() => addorderitem("Salted Caramel Cookie")}> Salted Caramel Cookie </button>
+                  <br /> <br />
+                  <button onClick={() => addorderitem("")}> Add to order </button>
+              </Popup>
+              </p>
+              </p>
+                
+            }
+        </Popup>
+
+        <Popup trigger=
+            {<button> Drinks </button>} 
+            modal nested>
+            {
+                <p>
+                <h2> Drinks </h2>
+                <p>
+                <button onClick={() => addorderitem("Blackberry Hibiscus Lemonade")}> Blackberry Hibiscus Lemonade </button>
+                <button onClick={() => addorderitem("Orange Soda")}> Orange Soda </button>
+                <button onClick={() => addorderitem("Berry Soda")}> Berry Soda </button>
+                <button onClick={() => addorderitem("Peach Tea")}> Peach Tea </button>
+                <button onClick={() => addorderitem("Lemon Tea")}> Lemon Tea </button>
+                <button onClick={() => addorderitem("Acqua Panna Spring Water")}> Acqua Panna Spring Water </button>
+                <button onClick={() => addorderitem("San Pellegrino Sparkling Water")}> San Pellegrino Sparkling Water </button>
+                <Popup trigger=
+                  {<button> Soft Drink </button>}
+                  position="bottom center">
+                  <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
+                  <button onClick={() => makeorderitem(1, "LG")}> Large </button>
+                  <br /> <br />
+                  <button onClick={() => addorderitem("Soft Drink")}> Add to order </button>
+              </Popup>
+              </p>
+              </p>
+            }
+        </Popup>
+
+        <Popup trigger=
+            {<button> Kids </button>} 
+            modal nested>
+            {
+                <div>
+                    <h2> Kids Menu </h2>
+                    <Popup trigger=
+                    {<button> Kids Pasta  </button>}
+                    position="bottom center" >
+                    <button > Grilled Chicken </button>
+                    <button > Crispy Chicken </button>
+                    <button > Steak </button>
+
+                    <button > Spaghetti </button>
+                    <button > Penne </button>
+                    <button > Add to Order </button>
+
+                    </Popup>
+
+                    <Popup trigger=
+                    {<button> Kids Meatballs  </button>}
+                    position="bottom center" >
+                    <button > Spaghetti </button>
+                    <button > Penne </button>
+                    <button > Add to Order </button>
+                    </Popup>
+                    
+                    <button onClick={() => addorderitem("Kids Chicken Fingers")}> Chicken Fingers </button>
+
+                    <br /><br />
+                    <h3> Drinks: </h3>
+                    <button onClick={() => addorderitem("Kids Low-Fat Milk")}> Low-Fat Milk </button>
+                    <button onClick={() => addorderitem("Kids Chocolate Milk")}> Chocolate Milk </button>
+                    <button onClick={() => addorderitem("Kids Apple Juice")}> Apple Juice </button>
+                </div>
+            }
+        </Popup>
+      </p>
+      </h3>
+
+      <h3>  Current Order:
+            {order.map((order) => <li>{order}</li>)}
             <br />
             <button onClick={addorder} > Pay </button>
+            <button onClick={removeAll}> Remove Items </button>
         </h3>
 
     </div>
