@@ -106,13 +106,13 @@ const CashierGUI = () => {
             <button className='remove-button' onClick={removeAll}> Remove Items </button>
         </h2>
         
-        <div className='main-panel'>
+        <p className='main-panel'>
         <h3 className='column'> Pasta:
         <p> 
         <Popup trigger=
             {<button className='main-buttons'> Carbonara </button>} 
             position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM") }> Small </button>
             <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")}> Regular </button>
             <br />
@@ -120,13 +120,13 @@ const CashierGUI = () => {
             <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
         </Popup>
 
         <Popup trigger=
             {<button className='main-buttons'> Diavolo </button>}
             position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br />
@@ -134,13 +134,13 @@ const CashierGUI = () => {
             <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
         </Popup>
 
         <Popup trigger=
             {<button className='main-buttons'> Basil Pesto </button>}
             position="right center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br />
@@ -148,13 +148,13 @@ const CashierGUI = () => {
             <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
         </Popup>
 
         <Popup trigger=
             {<button className='main-buttons'> Marinara </button>}
             position="right center" onOpen={() => makeorderitem(0, "Marinara")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br />
@@ -162,7 +162,7 @@ const CashierGUI = () => {
             <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
         </Popup>
         </p>
         </h3>
@@ -181,34 +181,34 @@ const CashierGUI = () => {
           <Popup trigger=
               {<button className='main-buttons'> Deluxe Ceasar </button>}
             position="right center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
           </Popup>
 
           <Popup trigger=
             {<button className='main-buttons'> Farmer's Market </button>}
             position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
           </Popup>
 
           <Popup trigger=
             {<button className='main-buttons'> Avocado Chop </button>}
             position="right center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
-            <div className='basic-pop-up'>
+            <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </div>
+            </p>
           </Popup>
 
           <button className='main-buttons' onClick={() => addorderitem("Power Bowl")}> Power Bowl </button>
@@ -222,14 +222,14 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Build Your Own </button>} 
             modal nested>
             {
-                <div>
+                <p>
                 <h2> Build Your Own</h2>
 
                 <Popup trigger=
                 {<button> Pasta </button>} 
                 modal nested>
                 {
-                    <div>
+                    <p>
                         <h2>Custom Pasta</h2>
                         <h3>
                             Size:
@@ -291,14 +291,14 @@ const CashierGUI = () => {
                                 <button> Avocado </button>
                             </p>
                         </h3>
-                    </div>
+                    </p>
                 }
                 </Popup>
                 <Popup trigger=
                 {<button> Piada </button>} 
                 modal nested>
                 {
-                    <div>
+                    <p>
                         <h2> Custom Piada </h2>
                         <h3> Protein: 
                             <p>
@@ -346,14 +346,14 @@ const CashierGUI = () => {
                                 <button> Avocado </button>
                             </p>
                         </h3>
-                    </div>
+                    </p>
                 }
                 </Popup>
                 <Popup trigger=
                 {<button> Salad </button>} 
                 modal nested>
                 {
-                    <div>
+                    <p>
                         <h2> Custom Salad </h2>
                         <h3>
                             Size:
@@ -399,10 +399,10 @@ const CashierGUI = () => {
                                 <button> Avocado </button>
                             </p>
                         </h3>
-                    </div>
+                    </p>
                 }
                 </Popup>
-                </div>
+                </p>
             }
         </Popup>
 
@@ -410,7 +410,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Sides </button>} 
             modal nested>
             {
-              <div>
+              <p>
                 <h2> Street Sides</h2>
               <p>
                 <button onClick={() => addorderitem("Sweet Corn Salad")}> Sweet Corn Salad </button>
@@ -428,7 +428,7 @@ const CashierGUI = () => {
                   <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
               </Popup>
               </p>
-              </div>
+              </p>
                 
             }
         </Popup>
@@ -437,7 +437,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Drinks </button>} 
             modal nested>
             {
-                <div>
+                <p>
                 <h2> Drinks </h2>
               <p>
                 <button onClick={() => addorderitem("Blackberry Hibiscus Lemonade")}> Blackberry Hibiscus Lemonade </button>
@@ -456,7 +456,7 @@ const CashierGUI = () => {
                   <button onClick={() => addorderitem("Soft Drink")} className='add-to-order'> Add to order </button>
               </Popup>
               </p>
-              </div>
+              </p>
             }
         </Popup>
 
@@ -464,7 +464,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Kids </button>} 
             modal nested>
             {
-                <div>
+                <p>
                     <h2> Kids Menu </h2>
                     <Popup trigger=
                     {<button> Kids Pasta  </button>}
@@ -494,12 +494,12 @@ const CashierGUI = () => {
                     <button onClick={() => addorderitem("Kids Low-Fat Milk")}> Low-Fat Milk </button>
                     <button onClick={() => addorderitem("Kids Chocolate Milk")}> Chocolate Milk </button>
                     <button onClick={() => addorderitem("Kids Apple Juice")}> Apple Juice </button>
-                </div>
+                </p>
             }
         </Popup>
       </p>
       </h3>
-      </div>
+      </p>
     </div>
   );
 }
