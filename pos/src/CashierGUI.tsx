@@ -58,9 +58,10 @@ const CashierGUI = () => {
         const orderData = {
             items : order, 
         };
+        //const apiUrl = 'https://cashier-backend-9439f60d169d.herokuapp.com';
         // Send a POST request to the Flask API
         axios
-            .post('http://localhost:5000/api/place_order', orderData)
+            .post('https://cashier-backend-9439f60d169d.herokuapp.com/api/place_order', orderData)
             .then((response : AxiosResponse) => {
                 console.log(response.data); 
                 // Handle the response from the Flask API, e.g., show a confirmation message.

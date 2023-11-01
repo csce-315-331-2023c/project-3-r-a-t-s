@@ -5,6 +5,7 @@ import psycopg2
 from datetime import date
 import random
 
+
 app = Flask(__name__)
 
 # Enable CORS for all routes
