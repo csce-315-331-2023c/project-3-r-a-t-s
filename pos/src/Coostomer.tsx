@@ -71,10 +71,6 @@ const Coostomer: React.FC = () => {
     }
   };
 
-  // const addorder = (): void => {
-  //     console.log("Paying for Order");
-  //     // Add back-end to update database
-  // }
   const addorder = async (): Promise<void> => {
     console.log("Paying for Order, testing backend");
 
