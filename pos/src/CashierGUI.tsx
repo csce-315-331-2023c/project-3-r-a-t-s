@@ -52,6 +52,7 @@ const CashierGUI = () => {
     const addorder = () => {
         console.log("Paying for Order");
         console.table(order);
+        setOrder([]);
         // Add back-end to update database
         // Create an object with order data to send to the Flask API
         const orderData = {

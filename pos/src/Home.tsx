@@ -10,11 +10,21 @@ const Home = () => {
         navigate(file);
     }
 
+    const change_page = (page : string) => {
+        navigate(page);
+    }
+
     return(
-        <div className="App">
-            <h3> Log in Here: </h3>
-            <button onClick={() => go_to_gui("/CashierGUI")}> Cashier GUI </button>
-        </div>
+        <p>
+            <div className="App">
+                <h3> Log in Here: </h3>
+                <button onClick={() => change_page('\CashierGUI')}> Cashier GUI </button>
+            </div>
+            <div className="App">
+                <h3> Click here if you're a customer: </h3>
+                <button onClick={() => change_page('\CustomerGUI')}> Customer GUI </button>
+            </div>
+        </p>
     )
 }
 
