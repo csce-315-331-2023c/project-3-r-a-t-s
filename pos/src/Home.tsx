@@ -18,11 +18,13 @@ const Home = () => {
         <p>
             <div className="App">
                 <h3> Log in Here: </h3>
-                <button onClick={()=>'\CashierGUI'}> Cashier GUI </button>
+                {/* <button onClick={()=>'\CashierGUI'}> Cashier GUI </button> */}
+                <button onClick={()=>navigate('/CashierGUI')}> Cashier GUI </button>
             </div>
             <div className="App">
                 <h3> Click here if you're a customer: </h3>
-                <button onClick={()=>'\CustomerGUI'}> Customer GUI </button>
+                {/* <button onClick={()=>'\CustomerGUI'}> Customer GUI </button> */}
+                <button onClick={()=>navigate('/CustomerGUI')}> Customer GUI </button>
             </div>
         </p>
     )
