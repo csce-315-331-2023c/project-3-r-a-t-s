@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
-
 import './Cashier.css';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 const CashierGUI = () => {
 
@@ -32,6 +32,7 @@ const CashierGUI = () => {
         }
     }
 
+    //Add Order Item Selected to Order Array
     // TODO: update order_total based on order item added
     const addorderitem = (item : string) => {
         if (item === "") {
@@ -47,10 +48,25 @@ const CashierGUI = () => {
         curr_type = "";
     }
 
+    // Add Order Array to Database
     const addorder = () => {
         console.log("Paying for Order");
         console.table(order);
         // Add back-end to update database
+        // Create an object with order data to send to the Flask API
+        const orderData = {
+            items : order, 
+        };
+        // Send a POST request to the Flask API
+        axios
+            .post('http://localhost:5000/api/place_order', orderData)
+            .then((response : AxiosResponse) => {
+                console.log(response.data); 
+                // Handle the response from the Flask API, e.g., show a confirmation message.
+            })
+            .catch((error : AxiosError) => {
+                console.error(error); // Handle errors, e.g., show an error message to the user.
+            });
     }
 
     const removeAll = () => {
@@ -485,4 +501,3 @@ const CashierGUI = () => {
 }
 
 export default CashierGUI;
-
