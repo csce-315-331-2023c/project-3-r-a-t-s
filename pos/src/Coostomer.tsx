@@ -1,3 +1,5 @@
+//Ignore this file, it was just a prototype for CustomerGUI so I (Ayo) could test backend integration
+
 import React, { useState, useEffect } from "react";
 import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";

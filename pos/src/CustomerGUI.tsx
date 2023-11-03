@@ -46,9 +46,24 @@ const CustomerGUI = () => {
 
     }
 
-    const addorder = () => {
+    const addorder = async (): Promise<void> => {
         console.log("Paying for Order");
         // Add back-end to update database
+        const response = await fetch(
+            "/api",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                order: order,
+              }),
+            }
+          );
+      
+          const data = await response.json();
+          console.log(data.message);
     }
 
     const removeAll = () => {
@@ -462,9 +477,14 @@ const CustomerGUI = () => {
       </p>
       </h3>
 
-      <h3>  Current Order:
-            {order.map((order) => <li>{order}</li>)}
-            <br />
+      <h3>  
+      {" "}
+        Current Order:
+        <ul>
+          {order.map((item, idx) => (
+            <li key={idx}>{item}</li>
+          ))}
+        </ul>
             <button onClick={addorder} > Pay </button>
             <button onClick={removeAll}> Remove Items </button>
         </h3>
