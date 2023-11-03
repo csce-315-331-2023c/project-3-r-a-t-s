@@ -2,7 +2,7 @@ click==8.1.7
 cryptography==3.4.8
 dbus-python==1.2.18
 distro==1.7.0
-Flask==3.0.0
+Flask==2.2.5
 gyp==0.1
 importlib-metadata==4.6.4
 itsdangerous==2.1.2
