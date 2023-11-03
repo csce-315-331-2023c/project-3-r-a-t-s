@@ -1,14 +1,12 @@
 blinker==1.6.3
 click==8.1.7
-command-not-found==0.3
 cryptography==3.4.8
 dbus-python==1.2.18
 distro==1.7.0
 distro-info==1.0
-Flask==3.0.0
+Flask==2.2.5
 Flask-Cors==4.0.0
 gunicorn==21.2.0
-gyp==0.1
 httplib2==0.20.2
 importlib-metadata==4.6.4
 itsdangerous==2.1.2
