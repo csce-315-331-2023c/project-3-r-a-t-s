@@ -67,11 +67,11 @@ const CashierGUI = () => {
         // Send a POST request to the Flask API
         // Run locally with .post('http://127.0.0.1:5000/place_order', orderData)
         axios
-            .post(`https://pos-backend-3c6o.onrender.com/place_order`, orderData, config)
+            .post(`https://pos-backend-3c6o.onrender.com/api/place_order`, orderData, config)
             .then((response) => {
                 console.log(response.data); 
                 // Handle the response from the Flask API
-                if (response.data.message === "Order placed successfully") {
+                if (response.data.message === "Order placed successfully (From Backend)") {
                     // Order placed successfully 
                     // console.log("Order placed :)"); 
                     // TODO : Add Code to Display confirmation message to user

@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Enable CORS for all routes
 # Run Locally with CORS(app)
 # CORS(app)
-CORS(app, resources={r"/place_order": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
+CORS(app, resources={r"/api/*": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
 
 ## Define database connection
 DB_PARAMS = {
@@ -20,7 +20,7 @@ DB_PARAMS = {
     'host': 'csce-315-db.engr.tamu.edu',
 }
 
-@app.route('/place_order', methods=['POST'])
+@app.route('/api/place_order', methods=['POST'])
 def place_order():
     # Log the request method
     app.logger.info(f"Received {request.method} request to /place_order")
