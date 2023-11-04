@@ -67,7 +67,9 @@ def place_order():
         cursor.close()
         conn.close()
 
-        return jsonify({"message": "Order placed successfully"})
+        response_data = {"message": "Order placed successfully"}
+        app.logger.info("Response data: %s", response_data)
+        return jsonify(response_data)
 
     except Exception as e:
         return jsonify({"error": str(e)})
