@@ -72,9 +72,10 @@ const CashierGUI = () => {
                 console.log(response.data); 
                 // Handle the response from the Flask API
                 if (response.data.message === "Order placed successfully") {
-                    // Order placed successfully
-                    console.log("Order placed :)");
+                    // Order placed successfully 
+                    // console.log("Order placed :)"); 
                     // TODO : Add Code to Display confirmation message to user
+
                 } else {
                     // Handle Errors
                     console.error("Unexpected response:", response.data);
