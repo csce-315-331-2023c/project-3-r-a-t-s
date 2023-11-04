@@ -9,8 +9,8 @@ app = Flask(__name__)
 
 # Enable CORS for all routes
 # Run Locally with CORS(app)
-# CORS(app)
-CORS(app, resources={r"/place_order": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
+CORS(app)
+# CORS(app, resources={r"/place_order": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
 
 ## Define database connection
 DB_PARAMS = {
