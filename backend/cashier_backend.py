@@ -9,8 +9,8 @@ app = Flask(__name__)
 
 # Enable CORS for all routes
 # Run Locally with CORS(app)
-# CORS(app)
-CORS(app, resources={r"/place_order": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
+CORS(app)
+# CORS(app, resources={r"/place_order": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
 
 ## Define database connection
 DB_PARAMS = {
@@ -67,7 +67,9 @@ def place_order():
         cursor.close()
         conn.close()
 
-        return jsonify({"message": "Order placed successfully"})
+        response_data = {"message": "Order placed successfully"}
+        app.logger.info("Response data: %s", response_data)
+        return jsonify(response_data)
 
     except Exception as e:
         return jsonify({"error": str(e)})

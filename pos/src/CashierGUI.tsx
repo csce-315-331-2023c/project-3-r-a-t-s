@@ -53,20 +53,32 @@ const CashierGUI = () => {
         console.log("Paying for Order");
         console.table(order);
         setOrder([]);
-        // Add back-end to update database
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
         };
+
+        // Set the Content-Type header to application/json
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
         // Send a POST request to the Flask API
-        // Run locally with .post('/place_order', orderData)
-        //const apiUrl = 'https://cashier-backend-9439f60d169d.herokuapp.com';
+        // Run locally with .post('http://127.0.0.1:5000/place_order', orderData)
         axios
-            //.post(`${apiUrl}/place_order`, orderData)
-            .post(`http://127.0.0.1:5000/place_order`, orderData)
-            .then((response : AxiosResponse) => {
+            .post(`https://pos-backend-3c6o.onrender.com/place_order`, orderData, config)
+            .then((response) => {
                 console.log(response.data); 
-                // Handle the response from the Flask API, e.g., show a confirmation message.
+                // Handle the response from the Flask API
+                if (response.data.message === "Order placed successfully") {
+                    // Order placed successfully
+                    console.log("Order placed :)");
+                    // TODO : Add Code to Display confirmation message to user
+                } else {
+                    // Handle Errors
+                    console.error("Unexpected response:", response.data);
+                }
             })
             .catch((error : AxiosError) => {
                 console.error(error); // Handle errors, e.g., show an error message to the user.
