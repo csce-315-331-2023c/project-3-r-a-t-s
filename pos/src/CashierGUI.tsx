@@ -57,10 +57,17 @@ const CashierGUI = () => {
         const orderData = {
             items : order, 
         };
+
+        // Set the Content-Type header to application/json
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
         // Send a POST request to the Flask API
-        // Run locally with .post('/place_order', orderData)
+        // Run locally with .post('http://127.0.0.1:5000/place_order', orderData)
         axios
-            .post(`https://pos-backend-3c6o.onrender.com/place_order`, orderData)
+            .post(`https://pos-backend-3c6o.onrender.com/place_order`, orderData, config)
             .then((response) => {
                 console.log(response.data); 
                 // Handle the response from the Flask API
