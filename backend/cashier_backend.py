@@ -4,13 +4,14 @@ from flask_cors import CORS
 import psycopg2
 from datetime import date
 import random
+import logging
 
 app = Flask(__name__)
 
 # Enable CORS for all routes
 # Run Locally with CORS(app)
 CORS(app)
-# CORS(app, resources={r"/place_order": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
+# CORS(app, resources={r"/api/*": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
 
 ## Define database connection
 DB_PARAMS = {
@@ -20,13 +21,14 @@ DB_PARAMS = {
     'host': 'csce-315-db.engr.tamu.edu',
 }
 
-@app.route('/place_order', methods=['POST'])
+@app.route('/api/place_order', methods=['POST'])
 def place_order():
     # Log the request method
     app.logger.info(f"Received {request.method} request to /place_order")
     # Process the order data and update the database
     try:
         data = request.get_json()
+        client_type = request.headers.get('X-Client-Type')
 
         # Connect to the PostgreSQL database
         conn = psycopg2.connect(**DB_PARAMS)
@@ -34,7 +36,12 @@ def place_order():
 
         order_total = 0.0
         current_date = date.today()
-        employeeID = random.randint(1, 4)
+
+        if client_type == 'cashier':
+            employeeID = random.randint(1, 4)
+        elif client_type == 'cashier':  
+            employeeID = 5
+  
 
         # Insert into the ORDERS table 
         insert_order_query = "INSERT INTO ORDERS (employee_id, order_total, date) VALUES (%s, %s, %s) RETURNING order_id"
@@ -42,23 +49,54 @@ def place_order():
         cursor.execute(insert_order_query, (employeeID, order_total, current_date))
         order_id = cursor.fetchone()[0]
 
+        app.logger.info("Before For Loop")
+
         for item in data['items']:
             # Get Menu Item ID
             item_query = "SELECT menu_item_id, price FROM MENU_ITEMS WHERE menu_item_name = %s"
             cursor.execute(item_query, (item,))
             menu_item_data = cursor.fetchone()
 
+
             if menu_item_data:
                 menu_item_id, menu_item_price = menu_item_data
                 order_total += menu_item_price
-
                 # Insert into ORDER_ITEMS table for each menu item
                 order_items_query = "INSERT INTO ORDER_ITEMS (order_id, menu_item_id, quantity) VALUES (%s, %s, %s)"
-                cursor.execute(order_items_query, (order_id, menu_item_id, 1))
+                cursor.execute(order_items_query, (order_id, menu_item_id, 1,))
+                # Reduce Menu Item's Ingredients From Inventory
+                FetchIngredients_query = (
+                    "SELECT I.ingredient_id, I.quantity AS inventory_quantity "
+                    "FROM MENU_ITEMS MI "
+                    "JOIN MENU_ITEM_INGREDIENTS MII ON MI.menu_item_id = MII.menu_item_id "
+                    "JOIN INVENTORY I ON MII.ingredient_id = I.ingredient_id "
+                    "WHERE MI.menu_item_name = %s"
+                )
+                cursor.execute(FetchIngredients_query, (item,))
+                result_set = cursor.fetchall()
 
+                app.logger.info("Before If Result Set")
+
+                if result_set:
+                    # Process Result Set For Menu Items with Predefined Ingredients
+                    for row in result_set:
+                        ingredientId = row[0]
+                        inventoryQuantity = row[1]
+                        updatedQuantity = inventoryQuantity - 1
+
+                        UpdateInventory_query = "UPDATE INVENTORY SET quantity = %s WHERE ingredient_id = %s"
+                        cursor.execute(UpdateInventory_query, (updatedQuantity, ingredientId,))
+                else:
+                    UpdateInventory_query = "UPDATE INVENTORY SET quantity = quantity - 1 WHERE name = %s"
+                    cursor.execute(UpdateInventory_query, (item,))
+            else:
+                # Handle the case where no menu item data is found
+                error_message = f"No menu item found for: {item}"
+                app.logger.error(error_message)
+        app.logger.info("Before Updating Orders")        
         # Update the total in the ORDERS table
         update_total_query = "UPDATE ORDERS SET order_total = %s WHERE order_id = %s"
-        cursor.execute(update_total_query, (order_total, order_id))
+        cursor.execute(update_total_query, (order_total, order_id,))
         
         # Commit the changes to the database
         conn.commit()
@@ -67,12 +105,14 @@ def place_order():
         cursor.close()
         conn.close()
 
-        response_data = {"message": "Order placed successfully"}
-        app.logger.info("Response data: %s", response_data)
+        response_data = {
+            "order_total": order_total,
+            "message": "Order placed successfully (From Backend)"}
         return jsonify(response_data)
 
     except Exception as e:
         return jsonify({"error": str(e)})
 
 if __name__ == '__main__':
-    app.run()
+    #app.run()
+    app.run(debug=True)
