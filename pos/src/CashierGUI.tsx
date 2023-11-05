@@ -16,6 +16,7 @@ const CashierGUI = () => {
     let order_total = 0;
 
     const [order, setOrder] = useState<string[]>([]);
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
     const makeorderitem = (temp : number, item : string) => {
         if (temp === 0) {
@@ -33,7 +34,6 @@ const CashierGUI = () => {
     }
 
     //Add Order Item Selected to Order Array
-    // TODO: update order_total based on order item added
     const addorderitem = (item : string) => {
         if (item === "") {
             setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
@@ -46,6 +46,28 @@ const CashierGUI = () => {
         curr_size = "";
         curr_item = "";
         curr_type = "";
+    }
+    // Add Custom Item to Order Array
+    const addBYOToOrder = (item : string) => {  
+        if (item === "") {
+            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
+            console.log("Added new order item:", item);
+        }
+        else {
+            setOrder(order.concat(item)); 
+            console.log("Added new order item:", item);
+        }
+        let ingredients = "";
+        if (selectedIngredients.length > 0) {
+            ingredients += `${selectedIngredients.join(', ')}`;
+            console.log("Added BYO Ingredients:", ingredients);
+            setSelectedIngredients([]); // Clear selected ingredients
+        }  
+    }
+
+    const handleIngredientSelection = (ingredient : string) => {
+        setSelectedIngredients((prevIngredients) => [...prevIngredients, ingredient]);
+        console.log("Added new selected ingredient", ingredient);
     }
 
     // Add Order Array to Database
@@ -62,20 +84,22 @@ const CashierGUI = () => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
+                'X-Client-Type': 'cashier'
             },
         };
         // Send a POST request to the Flask API
         // Run locally with .post('http://127.0.0.1:5000/place_order', orderData)
         axios
-            .post(`https://pos-backend-3c6o.onrender.com/api/place_order`, orderData, config)
+            .post('http://127.0.0.1:5000/api/place_order', orderData, config)
+            //.post(`https://pos-backend-3c6o.onrender.com/api/place_order`, orderData, config)
             .then((response) => {
-                console.log(response.data); 
                 // Handle the response from the Flask API
+                console.log(response.data); 
                 if (response.data.message === "Order placed successfully (From Backend)") {
                     // Order placed successfully 
                     // console.log("Order placed :)"); 
-                    // TODO : Add Code to Display confirmation message to user
-
+                    order_total = response.data.order_total;
+                    // TODO : Display confirmation message to user
                 } else {
                     // Handle Errors
                     console.error("Unexpected response:", response.data);
@@ -247,63 +271,65 @@ const CashierGUI = () => {
                         <h3>
                             Size:
                             <p>
-                                <button> Small </button>
-                                <button> Regular </button>  
+                                <button onClick={() => makeorderitem(1, "SM Custom Pasta")} className='basic-option-buttons'> Small </button>
+                                <button onClick={() => makeorderitem(1, "REG Custom Pasta")} className='basic-option-buttons'> Regular </button>  
                             </p>
                         </h3>
                         <h3>
                             Pasta:
                             <p>
-                                <button> Spaghetti </button>
-                                <button> Penne </button>
+                                <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
+                                <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
                             </p>
                         </h3>
                         <h3> Protein: 
                             <p>
-                                <button> Italian Sausage </button>
-                                <button> Grilled Chicken </button>
-                                <button> Crispy Chicken </button>
-                                <button> Hot Fried Chicken </button>
-                                <button> Grilled Chicken </button>
-                                <button> Grass-Fed Meatballs </button>
-                                <button> Calamari & Hot Peppers</button>
-                                <button> Grilled Salmon </button>
+                                <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
+                                <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
+                                <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
+                                <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
                             </p>
                         </h3>
                         <h3>
                             Pasta Sauces:
                             <p>
-                                <button> Marinara </button>
-                                <button> Alfredo </button>
-                                <button> Diavolo </button>
-                                <button> Basil Pesto </button>
+                                <button onClick={() => handleIngredientSelection('Tomato Sauce')}> Marinara </button>
+                                <button onClick={() => handleIngredientSelection('Alfredo Sauce')}> Alfredo </button>
+                                <button onClick={() => handleIngredientSelection('Diavolo Sauce')}> Diavolo </button>
+                                <button onClick={() => handleIngredientSelection('Basil Pesto Sauce')}> Basil Pesto </button>
                             </p>
                         </h3>
                         <h3> 
                             Toppings:
                             <p>
-                                <button> Cucumbers </button>
-                                <button> Cucumber Salad </button>
-                                <button> Bruschetta Tomatoes </button>
-                                <button> Pickled Red Onions </button>
-                                <button> Romaine </button>
-                                <button> Arugula </button>
-                                <button> Spinach </button>
-                                <button> Chopped Greens </button>
-                                <button> Roasted Sweet Potato </button>
-                                <button> Hummus </button>
-                                <button> Feta </button>
-                                <button> Mozzarella </button>
-                                <button> Parmesan </button>
-                                <button> Sweet & Spicy Peppers</button>
-                                <button> Strawberries </button>
-                                <button> Glazed Pecans </button>
-                                <button> Pancetta(Bacon)</button>
-                                <button> Roasted Broccoli </button>
-                                <button> Sweet Corn & Tomato</button>
-                                <button> Avocado </button>
+                                <button onClick={() => handleIngredientSelection('Cucumbers')}> Cucumbers </button>
+                                <button onClick={() => handleIngredientSelection('Cucumber Salad')}> Cucumber Salad </button>
+                                <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')}> Bruschetta Tomatoes </button>
+                                <button onClick={() => handleIngredientSelection('Pickled Red Onions')}> Pickled Red Onions </button>
+                                <button onClick={() => handleIngredientSelection('Romaine')}> Romaine </button>
+                                <button onClick={() => handleIngredientSelection('Arugula')}> Arugula </button>
+                                <button onClick={() => handleIngredientSelection('Spinach')}> Spinach </button>
+                                <button onClick={() => handleIngredientSelection('Chopped Greens')}> Chopped Greens </button>
+                                <button onClick={() => handleIngredientSelection('Sweet Potatoes')}> Roasted Sweet Potato </button>
+                                <button onClick={() => handleIngredientSelection('Hummus')}> Hummus </button>
+                                <button onClick={() => handleIngredientSelection('Feta')}> Feta </button>
+                                <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                                <button onClick={() => handleIngredientSelection('Parmesan')}> Parmesan </button>
+                                <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')}> Sweet & Spicy Peppers</button>
+                                <button onClick={() => handleIngredientSelection('Strawberries')}> Strawberries </button>
+                                <button onClick={() => handleIngredientSelection('Glazed Pecans')}> Glazed Pecans </button>
+                                <button onClick={() => handleIngredientSelection('Bacon')}> Pancetta(Bacon)</button>
+                                <button onClick={() => handleIngredientSelection('Broccoli')}> Roasted Broccoli </button>
+                                <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')}> Sweet Corn & Tomato</button>
+                                <button onClick={() => handleIngredientSelection('Avocado')}> Avocado </button>
                             </p>
                         </h3>
+                        <br /> <br />
+                        <button onClick={() => addBYOToOrder("")} className='add-to-order'> Add to order </button>
                     </p>
                 }
                 </Popup>
@@ -313,52 +339,56 @@ const CashierGUI = () => {
                 {
                     <p>
                         <h2> Custom Piada </h2>
-                        <h3> Protein: 
+                        <h3> 
+                            Protein: 
                             <p>
-                                <button> Italian Sausage </button>
-                                <button> Grilled Chicken </button>
-                                <button> Crispy Chicken </button>
-                                <button> Hot Fried Chicken </button>
-                                <button> Grilled Chicken </button>
-                                <button> Grass-Fed Meatballs </button>
-                                <button> Calamari & Hot Peppers</button>
-                                <button> Grilled Salmon </button>
+                                <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
+                                <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
+                                <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
+                                <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
                             </p>
                         </h3>
                         <h3>
-                            Piada Sauces:
+                            Pasta Sauces:
                             <p>
-                                <button> Marinara </button>
-                                <button> Alfredo </button>
-                                <button> Diavolo </button>
-                                <button> Basil Pesto </button>
+                                <button onClick={() => handleIngredientSelection('Tomato Sauce')}> Marinara </button>
+                                <button onClick={() => handleIngredientSelection('Alfredo Sauce')}> Alfredo </button>
+                                <button onClick={() => handleIngredientSelection('Diavolo Sauce')}> Diavolo </button>
+                                <button onClick={() => handleIngredientSelection('Basil Pesto Sauce')}> Basil Pesto </button>
                             </p>
-                        </h3> 
+                        </h3>
                         <h3> 
                             Toppings:
                             <p>
-                                <button> Cucumbers </button>
-                                <button> Cucumber Salad </button>
-                                <button> Bruschetta Tomatoes </button>
-                                <button> Pickled Red Onions </button>
-                                <button> Romaine </button>
-                                <button> Arugula </button>
-                                <button> Spinach </button>
-                                <button> Chopped Greens </button>
-                                <button> Roasted Sweet Potato </button>
-                                <button> Hummus </button>
-                                <button> Feta </button>
-                                <button> Mozzarella </button>
-                                <button> Parmesan </button>
-                                <button> Sweet & Spicy Peppers</button>
-                                <button> Strawberries </button>
-                                <button> Glazed Pecans </button>
-                                <button> Bacon </button>
-                                <button> Roasted Broccoli </button>
-                                <button> Sweet Corn & Tomato</button>
-                                <button> Avocado </button>
+                                <button onClick={() => handleIngredientSelection('Cucumbers')}> Cucumbers </button>
+                                <button onClick={() => handleIngredientSelection('Cucumber Salad')}> Cucumber Salad </button>
+                                <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')}> Bruschetta Tomatoes </button>
+                                <button onClick={() => handleIngredientSelection('Pickled Red Onions')}> Pickled Red Onions </button>
+                                <button onClick={() => handleIngredientSelection('Romaine')}> Romaine </button>
+                                <button onClick={() => handleIngredientSelection('Arugula')}> Arugula </button>
+                                <button onClick={() => handleIngredientSelection('Spinach')}> Spinach </button>
+                                <button onClick={() => handleIngredientSelection('Chopped Greens')}> Chopped Greens </button>
+                                <button onClick={() => handleIngredientSelection('Sweet Potatoes')}> Roasted Sweet Potato </button>
+                                <button onClick={() => handleIngredientSelection('Hummus')}> Hummus </button>
+                                <button onClick={() => handleIngredientSelection('Feta')}> Feta </button>
+                                <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                                <button onClick={() => handleIngredientSelection('Parmesan')}> Parmesan </button>
+                                <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')}> Sweet & Spicy Peppers</button>
+                                <button onClick={() => handleIngredientSelection('Strawberries')}> Strawberries </button>
+                                <button onClick={() => handleIngredientSelection('Glazed Pecans')}> Glazed Pecans </button>
+                                <button onClick={() => handleIngredientSelection('Bacon')}> Pancetta(Bacon)</button>
+                                <button onClick={() => handleIngredientSelection('Broccoli')}> Roasted Broccoli </button>
+                                <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')}> Sweet Corn & Tomato</button>
+                                <button onClick={() => handleIngredientSelection('Avocado')}> Avocado </button>
                             </p>
                         </h3>
+                        <button onClick={() => addBYOToOrder("")} className='add-to-custom'>
+                            Add to order
+                        </button>
                     </p>
                 }
                 </Popup>
@@ -375,43 +405,58 @@ const CashierGUI = () => {
                                 <button> Regular </button>  
                             </p>
                         </h3>
+                        <h3> Protein: 
+                            <p>
+                                <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
+                                <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
+                                <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
+                                <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
+                                <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
+                            </p>
+                        </h3>
                         <h3>
                             Salad Dressings:
                             <p>
-                                <button> Creamy Parmesan </button>
-                                <button> Lemon Basil </button>
-                                <button> Classic Caesar </button>
-                                <button> Creamy Basil Parmesan </button>
-                                <button> Oil & Vinegar </button>
-                                <button> Spicy Ranch </button>
-                                <button> Yogurt Harissa </button>
+                                <button onClick={() => handleIngredientSelection('Creamy Parmesan Sauce')}> Creamy Parmesan </button>
+                                <button onClick={() => handleIngredientSelection('Lemon Basil Dressing')}> Lemon Basil </button>
+                                <button onClick={() => handleIngredientSelection('Classic Ceasar Dressing')}> Classic Caesar </button>
+                                <button onClick={() => handleIngredientSelection('Basil Parmesan Dressing')}> Creamy Basil Parmesan </button>
+                                <button onClick={() => handleIngredientSelection('Oil & Vinegar Dressing')}> Oil & Vinegar </button>
+                                <button onClick={() => handleIngredientSelection('Spicy Ranch Dressing')}> Spicy Ranch </button>
+                                <button onClick={() => handleIngredientSelection('Yogurt Harissa Dressing')}> Yogurt Harissa </button>
                             </p>
                         </h3>
                         <h3> 
                             Toppings:
                             <p>
-                                <button> Cucumbers </button>
-                                <button> Cucumber Salad </button>
-                                <button> Bruschetta Tomatoes </button>
-                                <button> Pickled Red Onions </button>
-                                <button> Romaine </button>
-                                <button> Arugula </button>
-                                <button> Spinach </button>
-                                <button> Chopped Greens </button>
-                                <button> Roasted Sweet Potato </button>
-                                <button> Hummus </button>
-                                <button> Feta </button>
-                                <button> Mozzarella </button>
-                                <button> Parmesan </button>
-                                <button> Sweet & Spicy Peppers</button>
-                                <button> Strawberries </button>
-                                <button> Glazed Pecans </button>
-                                <button> Pancetta(Bacon)</button>
-                                <button> Roasted Broccoli </button>
-                                <button> Sweet Corn & Tomato</button>
-                                <button> Avocado </button>
+                                <button onClick={() => handleIngredientSelection('Cucumbers')}> Cucumbers </button>
+                                <button onClick={() => handleIngredientSelection('Cucumber Salad')}> Cucumber Salad </button>
+                                <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')}> Bruschetta Tomatoes </button>
+                                <button onClick={() => handleIngredientSelection('Pickled Red Onions')}> Pickled Red Onions </button>
+                                <button onClick={() => handleIngredientSelection('Romaine')}> Romaine </button>
+                                <button onClick={() => handleIngredientSelection('Arugula')}> Arugula </button>
+                                <button onClick={() => handleIngredientSelection('Spinach')}> Spinach </button>
+                                <button onClick={() => handleIngredientSelection('Chopped Greens')}> Chopped Greens </button>
+                                <button onClick={() => handleIngredientSelection('Sweet Potatoes')}> Roasted Sweet Potato </button>
+                                <button onClick={() => handleIngredientSelection('Hummus')}> Hummus </button>
+                                <button onClick={() => handleIngredientSelection('Feta')}> Feta </button>
+                                <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                                <button onClick={() => handleIngredientSelection('Parmesan')}> Parmesan </button>
+                                <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')}> Sweet & Spicy Peppers</button>
+                                <button onClick={() => handleIngredientSelection('Strawberries')}> Strawberries </button>
+                                <button onClick={() => handleIngredientSelection('Glazed Pecans')}> Glazed Pecans </button>
+                                <button onClick={() => handleIngredientSelection('Bacon')}> Pancetta(Bacon)</button>
+                                <button onClick={() => handleIngredientSelection('Broccoli')}> Roasted Broccoli </button>
+                                <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')}> Sweet Corn & Tomato</button>
+                                <button onClick={() => handleIngredientSelection('Avocado')}> Avocado </button>
                             </p>
                         </h3>
+                        <button onClick={() => addBYOToOrder("")} className='add-to-custom'>
+                            Add to order
+                        </button>
                     </p>
                 }
                 </Popup>
@@ -433,12 +478,11 @@ const CashierGUI = () => {
                 <button onClick={() => addorderitem("Cup of Lobster Bisque")}> Lobster Bisque </button>
                 <button onClick={() => addorderitem("Chocolate Brownie")}> Sweet Street Chocolate Brownie </button>
                 <Popup trigger=
-                  {<button> Sweet Treet Cookie </button>}
+                  {<button> Sweet Treet Cookie </button>} 
                   position="bottom center">
                   <button onClick={() => addorderitem("Chocolate Chunk Cookie")}> Chocolate Chunk Cookie </button>
                   <button onClick={() => addorderitem("Salted Caramel Cookie")}> Salted Caramel Cookie </button>
                   <br /> <br />
-                  <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
               </Popup>
               </p>
               </p>
@@ -461,7 +505,7 @@ const CashierGUI = () => {
                 <button onClick={() => addorderitem("Acqua Panna Spring Water")}> Acqua Panna Spring Water </button>
                 <button onClick={() => addorderitem("San Pellegrino Sparkling Water")}> San Pellegrino Sparkling Water </button>
                 <Popup trigger=
-                  {<button> Soft Drink </button>}
+                  {<button> Soft Drink </button>} // Soft Drink Just Adds 'Soft Drink' Instead of 'REG Soft Drink'
                   position="bottom center">
                   <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
                   <button onClick={() => makeorderitem(1, "LG")}> Large </button>
