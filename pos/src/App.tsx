@@ -5,9 +5,8 @@ import './App.css';
 import Home from "./Home";
 import CashierGUI from "./CashierGUI";
 import CustomerGUI from "./CustomerGUI";
+import ManagerGUI from "./ManagerGUI";
 import Coostomer from './Coostomer';
-
-
 
 const App = () => {
   return(
@@ -17,6 +16,7 @@ const App = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/CashierGUI" element={<CashierGUI />} />
         <Route path="/CustomerGUI" element={<CustomerGUI />} />
+        <Route path="/ManagerGUI" element={<ManagerGUI />} />
         <Route path="/Coostomer" element={<Coostomer />} />
       </Routes>
   </Router>
