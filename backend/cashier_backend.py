@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # Enable CORS for all routes
 # Run Locally with CORS(app)
-CORS(app)
+# CORS(app)
 CORS(app, resources={r"/api/*": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
 
 ## Define database connection
@@ -114,5 +114,5 @@ def place_order():
         return jsonify({"error": str(e)})
 
 if __name__ == '__main__':
-    #app.run()
-    app.run(debug=True)
+    app.run()
+    #app.run(debug=True)
