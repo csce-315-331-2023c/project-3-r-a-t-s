@@ -15,6 +15,7 @@ const Home = () => {
                 <button onClick={() => navigate('CustomerGUI')}> Customer GUI </button>
                 <h3> Click here if you're a Manager: </h3>
                 <button onClick={() => navigate('ManagerGUI')}> Manager GUI </button>
+                <p>Robin is so cool</p>
             </p>
         </div>
     )
