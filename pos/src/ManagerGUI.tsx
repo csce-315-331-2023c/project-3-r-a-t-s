@@ -8,25 +8,40 @@ import Tabs from 'react-bootstrap/Tabs';
 import Popup from 'reactjs-popup';
 
 const ManagerGUI = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // Manages start/end date in the Order History Tab
+  const [order_start_date, set_order_start_date] = useState('');
+  const [order_end_date, set_order_end_date] = useState('');
 
-  const dateInputRef1 = useRef(null);
-  const dateInputRef2 = useRef(null);
+  const order_ref1 = useRef(null);
+  const order_ref2 = useRef(null);
 
-
-  const changeStartDate = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setStartDate(e.target.value);
+  const change_order_start_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    set_order_start_date(e.target.value);
+  };
+  const change_order_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    set_order_end_date(e.target.value);
   };
 
-  const changeEndDate = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setEndDate(e.target.value);
-  };
+  // Manages start/end date in Reports Tab for any reports that require a date
+  const [report_start_date, set_report_start_date] = useState('');
+  const [report_end_date, set_report_end_date] = useState('');
 
+  const report_ref1 = useRef(null);
+  const report_ref2 = useRef(null);
+
+  const change_report_start_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    set_report_start_date(e.target.value);
+  };
+  const change_report_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    set_report_end_date(e.target.value);
+  };
+  
   const generate_order_history = () => {
     // query for order history data based on startDate and endDate
+
   }
 
+  // Reports 
   const generateProductReport = () => {
     // query for product report data
   }
@@ -46,24 +61,25 @@ const ManagerGUI = () => {
   return(
     <div style={{ display: 'block', width: 700, padding: 30}} className='manager'> 
       <h4>Manager GUI</h4> 
-      <Tabs defaultActiveKey="1"> 
-        <Tab eventKey="1" title="Inventory"> 
+      <Tabs defaultActiveKey={1}> 
+        <Tab eventKey={1} title="Inventory"> 
           Inventory go here. 
-          
         </Tab> 
-        <Tab eventKey="2" title="Order History"> 
+        <Tab eventKey={2} title="Order History"> 
 
-          <p>Start Date: <input type="date" onChange={changeStartDate} ref={dateInputRef1} /></p>
-          <p>End Date: <input type="date" onChange={changeEndDate} ref={dateInputRef2} /></p>
+          <p>Start Date: <input type="date" onChange={change_order_start_date} ref={order_ref1} /></p>
+          <p>End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2} /></p>
 
           <button onClick={generate_order_history}>Generate Order History</button>
 
         </Tab> 
-        <Tab eventKey="3" title="Employees"> 
+        <Tab eventKey={3} title="Employees"> 
           Employee Table goes here.
 
         </Tab>
-        <Tab eventKey="4" title="Reports"> 
+        <Tab eventKey={4} title="Reports"> 
+          <p>Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1} /></p>
+          <p>End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2} /></p>
         <Popup trigger=
             {<button> Product Report </button>} 
             modal nested onOpen={generateProductReport}>
