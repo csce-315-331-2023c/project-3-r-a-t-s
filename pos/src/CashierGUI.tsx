@@ -143,7 +143,7 @@ const CashierGUI = () => {
             <button className='remove-button' onClick={removeAll}> Remove Items </button>
         </h2>
         
-        <p className='main-panel'>
+        <div className='main-panel'>
         <h3 className='column'> Pasta:
         <p> 
         <Popup trigger=
@@ -157,7 +157,7 @@ const CashierGUI = () => {
             <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
             <br /> <br />
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
-            </p>
+         </p>
         </Popup>
 
         <Popup trigger=
@@ -556,7 +556,7 @@ const CashierGUI = () => {
         </Popup>
       </p>
       </h3>
-      </p>
+      </div>
     </div>
   );
 }
