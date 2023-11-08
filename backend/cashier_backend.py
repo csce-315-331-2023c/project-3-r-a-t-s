@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 # Enable CORS for all routes
 # Run Locally with CORS(app)
-# CORS(app)
-CORS(app, resources={r"/api/*": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
+CORS(app)
+# CORS(app, resources={r"/api/*": {"origins": "https://project-3-r-a-t-s.vercel.app"}})
 
 ## Define database connection
 DB_PARAMS = {
@@ -41,7 +41,8 @@ def place_order():
             employeeID = random.randint(1, 4)
         elif client_type == 'customer':  
             employeeID = 5
-  
+
+        app.logger.info("After EmployeeID")
 
         # Insert into the ORDERS table 
         insert_order_query = "INSERT INTO ORDERS (employee_id, order_total, date) VALUES (%s, %s, %s) RETURNING order_id"
@@ -56,7 +57,8 @@ def place_order():
             item_query = "SELECT menu_item_id, price FROM MENU_ITEMS WHERE menu_item_name = %s"
             cursor.execute(item_query, (item,))
             menu_item_data = cursor.fetchone()
-
+            
+            app.logger.info("Entered For Loop")
 
             if menu_item_data:
                 menu_item_id, menu_item_price = menu_item_data
@@ -114,5 +116,5 @@ def place_order():
         return jsonify({"error": str(e)})
 
 if __name__ == '__main__':
-    app.run()
-    #app.run(debug=True)
+    #app.run()
+    app.run(debug=True)
