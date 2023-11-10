@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Popup from 'reactjs-popup';
-import InventoryComponent from '.Components/InventoryComponent';
+import InventoryComponent from './Components/Inventory';
 
 const ManagerGUI = () => {
   // Manages start/end date in the Order History Tab
