@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Popup from 'reactjs-popup';
+import InventoryComponent from './Components/Inventory';
 
 const ManagerGUI = () => {
   // Manages start/end date in the Order History Tab
@@ -63,7 +64,7 @@ const ManagerGUI = () => {
       <h4>Manager GUI</h4> 
       <Tabs defaultActiveKey={1}> 
         <Tab eventKey={1} title="Inventory"> 
-          Inventory go here. 
+        <InventoryComponent />
         </Tab> 
         <Tab eventKey={2} title="Order History"> 
 
