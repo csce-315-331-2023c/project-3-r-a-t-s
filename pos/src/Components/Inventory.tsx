@@ -33,7 +33,7 @@ const InventoryComponent = () => {
         {isLoading ? 'Loading...' : 'View current inventory'}
       </button>
       {inventoryData && (
-        <table>
+        <table className='table table-striped w-100'>
           <thead>
             <tr>
               <th>Name</th>
