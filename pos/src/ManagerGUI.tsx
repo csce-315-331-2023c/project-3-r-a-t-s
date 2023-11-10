@@ -37,7 +37,7 @@ const ManagerGUI = () => {
   };
   
   const generate_order_history = () => {
-    // query for order history data based on startDate and endDate
+    // query for order history data based on startDate and endDate (Teresa)
 
   }
 
@@ -47,7 +47,7 @@ const ManagerGUI = () => {
   }
 
   const generateSellsTogether = () => {
-    // query for whatsellstogether report data
+    // query for whatsellstogether report data (Teresa)
   }
 
   const generateExcessReport = () => {
@@ -91,7 +91,7 @@ const ManagerGUI = () => {
             {<button> What Sells Together Report </button>} 
             modal nested onOpen={generateSellsTogether}>
             {
-              // table goes here for What Sells together report
+              // table goes here for What Sells together report (Teresa)
             }
         </Popup>
         <Popup trigger=
