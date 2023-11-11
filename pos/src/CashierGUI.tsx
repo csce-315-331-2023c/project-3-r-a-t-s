@@ -4,7 +4,7 @@ import Popup from 'reactjs-popup';
 import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 import './Cashier.css';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, {AxiosError} from 'axios';
 
 const CashierGUI = () => {
 
