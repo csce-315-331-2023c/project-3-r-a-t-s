@@ -8,10 +8,6 @@ import logging
 
 cashier_BP = Blueprint('cashier_backend', __name__)
 
-# Enable CORS for all routes
-# CORS(cashier_BP)
-# CORS(cashier_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
-
 # Define database connection
 DB_PARAMS = {
     'dbname': 'csce315_904_01db', 
