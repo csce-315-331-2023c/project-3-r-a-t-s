@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState} from 'react';
 import 'reactjs-popup/dist/index.css';
 import './Manager.css';
 //import axios, { AxiosResponse, AxiosError } from 'axios';
@@ -6,22 +6,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Popup from 'reactjs-popup';
+//import axios from 'axios';
 import InventoryComponent from './Components/Inventory';
+import OrderHistoryComponent from './Components/OrderHistory';
 
-const ManagerGUI = () => {
-  // Manages start/end date in the Order History Tab
-  const [order_start_date, set_order_start_date] = useState('');
-  const [order_end_date, set_order_end_date] = useState('');
-
-  const order_ref1 = useRef(null);
-  const order_ref2 = useRef(null);
-
-  const change_order_start_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    set_order_start_date(e.target.value);
-  };
-  const change_order_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    set_order_end_date(e.target.value);
-  };
+const ManagerGUI: React.FC = () => {
 
   // Manages start/end date in Reports Tab for any reports that require a date
   const [report_start_date, set_report_start_date] = useState('');
@@ -35,13 +24,8 @@ const ManagerGUI = () => {
   };
   const change_report_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     set_report_end_date(e.target.value);
-  };
-  
-  const generate_order_history = () => {
-    // query for order history data based on startDate and endDate (Teresa)
-
-  }
-
+  }; 
+   
   // Reports 
   const generateProductReport = () => {
     // query for product report data
@@ -67,12 +51,7 @@ const ManagerGUI = () => {
         <InventoryComponent />
         </Tab> 
         <Tab eventKey={2} title="Order History"> 
-
-          <p>Start Date: <input type="date" onChange={change_order_start_date} ref={order_ref1} /></p>
-          <p>End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2} /></p>
-
-          <button onClick={generate_order_history}>Generate Order History</button>
-
+        <OrderHistoryComponent />
         </Tab> 
         <Tab eventKey={3} title="Employees"> 
           Employee Table goes here.

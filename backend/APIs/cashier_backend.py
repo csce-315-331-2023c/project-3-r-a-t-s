@@ -1,6 +1,6 @@
-## Define Routes and Application Logic
+# Define Routes and Application Logic
 from flask import Blueprint, request, jsonify
-from flask_cors import CORS 
+# from flask_cors import CORS 
 import psycopg2
 from datetime import date
 import random
@@ -8,11 +8,7 @@ import logging
 
 cashier_BP = Blueprint('cashier_backend', __name__)
 
-# Enable CORS for all routes
-CORS(cashier_BP)
-# CORS(cashier_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
-
-## Define database connection
+# Define database connection
 DB_PARAMS = {
     'dbname': 'csce315_904_01db', 
     'user': 'csce315_904_01user',

@@ -1,7 +1,53 @@
-from flask import Blueprint 
+from flask import Blueprint, request, jsonify
+import psycopg2
 
 manager_BP = Blueprint('manager', __name__)
 
-@manager_BP.route('/get_order_history')
+# Define database connection
+DB_PARAMS = {
+    'dbname': 'csce315_904_01db', 
+    'user': 'csce315_904_01user',
+    'password': 'STAR',
+    'host': 'csce-315-db.engr.tamu.edu',
+}
+
+@manager_BP.route('/get_order_history', methods=['POST'])
 def get_order_history():
-    return 'Manager Order History'
+    dates = request.get_json()
+    start_date = dates['startDate']
+    end_date = dates['endDate']
+
+    start_datetime = f"{start_date} 00:00:00"
+    end_datetime = f"{end_date} 23:59:59"
+
+    # Use start_date and end_date to query the database
+    order_history_query = f"SELECT * FROM ORDERS WHERE date BETWEEN '{start_datetime}' AND '{end_datetime}';"
+
+    # Execute the query and fetch the data
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(order_history_query)
+
+        # Get column names from the cursor description
+        column_names = [desc[0] for desc in cursor.description]
+
+        # Fetch all rows and create a list of dicstionaries
+        data = cursor.fetchall()
+    
+        # Convert the data to a JSON response
+        order_history = []
+
+        for order in data:
+            order_data = dict(zip(column_names, order))
+            # Format the date to display only the date part
+            order_data['date'] = order_data['date'].strftime("%Y-%m-%d")
+            order_history.append(order_data)
+
+        conn.close()
+        return jsonify(order_history)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to fetch order history'}), 500
+    
