@@ -16,19 +16,6 @@ DB_PARAMS = {
     'host': 'csce-315-db.engr.tamu.edu',
 }
 
-# Enable CORS for all routes
-CORS(manager_BP)
-# CORS(manager_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
-
-## Define database connection
-DB_PARAMS = {
-    'dbname': 'csce315_904_01db', 
-    'user': 'csce315_904_01user',
-    'password': 'STAR',
-    'host': 'csce-315-db.engr.tamu.edu',
-}
-
-
 @manager_BP.route('/get_order_history', methods=['POST'])
 def get_order_history():
     dates = request.get_json()
