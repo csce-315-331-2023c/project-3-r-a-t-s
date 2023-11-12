@@ -136,7 +136,7 @@ const CashierGUI = () => {
         
         <h2 className='order-panel'> <br /> <u>Current Order:</u>
             <ul className='display-order'>
-            {order.map((order) => <li>{order}</li>)}
+            {order.map((order, index) => <li key={index}>{order}</li>)}
             </ul>
             <p className='order-total'>$ {order_total}</p>
             <button className='pay-button' onClick={addorder} > Pay </button>
@@ -337,7 +337,7 @@ const CashierGUI = () => {
                 {<button> Piada </button>} 
                 modal nested>
                 {
-                    <p>
+                    <div>
                         <h2> Custom Piada </h2>
                         <h3> 
                             Protein: 
@@ -389,14 +389,14 @@ const CashierGUI = () => {
                         <button onClick={() => addBYOToOrder("")} className='add-to-custom'>
                             Add to order
                         </button>
-                    </p>
+                    </div>
                 }
                 </Popup>
                 <Popup trigger=
                 {<button> Salad </button>} 
                 modal nested>
                 {
-                    <p>
+                    <div>
                         <h2> Custom Salad </h2>
                         <h3>
                             Size:
@@ -457,7 +457,7 @@ const CashierGUI = () => {
                         <button onClick={() => addBYOToOrder("")} className='add-to-custom'>
                             Add to order
                         </button>
-                    </p>
+                    </div>
                 }
                 </Popup>
                 </p>
@@ -468,7 +468,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Sides </button>} 
             modal nested>
             {
-              <p>
+              <div>
                 <h2> Street Sides</h2>
               <p>
                 <button onClick={() => addorderitem("Sweet Corn Salad")}> Sweet Corn Salad </button>
@@ -485,7 +485,7 @@ const CashierGUI = () => {
                   <br /> <br />
               </Popup>
               </p>
-              </p>
+              </div>
                 
             }
         </Popup>
@@ -494,9 +494,9 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Drinks </button>} 
             modal nested>
             {
-                <p>
+                <div>
                 <h2> Drinks </h2>
-              <p>
+                <p>
                 <button onClick={() => addorderitem("Blackberry Hibiscus Lemonade")}> Blackberry Hibiscus Lemonade </button>
                 <button onClick={() => addorderitem("Orange Soda")}> Orange Soda </button>
                 <button onClick={() => addorderitem("Berry Soda")}> Berry Soda </button>
@@ -513,7 +513,7 @@ const CashierGUI = () => {
                   <button onClick={() => addorderitem("Soft Drink")} className='add-to-order'> Add to order </button>
               </Popup>
               </p>
-              </p>
+              </div>
             }
         </Popup>
 
@@ -521,7 +521,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Kids </button>} 
             modal nested>
             {
-                <p>
+                <div>
                     <h2> Kids Menu </h2>
                     <Popup trigger=
                     {<button> Kids Pasta  </button>}
@@ -551,7 +551,7 @@ const CashierGUI = () => {
                     <button onClick={() => addorderitem("Kids Low-Fat Milk")}> Low-Fat Milk </button>
                     <button onClick={() => addorderitem("Kids Chocolate Milk")}> Chocolate Milk </button>
                     <button onClick={() => addorderitem("Kids Apple Juice")}> Apple Juice </button>
-                </p>
+                </div>
             }
         </Popup>
       </p>

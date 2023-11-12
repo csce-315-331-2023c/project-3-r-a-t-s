@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react';
 import 'reactjs-popup/dist/index.css';
 import './Manager.css';
-//import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import 'bootstrap/dist/css/bootstrap.css'; 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Popup from 'reactjs-popup';
+import { report } from 'process';
 
 const ManagerGUI = () => {
   // Manages start/end date in the Order History Tab
@@ -35,19 +36,50 @@ const ManagerGUI = () => {
   const change_report_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     set_report_end_date(e.target.value);
   };
-  
+
+
   const generate_order_history = () => {
-    // query for order history data based on startDate and endDate (Teresa)
+    // query for order history data based on startDate and endDate
 
   }
 
   // Reports 
+  interface ProductReportData {
+    menu_item: string;
+    quantity: number;
+  }
+  const [productReport, setProductReport] = useState<ProductReportData[]>([]);
   const generateProductReport = () => {
-    // query for product report data
+    if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
+      console.log("Invalid Dates selected");
+      return;
+    }
+    else {
+      console.log("Generating Product Report...");
+      console.log(report_start_date + " to " + report_end_date)
+
+      // Set the Content-Type header to application/json
+      const config = {
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      };
+      // Send a POST request to the Flask API
+      axios
+        //.post('http://127.0.0.1:5000/api/manager/get_product_report', {report_start_date, report_end_date}, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api//manager/get_product_report  `, {report_start_date, report_end_date}, config)
+        .then((response) => {
+          setProductReport(response.data);
+          console.log(response.data); 
+        })
+        .catch((error) => {
+          console.error('Failed to generate Product Report: ', error);
+        });
+    };  
   }
 
   const generateSellsTogether = () => {
-    // query for whatsellstogether report data (Teresa)
+    // query for whatsellstogether report data
   }
 
   const generateExcessReport = () => {
@@ -59,7 +91,7 @@ const ManagerGUI = () => {
   }
 
   return(
-    <div style={{ display: 'block', width: 700, padding: 30}} className='manager'> 
+    <div style={{ display: 'block', padding: 30}} className='manager'> 
       <h4>Manager GUI</h4> 
       <Tabs defaultActiveKey={1}> 
         <Tab eventKey={1} title="Inventory"> 
@@ -67,8 +99,10 @@ const ManagerGUI = () => {
         </Tab> 
         <Tab eventKey={2} title="Order History"> 
 
-          <p>Start Date: <input type="date" onChange={change_order_start_date} ref={order_ref1} /></p>
-          <p>End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2} /></p>
+          <p>
+          Start Date: <input type="date" onChange={change_order_start_date} ref={order_ref1}/>
+          End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2}/>
+          </p>
 
           <button onClick={generate_order_history}>Generate Order History</button>
 
@@ -78,20 +112,40 @@ const ManagerGUI = () => {
 
         </Tab>
         <Tab eventKey={4} title="Reports"> 
-          <p>Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1} /></p>
-          <p>End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2} /></p>
+          <p>
+          Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/>
+          End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2}/>
+          </p>
         <Popup trigger=
             {<button> Product Report </button>} 
             modal nested onOpen={generateProductReport}>
             {
-              // table goes here for Product Report 
+              <div>
+                <h2>Product Report</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Menu Item</th>
+                      <th> Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productReport.map((product: ProductReportData) => (
+                      <tr key={product.menu_item}>
+                        <td>{product.menu_item}</td>
+                        <td>{product.quantity}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             }
         </Popup>
         <Popup trigger=
             {<button> What Sells Together Report </button>} 
             modal nested onOpen={generateSellsTogether}>
             {
-              // table goes here for What Sells together report (Teresa)
+              // table goes here for What Sells together report
             }
         </Popup>
         <Popup trigger=
