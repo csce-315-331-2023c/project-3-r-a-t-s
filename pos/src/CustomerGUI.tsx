@@ -46,25 +46,29 @@ const CustomerGUI = () => {
 
     }
 
+    //"https://pos-backend-3c6o.onrender.com/api/place_order"
     const addorder = async (): Promise<void> => {
         console.log("Paying for Order");
+        console.log("order: ", order);
         // Add back-end to update database
         const response = await fetch(
-            "/api",
+            "http://127.0.0.1:5000/api/place_order",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                'X-Client-Type': 'customer'
               },
               body: JSON.stringify({
-                order: order,
+                items: order,
               }),
             }
           );
       
           const data = await response.json();
-          console.log(data.message);
+          console.log(data);
     }
+    
 
     const removeAll = () => {
         for (var i = 0; i < order.length; i++) {
