@@ -46,7 +46,6 @@ def get_product_report():
 
     except Exception as e:
         return jsonify({"error": str(e)})
-        return jsonify({"items": items})
 
 @manager_BP.route('/get_order_history', methods=['POST'])
 def get_order_history():
@@ -111,6 +110,8 @@ def get_inventory():
 
         cursor.close()
         conn.close()
+
+        return jsonify({"items": items})
 
     except Exception as e:
         cursor.close()
