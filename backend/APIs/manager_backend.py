@@ -1,10 +1,6 @@
-## Define Routes and Application Logic
-from flask import Blueprint, request, jsonify
-from flask_cors import CORS 
-import psycopg2
-#from datetime import date
-#import random
-import logging
+from flask import Blueprint, jsonify, request
+from flask_cors import CORS
+import psycopg2 
 
 manager_BP = Blueprint('manager', __name__)
 
@@ -12,7 +8,6 @@ manager_BP = Blueprint('manager', __name__)
 CORS(manager_BP)
 # CORS(cashier_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
 
-## Define database connection
 DB_PARAMS = {
     'dbname': 'csce315_904_01db', 
     'user': 'csce315_904_01user',
