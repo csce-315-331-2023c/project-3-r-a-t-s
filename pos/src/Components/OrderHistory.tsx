@@ -27,27 +27,27 @@ const OrderHistoryComponent: React.FC = () => {
     const [orderHistory, setOrderHistory] = useState<OrderData[]>([]);
 
     const generate_order_history = (order_start_date : string, order_end_date : string) => {
-    // query for order history data based on startDate and endDate
-    const requestDates = {
-      startDate: order_start_date,
-      endDate: order_end_date, 
-    };
-    const config = {
-      headers: {
-        'Contest-Type': 'application/json',
-      },
-    };
-    //Send Post rquest to Flask API
-    axios
-      //.post('http://127.0.0.1:5000/api/manager/get_order_history', requestDates, config)
-      .post(`https://pos-backend-3c6o.onrender.com/api//manager/get_order_history`, requestDates, config)
-      .then((response) => {
-        setOrderHistory(response.data);
-        console.log(response.data); 
-      })
-      .catch((error) => {
-        console.error('Error with Order History:', error);
-      });
+      // query for order history data based on startDate and endDate
+      const requestDates = {
+        startDate: order_start_date,
+        endDate: order_end_date, 
+      };
+      const config = {
+        headers: {
+          'Contest-Type': 'application/json',
+        },
+      };
+      //Send Post rquest to Flask API
+      axios
+        //.post('http://127.0.0.1:5000/api/manager/get_order_history', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_order_history`, requestDates, config)
+        .then((response) => {
+          setOrderHistory(response.data);
+          console.log(response.data); 
+        })
+        .catch((error) => {
+          console.error('Error with Order History:', error);
+        });
     };  
    
     return (
