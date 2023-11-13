@@ -9,6 +9,7 @@ import Popup from 'reactjs-popup';
 //import axios from 'axios';
 import InventoryComponent from './Components/Inventory';
 import OrderHistoryComponent from './Components/OrderHistory';
+import MenuComponent from './Components/Menu';
 
 const ManagerGUI: React.FC = () => {
 
@@ -88,7 +89,10 @@ const ManagerGUI: React.FC = () => {
               // table goes here for Restock Report
             }
         </Popup>
-        </Tab>  
+        </Tab>
+        <Tab eventKey={5} title="Menu"> 
+        <MenuComponent />
+        </Tab>
       </Tabs> 
     </div> 
   );

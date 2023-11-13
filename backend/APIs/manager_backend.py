@@ -130,3 +130,31 @@ def remove_inventory():
         cursor.close()
         conn.close()
         return jsonify({"error": str(e)}), 500
+
+
+@manager_BP.route('/get_menu_items', methods=['GET'])
+def get_menu_items():
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('SELECT menu_item_id, menu_item_name, price FROM menu_items')
+        menu_items = cursor.fetchall()
+
+        print("menuItems", menu_items)
+
+        items = [
+            {"menu_item_id": item[0], "name": item[1], "price": item[2]}
+            for item in menu_items
+        ]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(items)
+
+    except Exception as e:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+        return jsonify({"error": str(e)}), 500
