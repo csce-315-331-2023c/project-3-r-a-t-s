@@ -6,15 +6,44 @@ manager_BP = Blueprint('manager', __name__)
 
 # Enable CORS for all routes
 CORS(manager_BP)
-# CORS(manager_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
+# CORS(cashier_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
 
-## Define database connection
 DB_PARAMS = {
     'dbname': 'csce315_904_01db', 
     'user': 'csce315_904_01user',
     'password': 'STAR',
     'host': 'csce-315-db.engr.tamu.edu',
 }
+
+@manager_BP.route('/get_product_report', methods = ['POST'])
+def get_product_report():
+    data = request.get_json()
+    start_date = data['startDate']
+    end_date = data['endDate']
+
+    query = f"SELECT MENU_ITEMS.menu_item_name, COUNT(*) AS menu_items FROM ORDERS JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id WHERE ORDERS.date >= '{start_date}' AND ORDERS.date <= '{end_date}' GROUP BY MENU_ITEMS.menu_item_name;"
+    
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute(query, (start_date, end_date,))
+        results = cursor.fetchall()
+
+        column_names = [desc[0] for desc in cursor.description]
+    
+        report = []
+
+        for item in results:
+            order_data = dict(zip(column_names, item))
+            report.append(order_data)
+
+        return jsonify({"report": report,
+                        "start": start_date})
+
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 @manager_BP.route('/get_order_history', methods=['POST'])
 def get_order_history():
@@ -205,3 +234,30 @@ def remove_employee():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to Remove Employee'}), 500
+
+@manager_BP.route('/get_menu_items', methods=['GET'])
+def get_menu_items():
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('SELECT menu_item_id, menu_item_name, price FROM menu_items')
+        menu_items = cursor.fetchall()
+
+        print("menuItems", menu_items)
+
+        items = [
+            {"menu_item_id": item[0], "name": item[1], "price": item[2]}
+            for item in menu_items
+        ]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(items)
+
+    except Exception as e:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+        return jsonify({"error": str(e)}), 500
