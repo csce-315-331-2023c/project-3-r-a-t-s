@@ -43,10 +43,6 @@ const EmployeeComponent: React.FC = () => {
         setEmployeeRemove(newForm);
     };
 
-    const handleRefresh = () => {
-        generate_employee_info();
-    }
-
     //Logs The Employee Input 
     const handleAddSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -121,6 +117,7 @@ const EmployeeComponent: React.FC = () => {
     
     return (
         <div> 
+            <br />
             <div>   
                 <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-success">Add Employee</button>
                 <button onClick={() => generate_employee_info()} className="btn btn-secondary">View Employees</button>
@@ -196,7 +193,7 @@ const EmployeeComponent: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
-                    <button onClick={handleRefresh} className="btn btn-secondary">Refresh Employee Table</button> 
+                    <button onClick={generate_employee_info} className="btn btn-secondary">Refresh Employee Table</button> 
                     </div>
             )}
         </div>

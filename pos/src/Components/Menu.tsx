@@ -37,11 +37,14 @@ const MenuComponent = () => {
 
   return (
     <div>
+      <br />
       <button onClick={fetchMenuItems} disabled={isLoading} className="btn btn-secondary">
         {isLoading ? "Loading..." : "View Menu"}
-      </button>
+      </button> 
       {menuData.length > 0 && ( 
-        <table className="table table-striped w-100">
+        <div>
+          <br />
+          <table className="table table-striped w-100"> 
           <thead>
             <tr>
               <th>Menu Item</th>
@@ -57,6 +60,7 @@ const MenuComponent = () => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

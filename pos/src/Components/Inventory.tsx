@@ -79,6 +79,7 @@ const InventoryComponent = () => {
 
   return (
     <div>
+      <br />
       <div>
         <button onClick={() => setShowAddForm(!showAddForm)} disabled={isLoading} className="btn btn-success">
           {"Add to Inventory"}
@@ -91,6 +92,7 @@ const InventoryComponent = () => {
         {"Remove from Inventory"}
         </button>
       </div>
+      <br />
       {showRemoveForm && (
       <form onSubmit={(e) => {
         e.preventDefault();
