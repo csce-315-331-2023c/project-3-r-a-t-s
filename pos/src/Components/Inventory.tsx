@@ -16,7 +16,9 @@ const InventoryComponent = () => {
   const [inventoryData, setInventoryData] = useState<Item[]>(() => []);
   const [isLoading, setIsLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);  
-  const [formData, setFormData] = useState({ name: "", quantity: "", unit: "", price: "", threshold: ""});  
+  const [formData, setFormData] = useState({ name: "", quantity: "", unit: "", price: "", threshold: ""});
+  const [showRemoveForm, setShowRemoveForm] = useState(false);
+  const [removeFormData, setRemoveFormData] = useState({ name: "" }); 
 
   const config = {
     headers: {
@@ -41,6 +43,22 @@ const InventoryComponent = () => {
     }
   };
 
+  const handleRemoveFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setRemoveFormData({ name: value });
+  };
+  
+  const submitRemoveForm = async () => {
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/api/manager/remove_inventory", removeFormData, config);
+      console.log(response.data);
+      fetchInventory(); 
+    } catch (error) {
+      console.error("Failed to remove from inventory:", error);
+    }
+    setShowRemoveForm(false); // Hide the form after submission
+  };
+
   //hosted backend: https://pos-backend-3c6o.onrender.com/api/cashier/place_order
   const fetchInventory = async () => {
     setIsLoading(true);
@@ -61,14 +79,26 @@ const InventoryComponent = () => {
   return (
     <div>
       <div>
-        <button onClick={fetchInventory} disabled={isLoading} className="btn btn-secondary">
-          {isLoading ? "Loading..." : "View current inventory"}
-          {/* {inventoryData ? "Our Current Inventory:" : "View current inventory"} */}
-        </button>
-        <button onClick={() => setShowAddForm(true)} disabled={isLoading} className="btn btn-primary">
+        <button onClick={() => setShowAddForm(true)} disabled={isLoading} className="btn btn-success">
           {"Add to Inventory"}
         </button>
+        <button onClick={fetchInventory} disabled={isLoading} className="btn btn-secondary">
+          {isLoading ? "Loading..." : "View Inventory"}
+          {/* {inventoryData ? "Our Current Inventory:" : "View current inventory"} */}
+        </button>
+        <button onClick={() => setShowRemoveForm(true)} disabled={isLoading} className="btn btn-danger">
+        {"Remove from Inventory"}
+        </button>
       </div>
+      {showRemoveForm && (
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        submitRemoveForm();
+      }}>
+        <input name="name" placeholder="Name of item to remove" value={removeFormData.name} onChange={handleRemoveFormChange} required />
+        <button type="submit">Remove</button>
+      </form>
+      )}
       {showAddForm && (
         <form onSubmit={(e) => {
           e.preventDefault();

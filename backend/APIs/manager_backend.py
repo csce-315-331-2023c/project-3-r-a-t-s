@@ -108,3 +108,25 @@ def add_inventory():
         cursor.close()
         conn.close()
         return jsonify({"error": str(e)}), 500
+    
+
+@manager_BP.route('/remove_inventory', methods=['POST'])
+def remove_inventory():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM inventory WHERE name = %s', (item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Item {item_name} removed from inventory"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
