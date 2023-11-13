@@ -19,6 +19,7 @@ const InventoryComponent = () => {
   const [formData, setFormData] = useState({ name: "", quantity: "", unit: "", price: "", threshold: ""});
   const [showRemoveForm, setShowRemoveForm] = useState(false);
   const [removeFormData, setRemoveFormData] = useState({ name: "" }); 
+  // remove feature is now implemented
 
   const config = {
     headers: {
