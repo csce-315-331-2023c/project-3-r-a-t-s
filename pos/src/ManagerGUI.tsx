@@ -111,7 +111,7 @@ const ManagerGUI: React.FC = () => {
     <div style={{ display: 'block', padding: 30}} className='manager'> 
 
       <h4 style={{textAlign: 'center', background: 'white', padding: 25}}>
-      <button onClick={goback} style={{marginRight: 300, paddingRight: 20, paddingLeft: 20, padding: 10}}> Back </button>
+      <button onClick={goback} style={{marginRight: 300, paddingRight: 30, paddingLeft: 30, padding: 10}}> Back </button>
       <u style={{fontSize: 50, marginRight: 300}}>Manager Dashboard</u>
       </h4> 
       
