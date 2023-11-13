@@ -86,7 +86,6 @@ def get_order_history():
         return jsonify({'error': 'Failed to fetch order history'}), 500
 
 
-
 @manager_BP.route('/get_inventory', methods=['GET'])
 def get_inventory():
     try:
@@ -160,6 +159,81 @@ def remove_inventory():
         conn.close()
         return jsonify({"error": str(e)}), 500
 
+@manager_BP.route('/get_employee_list', methods=['POST'])
+def get_employee_list():
+
+    employee_info_query = f"SELECT * FROM EMPLOYEE;"
+    # Execute the query and fetch the data
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(employee_info_query)
+
+        # Get column names from the cursor description
+        column_names = [desc[0] for desc in cursor.description]
+
+        # Fetch all rows and create a list of dicstionaries
+        data = cursor.fetchall()
+    
+        # Convert the data to a JSON response
+        employee_info = []
+
+        for employee in data:
+            employee_data = dict(zip(column_names, employee))
+            employee_info.append(employee_data)
+
+        conn.close()
+        return jsonify(employee_info)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Fetch Employee Information'}), 500
+    
+@manager_BP.route('/add_employee', methods=['POST'])
+def add_employee():
+    employee = request.get_json()
+
+    employee_data = employee[0]
+    last_name = employee_data['LastName']
+    first_name = employee_data['FirstName']
+    salary  = employee_data['Salary']
+    hours_per_week  = employee_data['Hours']
+    manager_id  = employee_data['ManagerID']
+
+    add_employee_query = f"INSERT INTO EMPLOYEE(last_name, first_name, salary, hours_per_week, manager_id) VALUES (%s, %s, %s, %s, %s);"
+    # Execute the query
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(add_employee_query, (last_name, first_name, salary, hours_per_week, manager_id,))
+        conn.commit()
+        conn.close()
+        return jsonify("Employee Added (From Backend)")
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Add Employee'}), 500
+
+@manager_BP.route('/remove_employee', methods=['POST'])
+def remove_employee():
+    employee = request.get_json()
+
+    employee_data = employee[0]
+    employee_id = employee_data['EmployeeID']
+
+    add_employee_query = f"DELETE FROM EMPLOYEE where employee_id = %s;"
+    # Execute the query
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(add_employee_query, (employee_id,))
+        conn.commit()
+        conn.close()
+        return jsonify("Employee Removed (From Backend)")
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Remove Employee'}), 500
 
 @manager_BP.route('/get_menu_items', methods=['GET'])
 def get_menu_items():
