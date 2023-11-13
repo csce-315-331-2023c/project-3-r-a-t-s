@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 interface MenuItem {
@@ -30,6 +30,10 @@ const MenuComponent = () => {
       setIsLoading(false);
     }
   };
+
+    // useEffect(() => {
+    //     fetchMenuItems();
+    // }, []);
 
   return (
     <div>
