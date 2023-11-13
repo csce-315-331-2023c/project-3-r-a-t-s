@@ -52,13 +52,15 @@ const OrderHistoryComponent: React.FC = () => {
    
     return (
         <div>    
-            <p>Start Date: <input type="date" onChange={change_order_start_date} ref={order_ref1} /></p>
-            <p>End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2} /></p>
+            <p>
+            Start Date: <input type="date" onChange={change_order_start_date} ref={order_ref1} /> &nbsp;
+            End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2} />
+            </p>
 
             <button onClick={() => generate_order_history(order_start_date, order_end_date)}>Generate Order History</button>
             {!!orderHistory.length && (
                     <div className="order-table-section">
-                    <table className="order-table">
+                    <table className='table table-striped w-100'>
                         <thead>
                         <tr>
                             <th>Order ID</th>
