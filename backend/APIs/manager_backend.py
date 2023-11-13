@@ -86,3 +86,25 @@ def get_inventory():
         cursor.close()
         conn.close()
         return jsonify({"error": str(e)})
+    
+
+@manager_BP.route('/add_inventory', methods=['POST'])
+def add_inventory():
+    try:
+        data = request.get_json()
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        
+        cursor.execute('INSERT INTO inventory (name, quantity, unit, price, threshold) VALUES (%s, %s, %s, %s, %s)',
+                       (data['name'], data['quantity'], data['unit'], data['price'], data['threshold']))
+        conn.commit()  
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Item added to inventory"}), 201
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
