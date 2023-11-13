@@ -17,27 +17,30 @@ DB_PARAMS = {
 
 @manager_BP.route('/get_product_report', methods = ['POST'])
 def get_product_report():
-    try:
-        data = request.get_json()
+    data = request.get_json()
+    start_date = data['startDate']
+    end_date = data['endDate']
 
-        # Connect to the PostgreSQL database
+    query = f"SELECT MENU_ITEMS.menu_item_name, COUNT(*) AS menu_items FROM ORDERS JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id WHERE ORDERS.date >= '{start_date}' AND ORDERS.date <= '{end_date}' GROUP BY MENU_ITEMS.menu_item_name;"
+    
+    try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
 
-        # get start and end dates
-        start_date = data[0]
-        end_date = data[1]
-
-        query = ("SELECT MENU_ITEMS.menu_item_name, COUNT(*) AS menu_items "
-                "FROM ORDERS " + "JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id "
-                "JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id "
-                "WHERE ORDERS.date >= '%s' AND ORDERS.date <= '%s' "
-                "GROUP BY MENU_ITEMS.menu_item_name;")
-        
-        cursor.execute(query, (start_date, end_date))
+        cursor.execute(query, (start_date, end_date,))
         results = cursor.fetchall()
 
-        return jsonify(results)
+        column_names = [desc[0] for desc in cursor.description]
+    
+        report = []
+
+        for item in results:
+            order_data = dict(zip(column_names, item))
+            report.append(order_data)
+
+        return jsonify({"report": report,
+                        "start": start_date})
+
 
     except Exception as e:
         return jsonify({"error": str(e)})

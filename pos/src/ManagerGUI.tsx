@@ -29,8 +29,8 @@ const ManagerGUI: React.FC = () => {
    
   // Reports 
   interface ProductReportData {
-    menu_item: string;
-    quantity: number;
+    menu_item_name: string;
+    menu_items: number;
   }
   const [productReport, setProductReport] = useState<ProductReportData[]>([]);
   const generateProductReport = () => {
@@ -39,8 +39,14 @@ const ManagerGUI: React.FC = () => {
       return;
     }
     else {
+      setProductReport([]);
       console.log("Generating Product Report...");
-      console.log(report_start_date + " to " + report_end_date)
+      console.log(report_start_date + " to " + report_end_date);
+
+      const requestDates = {
+        startDate: report_start_date,
+        endDate: report_end_date, 
+      };
 
       // Set the Content-Type header to application/json
       const config = {
@@ -50,16 +56,16 @@ const ManagerGUI: React.FC = () => {
       };
       // Send a POST request to the Flask API
       axios
-        //.post('http://127.0.0.1:5000/api/manager/get_product_report', {report_start_date, report_end_date}, config)
-        .post(`https://pos-backend-3c6o.onrender.com/api//manager/get_product_report  `, {report_start_date, report_end_date}, config)
+        .post('http://127.0.0.1:5000/api/manager/get_product_report', requestDates, config)
+        //.post(` https://pos-backend-3c6o.onrender.com/api//manager/get_product_report  `, {report_start_date, report_end_date}, config)
         .then((response) => {
-          setProductReport(response.data);
-          console.log(response.data); 
+          setProductReport(response.data.report);
+          console.log('Successfully generated Product Report');
         })
         .catch((error) => {
           console.error('Failed to generate Product Report: ', error);
         });
-    };  
+    };    
   }
 
   const generateSellsTogether = () => {
@@ -97,20 +103,20 @@ const ManagerGUI: React.FC = () => {
             {<button> Product Report </button>} 
             modal nested onOpen={generateProductReport}>
             {
-              <div>
+              <div style={{overflow: 'scroll', height: 800}}>
                 <h2>Product Report</h2>
-                <table>
+                <table className='tableContainer'>
                   <thead>
                     <tr>
-                      <th>Menu Item</th>
-                      <th> Quantity</th>
+                      <th>Menu Item Name</th>
+                      <th> Quantity </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {productReport.map((product: ProductReportData) => (
-                      <tr key={product.menu_item}>
-                        <td>{product.menu_item}</td>
-                        <td>{product.quantity}</td>
+                    {productReport.map((product: ProductReportData, index) => (
+                      <tr key={index}>
+                        <td>{product.menu_item_name}</td>
+                        <td>{product.menu_items}</td>
                       </tr>
                     ))}
                   </tbody>
