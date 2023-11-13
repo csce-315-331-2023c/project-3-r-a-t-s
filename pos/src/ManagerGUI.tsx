@@ -118,7 +118,7 @@ const ManagerGUI: React.FC = () => {
       <Tabs defaultActiveKey={1} > 
         <Tab eventKey={1} title="Inventory"> 
         <InventoryComponent />
-        
+
         </Tab> 
         <Tab eventKey={2} title="Order History"> 
         <OrderHistoryComponent />
@@ -133,13 +133,14 @@ const ManagerGUI: React.FC = () => {
 
         </Tab>
         <Tab eventKey={4} title="Reports"> 
+          <br />
           <p>
           Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/> &nbsp;
           End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2}/>
           </p>
         <div>
         <Popup trigger=
-            {<button> Product Report </button>} 
+            {<button className="btn btn-secondary"> Product Report </button>} 
             modal nested onOpen={generateProductReport}>
             {
               <div style={{overflow: 'scroll', height: 750}}>
@@ -164,21 +165,21 @@ const ManagerGUI: React.FC = () => {
             }
         </Popup>
         <Popup trigger=
-            {<button> What Sells Together Report </button>} 
+            {<button className="btn btn-secondary"> What Sells Together Report </button>} 
             modal nested onOpen={generateSellsTogether}>
             {
               // table goes here for What Sells together report
             }
         </Popup>
         <Popup trigger=
-            {<button> Excess Report </button>} 
+            {<button className="btn btn-secondary"> Excess Report </button>} 
             modal nested onOpen={generateExcessReport}>
             {
               // table goes here for Excess Report
             }
         </Popup>
         <Popup trigger=
-            {<button> Restock Report </button>} 
+            {<button className="btn btn-secondary"> Restock Report </button>} 
             modal nested onOpen={generateRestockReport}>
             {
               // table goes here for Restock Report
