@@ -11,6 +11,7 @@ import OrderHistoryComponent from './Components/OrderHistory';
 import EmployeeComponent from './Components/Employee';
 import MenuComponent from './Components/Menu';
 
+
 const ManagerGUI: React.FC = () => {
 
   // Manages start/end date in Reports Tab for any reports that require a date
@@ -68,8 +69,46 @@ const ManagerGUI: React.FC = () => {
     };    
   }
 
-  const generateSellsTogether = () => {
-    // query for whatsellstogether report data
+  interface PairData {
+    str_pair: string;
+    count: number;
+  }
+  const [pairs, setPairs] = useState<PairData[]>([]);
+  const generateSellsTogetherReport = () => {
+    if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
+      console.log("Invalid Dates selected");
+      return;
+    }
+    else {
+      const requestDates = {
+        startDate: report_start_date,
+        endDate: report_end_date, 
+      };
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      //Send Post rquest to Flask API
+      axios
+        .post('http://127.0.0.1:5000/api/manager_reports/WhatSellsTogether', requestDates, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/WhatSellsTogether`, requestDates, config)
+        .then((response) => {
+          // Check if response.data is an object (dictionary)
+          if (typeof response.data === 'object') {
+            // Convert dictionary to array of objects
+            const pairsArray: PairData[] = Object.entries(response.data).map(([str_pair, count]) => ({str_pair,count: Number(count), }));
+            // Set the state with the converted array
+            setPairs(pairsArray);
+            console.log(pairsArray);
+          } else {
+            console.error('Invalid data format received from the API');
+          }
+        })
+        .catch((error) => {
+          console.error('Error with What Sells Together Report:', error);
+        });
+    }
   }
 
   const generateExcessReport = () => {
@@ -124,12 +163,31 @@ const ManagerGUI: React.FC = () => {
               </div>
             }
         </Popup>
-        <Popup trigger=
-            {<button> What Sells Together Report </button>} 
-            modal nested onOpen={generateSellsTogether}>
-            {
-              // table goes here for What Sells together report
-            }
+        <Popup trigger= 
+          {<button> What Sells Together Report </button>} 
+          modal nested onOpen={generateSellsTogetherReport}>
+          {
+            <div>    
+              <div className="order-table-section">
+              <table className="order-table">
+                  <thead>
+                  <tr>
+                      <th>Pair</th>
+                      <th>Frequency</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                      {pairs.map((pair : PairData) => (
+                      <tr key={pair.str_pair}>
+                      <td>{pair.str_pair}</td>
+                      <td>{pair.count}</td>
+                      </tr>
+                      ))}
+                  </tbody>
+              </table>
+              </div>
+            </div>
+          }
         </Popup>
         <Popup trigger=
             {<button> Excess Report </button>} 
