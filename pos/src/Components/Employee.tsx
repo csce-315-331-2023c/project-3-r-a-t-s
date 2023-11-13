@@ -43,10 +43,6 @@ const EmployeeComponent: React.FC = () => {
         setEmployeeRemove(newForm);
     };
 
-    const handleRefresh = () => {
-        generate_employee_info();
-    }
-
     //Logs The Employee Input 
     const handleAddSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -121,15 +117,17 @@ const EmployeeComponent: React.FC = () => {
     
     return (
         <div> 
+            <br />
             <div>   
-                <button onClick={() => generate_employee_info()}>View Employees</button>
-                <button onClick={() => setShowAddForm(true)}>Add Employee</button>
-                <button onClick={() => setShowRemoveForm(true)}>Remove Employee</button>  
+                <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-success">Add Employee</button>
+                <button onClick={() => generate_employee_info()} className="btn btn-secondary">View Employees</button>
+                <button onClick={() => setShowRemoveForm(!showRemoveForm)} className="btn btn-danger">Remove Employee</button>  
             </div>
 
             {showAddForm && (
-                <div>
-                    <h2>Add New Employee</h2>
+                <div>   
+                    <br />
+                    <h5>Add New Employee</h5>
                     <form onSubmit={handleAddSubmit}>
                         {inputEmployee.map((inputEmployeeInfo, i) => (
                         <div key={i}>
@@ -147,28 +145,31 @@ const EmployeeComponent: React.FC = () => {
                             /> */}
                         </div>
                         ))}
-                        <button type="submit">Add Employee</button>
+                        <br />
+                        <button type="submit" className="btn btn-secondary">Add Employee</button>
                     </form>
                 </div> 
             )}
 
             {showRemoveForm && (
                 <div>
-                    <h2>Remove Employee</h2>
+                    <br />
+                    <h5>Remove Employee</h5>
                     <form onSubmit={handleRemoveSubmit}>
                         {removeEmployee.map((removeEmployeeInfo, i) => (
                         <div key={i}>    
                             <input name="EmployeeID" placeholder="Employee ID" value={removeEmployeeInfo.EmployeeID} onChange={(e) => handleRemoveInput(e,i)} required/>
                         </div>
                         ))}
-                        <button type="submit">Remove Employee</button>
+                        <br />
+                        <button type="submit" className="btn btn-secondary">Remove Employee</button>
                     </form>
                 </div>     
             )}
-            
+            <br />
             {!!employeeList.length && (
                     <div className="order-table-section">
-                    <table className="order-table">
+                    <table className='table table-striped w-100'>
                         <thead>
                         <tr>
                             <th>Employee ID</th>
@@ -192,7 +193,7 @@ const EmployeeComponent: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
-                    <button onClick={handleRefresh}>Refresh Employee Table</button> 
+                    <button onClick={generate_employee_info} className="btn btn-secondary">Refresh Employee Table</button> 
                     </div>
             )}
         </div>

@@ -79,6 +79,7 @@ const InventoryComponent = () => {
 
   return (
     <div>
+      <br />
       <div>
         <button onClick={() => setShowAddForm(!showAddForm)} disabled={isLoading} className="btn btn-success">
           {"Add to Inventory"}
@@ -87,10 +88,11 @@ const InventoryComponent = () => {
           {isLoading ? "Loading..." : "View Inventory"}
           {/* {inventoryData ? "Our Current Inventory:" : "View current inventory"} */}
         </button>
-        <button onClick={() => setShowRemoveForm(!showAddForm)} disabled={isLoading} className="btn btn-danger">
+        <button onClick={() => setShowRemoveForm(!showRemoveForm)} disabled={isLoading} className="btn btn-danger">
         {"Remove from Inventory"}
         </button>
       </div>
+      <br />
       {showRemoveForm && (
       <form onSubmit={(e) => {
         e.preventDefault();
