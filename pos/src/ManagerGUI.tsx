@@ -6,9 +6,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Popup from 'reactjs-popup';
-//import axios from 'axios';
 import InventoryComponent from './Components/Inventory';
 import OrderHistoryComponent from './Components/OrderHistory';
+import EmployeeComponent from './Components/Employee';
 import MenuComponent from './Components/Menu';
 
 const ManagerGUI: React.FC = () => {
@@ -91,7 +91,7 @@ const ManagerGUI: React.FC = () => {
         <OrderHistoryComponent />
         </Tab> 
         <Tab eventKey={3} title="Employees"> 
-          Employee Table goes here.
+        <EmployeeComponent />
 
         </Tab>
         <Tab eventKey={4} title="Reports"> 
