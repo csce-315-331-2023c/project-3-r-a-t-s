@@ -118,12 +118,15 @@ const ManagerGUI: React.FC = () => {
       <Tabs defaultActiveKey={1} > 
         <Tab eventKey={1} title="Inventory"> 
         <InventoryComponent />
+        
         </Tab> 
         <Tab eventKey={2} title="Order History"> 
         <OrderHistoryComponent />
+
         </Tab> 
         <Tab eventKey={5} title="Menu"> 
         <MenuComponent />
+
         </Tab>
         <Tab eventKey={3} title="Employees"> 
         <EmployeeComponent />
