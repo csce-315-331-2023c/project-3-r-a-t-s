@@ -43,7 +43,8 @@ const MenuComponent = () => {
   const addMenuItem = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/manager/add_menu_item",
+        //"http://127.0.0.1:5000/api/manager/add_menu_item",
+        'https://pos-backend-3c6o.onrender.com/api/manager/add_menu_item',
         {
           name: addMenuItemName,
           price: addMenuItemPrice,
@@ -61,7 +62,8 @@ const MenuComponent = () => {
   const deleteMenuItem = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/manager/delete_menu_item",
+        //"http://127.0.0.1:5000/api/manager/delete_menu_item",
+        'https://pos-backend-3c6o.onrender.com/api/manager/delete_menu_item',
         {
           name: deleteMenuItemName,
         },
@@ -78,7 +80,8 @@ const MenuComponent = () => {
   const changeMenuItem = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/manager/change_menu_item",
+        //"http://127.0.0.1:5000/api/manager/change_menu_item",
+        'https://pos-backend-3c6o.onrender.com/api/manager/change_menu_item',
         {
           name: changeMenuItemName,
           price: changeMenuItemPrice,
@@ -100,6 +103,44 @@ const MenuComponent = () => {
   return (
     <div>
       <br />
+      <p>Add menu item</p>
+      <input
+        type="text"
+        placeholder="Enter item name"
+        onChange={(e) => setAddMenuItemName(e.target.value)}
+      />
+      <input
+        type="price"
+        placeholder="Enter price"
+        onChange={(e) => setAddMenuItemPrice(e.target.value)}
+      />
+      <button onClick={addMenuItem}>Add</button>
+
+      <br />
+      <br />
+      <p>Remove menu item</p>
+      <input
+        type="text"
+        placeholder="Enter item name"
+        onChange={(e) => setDeleteMenuItemName(e.target.value)}
+      />
+      <button onClick={deleteMenuItem}>Remove</button>
+
+      <br />
+      <br />
+      <p>Change menu item price</p>
+      <input
+        type="text"
+        placeholder="Enter item name"
+        onChange={(e) => setChangeMenuItemName(e.target.value)}
+      />
+      <input
+        type="price"
+        placeholder="Enter price"
+        onChange={(e) => setChangeMenuItemPrice(e.target.value)}
+      />
+      <button onClick={changeMenuItem}>Change</button>
+      <br /> <br />
       <button
         onClick={fetchMenuItems}
         disabled={isLoading}
@@ -128,45 +169,6 @@ const MenuComponent = () => {
           </table>
         </div>
       )}
-      <p>Add menu item</p>
-      <input
-        type="text"
-        placeholder="Enter item name"
-        onChange={(e) => setAddMenuItemName(e.target.value)}
-      />
-      <input
-        type="price"
-        placeholder="Enter price"
-        onChange={(e) => setAddMenuItemPrice(e.target.value)}
-      />
-      <button onClick={addMenuItem}>Add</button>
-
-      <br />
-      <br />
-      <br />
-      <p>Remove menu item</p>
-      <input
-        type="text"
-        placeholder="Enter item name"
-        onChange={(e) => setDeleteMenuItemName(e.target.value)}
-      />
-      <button onClick={deleteMenuItem}>Remove</button>
-
-      <br />
-      <br />
-      <br />
-      <p>Change menu item price</p>
-      <input
-        type="text"
-        placeholder="Enter item name"
-        onChange={(e) => setChangeMenuItemName(e.target.value)}
-      />
-      <input
-        type="price"
-        placeholder="Enter price"
-        onChange={(e) => setChangeMenuItemPrice(e.target.value)}
-      />
-      <button onClick={changeMenuItem}>Change</button>
     </div>
   );
 };
