@@ -20,6 +20,8 @@ const InventoryComponent = () => {
   const [showRemoveForm, setShowRemoveForm] = useState(false);
   const [removeFormData, setRemoveFormData] = useState({ name: "" }); 
   // remove feature is now implemented
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editFormData, setEditFormData] = useState({ name: "", newQuantity: "" });
 
   const config = {
     headers: {
@@ -62,6 +64,22 @@ const InventoryComponent = () => {
     setShowRemoveForm(false); // Hide the form after submission
   };
 
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditFormData((prevEditFormData) => ({ ...prevEditFormData, [name]: value }));
+  };
+
+  const submitEditForm = async () => {
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/api/manager/edit_inventory", editFormData, config);
+      console.log(response.data);
+      fetchInventory();
+    } catch (error) {
+      console.error("Failed to edit inventory:", error);
+    }
+    setShowEditForm(false);
+  };
+
   //hosted backend: https://pos-backend-3c6o.onrender.com/api/cashier/place_order
   const fetchInventory = async () => {
     setIsLoading(true);
@@ -94,6 +112,9 @@ const InventoryComponent = () => {
         <button onClick={() => setShowRemoveForm(!showRemoveForm)} disabled={isLoading} className="btn btn-danger">
         {"Remove from Inventory"}
         </button>
+        <button onClick={() => setShowEditForm(!showEditForm)} disabled={isLoading} className="btn btn-info">
+          {"Edit Quantity"}
+        </button>
       </div>
       <br />
       {showRemoveForm && (
@@ -116,6 +137,16 @@ const InventoryComponent = () => {
           <input name="price" placeholder="Price" type="number" value={formData.price} onChange={handleFormChange} required />
           <input name="threshold" placeholder="Threshold" type="number" value={formData.threshold} onChange={handleFormChange} required />
           <button type="submit">Submit</button>
+        </form>
+      )}
+      {showEditForm && (
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          submitEditForm();
+        }}>
+          <input name="name" placeholder="Name of item to edit" value={editFormData.name} onChange={handleEditFormChange} required />
+          <input name="newQuantity" placeholder="New Quantity" type="number" value={editFormData.newQuantity} onChange={handleEditFormChange} required />
+          <button type="submit">Edit</button>
         </form>
       )}
       {inventoryData && (

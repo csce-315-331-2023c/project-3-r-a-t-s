@@ -118,27 +118,65 @@ const ManagerGUI: React.FC = () => {
     }
   }
 
-  const generateExcessReport = () => {
+  interface ExcessReportData {
+    ingredient_name: string;
+    amount_sold: number;
+    current_quantity: number;
+  }
+  const [excessReport, setExcessReport] = useState<ExcessReportData[]>([]);
+  const generateExcessReport = async () => {
     // query for excess report data
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       console.log("Invalid Dates selected");
       return;
     }
-    else {
-      
+  
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_excess_report", {
+        startDate: report_start_date,
+        endDate: report_end_date,
+      });
+      setExcessReport(response.data.excess_report);
+      console.log('Successfully generated Excess Report');
+    } catch (error) {
+      console.error("Failed to fetch excess report:", error);
     }
-  }
+  };
 
-  const generateRestockReport = () => {
-    // query for restock report data
-    if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
-      console.log("Invalid Dates selected");
-      return;
-    }
-    else {
-      
-    }
+  interface RestockReportData {
+    ingredient_id: number;
+    name: string;
+    quantity: number;
+    threshold: number;
   }
+  // const [restockReport, setRestockReport] = useState<RestockReportData[]>([]);
+  const generateRestockReport = () => {
+  //   // query for restock report data
+  //   if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
+  //     console.log("Invalid Dates selected");
+  //     return;
+  //   } else {
+  //     const requestDates = {
+  //       startDate: report_start_date,
+  //       endDate: report_end_date,
+  //     };
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     };
+  //     // Send Post request to Flask API
+  //     axios
+  //       .post('http://127.0.0.1:5000/api/manager_reports/get_restock_report', requestDates, config)
+  //       .then((response) => {
+  //         setRestockReport(response.data.restock_report);
+  //         console.log('Successfully generated Restock Report');
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error with Restock Report:', error);
+  //       });
+  //   }
+  };
 
   return(
     <div style={{ display: 'block', padding: 30}} className='manager'> 
@@ -228,13 +266,58 @@ const ManagerGUI: React.FC = () => {
             modal nested onOpen={generateExcessReport}>
             {
               // table goes here for Excess Report
+              <div style={{overflow: 'scroll', height: 750}}>
+                <br />
+                <table className="table table-striped w-100">
+                  <thead>
+                    <tr>
+                      <th>Ingredient Name</th>
+                      <th>Amount Sold</th>
+                      <th>Current Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {excessReport.map((item) => (
+                      <tr key={item.ingredient_name}>
+                        <td>{item.ingredient_name}</td>
+                        <td>{item.amount_sold}</td>
+                        <td>{item.current_quantity}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             }
         </Popup>
         <Popup trigger=
-            {<button className="btn btn-secondary"> Restock Report </button>} 
+            {<button className="btn btn-secondary"> Restock Report </button>}
             modal nested onOpen={generateRestockReport}>
             {
-              // table goes here for Restock Report
+              <div>
+                <h2 style={{ textAlign: 'center' }}>
+                  <u>Restock Report</u>
+                </h2>
+                <table className='table table-striped w-100'>
+                  <thead>
+                    <tr>
+                      <th>Ingredient ID</th>
+                      <th>Name</th>
+                      <th>Quantity</th>
+                      <th>Threshold</th>
+                    </tr>
+                  </thead>
+                  {/* <tbody>
+                    {restockReport.map((item: RestockReportData) => (
+                      <tr key={item.ingredient_id}>
+                        <td>{item.ingredient_id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.threshold}</td>
+                      </tr>
+                    ))}
+                  </tbody> */}
+                </table>
+              </div>
             }
         </Popup>
         </div>

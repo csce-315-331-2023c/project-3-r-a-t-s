@@ -38,6 +38,59 @@ const MenuComponent = () => {
       console.error("Failed to fetch menu items:", error);
       setIsLoading(false);
     }
+  }; 
+
+  const addMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:5000/api/manager/add_menu_item",
+        {
+          name: addMenuItemName,
+          price: addMenuItemPrice,
+        },
+        config
+      );
+      console.log(response.data);
+      // Optionally, fetch menu items again to update the list
+      fetchMenuItems();
+    } catch (error) {
+      console.error("Failed to add menu item:", error);
+    }
+  };
+
+  const deleteMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:5000/api/manager/delete_menu_item",
+        {
+          name: deleteMenuItemName,
+        },
+        config
+      );
+      console.log(response.data);
+      // Optionally, fetch menu items again to update the list
+      fetchMenuItems();
+    } catch (error) {
+      console.error("Failed to delete menu item:", error);
+    }
+  };
+
+  const changeMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:5000/api/manager/change_menu_item",
+        {
+          name: changeMenuItemName,
+          price: changeMenuItemPrice,
+        },
+        config
+      );
+      console.log(response.data);
+      // Optionally, fetch menu items again to update the list
+      fetchMenuItems();
+    } catch (error) {
+      console.error("Failed to change menu item:", error);
+    }
   };
 
   // useEffect(() => {
@@ -86,7 +139,7 @@ const MenuComponent = () => {
         placeholder="Enter price"
         onChange={(e) => setAddMenuItemPrice(e.target.value)}
       />
-      <button>Add</button>
+      <button onClick={addMenuItem}>Add</button>
 
       <br />
       <br />
@@ -97,7 +150,7 @@ const MenuComponent = () => {
         placeholder="Enter item name"
         onChange={(e) => setDeleteMenuItemName(e.target.value)}
       />
-      <button>Remove</button>
+      <button onClick={deleteMenuItem}>Remove</button>
 
       <br />
       <br />
@@ -113,7 +166,7 @@ const MenuComponent = () => {
         placeholder="Enter price"
         onChange={(e) => setChangeMenuItemPrice(e.target.value)}
       />
-      <button>Change</button>
+      <button onClick={changeMenuItem}>Change</button>
     </div>
   );
 };
