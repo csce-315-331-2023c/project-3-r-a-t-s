@@ -6,8 +6,8 @@ from APIs.manager_reports import reports_BP
 
 app = Flask(__name__)
 
-# CORS(app)
-CORS(app, origins = 'https://project-3-r-a-t-s.vercel.app')
+CORS(app)
+#CORS(app, origins = 'https://project-3-r-a-t-s.vercel.app')
 
 # Register the blueprints
 app.register_blueprint(manager_BP, url_prefix="/api/manager")
