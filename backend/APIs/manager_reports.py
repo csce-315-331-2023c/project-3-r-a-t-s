@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 import psycopg2 
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from typing import List, Tuple
 from datetime import date
 
@@ -49,7 +49,7 @@ def WhatSellsTogether():
             pair_frequency_map[pair] += 1 #{pair}:count
 
         # Sort pairs by frequency
-        sorted_dict = dict(sorted(pair_frequency_map.items(), key=lambda item: item[1], reverse=True))
+        sorted_dict = OrderedDict(sorted(pair_frequency_map.items(), key=lambda item: (item[1], item[0]), reverse=True))
 
         conn.close()
         return jsonify(sorted_dict)
