@@ -142,6 +142,29 @@ def remove_inventory():
         conn.close()
         return jsonify({"error": str(e)}), 500
 
+@manager_BP.route('/edit_inventory', methods=['POST'])
+def edit_inventory():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        new_quantity = data['newQuantity']
+
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE inventory SET quantity = %s WHERE name = %s', (new_quantity, item_name))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Quantity for item {item_name} edited in inventory"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
 @manager_BP.route('/get_employee_list', methods=['POST'])
 def get_employee_list():
 
@@ -243,4 +266,68 @@ def get_menu_items():
             cursor.close()
         if conn:
             conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/add_menu_item', methods=['POST'])
+def add_menu_item():
+    try:
+        data = request.get_json()
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        
+        cursor.execute('INSERT INTO menu_items (menu_item_name, price) VALUES (%s, %s)',
+                       (data['name'], data['price']))
+        conn.commit()  
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Menu item added"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/delete_menu_item', methods=['POST'])
+def delete_menu_item():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM menu_items WHERE menu_item_name = %s', (item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Menu item {item_name} removed"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/change_menu_item', methods=['POST'])
+def change_menu_item():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        new_price = data['price']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('UPDATE menu_items SET price = %s WHERE menu_item_name = %s', (new_price, item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Menu item {item_name} price changed"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
         return jsonify({"error": str(e)}), 500
