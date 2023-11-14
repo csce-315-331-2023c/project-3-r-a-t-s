@@ -22,6 +22,7 @@ const OrderHistoryComponent: React.FC = () => {
         employee_id: number;
         order_total: number;
         date: string;
+        menu_items : string
     }
     
     const [orderHistory, setOrderHistory] = useState<OrderData[]>([]);
@@ -39,8 +40,8 @@ const OrderHistoryComponent: React.FC = () => {
       };
       //Send Post rquest to Flask API
       axios
-        //.post('http://127.0.0.1:5000/api/manager/get_order_history', requestDates, config)
-        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_order_history`, requestDates, config)
+        .post('http://127.0.0.1:5000/api/manager/get_order_history', requestDates, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_order_history`, requestDates, config)
         .then((response) => {
           setOrderHistory(response.data);
           console.log(response.data); 
@@ -68,6 +69,7 @@ const OrderHistoryComponent: React.FC = () => {
                             <th>Employee ID</th>
                             <th>Order Total</th>
                             <th>Date</th>
+                            <th>Menu Items</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -77,6 +79,7 @@ const OrderHistoryComponent: React.FC = () => {
                         <td>{order.employee_id}</td>
                         <td>{order.order_total}</td>
                         <td>{order.date}</td>
+                        <td>{order.menu_items}</td>
                         </tr>
                         ))}
                         </tbody>
