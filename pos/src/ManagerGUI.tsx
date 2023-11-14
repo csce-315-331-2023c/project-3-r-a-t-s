@@ -106,6 +106,7 @@ const ManagerGUI: React.FC = () => {
             // Convert dictionary to array of objects
             const pairsArray: PairData[] = Object.entries(response.data).map(([str_pair, count]) => ({str_pair,count: Number(count), }));
             // Set the state with the converted array
+            pairsArray.sort((a, b) => b.count - a.count);
             setPairs(pairsArray);
             console.log(pairsArray);
           } else {
