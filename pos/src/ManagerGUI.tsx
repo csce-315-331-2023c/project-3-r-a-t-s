@@ -63,8 +63,8 @@ const ManagerGUI: React.FC = () => {
       };
       // Send a POST request to the Flask API
       axios
-        .post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
+        //.post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
         .then((response) => {
           setProductReport(response.data.report);
           console.log('Successfully generated Product Report');
@@ -98,8 +98,8 @@ const ManagerGUI: React.FC = () => {
       };
       //Send Post rquest to Flask API
       axios
-        .post('http://127.0.0.1:5000/api/manager_reports/WhatSellsTogether', requestDates, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/WhatSellsTogether`, requestDates, config)
+        //.post('http://127.0.0.1:5000/api/manager_reports/WhatSellsTogether', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/WhatSellsTogether`, requestDates, config)
         .then((response) => {
           // Check if response.data is an object (dictionary)
           if (typeof response.data === 'object') {
