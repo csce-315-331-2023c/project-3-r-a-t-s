@@ -1,9 +1,7 @@
 from flask import Blueprint, jsonify, request
 import psycopg2 
 from collections import defaultdict
-from tkinter import ttk
 from typing import List, Tuple
-from tkinter import messagebox
 from datetime import date
 
 
