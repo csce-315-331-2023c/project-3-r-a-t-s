@@ -73,15 +73,16 @@ def get_inventory():
         client_type = request.headers.get('X-Client-Type')
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('SELECT ingredient_id, name, quantity, unit FROM inventory')
+        cursor.execute('SELECT ingredient_id, name, price, quantity, unit FROM inventory')
         inventory_items = cursor.fetchall()
 
         items = [
             {
                 "ingredient_id": item[0],
                 "name": item[1],
-                "quantity": item[2],
-                "unit": item[3]
+                "price": item[2],
+                "quantity": item[3],
+                "unit": item[4]
             }
             for item in inventory_items
         ]

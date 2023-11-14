@@ -5,13 +5,14 @@ interface Item {
   ingredient_id: number;
   name: string;
   quantity: number;
+  price: number;
   unit: string;
 }
 
 const InventoryComponent = () => {
   const starterInventory: Item[] = [
-    { ingredient_id: 1, name: "Item A", quantity: 10, unit: "kg" },
-    { ingredient_id: 2, name: "Item B", quantity: 5, unit: "pieces" },
+    { ingredient_id: 1, name: "Item A", price: 10, quantity: 10, unit: "kg" },
+    { ingredient_id: 2, name: "Item B", price: 11, quantity: 5, unit: "pieces" },
   ];
   const [inventoryData, setInventoryData] = useState<Item[]>(() => []);
   const [isLoading, setIsLoading] = useState(false);
@@ -155,6 +156,7 @@ const InventoryComponent = () => {
             <tr>
               <th>Name</th>
               <th>Quantity</th>
+              <th>Price ($)</th>
               <th>Unit</th>
             </tr>
           </thead>
@@ -163,6 +165,7 @@ const InventoryComponent = () => {
               <tr key={item.ingredient_id}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
+                <td>{item.price}</td>
                 <td>{item.unit}</td>
               </tr>
             ))}
