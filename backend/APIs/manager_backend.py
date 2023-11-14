@@ -54,7 +54,7 @@ def get_order_history():
                                     WHERE ORDERS.order_id = %s;"""
             stmt.execute(menu_items_query, (order_id,))
             results = stmt.fetchall()
-
+            print(results)
             for result in results:
                 menu_items += result[0] + ", "
 
