@@ -112,7 +112,7 @@ const InventoryComponent = () => {
         <button onClick={() => setShowRemoveForm(!showRemoveForm)} disabled={isLoading} className="btn btn-danger">
         {"Remove from Inventory"}
         </button>
-        <button onClick={() => setShowEditForm(!showEditForm)} disabled={isLoading} className="btn btn-info">
+        <button onClick={() => setShowEditForm(!showEditForm)} disabled={isLoading} className="btn btn-primary">
           {"Edit Quantity"}
         </button>
       </div>
