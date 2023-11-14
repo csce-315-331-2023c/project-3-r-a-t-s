@@ -63,8 +63,8 @@ const ManagerGUI: React.FC = () => {
       };
       // Send a POST request to the Flask API
       axios
-        .post('http://127.0.0.1:5000/api/manager/get_product_report', requestDates, config)
-        //.post(` https://pos-backend-3c6o.onrender.com/api//manager/get_product_report  `, {report_start_date, report_end_date}, config)
+        .post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
         .then((response) => {
           setProductReport(response.data.report);
           console.log('Successfully generated Product Report');

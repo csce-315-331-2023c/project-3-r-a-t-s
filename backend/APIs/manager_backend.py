@@ -4,46 +4,12 @@ import psycopg2
 
 manager_BP = Blueprint('manager', __name__)
 
-# Enable CORS for all routes
-CORS(manager_BP)
-# CORS(cashier_BP, origins = 'https://project-3-r-a-t-s.vercel.app')
-
 DB_PARAMS = {
     'dbname': 'csce315_904_01db', 
     'user': 'csce315_904_01user',
     'password': 'STAR',
     'host': 'csce-315-db.engr.tamu.edu',
 }
-
-@manager_BP.route('/get_product_report', methods = ['POST'])
-def get_product_report():
-    data = request.get_json()
-    start_date = data['startDate']
-    end_date = data['endDate']
-
-    query = f"SELECT MENU_ITEMS.menu_item_name, COUNT(*) AS menu_items FROM ORDERS JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id WHERE ORDERS.date >= '{start_date}' AND ORDERS.date <= '{end_date}' GROUP BY MENU_ITEMS.menu_item_name;"
-    
-    try:
-        conn = psycopg2.connect(**DB_PARAMS)
-        cursor = conn.cursor()
-
-        cursor.execute(query, (start_date, end_date,))
-        results = cursor.fetchall()
-
-        column_names = [desc[0] for desc in cursor.description]
-    
-        report = []
-
-        for item in results:
-            order_data = dict(zip(column_names, item))
-            report.append(order_data)
-
-        return jsonify({"report": report,
-                        "start": start_date})
-
-
-    except Exception as e:
-        return jsonify({"error": str(e)})
 
 @manager_BP.route('/get_order_history', methods=['POST'])
 def get_order_history():
@@ -76,6 +42,23 @@ def get_order_history():
             order_data = dict(zip(column_names, order))
             # Format the date to display only the date part
             order_data['date'] = order_data['date'].strftime("%Y-%m-%d")
+
+            # Java logic to build the 'ingredients' string
+            order_id = order_data['order_id']
+
+            stmt = conn.cursor()
+            menu_items = ""
+            menu_items_query = f"""SELECT MENU_ITEMS.menu_item_name AS menu_items FROM ORDERS
+                                    JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id
+                                    JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id
+                                    WHERE ORDERS.order_id = %s;"""
+            stmt.execute(menu_items_query, (order_id,))
+            results = stmt.fetchall()
+
+            for result in results:
+                menu_items += result[0] + ", "
+
+            order_data['menu_items'] = menu_items
             order_history.append(order_data)
 
         conn.close()
