@@ -244,3 +244,71 @@ def get_menu_items():
         if conn:
             conn.close()
         return jsonify({"error": str(e)}), 500
+    
+@manager_BP.route('/add_menu_item', methods=['POST'])
+def add_menu_item():
+    menu_item = request.get_json()  #Use const [addMenuItem, setMenuItem] = useState([ {menu_item_name: '', price: '', isCustomizable: '', ingredients: []} ]);
+
+    menu_item_data = menu_item[0]
+    menu_item_name = menu_item_data['menu_item_name']
+    price = menu_item_data['price']
+    isCustomizable  = menu_item_data['isCustomizable']
+    ingredients = menu_item_data.get('ingredients', [])
+
+    add_menu_item_query = f"INSERT INTO MENU_ITEMS(menu_item_name, price, isCustomizable) VALUES (%s, %s, %s) RETURNING menu_item_id;"
+    get_ingredient_id = f"SELECT ingredient_id FROM INVENTORY WHERE INVENTORY.name = %s;"
+    add_menu_item_ingredients = f"INSERT INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (%s);"
+
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute(add_menu_item_query, (menu_item_name, price, isCustomizable,))
+        menu_item_id = cursor.fetchone()[0]
+
+        for ingredient in ingredients:
+            #Get Ingredient Id
+            cursor.execute(get_ingredient_id, (ingredient,))
+            ingredient_id = cursor.fetchone()[0]
+            #Add Ingredients to Menu item
+            cursor.execute(add_menu_item_ingredients, (menu_item_id, ingredient_id,))
+
+        conn.commit()
+        conn.close()
+        return jsonify("Menu Item Added (From Backend)")
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Add Menu Item'}), 500
+
+@manager_BP.route('/remove_menu_item', methods=['POST'])
+def remove_menu_item():
+    menu_item = request.get_json()  #Use const [removeMenuItem, setMenuItem] = useState([ {menu_item_name: ''}]);
+
+    menu_item_data = menu_item[0]
+    menu_item_name = menu_item_data['menu_item_name']
+
+    get_menu_item_id = f"SELECT menu_item_id FROM MENU_ITEMS WHERE menu_item_name= %s"
+    delete_menu_item_ingredients = f"DELETE FROM MENU_ITEM_INGREDIENTS WHERE menu_item_id = %s;"
+    delete_menu_item = f"DELETE FROM MENU_ITEMS where menu_item_id = %s;"
+
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute(get_menu_item_id, (menu_item_name,))
+        menu_item_id = cursor.fetchone()[0]
+
+        if menu_item_id:
+            menu_item_id = menu_item_id[0]
+
+            cursor.execute(delete_menu_item_ingredients, (menu_item_id,))
+            cursor.execute(delete_menu_item, (menu_item_id,))
+
+            conn.commit()
+            conn.close()
+            return jsonify("Menu Item Deleted (From Backend)")
+        
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Remove Menu Item'}), 500
