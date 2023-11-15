@@ -1,9 +1,7 @@
 from flask import Blueprint, jsonify, request
 import psycopg2 
-from collections import defaultdict
-from tkinter import ttk
+from collections import defaultdict, OrderedDict
 from typing import List, Tuple
-from tkinter import messagebox
 from datetime import date
 
 
@@ -51,7 +49,7 @@ def WhatSellsTogether():
             pair_frequency_map[pair] += 1 #{pair}:count
 
         # Sort pairs by frequency
-        sorted_dict = dict(sorted(pair_frequency_map.items(), key=lambda item: item[1], reverse=True))
+        sorted_dict = OrderedDict(sorted(pair_frequency_map.items(), key=lambda item: (item[1], item[0]), reverse=True))
 
         conn.close()
         return jsonify(sorted_dict)
@@ -90,3 +88,97 @@ def get_product_report():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+
+@reports_BP.route('/get_restock_report', methods = ['POST'])
+def get_restock_report():
+    # dates = request.get_json()
+    # start_date = dates['startDate']
+    # end_date = dates['endDate']
+
+    query = f"""SELECT name, quantity, threshold
+                FROM inventory
+                WHERE quantity < threshold;"""
+
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        # cursor.execute(query, (start_date, end_date,))
+        cursor.execute(query,)
+        results = cursor.fetchall()
+
+        restock_report = []
+        for result in results:
+            name, quantity, threshold = result
+            restock_report.append({
+                # "ingredient_id": ingredient_id,
+                "name": name,
+                "quantity": quantity,
+                "threshold": threshold
+            })
+
+        conn.close()
+        return jsonify({"restock_report": restock_report})
+
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to generate Restock Report'}), 500
+
+
+@reports_BP.route('/get_excess_report', methods = ['POST'])
+def get_excess_report():
+    try:
+        dates = request.get_json()
+        start_date = dates['startDate']
+        end_date = dates['endDate']
+
+        query = f"""WITH ingredient_sales AS (
+                        SELECT
+                            mi.ingredient_id,
+                            i.name AS ingredient_name,
+                            SUM(CASE WHEN oi.menu_item_id IS NOT NULL THEN oi.quantity ELSE 0 END) AS amount_sold,
+                            i.quantity AS current_quantity
+                        FROM
+                            menu_item_ingredients mi
+                        INNER JOIN
+                            inventory i ON mi.ingredient_id = i.ingredient_id
+                        LEFT JOIN
+                            order_items oi ON mi.menu_item_id = oi.menu_item_id
+                        LEFT JOIN
+                            orders o ON oi.order_id = o.order_id
+                        WHERE
+                            o.date >= '{start_date}'
+                        GROUP BY
+                            mi.ingredient_id, i.name, i.quantity
+                    )
+                    SELECT
+                        ingredient_name,
+                        amount_sold,
+                        current_quantity
+                    FROM
+                        ingredient_sales
+                    WHERE
+                        (amount_sold * 10) < current_quantity + amount_sold;"""
+
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute(query, (start_date,))
+        results = cursor.fetchall()
+
+        excess_report = []
+        for result in results:
+            ingredient_name, amount_sold, current_quantity = result
+            excess_report.append({
+                "ingredient_name": ingredient_name,
+                "amount_sold": amount_sold,
+                "current_quantity": current_quantity
+            })
+
+        conn.close()
+        return jsonify({"excess_report": excess_report})
+
+    except:
+        print(e)
+        return jsonify({'error': 'Failed to generate Excess Report'}), 500
+

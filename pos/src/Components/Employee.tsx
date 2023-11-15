@@ -44,13 +44,13 @@ const EmployeeComponent: React.FC = () => {
     };
 
     //Logs The Employee Input 
-    const handleAddSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("InputEmployee", inputEmployee)
         add_employee()
         setShowAddForm(false)
     };
-    const handleRemoveSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleRemoveSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("RemoveEmployee", removeEmployee)
         remove_employee()
@@ -58,7 +58,7 @@ const EmployeeComponent: React.FC = () => {
     };
 
     // Function to Generate Employees' Information
-    const generate_employee_info = () => {
+    const generate_employee_info = async () => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -66,8 +66,8 @@ const EmployeeComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
+        //.post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
             console.log(response.data); 
@@ -78,7 +78,7 @@ const EmployeeComponent: React.FC = () => {
     };  
 
     //Function To Add Employee
-    const add_employee = () => { 
+    const add_employee = async () => { 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -86,10 +86,11 @@ const EmployeeComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/add_employee', inputEmployee, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, inputEmployee, config)
+        //.post('http://127.0.0.1:5000/api/manager/add_employee', inputEmployee, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, inputEmployee, config)
         .then((response) => {
             console.log(response.data.message); 
+            generate_employee_info();
         })
         .catch((error) => {
             console.error('Error with Adding Employee:', error);
@@ -97,7 +98,7 @@ const EmployeeComponent: React.FC = () => {
     };
 
     //Function to Remove Employee
-    const remove_employee = () => { 
+    const remove_employee = async () => { 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -105,10 +106,12 @@ const EmployeeComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/remove_employee', removeEmployee, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_employee`, removeEmployee, config)
+        //.post('http://127.0.0.1:5000/api/manager/remove_employee', removeEmployee, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_employee`, removeEmployee, config)
         .then((response) => {
             console.log(response.data.message); 
+            generate_employee_info();
+
         })
         .catch((error) => {
             console.error('Error with Removing Employee:', error);
@@ -193,7 +196,6 @@ const EmployeeComponent: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
-                    <button onClick={generate_employee_info} className="btn btn-secondary">Refresh Employee Table</button> 
                     </div>
             )}
         </div>

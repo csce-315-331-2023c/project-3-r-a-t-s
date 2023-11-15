@@ -5,13 +5,14 @@ interface Item {
   ingredient_id: number;
   name: string;
   quantity: number;
+  price: number;
   unit: string;
 }
 
 const InventoryComponent = () => {
   const starterInventory: Item[] = [
-    { ingredient_id: 1, name: "Item A", quantity: 10, unit: "kg" },
-    { ingredient_id: 2, name: "Item B", quantity: 5, unit: "pieces" },
+    { ingredient_id: 1, name: "Item A", price: 10, quantity: 10, unit: "kg" },
+    { ingredient_id: 2, name: "Item B", price: 11, quantity: 5, unit: "pieces" },
   ];
   const [inventoryData, setInventoryData] = useState<Item[]>(() => []);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +21,8 @@ const InventoryComponent = () => {
   const [showRemoveForm, setShowRemoveForm] = useState(false);
   const [removeFormData, setRemoveFormData] = useState({ name: "" }); 
   // remove feature is now implemented
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editFormData, setEditFormData] = useState({ name: "", newQuantity: "" });
 
   const config = {
     headers: {
@@ -35,7 +38,8 @@ const InventoryComponent = () => {
 
   const submitForm = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/manager/add_inventory", formData);
+      //const response = await axios.post("http://127.0.0.1:5000/api/manager/add_inventory", formData);
+      const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/add_inventory", formData);
       console.log(response.data);
       // Optionally, fetch inventory again to update the list
       fetchInventory();
@@ -51,7 +55,8 @@ const InventoryComponent = () => {
   
   const submitRemoveForm = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/manager/remove_inventory", removeFormData, config);
+      //const response = await axios.post("http://127.0.0.1:5000/api/manager/remove_inventory", removeFormData, config);
+      const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/remove_inventory", removeFormData, config);
       console.log(response.data);
       fetchInventory(); 
     } catch (error) {
@@ -60,12 +65,30 @@ const InventoryComponent = () => {
     setShowRemoveForm(false); // Hide the form after submission
   };
 
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditFormData((prevEditFormData) => ({ ...prevEditFormData, [name]: value }));
+  };
+
+  const submitEditForm = async () => {
+    try {
+      //const response = await axios.post("http://127.0.0.1:5000/api/manager/edit_inventory", editFormData, config);
+      const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/edit_inventory", editFormData, config);
+      console.log(response.data);
+      fetchInventory();
+    } catch (error) {
+      console.error("Failed to edit inventory:", error);
+    }
+    setShowEditForm(false);
+  };
+
   //hosted backend: https://pos-backend-3c6o.onrender.com/api/cashier/place_order
   const fetchInventory = async () => {
     setIsLoading(true);
     try {
       const response = await axios
-        .get("http://127.0.0.1:5000/api/manager/get_inventory", config)
+        //.get("http://127.0.0.1:5000/api/manager/get_inventory", config)
+        .get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
         .then((response) => {
           // Handle the response from the Flask API
           console.log(response.data);
@@ -91,6 +114,9 @@ const InventoryComponent = () => {
         <button onClick={() => setShowRemoveForm(!showRemoveForm)} disabled={isLoading} className="btn btn-danger">
         {"Remove from Inventory"}
         </button>
+        <button onClick={() => setShowEditForm(!showEditForm)} disabled={isLoading} className="btn btn-primary">
+          {"Edit Quantity"}
+        </button>
       </div>
       <br />
       {showRemoveForm && (
@@ -115,12 +141,23 @@ const InventoryComponent = () => {
           <button type="submit">Submit</button>
         </form>
       )}
+      {showEditForm && (
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          submitEditForm();
+        }}>
+          <input name="name" placeholder="Name of item to edit" value={editFormData.name} onChange={handleEditFormChange} required />
+          <input name="newQuantity" placeholder="New Quantity" type="number" value={editFormData.newQuantity} onChange={handleEditFormChange} required />
+          <button type="submit">Edit</button>
+        </form>
+      )}
       {inventoryData && (
         <table className="table table-striped w-100">
           <thead>
             <tr>
               <th>Name</th>
               <th>Quantity</th>
+              <th>Price ($)</th>
               <th>Unit</th>
             </tr>
           </thead>
@@ -129,6 +166,7 @@ const InventoryComponent = () => {
               <tr key={item.ingredient_id}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
+                <td>{item.price}</td>
                 <td>{item.unit}</td>
               </tr>
             ))}

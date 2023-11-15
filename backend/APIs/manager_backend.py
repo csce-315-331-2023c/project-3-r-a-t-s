@@ -54,9 +54,10 @@ def get_order_history():
                                     WHERE ORDERS.order_id = %s;"""
             stmt.execute(menu_items_query, (order_id,))
             results = stmt.fetchall()
-
             for result in results:
                 menu_items += result[0] + ", "
+            
+            menu_items = menu_items[:-2]
 
             order_data['menu_items'] = menu_items
             order_history.append(order_data)
@@ -68,22 +69,22 @@ def get_order_history():
         print(e)
         return jsonify({'error': 'Failed to fetch order history'}), 500
 
-
 @manager_BP.route('/get_inventory', methods=['GET'])
 def get_inventory():
     try:
         client_type = request.headers.get('X-Client-Type')
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('SELECT ingredient_id, name, quantity, unit FROM inventory')
+        cursor.execute('SELECT ingredient_id, name, price, quantity, unit FROM inventory')
         inventory_items = cursor.fetchall()
 
         items = [
             {
                 "ingredient_id": item[0],
                 "name": item[1],
-                "quantity": item[2],
-                "unit": item[3]
+                "price": item[2],
+                "quantity": item[3],
+                "unit": item[4]
             }
             for item in inventory_items
         ]
@@ -136,6 +137,29 @@ def remove_inventory():
         conn.close()
 
         return jsonify({"message": f"Item {item_name} removed from inventory"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/edit_inventory', methods=['POST'])
+def edit_inventory():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        new_quantity = data['newQuantity']
+
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE inventory SET quantity = %s WHERE name = %s', (new_quantity, item_name))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Quantity for item {item_name} edited in inventory"}), 200
 
     except Exception as e:
         cursor.close()
@@ -223,13 +247,27 @@ def get_menu_items():
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('SELECT menu_item_id, menu_item_name, price FROM menu_items')
+        
+        # This query assumes that there's a table called MENU_ITEM_INGREDIENTS which links menu items to ingredients
+        cursor.execute('''
+            SELECT 
+                mi.menu_item_id, 
+                mi.menu_item_name, 
+                mi.price, 
+                array_agg(i.name) AS ingredients
+            FROM 
+                menu_items mi
+            JOIN 
+                menu_item_ingredients mii ON mi.menu_item_id = mii.menu_item_id
+            JOIN 
+                inventory i ON mii.ingredient_id = i.ingredient_id
+            GROUP BY 
+                mi.menu_item_id
+        ''')
         menu_items = cursor.fetchall()
 
-        print("menuItems", menu_items)
-
         items = [
-            {"menu_item_id": item[0], "name": item[1], "price": item[2]}
+            {"menu_item_id": item[0], "name": item[1], "price": item[2], "ingredients": item[3]}
             for item in menu_items
         ]
 
@@ -244,71 +282,67 @@ def get_menu_items():
         if conn:
             conn.close()
         return jsonify({"error": str(e)}), 500
-    
+
 @manager_BP.route('/add_menu_item', methods=['POST'])
 def add_menu_item():
-    menu_item = request.get_json()  #Use const [addMenuItem, setMenuItem] = useState([ {menu_item_name: '', price: '', isCustomizable: '', ingredients: []} ]);
-
-    menu_item_data = menu_item[0]
-    menu_item_name = menu_item_data['menu_item_name']
-    price = menu_item_data['price']
-    isCustomizable  = menu_item_data['isCustomizable']
-    ingredients = menu_item_data.get('ingredients', [])
-
-    add_menu_item_query = f"INSERT INTO MENU_ITEMS(menu_item_name, price, isCustomizable) VALUES (%s, %s, %s) RETURNING menu_item_id;"
-    get_ingredient_id = f"SELECT ingredient_id FROM INVENTORY WHERE INVENTORY.name = %s;"
-    add_menu_item_ingredients = f"INSERT INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (%s);"
-
     try:
+        data = request.get_json()
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-
-        cursor.execute(add_menu_item_query, (menu_item_name, price, isCustomizable,))
-        menu_item_id = cursor.fetchone()[0]
-
-        for ingredient in ingredients:
-            #Get Ingredient Id
-            cursor.execute(get_ingredient_id, (ingredient,))
-            ingredient_id = cursor.fetchone()[0]
-            #Add Ingredients to Menu item
-            cursor.execute(add_menu_item_ingredients, (menu_item_id, ingredient_id,))
-
-        conn.commit()
-        conn.close()
-        return jsonify("Menu Item Added (From Backend)")
-    
-    except Exception as e:
-        print(e)
-        return jsonify({'error': 'Failed to Add Menu Item'}), 500
-
-@manager_BP.route('/remove_menu_item', methods=['POST'])
-def remove_menu_item():
-    menu_item = request.get_json()  #Use const [removeMenuItem, setMenuItem] = useState([ {menu_item_name: ''}]);
-
-    menu_item_data = menu_item[0]
-    menu_item_name = menu_item_data['menu_item_name']
-
-    get_menu_item_id = f"SELECT menu_item_id FROM MENU_ITEMS WHERE menu_item_name= %s"
-    delete_menu_item_ingredients = f"DELETE FROM MENU_ITEM_INGREDIENTS WHERE menu_item_id = %s;"
-    delete_menu_item = f"DELETE FROM MENU_ITEMS where menu_item_id = %s;"
-
-    try:
-        conn = psycopg2.connect(**DB_PARAMS)
-        cursor = conn.cursor()
-
-        cursor.execute(get_menu_item_id, (menu_item_name,))
-        menu_item_id = cursor.fetchone()[0]
-
-        if menu_item_id:
-            menu_item_id = menu_item_id[0]
-
-            cursor.execute(delete_menu_item_ingredients, (menu_item_id,))
-            cursor.execute(delete_menu_item, (menu_item_id,))
-
-            conn.commit()
-            conn.close()
-            return jsonify("Menu Item Deleted (From Backend)")
         
+        cursor.execute('INSERT INTO menu_items (menu_item_name, price) VALUES (%s, %s)',
+                       (data['name'], data['price']))
+        conn.commit()  
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Menu item added"}), 200
+
     except Exception as e:
-        print(e)
-        return jsonify({'error': 'Failed to Remove Menu Item'}), 500
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/delete_menu_item', methods=['POST'])
+def delete_menu_item():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM menu_items WHERE menu_item_name = %s', (item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Menu item {item_name} removed"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/change_menu_item', methods=['POST'])
+def change_menu_item():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        new_price = data['price']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('UPDATE menu_items SET price = %s WHERE menu_item_name = %s', (new_price, item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Menu item {item_name} price changed"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
