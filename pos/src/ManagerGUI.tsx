@@ -180,7 +180,7 @@ const ManagerGUI: React.FC = () => {
   const generateRestockReport = async () => {
     try {
       // const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_restock_report");
-      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_excess_report');
+      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_restock_report');
       console.log(response.data);
       setRestockReport(response.data.restock_report);
     } catch (error) {
