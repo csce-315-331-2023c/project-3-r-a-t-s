@@ -56,6 +56,8 @@ def get_order_history():
             results = stmt.fetchall()
             for result in results:
                 menu_items += result[0] + ", "
+            
+            menu_items = menu_items[:-2]
 
             order_data['menu_items'] = menu_items
             order_history.append(order_data)

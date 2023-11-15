@@ -72,7 +72,8 @@ const InventoryComponent = () => {
 
   const submitEditForm = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/manager/edit_inventory", editFormData, config);
+      //const response = await axios.post("http://127.0.0.1:5000/api/manager/edit_inventory", editFormData, config);
+      const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/edit_inventory", editFormData, config);
       console.log(response.data);
       fetchInventory();
     } catch (error) {
