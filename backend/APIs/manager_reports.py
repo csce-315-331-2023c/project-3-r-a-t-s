@@ -95,7 +95,7 @@ def get_restock_report():
     # start_date = dates['startDate']
     # end_date = dates['endDate']
 
-    query = f"""SELECT ingredient_id, name, quantity, threshold
+    query = f"""SELECT name, quantity, threshold
                 FROM inventory
                 WHERE quantity < threshold;"""
 
@@ -109,20 +109,20 @@ def get_restock_report():
 
         restock_report = []
         for result in results:
-            ingredient_id, name, quantity, threshold = result
+            name, quantity, threshold = result
             restock_report.append({
-                "ingredient_id": ingredient_id,
+                # "ingredient_id": ingredient_id,
                 "name": name,
                 "quantity": quantity,
                 "threshold": threshold
             })
 
         conn.close()
-        return jsonify({"excess_report": restock_report})
+        return jsonify({"restock_report": restock_report})
 
     except Exception as e:
         print(e)
-        return jsonify({'error': 'Failed to generate Excess Report'}), 500
+        return jsonify({'error': 'Failed to generate Restock Report'}), 500
 
 
 @reports_BP.route('/get_excess_report', methods = ['POST'])
