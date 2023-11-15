@@ -5,6 +5,7 @@ interface MenuItem {
   menu_item_id: number;
   name: string;
   price: number;
+  ingredients: string[]; // New field for ingredients
 }
 
 const MenuComponent = () => {
@@ -29,7 +30,10 @@ const MenuComponent = () => {
   const fetchMenuItems = async () => {
     setIsLoading(true);
     try {
-      //const response = await axios.get("http://127.0.0.1:5000/api/manager/get_menu_items", config);
+      // const response = await axios.get(
+      //   "http://127.0.0.1:5000/api/manager/get_menu_items",
+      //   config
+      // );
       const response = await axios.get("https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items", config);
       setMenuData(response.data);
       console.log(response.data);
@@ -62,6 +66,7 @@ const MenuComponent = () => {
               <tr>
                 <th>Menu Item</th>
                 <th>Price</th>
+                <th>Ingredients</th> {/* New column header */}
               </tr>
             </thead>
             <tbody>
@@ -69,12 +74,14 @@ const MenuComponent = () => {
                 <tr key={item.menu_item_id}>
                   <td>{item.name}</td>
                   <td>{item.price.toFixed(2)}</td>
+                  <td>{item.ingredients.join(", ")}</td>{" "}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+
       <p>Add menu item</p>
       <input
         type="text"

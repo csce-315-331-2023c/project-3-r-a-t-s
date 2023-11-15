@@ -223,13 +223,27 @@ def get_menu_items():
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('SELECT menu_item_id, menu_item_name, price FROM menu_items')
+        
+        # This query assumes that there's a table called MENU_ITEM_INGREDIENTS which links menu items to ingredients
+        cursor.execute('''
+            SELECT 
+                mi.menu_item_id, 
+                mi.menu_item_name, 
+                mi.price, 
+                array_agg(i.name) AS ingredients
+            FROM 
+                menu_items mi
+            JOIN 
+                menu_item_ingredients mii ON mi.menu_item_id = mii.menu_item_id
+            JOIN 
+                inventory i ON mii.ingredient_id = i.ingredient_id
+            GROUP BY 
+                mi.menu_item_id
+        ''')
         menu_items = cursor.fetchall()
 
-        print("menuItems", menu_items)
-
         items = [
-            {"menu_item_id": item[0], "name": item[1], "price": item[2]}
+            {"menu_item_id": item[0], "name": item[1], "price": item[2], "ingredients": item[3]}
             for item in menu_items
         ]
 
