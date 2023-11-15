@@ -52,7 +52,7 @@ const CustomerGUI = () => {
         console.log("order: ", order);
         // Add back-end to update database
         const response = await fetch(
-            "http://127.0.0.1:5000/api/place_order",
+            "https://pos-backend-3c6o.onrender.com/api/place_order",
             {
               method: "POST",
               headers: {

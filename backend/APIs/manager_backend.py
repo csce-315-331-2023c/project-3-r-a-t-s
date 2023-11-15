@@ -68,7 +68,6 @@ def get_order_history():
         print(e)
         return jsonify({'error': 'Failed to fetch order history'}), 500
 
-
 @manager_BP.route('/get_inventory', methods=['GET'])
 def get_inventory():
     try:
