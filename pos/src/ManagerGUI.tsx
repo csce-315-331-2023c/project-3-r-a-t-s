@@ -144,13 +144,13 @@ const ManagerGUI: React.FC = () => {
   };
 
   interface RestockReportData {
-    ingredient_id: number;
+    // ingredient_id: number;
     name: string;
     quantity: number;
     threshold: number;
   }
-  // const [restockReport, setRestockReport] = useState<RestockReportData[]>([]);
-  const generateRestockReport = () => {
+  const [restockReport, setRestockReport] = useState<RestockReportData[]>([]);
+  // const generateRestockReport = () => {
   //   // query for restock report data
   //   if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
   //     console.log("Invalid Dates selected");
@@ -176,6 +176,16 @@ const ManagerGUI: React.FC = () => {
   //         console.error('Error with Restock Report:', error);
   //       });
   //   }
+  // };
+  const generateRestockReport = async () => {
+    try {
+      // const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_restock_report");
+      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_excess_report');
+      console.log(response.data);
+      setRestockReport(response.data.restock_report);
+    } catch (error) {
+      console.error("Failed to fetch Restock Report:", error);
+    }
   };
 
   return(
@@ -293,30 +303,32 @@ const ManagerGUI: React.FC = () => {
             {<button className="btn btn-secondary"> Restock Report </button>}
             modal nested onOpen={generateRestockReport}>
             {
-              <div>
+              <div style={{overflow: 'scroll', height: 750}}>
                 <h2 style={{ textAlign: 'center' }}>
                   <u>Restock Report</u>
                 </h2>
-                <table className='table table-striped w-100'>
-                  <thead>
-                    <tr>
-                      <th>Ingredient ID</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Threshold</th>
-                    </tr>
-                  </thead>
-                  {/* <tbody>
-                    {restockReport.map((item: RestockReportData) => (
-                      <tr key={item.ingredient_id}>
-                        <td>{item.ingredient_id}</td>
-                        <td>{item.name}</td>
-                        <td>{item.quantity}</td>
-                        <td>{item.threshold}</td>
+                {restockReport && restockReport.length > 0 ? (
+                  <table className='table table-striped w-100'>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Threshold</th>
                       </tr>
-                    ))}
-                  </tbody> */}
-                </table>
+                    </thead>
+                    <tbody>
+                      {restockReport.map((item) => (
+                        <tr>
+                          <td>{item.name}</td>
+                          <td>{item.quantity}</td>
+                          <td>{item.threshold}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p>No items to restock.</p>
+                )}
               </div>
             }
         </Popup>
