@@ -54,7 +54,6 @@ def get_order_history():
                                     WHERE ORDERS.order_id = %s;"""
             stmt.execute(menu_items_query, (order_id,))
             results = stmt.fetchall()
-
             for result in results:
                 menu_items += result[0] + ", "
 
@@ -68,22 +67,22 @@ def get_order_history():
         print(e)
         return jsonify({'error': 'Failed to fetch order history'}), 500
 
-
 @manager_BP.route('/get_inventory', methods=['GET'])
 def get_inventory():
     try:
         client_type = request.headers.get('X-Client-Type')
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('SELECT ingredient_id, name, quantity, unit FROM inventory')
+        cursor.execute('SELECT ingredient_id, name, price, quantity, unit FROM inventory')
         inventory_items = cursor.fetchall()
 
         items = [
             {
                 "ingredient_id": item[0],
                 "name": item[1],
-                "quantity": item[2],
-                "unit": item[3]
+                "price": item[2],
+                "quantity": item[3],
+                "unit": item[4]
             }
             for item in inventory_items
         ]
@@ -136,6 +135,29 @@ def remove_inventory():
         conn.close()
 
         return jsonify({"message": f"Item {item_name} removed from inventory"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/edit_inventory', methods=['POST'])
+def edit_inventory():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        new_quantity = data['newQuantity']
+
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE inventory SET quantity = %s WHERE name = %s', (new_quantity, item_name))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Quantity for item {item_name} edited in inventory"}), 200
 
     except Exception as e:
         cursor.close()
@@ -257,4 +279,68 @@ def get_menu_items():
             cursor.close()
         if conn:
             conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/add_menu_item', methods=['POST'])
+def add_menu_item():
+    try:
+        data = request.get_json()
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        
+        cursor.execute('INSERT INTO menu_items (menu_item_name, price) VALUES (%s, %s)',
+                       (data['name'], data['price']))
+        conn.commit()  
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Menu item added"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/delete_menu_item', methods=['POST'])
+def delete_menu_item():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM menu_items WHERE menu_item_name = %s', (item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Menu item {item_name} removed"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
+@manager_BP.route('/change_menu_item', methods=['POST'])
+def change_menu_item():
+    try:
+        data = request.get_json()
+        item_name = data['name']
+        new_price = data['price']
+        
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute('UPDATE menu_items SET price = %s WHERE menu_item_name = %s', (new_price, item_name,))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Menu item {item_name} price changed"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
         return jsonify({"error": str(e)}), 500

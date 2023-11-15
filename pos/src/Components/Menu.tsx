@@ -42,6 +42,62 @@ const MenuComponent = () => {
       console.error("Failed to fetch menu items:", error);
       setIsLoading(false);
     }
+  }; 
+
+  const addMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        //"http://127.0.0.1:5000/api/manager/add_menu_item",
+        'https://pos-backend-3c6o.onrender.com/api/manager/add_menu_item',
+        {
+          name: addMenuItemName,
+          price: addMenuItemPrice,
+        },
+        config
+      );
+      console.log(response.data);
+      // Optionally, fetch menu items again to update the list
+      fetchMenuItems();
+    } catch (error) {
+      console.error("Failed to add menu item:", error);
+    }
+  };
+
+  const deleteMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        //"http://127.0.0.1:5000/api/manager/delete_menu_item",
+        'https://pos-backend-3c6o.onrender.com/api/manager/delete_menu_item',
+        {
+          name: deleteMenuItemName,
+        },
+        config
+      );
+      console.log(response.data);
+      // Optionally, fetch menu items again to update the list
+      fetchMenuItems();
+    } catch (error) {
+      console.error("Failed to delete menu item:", error);
+    }
+  };
+
+  const changeMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        //"http://127.0.0.1:5000/api/manager/change_menu_item",
+        'https://pos-backend-3c6o.onrender.com/api/manager/change_menu_item',
+        {
+          name: changeMenuItemName,
+          price: changeMenuItemPrice,
+        },
+        config
+      );
+      console.log(response.data);
+      // Optionally, fetch menu items again to update the list
+      fetchMenuItems();
+    } catch (error) {
+      console.error("Failed to change menu item:", error);
+    }
   };
 
   // useEffect(() => {
@@ -51,6 +107,44 @@ const MenuComponent = () => {
   return (
     <div>
       <br />
+      <p>Add menu item</p>
+      <input
+        type="text"
+        placeholder="Enter item name"
+        onChange={(e) => setAddMenuItemName(e.target.value)}
+      />
+      <input
+        type="price"
+        placeholder="Enter price"
+        onChange={(e) => setAddMenuItemPrice(e.target.value)}
+      />
+      <button onClick={addMenuItem}>Add</button>
+
+      <br />
+      <br />
+      <p>Remove menu item</p>
+      <input
+        type="text"
+        placeholder="Enter item name"
+        onChange={(e) => setDeleteMenuItemName(e.target.value)}
+      />
+      <button onClick={deleteMenuItem}>Remove</button>
+
+      <br />
+      <br />
+      <p>Change menu item price</p>
+      <input
+        type="text"
+        placeholder="Enter item name"
+        onChange={(e) => setChangeMenuItemName(e.target.value)}
+      />
+      <input
+        type="price"
+        placeholder="Enter price"
+        onChange={(e) => setChangeMenuItemPrice(e.target.value)}
+      />
+      <button onClick={changeMenuItem}>Change</button>
+      <br /> <br />
       <button
         onClick={fetchMenuItems}
         disabled={isLoading}
@@ -82,45 +176,6 @@ const MenuComponent = () => {
         </div>
       )}
 
-      <p>Add menu item</p>
-      <input
-        type="text"
-        placeholder="Enter item name"
-        onChange={(e) => setAddMenuItemName(e.target.value)}
-      />
-      <input
-        type="price"
-        placeholder="Enter price"
-        onChange={(e) => setAddMenuItemPrice(e.target.value)}
-      />
-      <button>Add</button>
-
-      <br />
-      <br />
-      <br />
-      <p>Remove menu item</p>
-      <input
-        type="text"
-        placeholder="Enter item name"
-        onChange={(e) => setDeleteMenuItemName(e.target.value)}
-      />
-      <button>Remove</button>
-
-      <br />
-      <br />
-      <br />
-      <p>Change menu item price</p>
-      <input
-        type="text"
-        placeholder="Enter item name"
-        onChange={(e) => setChangeMenuItemName(e.target.value)}
-      />
-      <input
-        type="price"
-        placeholder="Enter price"
-        onChange={(e) => setChangeMenuItemPrice(e.target.value)}
-      />
-      <button>Change</button>
     </div>
   );
 };

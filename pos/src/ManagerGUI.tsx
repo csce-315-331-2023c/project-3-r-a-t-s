@@ -106,6 +106,7 @@ const ManagerGUI: React.FC = () => {
             // Convert dictionary to array of objects
             const pairsArray: PairData[] = Object.entries(response.data).map(([str_pair, count]) => ({str_pair,count: Number(count), }));
             // Set the state with the converted array
+            pairsArray.sort((a, b) => b.count - a.count);
             setPairs(pairsArray);
             console.log(pairsArray);
           } else {
@@ -118,27 +119,78 @@ const ManagerGUI: React.FC = () => {
     }
   }
 
-  const generateExcessReport = () => {
+  interface ExcessReportData {
+    ingredient_name: string;
+    amount_sold: number;
+    current_quantity: number;
+  }
+  const [excessReport, setExcessReport] = useState<ExcessReportData[]>([]);
+  const generateExcessReport = async () => {
     // query for excess report data
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       console.log("Invalid Dates selected");
       return;
     }
-    else {
-      
-    }
-  }
+  
+    try {
+      //const response = await axios.post("http://127.0.0.1:5000/api/manager/get_excess_report", {
+      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_excess_report', {
 
-  const generateRestockReport = () => {
-    // query for restock report data
-    if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
-      console.log("Invalid Dates selected");
-      return;
+        startDate: report_start_date,
+        endDate: report_end_date,
+      });
+      setExcessReport(response.data.excess_report);
+      console.log('Successfully generated Excess Report');
+    } catch (error) {
+      console.error("Failed to fetch excess report:", error);
     }
-    else {
-      
-    }
+  };
+
+  interface RestockReportData {
+    // ingredient_id: number;
+    name: string;
+    quantity: number;
+    threshold: number;
   }
+  const [restockReport, setRestockReport] = useState<RestockReportData[]>([]);
+  // const generateRestockReport = () => {
+  //   // query for restock report data
+  //   if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
+  //     console.log("Invalid Dates selected");
+  //     return;
+  //   } else {
+  //     const requestDates = {
+  //       startDate: report_start_date,
+  //       endDate: report_end_date,
+  //     };
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     };
+  //     // Send Post request to Flask API
+  //     axios
+  //       .post('http://127.0.0.1:5000/api/manager_reports/get_restock_report', requestDates, config)
+  //       .post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_excess_report', requestDates, config)
+  //       .then((response) => {
+  //         setRestockReport(response.data.restock_report);
+  //         console.log('Successfully generated Restock Report');
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error with Restock Report:', error);
+  //       });
+  //   }
+  // };
+  const generateRestockReport = async () => {
+    try {
+      // const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_restock_report");
+      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_restock_report');
+      console.log(response.data);
+      setRestockReport(response.data.restock_report);
+    } catch (error) {
+      console.error("Failed to fetch Restock Report:", error);
+    }
+  };
 
   return(
     <div style={{ display: 'block', padding: 30}} className='manager'> 
@@ -228,13 +280,60 @@ const ManagerGUI: React.FC = () => {
             modal nested onOpen={generateExcessReport}>
             {
               // table goes here for Excess Report
+              <div style={{overflow: 'scroll', height: 750}}>
+                <br />
+                <table className="table table-striped w-100">
+                  <thead>
+                    <tr>
+                      <th>Ingredient Name</th>
+                      <th>Amount Sold</th>
+                      <th>Current Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {excessReport.map((item) => (
+                      <tr key={item.ingredient_name}>
+                        <td>{item.ingredient_name}</td>
+                        <td>{item.amount_sold}</td>
+                        <td>{item.current_quantity}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             }
         </Popup>
         <Popup trigger=
-            {<button className="btn btn-secondary"> Restock Report </button>} 
+            {<button className="btn btn-secondary"> Restock Report </button>}
             modal nested onOpen={generateRestockReport}>
             {
-              // table goes here for Restock Report
+              <div style={{overflow: 'scroll', height: 750}}>
+                <h2 style={{ textAlign: 'center' }}>
+                  <u>Restock Report</u>
+                </h2>
+                {restockReport && restockReport.length > 0 ? (
+                  <table className='table table-striped w-100'>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Threshold</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {restockReport.map((item) => (
+                        <tr>
+                          <td>{item.name}</td>
+                          <td>{item.quantity}</td>
+                          <td>{item.threshold}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p>No items to restock.</p>
+                )}
+              </div>
             }
         </Popup>
         </div>
