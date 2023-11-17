@@ -1,8 +1,14 @@
-import React, {useRef, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import axios from 'axios';
 import './OrderHistory.css';
 
 const EmployeeComponent: React.FC = () => {
+
+    useEffect(() => {
+        generate_employee_info();
+    }, []);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     interface EmployeeData {
         employee_id: number;
@@ -59,6 +65,7 @@ const EmployeeComponent: React.FC = () => {
 
     // Function to Generate Employees' Information
     const generate_employee_info = async () => {
+        setIsLoading(true);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -66,8 +73,8 @@ const EmployeeComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        //.post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
-        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
+        .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
             console.log(response.data); 
@@ -75,6 +82,7 @@ const EmployeeComponent: React.FC = () => {
         .catch((error) => {
             console.error('Error with Generating Employee Information:', error);
         });
+        setIsLoading(false);    
     };  
 
     //Function To Add Employee
@@ -123,13 +131,12 @@ const EmployeeComponent: React.FC = () => {
             <br />
             <div>   
                 <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-success">Add Employee</button>
-                <button onClick={() => generate_employee_info()} className="btn btn-secondary">View Employees</button>
                 <button onClick={() => setShowRemoveForm(!showRemoveForm)} className="btn btn-danger">Remove Employee</button>  
             </div>
 
             {showAddForm && (
                 <div>   
-                    <br />
+                    <br /> 
                     <h5>Add New Employee</h5>
                     <form onSubmit={handleAddSubmit}>
                         {inputEmployee.map((inputEmployeeInfo, i) => (
@@ -169,7 +176,7 @@ const EmployeeComponent: React.FC = () => {
                     </form>
                 </div>     
             )}
-            <br />
+            <br /> {isLoading ? "Loading...": ""}
             {!!employeeList.length && (
                     <div className="order-table-section">
                     <table className='table table-striped w-100'>

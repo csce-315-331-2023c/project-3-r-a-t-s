@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState} from 'react';
+
 import axios from "axios";
 
 interface Item {
@@ -10,6 +11,11 @@ interface Item {
 }
 
 const InventoryComponent = () => {
+
+  useEffect(() => {
+    fetchInventory();
+}, []);
+
   const starterInventory: Item[] = [
     { ingredient_id: 1, name: "Item A", price: 10, quantity: 10, unit: "kg" },
     { ingredient_id: 2, name: "Item B", price: 11, quantity: 5, unit: "pieces" },
@@ -87,8 +93,8 @@ const InventoryComponent = () => {
     setIsLoading(true);
     try {
       const response = await axios
-        //.get("http://127.0.0.1:5000/api/manager/get_inventory", config)
-        .get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
+        .get("http://127.0.0.1:5000/api/manager/get_inventory", config)
+        //.get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
         .then((response) => {
           // Handle the response from the Flask API
           console.log(response.data);
@@ -103,13 +109,9 @@ const InventoryComponent = () => {
   return (
     <div>
       <br />
-      <div>
+      <div >
         <button onClick={() => setShowAddForm(!showAddForm)} disabled={isLoading} className="btn btn-success">
           {"Add to Inventory"}
-        </button>
-        <button onClick={fetchInventory} disabled={isLoading} className="btn btn-secondary">
-          {isLoading ? "Loading..." : "View Inventory"}
-          {/* {inventoryData ? "Our Current Inventory:" : "View current inventory"} */}
         </button>
         <button onClick={() => setShowRemoveForm(!showRemoveForm)} disabled={isLoading} className="btn btn-danger">
         {"Remove from Inventory"}
@@ -118,7 +120,7 @@ const InventoryComponent = () => {
           {"Edit Quantity"}
         </button>
       </div>
-      <br />
+      <br /> {isLoading ? "Loading...": ""}
       {showRemoveForm && (
       <form onSubmit={(e) => {
         e.preventDefault();
