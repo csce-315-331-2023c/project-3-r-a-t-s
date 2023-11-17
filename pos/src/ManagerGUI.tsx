@@ -76,8 +76,8 @@ const ManagerGUI: React.FC = () => {
       };
       // Send a POST request to the Flask API
       axios
-        .post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
+        // .post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
         .then((response) => {
           
           setProductReport(response.data.report);
@@ -114,8 +114,8 @@ const ManagerGUI: React.FC = () => {
       };
       //Send Post rquest to Flask API
       axios
-        .post('http://127.0.0.1:5000/api/manager_reports/WhatSellsTogether', requestDates, config)
-        // .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/WhatSellsTogether`, requestDates, config)
+        // .post('http://127.0.0.1:5000/api/manager_reports/WhatSellsTogether', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/WhatSellsTogether`, requestDates, config)
         .then((response) => {
           // Check if response.data is an object (dictionary)
           if (typeof response.data === 'object') {
@@ -149,8 +149,8 @@ const ManagerGUI: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_excess_report", {
-      //const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_excess_report', {
+      // const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_excess_report", {
+      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_excess_report', {
 
         startDate: report_start_date,
         endDate: report_end_date,
@@ -177,8 +177,8 @@ const ManagerGUI: React.FC = () => {
     }
     
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_restock_report");
-      // const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_restock_report');
+      // const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_restock_report");
+      const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_restock_report');
       console.log(response.data);
       setRestockReport(response.data.restock_report);
     } catch (error) {

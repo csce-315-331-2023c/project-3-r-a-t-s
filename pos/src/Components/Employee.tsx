@@ -73,8 +73,8 @@ const EmployeeComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
+        // .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
             console.log(response.data); 

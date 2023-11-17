@@ -93,8 +93,8 @@ const InventoryComponent = () => {
     setIsLoading(true);
     try {
       const response = await axios
-        .get("http://127.0.0.1:5000/api/manager/get_inventory", config)
-        //.get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
+        // .get("http://127.0.0.1:5000/api/manager/get_inventory", config)
+        .get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
         .then((response) => {
           // Handle the response from the Flask API
           console.log(response.data);
