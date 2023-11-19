@@ -14,7 +14,9 @@ const InventoryComponent = () => {
 
   useEffect(() => {
     fetchInventory();
-}, []);
+  }, []);
+
+  const [query, setQuery] = useState(''); 
 
   const starterInventory: Item[] = [
     { ingredient_id: 1, name: "Item A", price: 10, quantity: 10, unit: "kg" },
@@ -46,7 +48,7 @@ const InventoryComponent = () => {
     try {
       //const response = await axios.post("http://127.0.0.1:5000/api/manager/add_inventory", formData);
       const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/add_inventory", formData);
-      console.log(response.data);
+      // console.log(response.data);
       // Optionally, fetch inventory again to update the list
       fetchInventory();
     } catch (error) {
@@ -63,7 +65,7 @@ const InventoryComponent = () => {
     try {
       //const response = await axios.post("http://127.0.0.1:5000/api/manager/remove_inventory", removeFormData, config);
       const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/remove_inventory", removeFormData, config);
-      console.log(response.data);
+      // console.log(response.data);
       fetchInventory(); 
     } catch (error) {
       console.error("Failed to remove from inventory:", error);
@@ -80,7 +82,7 @@ const InventoryComponent = () => {
     try {
       //const response = await axios.post("http://127.0.0.1:5000/api/manager/edit_inventory", editFormData, config);
       const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/edit_inventory", editFormData, config);
-      console.log(response.data);
+      // console.log(response.data);
       fetchInventory();
     } catch (error) {
       console.error("Failed to edit inventory:", error);
@@ -97,8 +99,9 @@ const InventoryComponent = () => {
         .get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
         .then((response) => {
           // Handle the response from the Flask API
-          console.log(response.data);
+          // console.log(response.data);
           setInventoryData(response.data.items);
+          console.log("Successfuly fetched Inventory");
         });
     } catch (error) {
       console.error("Failed to fetch inventory:", error);
@@ -119,6 +122,11 @@ const InventoryComponent = () => {
         <button onClick={() => setShowEditForm(!showEditForm)} disabled={isLoading} className="btn btn-primary">
           {"Edit Quantity"}
         </button>
+
+        <br /> <br />
+        <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+        placeholder='Search by Name...'/> </form>
+
       </div>
       <br /> {isLoading ? "Loading...": ""}
       {showRemoveForm && (
@@ -164,7 +172,10 @@ const InventoryComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {inventoryData.map((item) => (
+            {inventoryData
+            .filter((item) => { 
+              return query.toLowerCase() === '' ? item: item.name.toLowerCase().includes(query.toLowerCase())
+            }).map((item) => (
               <tr key={item.ingredient_id}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>

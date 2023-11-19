@@ -8,6 +8,9 @@ const EmployeeComponent: React.FC = () => {
         generate_employee_info();
     }, []);
 
+    const [query, setQuery] = useState(''); 
+
+
     const [isLoading, setIsLoading] = useState(false);
 
     interface EmployeeData {
@@ -77,7 +80,8 @@ const EmployeeComponent: React.FC = () => {
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
-            console.log(response.data); 
+            // console.log(response.data); 
+            console.log("Successfully generated Employee data");
         })
         .catch((error) => {
             console.error('Error with Generating Employee Information:', error);
@@ -133,6 +137,10 @@ const EmployeeComponent: React.FC = () => {
                 <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-success">Add Employee</button>
                 <button onClick={() => setShowRemoveForm(!showRemoveForm)} className="btn btn-danger">Remove Employee</button>  
             </div>
+
+            <br />
+            <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+            placeholder='Search by Employee Last Name...'/> </form>
 
             {showAddForm && (
                 <div>   
@@ -191,7 +199,9 @@ const EmployeeComponent: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {employeeList.map((employee: EmployeeData) => (
+                        {employeeList.filter((item) => { 
+                            return query.toLowerCase() === '' ? item: item.last_name.toLowerCase().includes(query.toLowerCase())
+                        }).map((employee: EmployeeData) => (
                         <tr key={employee.employee_id}>
                         <td>{employee.employee_id}</td>
                         <td>{employee.last_name}</td>

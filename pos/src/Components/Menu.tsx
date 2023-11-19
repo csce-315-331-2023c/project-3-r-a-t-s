@@ -9,6 +9,14 @@ interface MenuItem {
 }
 
 const MenuComponent = () => {
+
+  useEffect(() => {
+    fetchMenuItems();
+  }, []);
+
+  const [query, setQuery] = useState('');
+
+
   const [menuData, setMenuData] = useState<MenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +44,8 @@ const MenuComponent = () => {
       // );
       const response = await axios.get("https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items", config);
       setMenuData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
+      console.log("Successfully fetched Menu Items");
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch menu items:", error);
@@ -55,7 +64,7 @@ const MenuComponent = () => {
         },
         config
       );
-      console.log(response.data);
+      // console.log(response.data);
       // Optionally, fetch menu items again to update the list
       fetchMenuItems();
     } catch (error) {
@@ -108,6 +117,10 @@ const MenuComponent = () => {
     <div>
       <div>
         <br />
+        <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+          placeholder='Search by Menu Item Name...'/> </form>
+
+        <br />
         <p>Add menu item</p>
         <input
           type="text"
@@ -145,14 +158,8 @@ const MenuComponent = () => {
         <button onClick={changeMenuItem}>Change</button>
         <br /> <br />
       </div>
+
       <div>
-        <button
-          onClick={fetchMenuItems}
-          disabled={isLoading}
-          className="btn btn-secondary"
-        >
-          {isLoading ? "Loading..." : "View Menu"}
-        </button>
         {menuData.length > 0 && (
           <div>
             <br />
@@ -161,15 +168,17 @@ const MenuComponent = () => {
                 <tr>
                   <th>Menu Item</th>
                   <th>Price</th>
-                  <th>Ingredients</th> {/* New column header */}
+                  <th>Ingredients</th>
                 </tr>
               </thead>
               <tbody>
-                {menuData.map((item) => (
+                {menuData.filter((item) => { 
+                    return query.toLowerCase() === '' ? item: item.name.toLowerCase().includes(query.toLowerCase())
+                  }).map((item) => (
                   <tr key={item.menu_item_id}>
                     <td>{item.name}</td>
                     <td>{item.price.toFixed(2)}</td>
-                    <td>{item.ingredients.join(", ")}</td>{" "}
+                    <td>{item.ingredients.join(", ")}</td>
                   </tr>
                 ))}
               </tbody>
