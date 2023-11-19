@@ -13,10 +13,10 @@ const CashierGUI = () => {
     let curr_item = "";
     let curr_size = "";
     let curr_type = "";
-    let order_total = 0;
 
     const [order, setOrder] = useState<string[]>([]);
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+    const [price, setPrice] = useState(0);
 
     const makeorderitem = (temp : number, item : string) => {
         if (temp === 0) {
@@ -37,10 +37,12 @@ const CashierGUI = () => {
     const addorderitem = (item : string) => {
         if (item === "") {
             setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
+            updatePrice(curr_size + " " + curr_item + " " + curr_type);
             console.log("Added new order item:", item);
         }
         else {
             setOrder(order.concat(item)); 
+            updatePrice(item);
             console.log("Added new order item:", item);
         }
         curr_size = "";
@@ -74,7 +76,6 @@ const CashierGUI = () => {
     const addorder = () => {
         console.log("Paying for Order");
         console.table(order);
-        setOrder([]);
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
@@ -96,25 +97,43 @@ const CashierGUI = () => {
                 // Handle the response from the Flask API
                 console.log(response.data); 
                 if (response.data.message === "Order placed successfully (From Backend)") {
-                    // Order placed successfully 
-                    // console.log("Order placed :)"); 
-                    order_total = response.data.order_total;
-                    // TODO : Display confirmation message to user
                 } else {
-                    // Handle Errors
                     console.error("Unexpected response:", response.data);
                 }
             })
             .catch((error : AxiosError) => {
-                console.error(error); // Handle errors, e.g., show an error message to the user.
+                console.error(error); 
             });
+        setOrder([]);
+        setPrice(0);
     }
+
+    // Call to add price of a new Menu Item added to the order to the total order amount
+    const updatePrice = (item : string) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Client-Type': 'cashier'
+            },
+        };
+        axios
+          .post('http://127.0.0.1:5000/api/cashier/get_price', item, config)
+          // .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
+          .then((response) => {
+            console.log(response.data.price);
+            setPrice(price + parseFloat(response.data.price))
+          })
+          .catch((error) => {
+            console.error('Failed to get Price: ', error);
+          });
+      };    
 
     const removeAll = () => {
         for (var i = 0; i < order.length; i++) {
             order.pop();
         }
         setOrder([]);
+        setPrice(0);
         console.log("Removed All Order Items.");
     }
 
@@ -138,7 +157,7 @@ const CashierGUI = () => {
             <ul className='display-order'>
             {order.map((order, index) => <li key={index}>{order}</li>)}
             </ul>
-            <p className='order-total'>$ {order_total}</p>
+            <p className='order-total'>${price}</p>
             <button className='pay-button' onClick={addorder} > Pay </button>
             <button className='remove-button' onClick={removeAll}> Remove Items </button>
         </h2>
