@@ -1,0 +1,86 @@
+.order-table-section {
+    padding: 8px; 
+    max-height: 400px; 
+    overflow-y: auto; 
+}
+
+.add-icon { 
+    margin-bottom: 2px;
+    font-size: 20px; 
+    margin-right: 10px; 
+    color: white;
+}
+
+.add-container .add-row-btn{
+    background: rgb(74, 131, 61);
+    color: white;
+    border-radius: 5px;
+    font-size: 15px; 
+}
+
+.delete-btn {
+    background: rgba(58, 102, 189, 0.777);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 30px;
+    margin-right: 10px;
+    color: white;
+}
+
+.edit-btn {
+    background: rgb(184, 82, 82);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 30px;
+    color: white;
+}
+
+.delete-btn .edit-btn {
+    padding: 5px;
+}
+
+.submit-icon {
+    color: rgb(74, 131, 61);
+    font-size: 30px;
+    margin-right: 8px;
+}
+.cancel-icon {
+    color : rgb(184, 82, 82);
+    font-size: 35px;
+}
+
+.save-icon {
+    background: rgba(0, 0, 0, 0.777);
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 30px;
+    margin-left: 8px;
+}
+
+.Error-MangerID {
+    background-color: rgba(128, 128, 128, 0.308);
+    color : red;
+    border-radius: 10px;
+    display : block;
+    padding: 5px;
+    margin-top: 5px;
+    text-align: center;
+    width: 39%;
+}
+
+.Search-Container{
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size : 15px;
+}
+
+.formContainer {
+    margin-left: 5px;
+    border-radius: 2px;
+
+}
+

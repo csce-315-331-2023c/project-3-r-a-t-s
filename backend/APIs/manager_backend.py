@@ -169,7 +169,7 @@ def edit_inventory():
 @manager_BP.route('/get_employee_list', methods=['POST'])
 def get_employee_list():
 
-    employee_info_query = f"SELECT * FROM EMPLOYEE;"
+    employee_info_query = f"SELECT * FROM EMPLOYEE ORDER BY employee_id ASC;"
     # Execute the query and fetch the data
     try:
         conn = psycopg2.connect(**DB_PARAMS)
