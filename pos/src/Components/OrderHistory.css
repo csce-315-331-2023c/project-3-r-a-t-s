@@ -25,19 +25,3 @@ th {
 td {
     background-color: rgb(128, 136, 141);
 }
-
-.add-row-btn {
-    padding: 10;
-    align-items: center; 
-    width: 165px; 
-}
-
-.add-row-btn:focus {
-    outline: none;
-  }
-
-.add-icon { 
-    margin-bottom: 2px;
-    font-size: 20px; 
-    margin-right: 10px; 
-}
