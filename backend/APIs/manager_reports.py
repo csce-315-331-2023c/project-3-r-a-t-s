@@ -65,7 +65,7 @@ def get_product_report():
     start_date = data['startDate']
     end_date = data['endDate']
 
-    query = f"SELECT MENU_ITEMS.menu_item_name, COUNT(*) AS menu_items FROM ORDERS JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id WHERE ORDERS.date >= '{start_date}' AND ORDERS.date <= '{end_date}' GROUP BY MENU_ITEMS.menu_item_name;"
+    query = f"SELECT MENU_ITEMS.menu_item_name, COUNT(*) AS menu_items FROM ORDERS JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id WHERE ORDERS.date >= '{start_date}' AND ORDERS.date <= '{end_date}' GROUP BY MENU_ITEMS.menu_item_name ORDER BY menu_items DESC;"
     
     try:
         conn = psycopg2.connect(**DB_PARAMS)

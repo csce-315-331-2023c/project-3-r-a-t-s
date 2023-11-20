@@ -7,6 +7,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const EmployeeComponent: React.FC = () => {
 
+    useEffect(() => {
+        generate_employee_info();
+    }, []);
+
+    const [query, setQuery] = useState(''); 
+
+
+    const [isLoading, setIsLoading] = useState(false);
+
     interface EmployeeData {
         employee_id: number;
         last_name: string;
@@ -52,6 +61,7 @@ const EmployeeComponent: React.FC = () => {
 
     // Function to Generate Employees' Information
     const generate_employee_info = async () => {
+        setIsLoading(true);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -63,11 +73,13 @@ const EmployeeComponent: React.FC = () => {
         //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
-            console.log(response.data); 
+            // console.log(response.data); 
+            console.log("Successfully generated Employee data");
         })
         .catch((error) => {
             console.error('Error with Generating Employee Information:', error);
         });
+        setIsLoading(false);    
     };  
 
     //Function To Add Employee
@@ -223,6 +235,60 @@ const EmployeeComponent: React.FC = () => {
     
     return (
         <div>     
+        <div> 
+            <br />
+            <div>   
+                <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-success">Add Employee</button>
+                <button onClick={() => setShowRemoveForm(!showRemoveForm)} className="btn btn-danger">Remove Employee</button>  
+            </div>
+
+            <br />
+            <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+            placeholder='Search by Employee Last Name...'/> </form>
+
+            {showAddForm && (
+                <div>   
+                    <br /> 
+                    <h5>Add New Employee</h5>
+                    <form onSubmit={handleAddSubmit}>
+                        {inputEmployee.map((inputEmployeeInfo, i) => (
+                        <div key={i}>
+                            <input name="FirstName" placeholder="First Name" value={inputEmployeeInfo.FirstName} onChange={(e) => handleAddInput(e,i)} required />
+                            <input name="LastName" placeholder="Last Name" value={inputEmployeeInfo.LastName} onChange={(e) => handleAddInput(e,i)} required/>
+                            <input name="Salary" placeholder="Salary" value={inputEmployeeInfo.Salary} onChange={(e) => handleAddInput(e,i)} required/>
+                            <input name="Hours" placeholder="Hours Per Week" value={inputEmployeeInfo.Hours} onChange={(e) => handleAddInput(e,i)} required />
+                            <input name="ManagerID" placeholder="Manager ID" value={inputEmployeeInfo.ManagerID} onChange={(e) => handleAddInput(e,i)} required/>
+                            {/* <TextField
+                                name="ManagerID"
+                                label="Manager ID"
+                                variant="filled"
+                                value={inputEmployeeInfo.ManagerID}
+                                onChange = {event => handleChangeInput(index, event)}
+                            /> */}
+                        </div>
+                        ))}
+                        <br />
+                        <button type="submit" className="btn btn-secondary">Add Employee</button>
+                    </form>
+                </div> 
+            )}
+
+            {showRemoveForm && (
+                <div>
+                    <br />
+                    <h5>Remove Employee</h5>
+                    <form onSubmit={handleRemoveSubmit}>
+                        {removeEmployee.map((removeEmployeeInfo, i) => (
+                        <div key={i}>    
+                            <input name="EmployeeID" placeholder="Employee ID" value={removeEmployeeInfo.EmployeeID} onChange={(e) => handleRemoveInput(e,i)} required/>
+                        </div>
+                        ))}
+                        <br />
+                        <button type="submit" className="btn btn-secondary">Remove Employee</button>
+                    </form>
+                </div>     
+            )}
+            <br /> {isLoading ? "Loading...": ""}
             {!!employeeList.length && (
                     <div className="order-table-section">
                     <table className='table table-striped w-100'>
@@ -238,7 +304,9 @@ const EmployeeComponent: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {employeeList.map((employee: EmployeeData) => (
+                        {employeeList.filter((item) => { 
+                            return query.toLowerCase() === '' ? item: item.last_name.toLowerCase().includes(query.toLowerCase())
+                        }).map((employee: EmployeeData) => (
                         <tr key={employee.employee_id}>
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} /> : employee.last_name}</td>
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} /> : employee.first_name}</td>

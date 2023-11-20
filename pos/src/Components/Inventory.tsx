@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState} from 'react';
+
 import axios from "axios";
 
 interface Item {
@@ -10,6 +11,13 @@ interface Item {
 }
 
 const InventoryComponent = () => {
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+  const [query, setQuery] = useState(''); 
+
   const starterInventory: Item[] = [
     { ingredient_id: 1, name: "Item A", price: 10, quantity: 10, unit: "kg" },
     { ingredient_id: 2, name: "Item B", price: 11, quantity: 5, unit: "pieces" },
@@ -40,7 +48,7 @@ const InventoryComponent = () => {
     try {
       //const response = await axios.post("http://127.0.0.1:5000/api/manager/add_inventory", formData);
       const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/add_inventory", formData);
-      console.log(response.data);
+      // console.log(response.data);
       // Optionally, fetch inventory again to update the list
       fetchInventory();
     } catch (error) {
@@ -57,7 +65,7 @@ const InventoryComponent = () => {
     try {
       //const response = await axios.post("http://127.0.0.1:5000/api/manager/remove_inventory", removeFormData, config);
       const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/remove_inventory", removeFormData, config);
-      console.log(response.data);
+      // console.log(response.data);
       fetchInventory(); 
     } catch (error) {
       console.error("Failed to remove from inventory:", error);
@@ -74,7 +82,7 @@ const InventoryComponent = () => {
     try {
       //const response = await axios.post("http://127.0.0.1:5000/api/manager/edit_inventory", editFormData, config);
       const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/edit_inventory", editFormData, config);
-      console.log(response.data);
+      // console.log(response.data);
       fetchInventory();
     } catch (error) {
       console.error("Failed to edit inventory:", error);
@@ -87,12 +95,13 @@ const InventoryComponent = () => {
     setIsLoading(true);
     try {
       const response = await axios
-        //.get("http://127.0.0.1:5000/api/manager/get_inventory", config)
+        // .get("http://127.0.0.1:5000/api/manager/get_inventory", config)
         .get("https://pos-backend-3c6o.onrender.com/api/manager/get_inventory", config)
         .then((response) => {
           // Handle the response from the Flask API
-          console.log(response.data);
+          // console.log(response.data);
           setInventoryData(response.data.items);
+          console.log("Successfuly fetched Inventory");
         });
     } catch (error) {
       console.error("Failed to fetch inventory:", error);
@@ -103,13 +112,9 @@ const InventoryComponent = () => {
   return (
     <div>
       <br />
-      <div>
+      <div >
         <button onClick={() => setShowAddForm(!showAddForm)} disabled={isLoading} className="btn btn-success">
           {"Add to Inventory"}
-        </button>
-        <button onClick={fetchInventory} disabled={isLoading} className="btn btn-secondary">
-          {isLoading ? "Loading..." : "View Inventory"}
-          {/* {inventoryData ? "Our Current Inventory:" : "View current inventory"} */}
         </button>
         <button onClick={() => setShowRemoveForm(!showRemoveForm)} disabled={isLoading} className="btn btn-danger">
         {"Remove from Inventory"}
@@ -117,8 +122,13 @@ const InventoryComponent = () => {
         <button onClick={() => setShowEditForm(!showEditForm)} disabled={isLoading} className="btn btn-primary">
           {"Edit Quantity"}
         </button>
+
+        <br /> <br />
+        <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+        placeholder='Search by Name...'/> </form>
+
       </div>
-      <br />
+      <br /> {isLoading ? "Loading...": ""}
       {showRemoveForm && (
       <form onSubmit={(e) => {
         e.preventDefault();
@@ -162,7 +172,10 @@ const InventoryComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {inventoryData.map((item) => (
+            {inventoryData
+            .filter((item) => { 
+              return query.toLowerCase() === '' ? item: item.name.toLowerCase().includes(query.toLowerCase())
+            }).map((item) => (
               <tr key={item.ingredient_id}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
