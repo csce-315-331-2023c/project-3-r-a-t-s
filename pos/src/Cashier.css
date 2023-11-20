@@ -1,24 +1,26 @@
 .Cashier {
     text-align: center;
     vertical-align: middle;
-    background-color: rgba(23, 20, 20);
+    background-color: rgb(31, 27, 27);
     font-family:'Times New Roman', Times, serif;
 }
 
 .header {
     display: fixed;
     width: 100%;
-    height: 200px;
+    height: 20vh;
     border: 20px solid rgb(0, 0, 0);
+    background-image: url("Images/watercolor-paper-texture.jpg");
     background-color: rgba(23, 20, 20);
 }
 
 .back-button {
     display: inline-block;
     font-size: 50px;
-    background-color: rgba(23, 20, 20, 0);
+    background-color: rgba(23, 20, 20);
     color: white;
-    margin: 0px 200px 0px 0px;
+    vertical-align: middle;
+    margin: 0px 100px 50px 0px;
 }
 
 .piada {
@@ -27,7 +29,6 @@
     font-weight: bold;
     font-size: 100px;
     font-weight: bold;
-    background-color: rgba(23, 20, 20, 0);
     color: white;
     padding: 0px 50px 0px 0px;
 }
@@ -45,16 +46,15 @@
     width: 250px;
     justify-content: center;
     flex-direction: column;
-    margin-left: 30px;
+    margin-left: 20px;
     margin-top: 20px;
   }
 
 .main-panel {
     border: 20px solid rgb(0, 0, 0);
-    background-color: rgba(23, 20, 20, 0);
     display: flex;
     justify-content: center;
-    height: fit-content;
+    height: 80vh;
 }
 
 .main-buttons   {
@@ -64,26 +64,24 @@
     font-weight: bold;
     text-align: center;
     font-size: 25px;
-    height: 110px;  
-    width: 100%;
+    height: 15vh;  
+    width: 200px;
     margin-bottom: 20px;
-    margin-left: 10px;
 }
 
 .order-panel {
     color: white;
-    display: flex;
-    width: 350px;
-    justify-content: center;
+    float: right;
+    width: 400px;
+    background-image: url("Images/watercolor-paper-texture.jpg");
+    background-color: rgba(23, 20, 20);
+    height: 100vh;
     flex-direction: column;
-    margin-left: 50px;
-    border-right: 20px solid rgb(0, 0, 0);
-    border-left: 20px solid rgb(0, 0, 0);
-    border-bottom: 20px solid rgb(0, 0, 0);
+    border: 20px solid rgb(0, 0, 0);
 }
 
 .pay-button {
-    color: black;
+    color: rgb(0, 0, 0);
     font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     font-weight: bold;
@@ -112,10 +110,12 @@
 }
 
 .display-order {
+    background-color: whitesmoke;
     font-size: 25px;
-    height: 400px;
+    height: 70vh;
     text-align: left;
     overflow: scroll;
+    margin-bottom: 20px;
 }
 
 .add-to-order {
@@ -146,7 +146,15 @@
     vertical-align: middle;
 }
 
-.other-pop-up {
-    
+.other-buttons {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+    width: 200px;
+    height: 100px;
+    margin: 5px 5px 5px 5px;
 }
 
