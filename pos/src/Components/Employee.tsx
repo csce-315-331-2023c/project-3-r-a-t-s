@@ -207,14 +207,9 @@ const EmployeeComponent: React.FC = () => {
 
         try {
             await update_employee(employeeId);
-
-            const index = employeeList.findIndex((employee) => employee.employee_id === employeeId);
-            console.log('Previous Employee List:', employeeList);
-                        
+     
             await generate_employee_info();
             
-            console.log('Updated Employee List:', employeeList);
-
             setEditedData({
             LastName: '',
             FirstName: '',
@@ -227,14 +222,8 @@ const EmployeeComponent: React.FC = () => {
             console.error('Error with Updating Employee:', error);
         }
     };
-
-    useEffect(() => {
-        // Call the function to generate employee info when the component mounts
-        generate_employee_info();
-    }, []); // Empty dependency array ensures it runs only once, similar to componentDidMount
     
     return (
-        <div>     
         <div> 
             <br />
             <div>   
@@ -246,48 +235,6 @@ const EmployeeComponent: React.FC = () => {
             <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
             placeholder='Search by Employee Last Name...'/> </form>
 
-            {showAddForm && (
-                <div>   
-                    <br /> 
-                    <h5>Add New Employee</h5>
-                    <form onSubmit={handleAddSubmit}>
-                        {inputEmployee.map((inputEmployeeInfo, i) => (
-                        <div key={i}>
-                            <input name="FirstName" placeholder="First Name" value={inputEmployeeInfo.FirstName} onChange={(e) => handleAddInput(e,i)} required />
-                            <input name="LastName" placeholder="Last Name" value={inputEmployeeInfo.LastName} onChange={(e) => handleAddInput(e,i)} required/>
-                            <input name="Salary" placeholder="Salary" value={inputEmployeeInfo.Salary} onChange={(e) => handleAddInput(e,i)} required/>
-                            <input name="Hours" placeholder="Hours Per Week" value={inputEmployeeInfo.Hours} onChange={(e) => handleAddInput(e,i)} required />
-                            <input name="ManagerID" placeholder="Manager ID" value={inputEmployeeInfo.ManagerID} onChange={(e) => handleAddInput(e,i)} required/>
-                            {/* <TextField
-                                name="ManagerID"
-                                label="Manager ID"
-                                variant="filled"
-                                value={inputEmployeeInfo.ManagerID}
-                                onChange = {event => handleChangeInput(index, event)}
-                            /> */}
-                        </div>
-                        ))}
-                        <br />
-                        <button type="submit" className="btn btn-secondary">Add Employee</button>
-                    </form>
-                </div> 
-            )}
-
-            {showRemoveForm && (
-                <div>
-                    <br />
-                    <h5>Remove Employee</h5>
-                    <form onSubmit={handleRemoveSubmit}>
-                        {removeEmployee.map((removeEmployeeInfo, i) => (
-                        <div key={i}>    
-                            <input name="EmployeeID" placeholder="Employee ID" value={removeEmployeeInfo.EmployeeID} onChange={(e) => handleRemoveInput(e,i)} required/>
-                        </div>
-                        ))}
-                        <br />
-                        <button type="submit" className="btn btn-secondary">Remove Employee</button>
-                    </form>
-                </div>     
-            )}
             <br /> {isLoading ? "Loading...": ""}
             {!!employeeList.length && (
                     <div className="order-table-section">
