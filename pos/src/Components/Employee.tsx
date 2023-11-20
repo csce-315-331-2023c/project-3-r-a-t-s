@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './OrderHistory.css';
 import { BsFillTrashFill, BsFillPencilFill} from 'react-icons/bs';
@@ -12,7 +12,6 @@ const EmployeeComponent: React.FC = () => {
     }, []);
 
     const [query, setQuery] = useState(''); 
-
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -225,13 +224,6 @@ const EmployeeComponent: React.FC = () => {
     
     return (
         <div> 
-            <br />
-            <div>   
-                <button onClick={() => setShowAddForm(!showAddForm)} className="btn btn-success">Add Employee</button>
-                <button onClick={() => setShowRemoveForm(!showRemoveForm)} className="btn btn-danger">Remove Employee</button>  
-            </div>
-
-            <br />
             <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
             placeholder='Search by Employee Last Name...'/> </form>
 
