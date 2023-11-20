@@ -198,21 +198,36 @@ def get_employee_list():
     
 @manager_BP.route('/add_employee', methods=['POST'])
 def add_employee():
-    employee = request.get_json()
+    employee_data = request.get_json()
 
-    employee_data = employee[0]
     last_name = employee_data['LastName']
     first_name = employee_data['FirstName']
     salary  = employee_data['Salary']
     hours_per_week  = employee_data['Hours']
     manager_id  = employee_data['ManagerID']
 
-    add_employee_query = f"INSERT INTO EMPLOYEE(last_name, first_name, salary, hours_per_week, manager_id) VALUES (%s, %s, %s, %s, %s);"
+    max_employee_query = f"SELECT MAX(employee_id) FROM EMPLOYEE;"
+    manager_count_query = f"SELECT manager_id FROM MANAGER;"
+    add_employee_query = f"INSERT INTO EMPLOYEE(employee_id, last_name, first_name, salary, hours_per_week, manager_id) VALUES (%s, %s, %s, %s, %s, %s);"
     # Execute the query
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(add_employee_query, (last_name, first_name, salary, hours_per_week, manager_id,))
+
+        #Get Next Available Employee ID
+        cursor.execute(max_employee_query)
+        employee_max = cursor.fetchone()
+        employee_id = int(employee_max[0]) + 1
+
+        #Check if ManagerID is within range
+        cursor.execute(manager_count_query)
+        manager_ids = [id[0] for id in cursor.fetchall()]
+
+        if str(manager_id) not in map(str, manager_ids):
+            conn.close()
+            return jsonify({'error': 'ManagerID out of range', 'available_manager_ids': manager_ids})
+
+        cursor.execute(add_employee_query, (employee_id, last_name, first_name, salary, hours_per_week, manager_id,))
         conn.commit()
         conn.close()
         return jsonify("Employee Added (From Backend)")
@@ -223,17 +238,14 @@ def add_employee():
 
 @manager_BP.route('/remove_employee', methods=['POST'])
 def remove_employee():
-    employee = request.get_json()
+    employee_id = request.get_json()
 
-    employee_data = employee[0]
-    employee_id = employee_data['EmployeeID']
-
-    add_employee_query = f"DELETE FROM EMPLOYEE where employee_id = %s;"
+    remove_employee_query = f"DELETE FROM EMPLOYEE where employee_id = %s;"
     # Execute the query
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(add_employee_query, (employee_id,))
+        cursor.execute(remove_employee_query, (employee_id,))
         conn.commit()
         conn.close()
         return jsonify("Employee Removed (From Backend)")
@@ -241,6 +253,32 @@ def remove_employee():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to Remove Employee'}), 500
+
+@manager_BP.route('/update_employee', methods=['POST'])
+def update_employee():
+    employee_data = request.get_json()
+    if not employee_data:
+        return jsonify({'error': 'Invalid JSON format'}), 400
+
+    employee_id = employee_data['employee_id']
+    last_name = employee_data['LastName']
+    first_name = employee_data['FirstName']
+    salary  = employee_data['Salary']
+    hours_per_week  = employee_data['Hours']
+    manager_id  = employee_data['ManagerID']
+
+    update_query = """UPDATE EMPLOYEE SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, manager_id = %s WHERE employee_id = %s;"""
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, manager_id, employee_id, ))
+        conn.commit()
+        conn.close()
+        return jsonify("Employee Added (From Backend)")
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Add Employee'}), 500
 
 @manager_BP.route('/get_menu_items', methods=['GET'])
 def get_menu_items():
