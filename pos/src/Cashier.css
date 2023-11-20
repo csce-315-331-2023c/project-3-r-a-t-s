@@ -1,25 +1,26 @@
 .Cashier {
     text-align: center;
     vertical-align: middle;
-    background-color: rgba(23, 20, 20);
+    background-color: rgb(31, 27, 27);
     font-family:'Times New Roman', Times, serif;
 }
 
 .header {
     display: fixed;
-    width: 1400px;
-    height: 200px;
+    width: 100%;
+    height: 20vh;
     border: 20px solid rgb(0, 0, 0);
+    background-image: url("Images/watercolor-paper-texture.jpg");
     background-color: rgba(23, 20, 20);
-    margin-left: 50px;
 }
 
 .back-button {
     display: inline-block;
     font-size: 50px;
-    background-color: rgba(23, 20, 20, 0);
+    background-color: rgba(23, 20, 20);
     color: white;
-    margin: 0px 200px 0px 0px;
+    vertical-align: middle;
+    margin: 0px 100px 50px 0px;
 }
 
 .piada {
@@ -28,7 +29,6 @@
     font-weight: bold;
     font-size: 100px;
     font-weight: bold;
-    background-color: rgba(23, 20, 20, 0);
     color: white;
     padding: 0px 50px 0px 0px;
 }
@@ -46,15 +46,15 @@
     width: 250px;
     justify-content: center;
     flex-direction: column;
-    margin-left: 50px;
+    margin-left: 20px;
+    margin-top: 20px;
   }
 
 .main-panel {
-    background-color: rgba(23, 20, 20, 0);
+    border: 20px solid rgb(0, 0, 0);
     display: flex;
     justify-content: center;
-    margin-left: -400px;
-    height: 650px;
+    height: 80vh;
 }
 
 .main-buttons   {
@@ -64,31 +64,29 @@
     font-weight: bold;
     text-align: center;
     font-size: 25px;
-    height: 113px;  
-    width: 100%;
+    height: 15vh;  
+    width: 200px;
     margin-bottom: 20px;
-    margin-left: 10px;
 }
 
 .order-panel {
-    width: 250px;
-    height: 600px;
-    border: 20px solid rgb(0, 0, 0);
-    display: inline-block;
-    position: fixed;
     color: white;
-    margin: 0px 0px 0px 440px;
+    float: right;
+    width: 400px;
+    background-image: url("Images/watercolor-paper-texture.jpg");
+    background-color: rgba(23, 20, 20);
+    height: 100vh;
+    flex-direction: column;
+    border: 20px solid rgb(0, 0, 0);
 }
 
 .pay-button {
-    color: black;
+    color: rgb(0, 0, 0);
     font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     font-weight: bold;
     text-align: center;
     font-size: 50px;
-    height: 100px;  
-    width: 200px;
     padding: 20px 20px 20px 20px;
 }
 
@@ -112,11 +110,12 @@
 }
 
 .display-order {
-    font-size: 20px;
-    width: auto;
-    height: 250px;
+    background-color: whitesmoke;
+    font-size: 25px;
+    height: 70vh;
     text-align: left;
-
+    overflow: scroll;
+    margin-bottom: 20px;
 }
 
 .add-to-order {
@@ -127,7 +126,6 @@
     font-weight: bold;
     text-align: center;
     padding: 20px 25px 20px 25px;
-    margin: 0px 0px 5px 20px;
 }
 
 .basic-option-buttons {
@@ -139,13 +137,24 @@
     font-size: 15px;
     width: 75px;
     height: 50px;
-    margin: 10px 10px 10px 10px;
+    margin: 2px 2px 2px 2px;
 }
 
 .basic-pop-up {
     border: 5px solid rgb(0, 0, 0);
+    text-align: center;
+    vertical-align: middle;
 }
 
-.sub-menu-panel {
-    
+.other-buttons {
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+    width: 200px;
+    height: 100px;
+    margin: 5px 5px 5px 5px;
 }
+

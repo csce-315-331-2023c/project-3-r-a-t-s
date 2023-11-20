@@ -111,3 +111,22 @@ def place_order():
         return jsonify({"error": str(e)})
 
 # Add other routes below
+
+@cashier_BP.route('/get_price', methods=['POST'])
+def get_price():
+    menu_item = request.get_json()
+
+    query = "SELECT price FROM menu_items WHERE menu_item_name='" + menu_item + "';"
+    
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute(query)
+        price = cursor.fetchall()
+
+        return jsonify({"price": price})
+
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
