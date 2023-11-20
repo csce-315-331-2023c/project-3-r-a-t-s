@@ -51,6 +51,7 @@ const CashierGUI = () => {
         curr_item = "";
         curr_type = "";
     }
+
     // Add Custom Item to Order Array
     const addBYOToOrder = (item : string) => {  
         if (item === "") {
@@ -61,6 +62,10 @@ const CashierGUI = () => {
             setOrder(order.concat(item)); 
             console.log("Added new order item:", item);
         }
+        curr_size = "";
+        curr_item = "";
+        curr_type = "";
+
         let ingredients = "";
         if (selectedIngredients.length > 0) {
             ingredients += `${selectedIngredients.join(', ')}`;
@@ -79,6 +84,8 @@ const CashierGUI = () => {
     const addorder = () => {
         console.log("Paying for Order");
         console.table(order);
+        console.table(selectedIngredients);
+        setOrder([]);
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
