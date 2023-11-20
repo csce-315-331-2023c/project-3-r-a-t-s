@@ -16,7 +16,7 @@ const CashierGUI = () => {
 
     const [order, setOrder] = useState<string[]>([]);
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-    const [price, setPrice] = useState(0);
+    const [prices, setPrices] = useState<number[]>([]);
 
     const makeorderitem = (temp : number, item : string) => {
         if (temp === 0) {
@@ -37,8 +37,8 @@ const CashierGUI = () => {
     const addorderitem = (item : string) => {
         if (item === "") {
             setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
-            updatePrice(curr_size + " " + curr_item + " " + curr_type);
-            console.log("Added new order item:", item);
+            updatePrice((curr_size + " " + curr_item + " " + curr_type).trim());
+            console.log("Added new order item:", curr_size + " " + curr_item + " " + curr_type);
         }
         else {
             setOrder(order.concat(item)); 
@@ -105,7 +105,7 @@ const CashierGUI = () => {
                 console.error(error); 
             });
         setOrder([]);
-        setPrice(0);
+        setPrices([]);
     }
 
     // Call to add price of a new Menu Item added to the order to the total order amount
@@ -121,7 +121,7 @@ const CashierGUI = () => {
           // .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
           .then((response) => {
             console.log(response.data.price);
-            setPrice(price + parseFloat(response.data.price))
+            setPrices([...prices,parseFloat(response.data.price)]);
           })
           .catch((error) => {
             console.error('Failed to get Price: ', error);
@@ -133,7 +133,7 @@ const CashierGUI = () => {
             order.pop();
         }
         setOrder([]);
-        setPrice(0);
+        setPrices([]);
         console.log("Removed All Order Items.");
     }
 
@@ -153,15 +153,6 @@ const CashierGUI = () => {
             <p className='street-food'> Italian Street Food</p>
         </header>
         
-        <h2 className='order-panel'> <br /> <u>Current Order:</u>
-            <ul className='display-order'>
-            {order.map((order, index) => <li key={index}>{order}</li>)}
-            </ul>
-            <p className='order-total'>${price}</p>
-            <button className='pay-button' onClick={addorder} > Pay </button>
-            <button className='remove-button' onClick={removeAll}> Remove Items </button>
-        </h2>
-        
         <div className='main-panel'>
         <h3 className='column'> Pasta:
         <p> 
@@ -174,7 +165,7 @@ const CashierGUI = () => {
             <br />
             <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")}> Penne </button>
             <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
          </p>
         </Popup>
@@ -188,7 +179,7 @@ const CashierGUI = () => {
             <br />
             <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
             <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
         </Popup>
@@ -202,7 +193,7 @@ const CashierGUI = () => {
             <br />
             <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
             <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
         </Popup>
@@ -216,7 +207,7 @@ const CashierGUI = () => {
             <br />
             <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
             <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
         </Popup>
@@ -240,7 +231,7 @@ const CashierGUI = () => {
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
           </Popup>
@@ -251,7 +242,7 @@ const CashierGUI = () => {
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
           </Popup>
@@ -262,7 +253,7 @@ const CashierGUI = () => {
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
-            <br /> <br />
+            <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
           </Popup>
@@ -278,7 +269,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Build Your Own </button>} 
             modal nested>
             {
-                <p>
+                <p className='basic-pop-up'>
                 <h2> Build Your Own</h2>
 
                 <Popup trigger=
@@ -360,7 +351,7 @@ const CashierGUI = () => {
                         <h2> Custom Piada </h2>
                         <h3> 
                             Protein: 
-                            <p>
+                            <p >
                                 <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
                                 <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
                                 <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
@@ -488,9 +479,9 @@ const CashierGUI = () => {
             modal nested>
             {
               <div>
-                <h2> Street Sides</h2>
-              <p>
-                <button onClick={() => addorderitem("Sweet Corn Salad")}> Sweet Corn Salad </button>
+                <h2 className='basic-pop-up'> Street Sides
+                <p>
+                <button onClick={() => addorderitem("Sweet Corn Salad")} className=''> Sweet Corn Salad </button>
                 <button onClick={() => addorderitem("Garlic Dough")}> Garlic Dough </button>
                 <button onClick={() => addorderitem("Meatballs")}> Meatballs </button>
                 <button onClick={() => addorderitem("Pepperoni Piada Stick")}> Pepperoni Piada Stick </button>
@@ -504,6 +495,7 @@ const CashierGUI = () => {
                   <br /> <br />
               </Popup>
               </p>
+              </h2>
               </div>
                 
             }
@@ -513,7 +505,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Drinks </button>} 
             modal nested>
             {
-                <div>
+                <div className='basic-pop-up'>
                 <h2> Drinks </h2>
                 <p>
                 <button onClick={() => addorderitem("Blackberry Hibiscus Lemonade")}> Blackberry Hibiscus Lemonade </button>
@@ -540,7 +532,7 @@ const CashierGUI = () => {
             {<button className='main-buttons'> Kids </button>} 
             modal nested>
             {
-                <div>
+                <div className='basic-pop-up'>
                     <h2> Kids Menu </h2>
                     <Popup trigger=
                     {<button> Kids Pasta  </button>}
@@ -575,6 +567,24 @@ const CashierGUI = () => {
         </Popup>
       </p>
       </h3>
+      <h2 className='order-panel'>
+        <div className="display-order">
+            <table className="table table-dark">
+                <tbody>
+                  {order.map((order, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{order}</td>
+                      <td>{prices.at(index)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
+            <button className='pay-button' onClick={addorder} > <u>Pay</u>: 
+            ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
+            <button className='remove-button' onClick={removeAll}> Remove Items </button>
+        </h2> 
       </div>
     </div>
   );
