@@ -118,8 +118,8 @@ const CustomerGUI = () => {
             },
         };
         axios
-          .post('http://127.0.0.1:5000/api/cashier/get_price', item, config)
-          // .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
+        //   .post('http://127.0.0.1:5000/api/cashier/get_price', item, config)
+          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, item, config)
           .then((response) => {
             console.log(response.data.price);
             setPrices([...prices,parseFloat(response.data.price)]);
