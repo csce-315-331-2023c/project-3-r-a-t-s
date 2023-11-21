@@ -340,7 +340,7 @@ const ManagerGUI: React.FC = () => {
 
             <div className='Search-Container'>
               Search: <form> <input className='searchForm'style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-              placeholder='Report Name...'/> </form>
+              placeholder='Name...'/> </form>
             </div>
             <br />
             
