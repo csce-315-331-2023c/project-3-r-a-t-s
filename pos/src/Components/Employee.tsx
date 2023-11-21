@@ -20,12 +20,9 @@ interface PopupProps {
   const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
       <div className="EmployeeDeletePopup">
-        <AiOutlineCloseSquare className="EmployeePopupClose" onClick={onCancel} />
-        <div className="EmployeeDeletePopup-Content">
           <p>{message}</p>
-          <button className="ConfirmEmployeeDelete-btn" onClick={onConfirm}>Yes</button>
-          <button className="ConfirmEmployeeDelete-btn" onClick={onCancel}>No</button>
-        </div>
+          <button className="ConfirmEmployeeDelete-btn" onClick={onConfirm}>Delete</button>
+          <button className="CancelmployeeDelete-btn" onClick={onCancel}>Cancel</button>
       </div>
     );
   };
@@ -122,9 +119,6 @@ const EmployeeComponent: React.FC = () => {
         .catch((error) => {
             console.error('Error with Generating Employee Information:', error);
         })
-        .finally(() => {
-            setIsLoading(false);    
-        });
     };  
 
     //Function To Add Employee
@@ -209,7 +203,7 @@ const EmployeeComponent: React.FC = () => {
         try {
             await add_employee();
 
-            if (availableManagerIds.length != 0) {
+            if (availableManagerIds.length == 0) {
                 setEmployeeList((prevEmployeeList) => [
                     ...prevEmployeeList,
                     {
@@ -329,7 +323,7 @@ const EmployeeComponent: React.FC = () => {
                         ))}
                        {showPopup && (
                             <Popup
-                            message="Are You Sure You Want To Delete Employee?"
+                            message="Delete Employee?"
                             onConfirm={handleDeleteEmployee}
                             onCancel={handleCancelDelete}
                             />

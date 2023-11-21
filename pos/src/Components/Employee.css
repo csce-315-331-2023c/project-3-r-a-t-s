@@ -76,25 +76,18 @@
     background-color: white;
     border: 6px solid red;
     transform: translate(-50%, -50%);
-    color: white;
     border-radius: 4px;
     z-index: 1000; 
-}
-  
-.EmployeeDeletePopup-Content {
-    text-align: center;
-    font-size: 25px;
-    margin-top: 30px;
+    font-size: 20px;
+    padding: 20px;
 }
 
-.ConfirmEmployeeDelete-btn + .ConfirmEmployeeDelete-btn {
-    margin-left: 30px;
+.ConfirmEmployeeDelete-btn {
+    margin-right: 10px;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
-
-.EmployeePopupClose{
-    position: fixed;
-    right: 0px;
-    color: red;
-    font-size: 45px;
+.CancelEmployeeDelete-btn {
+    margin-right: 30px;
 }
 
