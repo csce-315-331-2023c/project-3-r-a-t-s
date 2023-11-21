@@ -11,6 +11,7 @@ import InventoryComponent from './Components/Inventory';
 import OrderHistoryComponent from './Components/OrderHistory';
 import EmployeeComponent from './Components/Employee';
 import MenuComponent from './Components/Menu';
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 
 const ManagerGUI: React.FC = () => {
@@ -306,54 +307,57 @@ const ManagerGUI: React.FC = () => {
   }
 
   return(
-    <div style={{ display: 'block', padding: 30}} className='manager'> 
+    <div style={{ display: 'block'}} className='manager'> 
+      <h4 style={{textAlign: 'left', fontSize: 40, background: 'darkgray', padding: 5, paddingTop: 10}}>
+          <FaArrowAltCircleLeft style={{fontSize: 60, paddingRight: 30, paddingLeft: 30, padding: 10, verticalAlign: 'middle'}} onClick={() => goback()}/>
+          Manager Dashboard
+      </h4>      
 
-      <h4 style={{textAlign: 'center', background: 'white', padding: 25}}>
-      <button onClick={goback} style={{marginRight: 300, paddingRight: 30, paddingLeft: 30, padding: 10}}> Back </button>
-      <u style={{fontSize: 50, marginRight: 300}}>Manager Dashboard</u>
-      </h4>       
-      <Tabs defaultActiveKey={1} > 
-        <Tab eventKey={1} title="Inventory"> 
-        <InventoryComponent />
-        </Tab> 
-        
-        <Tab eventKey={2} title="Order History"> 
-        <OrderHistoryComponent />
-        </Tab> 
-
-        <Tab eventKey={5} title="Menu"> 
-        <MenuComponent />
-        </Tab>
-
-        <Tab eventKey={3} title="Employees"> 
-        <EmployeeComponent />
-        </Tab>
-
-        <Tab eventKey={4} title="Reports"> 
-          <br />
-          <p>
-          Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/> &nbsp;
-          End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2}/>
-          </p>
-
-          <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-          placeholder='Search by Name...'/> </form>
-          <br />
+      <div className="ManagerContainer">
+        <Tabs defaultActiveKey={1} className="ManagerTabs"> 
+          <Tab eventKey={1} className="nav-link" title="Inventory"> 
+          <InventoryComponent />
+          </Tab> 
           
-          <div>
-          <button className="btn btn-secondary" onClick={createProductReportTable}> Product Report </button>
-          <button className="btn btn-secondary" onClick={createWhatSellsTogetherTable}> What Sells Together Report </button>
-          <button className="btn btn-secondary" onClick={createExcessTable}> Excess Report </button>
-          <button className="btn btn-secondary" onClick={createRestockTable}> Restock Report </button>
-          </div>
+          <Tab eventKey={2} title="Order History"> 
+          <OrderHistoryComponent />
+          </Tab> 
+
+          <Tab eventKey={5} title="Menu"> 
+          <MenuComponent />
+          </Tab>
+
+          <Tab eventKey={3} title="Employees"> 
+          <EmployeeComponent />
+          </Tab>
+
+          <Tab eventKey={4} title="Reports"> 
+            <br />
+            <p>
+            Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/> &nbsp;
+            End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2}/>
+            </p>
+
+            <div className='Search-Container'>
+              Search: <form> <input className='searchForm'style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+              placeholder='Report Name...'/> </form>
+            </div>
+            <br />
+            
+            <div>
+            <button className="btn btn-secondary" onClick={createProductReportTable}> Product Report </button>
+            <button className="btn btn-secondary" onClick={createWhatSellsTogetherTable}> What Sells Together Report </button>
+            <button className="btn btn-secondary" onClick={createExcessTable}> Excess Report </button>
+            <button className="btn btn-secondary" onClick={createRestockTable}> Restock Report </button>
+            </div>
+            
+            <div>
+              {table}
+            </div>
           
-          <div>
-            {table}
-          </div>
-        
-        </Tab>
-      </Tabs> 
-      
+          </Tab>
+        </Tabs> 
+      </div>
     </div> 
   );
 }

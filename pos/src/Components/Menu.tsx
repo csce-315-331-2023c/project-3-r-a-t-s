@@ -117,9 +117,10 @@ const MenuComponent = () => {
     <div>
       <div>
         <br />
-        <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-          placeholder='Search by Menu Item Name...'/> </form>
-
+        <div className='Search-Container'>
+          Search: <form> <input className='searchForm' style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+            placeholder='Menu Item Name...'/> </form>
+        </div>
         <br />
         <p>Add menu item</p>
         <input

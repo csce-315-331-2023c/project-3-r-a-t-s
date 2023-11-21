@@ -10,7 +10,6 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
-
 const EmployeeComponent: React.FC = () => {
 
     useEffect(() => {
@@ -243,7 +242,7 @@ const EmployeeComponent: React.FC = () => {
     return (
         <div> 
             <div className='Search-Container'>
-                    Search: <form> <input className="formContainer" style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+                    Search: <form> <input className="searchForm" style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
                                 placeholder='Employee Last Name...'/> 
                             </form>
             </div>

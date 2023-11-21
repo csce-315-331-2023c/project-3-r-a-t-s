@@ -66,9 +66,10 @@ const OrderHistoryComponent: React.FC = () => {
             End Date: <input type="date" onChange={change_order_end_date} ref={order_ref2} />
             </p>
 
-            <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-            placeholder='Search by Order ID...'/> </form>
-
+            <div className='Search-Container'>
+              Search: <form> <input className='searchForm' style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+              placeholder='Order ID...'/> </form>
+            </div>
             {!!orderHistory.length && (
                     <div className="order-table-section"> <br />
                     <table className='table table-striped w-100'>

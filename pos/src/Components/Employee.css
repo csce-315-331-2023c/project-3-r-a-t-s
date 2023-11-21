@@ -69,18 +69,3 @@
     width: 39%;
 }
 
-.Search-Container{
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-size : 15px;
-}
-
-.formContainer {
-    margin-left: 5px;
-    border-radius: 2px;
-
-}
-
