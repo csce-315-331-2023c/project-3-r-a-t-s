@@ -69,3 +69,25 @@
     width: 39%;
 }
 
+.EmployeeDeletePopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+    border: 6px solid red;
+    transform: translate(-50%, -50%);
+    border-radius: 4px;
+    z-index: 1000; 
+    font-size: 20px;
+    padding: 20px;
+}
+
+.ConfirmEmployeeDelete-btn {
+    margin-right: 10px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.CancelEmployeeDelete-btn {
+    margin-right: 30px;
+}
+

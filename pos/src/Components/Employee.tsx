@@ -2,13 +2,30 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './Employee.css';
 import { BsFillTrashFill, BsFillPencilFill} from 'react-icons/bs';
-import { IoAddCircleOutline } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { AiOutlineCloseSquare } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+
+
+interface PopupProps {
+    message: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+  }
+  
+  const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
+    return (
+      <div className="EmployeeDeletePopup">
+          <p>{message}</p>
+          <button className="ConfirmEmployeeDelete-btn" onClick={onConfirm}>Delete</button>
+          <button className="CancelmployeeDelete-btn" onClick={onCancel}>Cancel</button>
+      </div>
+    );
+  };
 
 const EmployeeComponent: React.FC = () => {
 
@@ -50,17 +67,36 @@ const EmployeeComponent: React.FC = () => {
         setNewEmployee((prevNewEmployee) => ({ ...prevNewEmployee, [fieldName]: value }));
     };
 
-    const handleDeleteEmployee = async (employeeId: number) => {
-        try {
-            // Assuming remove_employee is asynchronous and handles individual deletions
-            await remove_employee(employeeId);
-            // Update the employee list to reflect the deletion
-            setEmployeeList((prevEmployeeList) =>
-                prevEmployeeList.filter((employee) => employee.employee_id !== employeeId)
-            );
-            console.log(`Employee with ID ${employeeId} deleted`);
-        } catch (error) {
-            console.error(`Error deleting employee with ID ${employeeId}:`, error);
+    const [employeeToDeleteId, setEmployeeToDeleteId] = useState<number>(0);
+    const [showPopup, setShowPopup] = useState(false);
+
+    const handleDeleteClick = (employeeId: number) => {
+        setEmployeeToDeleteId(employeeId);
+        setShowPopup(true);
+    };
+
+
+    const handleCancelDelete = () => {
+        setEmployeeToDeleteId(0);
+        setShowPopup(false);
+    };
+
+    const handleDeleteEmployee = async () => {
+        if (employeeToDeleteId != 0) {
+            const employeeId = employeeToDeleteId;
+            try {
+                // Assuming remove_employee is asynchronous and handles individual deletions
+                await remove_employee(employeeId);
+                // Update the employee list to reflect the deletion
+                setEmployeeList((prevEmployeeList) =>
+                    prevEmployeeList.filter((employee) => employee.employee_id !== employeeId)
+                );
+                console.log(`Employee with ID ${employeeId} deleted`);
+            } catch (error) {
+                console.error(`Error deleting employee with ID ${employeeId}:`, error);
+            }
+            setEmployeeToDeleteId(0);
+            setShowPopup(false);
         }
     };
 
@@ -83,9 +119,6 @@ const EmployeeComponent: React.FC = () => {
         .catch((error) => {
             console.error('Error with Generating Employee Information:', error);
         })
-        .finally(() => {
-            setIsLoading(false);    
-        });
     };  
 
     //Function To Add Employee
@@ -170,7 +203,7 @@ const EmployeeComponent: React.FC = () => {
         try {
             await add_employee();
 
-            if (availableManagerIds.length != 0) {
+            if (availableManagerIds.length == 0) {
                 setEmployeeList((prevEmployeeList) => [
                     ...prevEmployeeList,
                     {
@@ -276,7 +309,7 @@ const EmployeeComponent: React.FC = () => {
                         <td>
                             <span>
                                 <BsFillTrashFill className="delete-btn"
-                                    onClick={() => handleDeleteEmployee(employee.employee_id)}
+                                    onClick={() => handleDeleteClick(employee.employee_id)}
                                 />
                                 <BsFillPencilFill className="edit-btn"
                                     onClick={() => handleEdit(employee.employee_id)}
@@ -288,6 +321,13 @@ const EmployeeComponent: React.FC = () => {
                         </td>
                         </tr>
                         ))}
+                       {showPopup && (
+                            <Popup
+                            message="Delete Employee?"
+                            onConfirm={handleDeleteEmployee}
+                            onCancel={handleCancelDelete}
+                            />
+                        )}
                         {showInputFields && (
                             <tr>
                                 <td>{employeeList.length > 0 ? employeeList[employeeList.length - 1].employee_id + 1 : 1}</td>
