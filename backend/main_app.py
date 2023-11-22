@@ -3,6 +3,7 @@ from flask_cors import CORS
 from APIs.manager_backend import manager_BP
 from APIs.cashier_backend import cashier_BP
 from APIs.manager_reports import reports_BP
+from APIs.login_routes import login_BP
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ CORS(app)
 app.register_blueprint(manager_BP, url_prefix="/api/manager")
 app.register_blueprint(cashier_BP, url_prefix="/api/cashier")
 app.register_blueprint(reports_BP, url_prefix="/api/manager_reports")
+app.register_blueprint(login_BP, url_prefix="/api/login_routes")
 
 if __name__ == '__main__':
     #app.run()
