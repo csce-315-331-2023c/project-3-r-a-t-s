@@ -10,22 +10,25 @@ import { AiOutlineCloseSquare } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
-
 interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
   }
   
-  const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
+const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
-      <div className="EmployeeDeletePopup">
-          <p>{message}</p>
-          <button className="ConfirmEmployeeDelete-btn" onClick={onConfirm}>Delete</button>
-          <button className="CancelmployeeDelete-btn" onClick={onCancel}>Cancel</button>
-      </div>
+        <div className="EmployeeDeletePopup">
+                <div>{message}</div>
+                <div className="ConfirmEmployee-btn">
+                    <button className="delete" onClick={onConfirm}>Delete</button>
+                </div>
+                <div className="ConfirmEmployee-btn">
+                    <button className="cancel" onClick={onCancel}>Cancel</button>
+                </div>
+        </div>
     );
-  };
+};
 
 const EmployeeComponent: React.FC = () => {
 
@@ -44,6 +47,8 @@ const EmployeeComponent: React.FC = () => {
         salary: string;
         hours_per_week: string;
         manager_id: string;
+        username: string;
+        password: string;
     }
     
     interface AddEmployee {
@@ -52,14 +57,24 @@ const EmployeeComponent: React.FC = () => {
         Salary: string;
         Hours: string;
         ManagerID: string;
+        Username: string;
+        Password: string;
+    }
+    interface EditEmployee {
+        FirstName: string;
+        LastName: string;
+        Salary: string;
+        Hours: string;
+        ManagerID: string;
+        Password: string;
     }
 
     const [employeeList, setEmployeeList] = useState<EmployeeData[]>([]);
     const [availableManagerIds, setAvailableManagerIds] = useState([]);
-    const [newEmployee, setNewEmployee] = useState<AddEmployee>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '',});
+    const [newEmployee, setNewEmployee] = useState<AddEmployee>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Username: '', Password: '',});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
-    const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '',});
+    const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Password: '',});
     const [errorManagerID, setErrorManagerID] = useState<string>('');
 
     const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddEmployee) => {
@@ -109,7 +124,7 @@ const EmployeeComponent: React.FC = () => {
             },
         };
         //Send Post rquest to Flask API
-        axios
+        await axios 
         .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
         //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
@@ -129,9 +144,9 @@ const EmployeeComponent: React.FC = () => {
             },
         };
         //Send Post rquest to Flask API
-        axios
+        await axios
         .post('http://127.0.0.1:5000/api/manager/add_employee', newEmployee, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, inputEmployee, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, newEmployee, config)
         .then((response) => {
             console.log(response.data.message); 
             // Check for available_manager_ids in the response
@@ -142,7 +157,7 @@ const EmployeeComponent: React.FC = () => {
             }
             else {
                 setAvailableManagerIds([]);
-                setErrorManagerID('');
+                setErrorManagerID('');                
             }
         })
         .catch((error) => {
@@ -192,36 +207,23 @@ const EmployeeComponent: React.FC = () => {
     };
 
     const handleSubmitNewEmployee = async (newEmployee: AddEmployee) => {
-        const inputEmployee = {
-            FirstName: newEmployee.FirstName,
-            LastName: newEmployee.LastName,
-            Salary: newEmployee.Salary,
-            Hours: newEmployee.Hours,
-            ManagerID: newEmployee.ManagerID,
-        };
-
         try {
             await add_employee();
 
             if (availableManagerIds.length == 0) {
-                setEmployeeList((prevEmployeeList) => [
-                    ...prevEmployeeList,
-                    {
-                    employee_id: prevEmployeeList.length > 0 ? prevEmployeeList[prevEmployeeList.length - 1].employee_id + 1 : 1,
-                    first_name: newEmployee.FirstName,
-                    last_name: newEmployee.LastName,
-                    salary: newEmployee.Salary,
-                    hours_per_week: newEmployee.Hours,
-                    manager_id: newEmployee.ManagerID,
-                    },
-                ] as EmployeeData[] );
+                await generate_employee_info();
+                console.log("Submit List", employeeList);
+
                 setNewEmployee({
                 FirstName: '',
                 LastName: '',
                 Salary: '',
                 Hours: '',
                 ManagerID: '',
+                Username: '',
+                Password: '',
                 });
+
                 setShowInputFields(false);
             }
         } catch (error) {
@@ -249,10 +251,11 @@ const EmployeeComponent: React.FC = () => {
             Salary: employeeToEdit.salary,
             Hours: employeeToEdit.hours_per_week,
             ManagerID: employeeToEdit.manager_id,
+            Password: employeeToEdit.password,
           });
         }
     };
-    const handleSaveEdit = async (employeeId: number, editedData : AddEmployee) => {
+    const handleSaveEdit = async (employeeId: number, editedData : EditEmployee) => {
 
         try {
             await update_employee(employeeId);
@@ -265,6 +268,7 @@ const EmployeeComponent: React.FC = () => {
             Salary: '',
             Hours: '',
             ManagerID: '',
+            Password: '',
             });
             setEditingEmployeeId(null);
         } catch (error) {
@@ -280,7 +284,6 @@ const EmployeeComponent: React.FC = () => {
                             </form>
             </div>
 
-            <br /> {isLoading ? "Loading...": ""}
             {!!employeeList.length && (
                     <div className="order-table-section">
                     <table className='table table-striped w-100'>
@@ -292,6 +295,8 @@ const EmployeeComponent: React.FC = () => {
                             <th>Salary</th>
                             <th>Hours Per Week</th>
                             <th>Manager ID</th>
+                            <th>UserID</th>
+                            <th>Password</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -306,6 +311,8 @@ const EmployeeComponent: React.FC = () => {
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : employee.salary}</td>
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : employee.hours_per_week}</td>
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.ManagerID} onChange={(e) => setEditedData({ ...editedData, ManagerID: e.target.value })} required/> : employee.manager_id}</td>
+                        <td>{employee.username}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Password} onChange={(e) => setEditedData({ ...editedData, Password: e.target.value })} required/> : '*'.repeat(employee.password.length + 2)}</td>
                         <td>
                             <span>
                                 <BsFillTrashFill className="delete-btn"
@@ -349,6 +356,12 @@ const EmployeeComponent: React.FC = () => {
                                         <input type="text" name="ManagerID" value={newEmployee.ManagerID} placeholder="Manager ID" onChange={(e) => handleAddInputChange(e, 'ManagerID')} required />
                                         {errorManagerID && <span className='Error-MangerID'>{errorManagerID}</span>}
                                     </div>
+                                </td>
+                                <td>
+                                    {/* <input type="text" name="UserName" value={newEmployee.Username} placeholder="UserName (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Username')} required /> */}
+                                </td>
+                                <td>
+                                    <input type="text" name="text" value={newEmployee.Password} placeholder="Password (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Password')} required />
                                 </td>
                                 
                                 <td>
