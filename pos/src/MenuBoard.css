@@ -6,10 +6,18 @@
 
 .menu-home-top-bar {
     height: 8vh;
-    width: 100vw;
-    background-color: rgb(27, 19, 19);
+    width: 100%;
+    background-color: rgb(35,31,32,255);
     color: white;
     text-align: left;
-    font-size: 60px;
+  }
+
+  .menu-bottom-bar {
+    height: 5vh;
+    width: 100vw;
+    background-color: rgb(35,31,32,255);
+    color: white;
+    text-align: left;
     position: fixed;
+    margin-top: 85vh;
   }

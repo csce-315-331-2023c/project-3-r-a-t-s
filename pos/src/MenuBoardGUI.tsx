@@ -13,22 +13,30 @@ import { url } from 'inspector';
 const MenuBoardGUI = () => {
 
     const navigate = useNavigate();
-    const to_online_ordering = () => {
-        navigate("/CustomerGUI");
-    }
 
     return (
         <div className='menu-board'>
             <div className='menu-home-top-bar'>
-                <h1> 
+                <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                    <b>PIADA</b>  Italian Street Food
-                <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons'> <FaBagShopping />  &nbsp; Order Online Here!  </button>
+                <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons' style={{fontSize: "3vh"}}> 
+                <FaBagShopping />  &nbsp; Order Online Here!  </button>
                 </h1>
-            </div> <br /><br />
-            
+            </div> 
+{/*             
+            <div className='menu-bottom-bar'>
+                <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh"}}>
+                <IoMdCheckmarkCircleOutline/> Guest Friendly &nbsp;&nbsp;
+                <GiFireBowl/> Spicy &nbsp;&nbsp;
+                <LuVegan/> Vegan &nbsp;&nbsp;
+                <LuWheatOff/> Gluten Favorite
+                </h3>
+            </div> */}
+            <br />
+
             {/* Piadas */}
-            <h2 style={{marginTop: "5vh", fontSize: "5vh"}}> <b><u>Hand-Rolled Piadas</u></b></h2>
+            <h2 style={{fontSize: "5vh"}}> <b><u>Hand-Rolled Piadas</u></b></h2>
             <div style={{
                 display: "table", 
                 width: "90vw", 
@@ -235,10 +243,100 @@ const MenuBoardGUI = () => {
 
             <br /><br />
 
+            <div style={{
+                width: "90vw", 
+                height: "fit-content", 
+                marginLeft: "auto", 
+                marginRight: "auto", 
+                marginTop: "2vh",
+                padding: "20px 20px 20px 20px",
+                backgroundColor: "whitesmoke",
+                border: "5px solid black",
+                borderRadius: "20px"
+            }}>
+
+                <div style={{width: "80vw", marginLeft: "auto", marginRight: "auto", paddingBottom: "5vh", backgroundColor: "rgb(255, 193, 113)", paddingTop: "2vh"}}>
+                <h2 style={{fontSize: "5vh"}}><b><u>Street Sides</u></b></h2>
+                <br />
+                <div style={{display: "table", marginLeft: "auto", marginRight: "auto", width: "70vw",}}>
+                    <div style={{display: "table-cell", width: "40vw"}}>
+                    <p style={{fontSize: "2.5vh", width: "35vw", marginRight: "2.5vw" }}>
+                        <b>SWEET CORN SALAD 2.69 (200 CAL) </b><br /><br />
+                        
+                        <b>PEPPERONI PIADA STICK 3.49 (840 CAL)</b><br />
+                        Baked Piada dough with pepperoni, hand-rolled and served with creamy parmesan <br /><br />
+
+                        <b>PARMESAN PIADA STICK 3.49 (790 CAL)</b> <br />
+                        Baked Piada dough with parmesan cheese, hand-rolled and served with creamy parmesan <br /> <br />
+
+                        <b>GARLIC DOUGH 1.99 (290 CAL)</b> <br />
+                        Crispy, small Piada dough baked with mozzarella and extra virgin olive oil  <br /> <br />
+
+                        <b>LOBSTER BISQUE 4.39 (250 CAL)</b>   <br />
+                    </p>
+                    </div>
+
+                    <div style={{display: "table-cell", width: "40vw",}}>
+                        <p style={{fontSize: "2.5vh", width: "35vw", marginLeft: "2.5vw" }}>
+                            <b> CALAMARI & HOT PEPPERS 6.99 (740 CAL)</b> <br /> 
+                            Calamari fried with hot peppers and served with housemade tomato dipping sauce <br /><br />
+
+                            <b>GRASS-FED MEATBALLS 3.99 (550 CAL)</b> <br />
+                            Three grass-fed beef meatballs rolled with Italian breadcrumbs and topped with housemade tomato sauce and parmesan <br /><br />
+
+                            <b>SWEET STREET ™ COOKIE 2.79 (390 CAL)</b> <br />
+                            Pick between a Chocolate Chunk Cookie (390 cal) or a Salted Caramel Cookie (350 cal). Both cookies are certified GMO-free <br /><br />
+
+                            <b>SWEET STREET ™ CHOCOLATE BROWNIE <br /> 2.79 (360 CAL)</b><br />
+                            Honduran chocolate brownie with chocolate chips. This decadent brownie is certified non-GMO, gluten free, and made with cage free eggs
+                        </p>
+                    </div>
+                </div>
+                </div >
+                <br />
+
+
+                <div style={{display: "table", marginLeft: "auto", marginRight: "auto",}}>
+                <div style={{display: "table-cell", width: "40vw", paddingTop: "2vh"}}>
+                <h2 style={{fontSize: "5vh"}}><b><u>Drinks</u></b></h2>
+                <br />
+                <b style={{fontSize: "2vh"}}>
+                    BLACKBERRY HIBISCUS LEMONADE  3.79 (130 CAL) <br /><br />
+                    ITALIAN SODAS AND TEAS  2.99 / 3.49 (250 - 280 CAL) <br /><br />
+                    SOFT DRINK  2.99 / 3.49 (0 - 270 CAL)<br /><br />
+                    ACQUA PANNA SPRING WATER  2.99 (0 CAL)<br /><br />
+                    SAN PELLEGRINO SPARKLING WATER  2.99 (0 CAL)<br /><br />
+                </b>
+
+                </div>
+
+                <div style={{display: "table-cell", width: "40vw", paddingTop: "2vh"}}>
+                <h2 style={{fontSize: "5vh"}}><b><u>Kids Menu (12 & under)</u></b></h2>
+
+                <p style={{fontSize: "2vh"}}>
+                    <b>All kids meals are served with organic low-fat milk (110 cal), organic chocolate milk (150 cal), or apple juice (90 cal) </b><br /><br />
+
+                    <b>KIDS PASTA 6.99 (450 - 1240 CAL)</b><br />
+                    Pasta with choice of sauce. Choose grilled chicken, crispy chicken or steak and up to four toppings <br /><br />
+
+                    <b>KIDS MEATBALLS 6.99 (540 CAL)</b> <br/>
+                    Grass-fed meatballs topped with marinara sauce and parmesan. Served on pasta <br /><br />
+
+                    <b>CHICKEN FINGERS 6.99 (480 CAL)</b><br/>
+                    Buttermilk marinated crispy chicken tenders served with a side of ketchup
+                </p>
+                <br />
+
+                </div>
+                </div>
+            </div>
 
 
 
 
+
+
+            <br /><br /><br /><br />
         </div>
     )
 
