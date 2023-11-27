@@ -137,12 +137,12 @@ const Home : React.FC = () => {
             </div>
 
             <div>
-            {/* <GoogleMap
+            <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 zoom={15}
                 center={center}>
                 <MarkerF position={center} />
-            </GoogleMap> */}
+            </GoogleMap>
             </div>
 
             <div style={{display: "table-cell"}}>
