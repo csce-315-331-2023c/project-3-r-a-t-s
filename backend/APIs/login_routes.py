@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify, request, current_app
-from flask_cors import CORS
+from flask import Flask, Blueprint, jsonify, request, redirect, url_for, session
+from authlib.integrations.flask_client import OAuth
 import psycopg2
+from time import time
+import random
 
 login_BP = Blueprint('login_routes', __name__)
 
@@ -26,7 +28,6 @@ def check_cashier_login():
 
         cursor.execute(check_user_query, (username, password,))
         count = int(cursor.fetchone()[0])
-        current_app.logger.info("Count: %s", count)
 
         if (count != 0) :
             cursor.execute(name_user_query, (username, password,))
