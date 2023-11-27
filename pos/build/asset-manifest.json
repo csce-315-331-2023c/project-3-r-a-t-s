@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.0c7139e5.css",
-    "main.js": "/static/js/main.18fd2957.js",
-    "static/js/787.97339a5d.chunk.js": "/static/js/787.97339a5d.chunk.js",
+    "main.css": "/static/css/main.3a024b33.css",
+    "main.js": "/static/js/main.108acc2a.js",
+    "static/js/787.fb5ca6f6.chunk.js": "/static/js/787.fb5ca6f6.chunk.js",
+    "static/media/watercolor-paper-texture.jpg": "/static/media/watercolor-paper-texture.763a321ded725ce1d8ce.jpg",
     "index.html": "/index.html",
-    "main.0c7139e5.css.map": "/static/css/main.0c7139e5.css.map",
-    "main.18fd2957.js.map": "/static/js/main.18fd2957.js.map",
-    "787.97339a5d.chunk.js.map": "/static/js/787.97339a5d.chunk.js.map"
+    "main.3a024b33.css.map": "/static/css/main.3a024b33.css.map",
+    "main.108acc2a.js.map": "/static/js/main.108acc2a.js.map",
+    "787.fb5ca6f6.chunk.js.map": "/static/js/787.fb5ca6f6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0c7139e5.css",
-    "static/js/main.18fd2957.js"
+    "static/css/main.3a024b33.css",
+    "static/js/main.108acc2a.js"
   ]
 }

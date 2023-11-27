@@ -2,14 +2,35 @@
     font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     text-align: center;
+    background-image: url("Images/textured-background.jpg");
 }
 
 .menu-home-top-bar {
     height: 8vh;
-    width: 100vw;
-    background-color: rgb(27, 19, 19);
+    width: 100%;
+    background-color: rgb(35,31,32,255);
     color: white;
     text-align: left;
-    font-size: 60px;
+  }
+
+  .menu-bottom-bar {
+    height: 5vh;
+    width: 100vw;
+    background-color: rgb(35,31,32,255);
+    color: white;
+    text-align: left;
     position: fixed;
+    bottom: 0%;
+  }
+
+  .menu-basic-div {
+    width: 90vw;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vh;
+    padding: 20px 20px 20px 20px;
+    background-color: whitesmoke;
+    border: 5px solid black;
+    border-radius: 20px;
   }
