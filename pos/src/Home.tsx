@@ -154,7 +154,7 @@ const Home : React.FC = () => {
                         listStyleType: "none",
                         width: "30vw",
                         height: "40vh",
-                        fontSize: "2vh"
+                        fontSize: "3vh"
                         }}>
                             <br />
                         <li>Monday 10:45am-10:00pm</li>

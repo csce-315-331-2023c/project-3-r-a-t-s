@@ -20,23 +20,32 @@ const MenuBoardGUI = () => {
                 <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                    <b>PIADA</b>  Italian Street Food
-                <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons' style={{fontSize: "3vh"}}> 
+                <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons' 
+                style={{
+                    verticalAlign: "middle",
+                    textAlign: "center",
+                    borderRadius: "25px",
+                    border: "0.25vh solid #FFFFFF",
+                    padding: "0.5vh 1vw 0.5vh 1vw",
+                    fontSize: "3vh",
+                    marginTop: "1.5vh"
+                    }}> 
                 <FaBagShopping />  &nbsp; Order Online Here!  </button>
                 </h1>
             </div> 
-{/*             
+            
             <div className='menu-bottom-bar'>
                 <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh"}}>
-                <IoMdCheckmarkCircleOutline/> Guest Friendly &nbsp;&nbsp;
+                <IoMdCheckmarkCircleOutline/> Guest Favorite &nbsp;&nbsp;
                 <GiFireBowl/> Spicy &nbsp;&nbsp;
                 <LuVegan/> Vegan &nbsp;&nbsp;
-                <LuWheatOff/> Gluten Favorite
+                <LuWheatOff/> Gluten Free
                 </h3>
-            </div> */}
+            </div>
             <br />
 
             {/* Piadas */}
-            <h2 style={{fontSize: "5vh"}}> <b><u>Hand-Rolled Piadas</u></b></h2>
+            <h2 style={{fontSize: "5vh", color: "white"}}> <b><u>Hand-Rolled Piadas</u></b></h2>
             <div className='menu-basic-div'>
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "wheat", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/avocado-piada-866257202de9cdef0468c118aaa43bb4b23feedc3991fcfdc8bdb4dd3f952e9d.png" 
@@ -94,7 +103,7 @@ const MenuBoardGUI = () => {
 
 
             {/* Salads */}
-            <h2 style={{marginTop: "5vh", fontSize: "5vh"}}> <b><u>Greens & Grains</u></b></h2>
+            <h2 style={{marginTop: "5vh", fontSize: "5vh", color: "white"}}> <b><u>Greens & Grains</u></b></h2>
             <div className='menu-basic-div'>
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "rgb(153, 195, 153)", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/blt-caesar-73ab2bc938a0ec2f81e3e6cc8358d6efe35812a4b173d8e22c4bf7183fdd7237.png" 
@@ -153,7 +162,7 @@ const MenuBoardGUI = () => {
 
 
             {/* Pastas */}
-            <h2 style={{marginTop: "5vh", fontSize: "5vh"}}> <b><u>Tossed Pastas</u></b></h2>
+            <h2 style={{marginTop: "5vh", fontSize: "5vh", color: "white"}}> <b><u>Tossed Pastas</u></b></h2>
             <div className='menu-basic-div'>
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "rgb(221, 169, 169)", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/carbonara-dfa3e8b8715b3ca5791c31430ab90edc61b52470d52eded07c0d394f2854400a.png" 
@@ -208,20 +217,180 @@ const MenuBoardGUI = () => {
             <br /><br />
 
             <div className='menu-basic-div'> 
+                <h2 style={{fontSize: "5vh"}}><b><u>Build Your Own</u></b></h2><br />
+                <h3 style={{fontSize: "3.5vh"}}> <b>Step 1: Choose a Meal.</b></h3>
+                <div style={{display: "table", margin: "0px auto 0px auto", width: "80vw", height: "fit-content"}}>
+                    <div style={{display: "table-cell", backgroundColor: "wheat", width: "20vw"}}>
+                        <img src="https://mypiada.com/assets/menu/hot-chicken-piada-8b270c5f55d82d5d53a06bd25557efa0f66570dac097b9294cfd8eeccaa94e47.png" alt="Example Piada" 
+                        style={{width: "20vw", backgroundColor: "white", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "4vh"}}><b>
+                        PIADA 
+                        <p style={{fontSize: "3vh"}}> <br />
+                        9.29 <br />
+                        (430 - 1470 CAL) <br />
+                        </p> <br />
+                        </b></p>
+                    </div>
+                    <div style={{display: "table-cell", backgroundColor: "rgb(153, 195, 153)", width: "20vw"}}>
+                    <img src="https://mypiada.com/assets/menu/blt-caesar-73ab2bc938a0ec2f81e3e6cc8358d6efe35812a4b173d8e22c4bf7183fdd7237.png" alt="Example Salad" 
+                        style={{width: "20vw", backgroundColor: "white", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "4vh"}}><b>
+                        SALAD 
+                        <p style={{fontSize: "3vh"}}> <br />
+                        SM 8.49 / REG 10.29 <br />
+                        (150 - 1480 CAL) <br />
+                        </p>
+                        </b></p>
+                    </div>
+                    <div style={{display: "table-cell", backgroundColor: "rgb(221, 169, 169)", width: "20vw"}}>
+                    <img src="https://mypiada.com/assets/menu/carbonara-dfa3e8b8715b3ca5791c31430ab90edc61b52470d52eded07c0d394f2854400a.png" alt="Example Pasta" 
+                        style={{width: "20vw", backgroundColor: "white", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "4vh"}}><b>
+                        PASTA 
+                        <p style={{fontSize: "3vh"}}> <br />
+                        SM 8.49 / REG 10.29 <br />
+                        (430 - 2500 CAL)  <br />
+                        </p>
+                        </b></p>
+                    </div>
+                </div> 
+                <br /><br />
 
+                <h3 style={{fontSize: "3.5vh"}}> <b>Step 2: Pick a Protein.</b></h3>
+                <div style={{width: "60vw", display: "table", margin: "2vh auto 0vh auto"}}>
+                    <p style={{width: "40vw", display: "table-cell", fontSize: "2.5vh"}}> 
+                        <b>ITALIAN SAUSAGE</b> 2.69 (270 CAL)  <IoMdCheckmarkCircleOutline/><LuWheatOff/><br />
+                        <b>GRILLED CHICKEN</b> 2.69 (170 CAL) <LuWheatOff/><br />
+                        <b>CRISPY CHICKEN</b> 2.69 (280 CAL)    <br />
+                        <b>HOT FRIED CHICKEN</b> 2.69 (310 CAL)  <GiFireBowl/> <GiFireBowl/><GiFireBowl/><br />
+                        
+                    </p>
+                    <p style={{width: "40vw", display: "table-cell", fontSize: "2.5vh"}}>
+                        <b>GRILLED STEAK</b> 3.29 (100 CAL) <br />
+                        <b>GRASS-FED MEATBALLS</b> 3.99 (500 CAL) <br />
+                        <b>CALAMARI & HOT PEPPERS</b> 3.89 (410 CAL)  <IoMdCheckmarkCircleOutline/> <br />
+                        <b>GRILLED SALMON </b>5.69 (290 CAL) <LuWheatOff/>
+                    </p>
+                </div>
 
+                <br /> <br />
+                <h3 style={{fontSize: "3.5vh"}}> <b>Step 3: Choose a Sauce.</b></h3> <br />
+                <h4><b><u>Pasta & Piada Sauces</u></b></h4>
+                <div style={{width: "80vw", display: "table", margin: "2vh auto 0vh auto"}}>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/pomodoro-833963cbf3f3350407cbc7a5d7390ffb339fdbc70a048ba3e7345715a2a9c986.png" alt="Marinara Sauce" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>MARINARA</b>
+                        <br />Housemade tomato sauce made with basil</p><LuWheatOff size={30}/> <LuVegan size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/alfredo-0ec32018244825a14d4c2fcd9cfb59116fed3c0daa505bd8be09ef7884c39f4f.png" alt="Alfredo Sauce" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>Alfredo</b>
+                        <br />Classic Italian white sauce made from parmesan</p><IoMdCheckmarkCircleOutline size={30}/><LuVegan size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/diavolo-092818f4e70f2b8eba0ca206083ec7101cd3037a792a6f9abd8d078d3402416b.png" alt="Diavolo Sauce" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>DIAVOLO</b>
+                        <br />Spicy tomato cream sauce with crushed red pepper</p><LuWheatOff size={30}/><GiFireBowl size={30}/><LuVegan size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/basil-pesto-afe0a1f618a62e68f194fcc0b0763fbc1c91d9dcac409fe80cbd8426f0a7115b.png" alt="Basil Pesto Sauce" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>BASIL PESTO</b>
+                        <br />Fresh herb sauce blended with parmesan and garlic</p><LuWheatOff size={30}/><LuVegan size={30}/>
+                    </div>
+                </div> <br /><br />
 
+                <h4><b><u>Salad Dressings</u></b></h4>
+                <div style={{width: "80vw", display: "table", margin: "2vh auto 0vh auto"}}>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/creamy-parm-ae1a4de0c489207179c41e276e86608a8cf7bfb2937290b6e9ee5d328e465081.png" alt="Creamy Paremsan Dressing" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>CREAMY PARMESAN</b></p>
+                        <LuWheatOff size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/lemon-basil-2affea18ca51469b0500692d9bc00507282c38161d29e12ed04b856db76f17da.png" alt="Lemon Basil Dressings" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>LEMON BASIL</b></p>
+                        <IoMdCheckmarkCircleOutline size={30}/><LuVegan size={30}/><LuWheatOff size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/caesar-719ee00dc379e9fd14f44b80ad918508786a17f3edf507971706d03f94942468.png" alt="Classic Caesar Dressing" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>CLASSIC CAESAR</b></p>
+                        <IoMdCheckmarkCircleOutline size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/creamy-basil-parmesan-3ccfeaf78641e47da880d3625f2f011ed9a10afc84ea3708d107093112ee60a6.png" alt="Basil Parmesan Dressing" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}> BASIL PARMESAN</b></p>
+                        <LuWheatOff size={30}/>
+                    </div>
+                </div>
+                <div style={{width: "80vw", display: "table", margin: "0vh auto 0vh auto"}}>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/oil-vinegar-f3fccd3b5b30f3bd1827e0a1499fc9360f4cd07e735f2a94d3033137de5e328d.png" alt="Oil and Vinegar Dressing" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>OIL & VINEGAR</b></p>
+                        <IoMdCheckmarkCircleOutline size={30}/> <LuVegan size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/spicy-ranch-ebe5802e1c7849fddc925e4f0f0ef781ef3473df515d2116d2c7cd06a42e9d0a.png" alt="Spicy Ranch Dressing" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>SPICY RANCH</b></p>
+                        <IoMdCheckmarkCircleOutline size={30}/><GiFireBowl size={30}/>
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell"}}>
+                    <img src="https://mypiada.com/assets/menu/sauces/harissa-yogurt-8f70c6144178c519340b6bca3ae3f2f136dc7735cc3d079358c3146edf10f683.png" alt="Yogurt Harissa Dressing" 
+                        style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
+                        <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>YOGURT HARISSA</b></p>
+                        <LuWheatOff size={30}/><LuVegan size={30}/><GiFireBowl size={30}/>
+                    </div>
+                </div>
+
+                
+                <br /><br />
+                <h3 style={{fontSize: "3.5vh"}}> <b>Step 4: Add Toppings.</b></h3>
+                <p>*topping availability may vary by location*</p>
+                <div style={{width: "50vw", display: "table", margin: "2vh auto 2vh auto"}}>
+                    <div style={{width: "20vw", display: "table-cell", fontSize: "2vh", fontWeight: "bold"}}>
+                    CUCUMBERS <br />
+                    CUCUMBER SALAD <br />
+                    BRUSCHETTA TOMATOES <br />
+                    PICKLED RED ONIONS <br />
+                    ROMAINE <br />
+                    ARUGULA <br />
+                    SPINACH <br />
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell", fontSize: "2vh", fontWeight: "bold"}}>
+                    CHOPPED GREENS <br />
+                    ROASTED SWEET POTATO<br />
+                    HUMMUS<br />
+                    FETA<br />
+                    MOZZARELLA<br />
+                    PARMESAN<br />
+                    </div>
+                    <div style={{width: "20vw", display: "table-cell", fontSize: "2vh", fontWeight: "bold"}}>
+                    SWEET & SPICY PEPPERS<br />
+                    STRAWBERRIES<br />
+                    GLAZED PECANS<br />
+                    PANCETTA (BACON)<br />
+                    ROASTED BROCCOLI<br />
+                    SWEET CORN & TOMATO +.99<br />
+                    AVOCADO +1.79
+                    </div>
+                </div>
+                <br /><br />
             </div>
 
-
-
             <br /><br />
-
-        <div className='menu-basic-div'
-            style={{backgroundColor: "rgb(255, 193, 113)"}}>
+        <div className='menu-basic-div' style={{backgroundColor: "rgb(247, 194, 141)"}}>
         <h2 style={{fontSize: "5vh"}}><b><u>Street Sides</u></b></h2>
         <br />
-        <div style={{display: "table", marginLeft: "auto", marginRight: "auto", width: "70vw",}}>
+        <div style={{display: "table", marginLeft: "auto", marginRight: "auto", width: "70vw"}}>
             <div style={{display: "table-cell", width: "40vw"}}>
             <p style={{fontSize: "2.5vh", width: "35vw", marginRight: "2.5vw" }}>
                 <b>SWEET CORN SALAD 2.69 (200 CAL) </b><br /><br />
@@ -257,7 +426,7 @@ const MenuBoardGUI = () => {
         </div>
         </div >
 
-        <div style={{display: "table", marginLeft: "auto", marginRight: "auto", borderSpacing: "5vw"}}>
+        <div style={{display: "table", marginLeft: "auto", marginRight: "auto", borderSpacing: "5vw",}}>
         <div className='menu-basic-div' style={{display: "table-cell", width: "35vw"}}>
         <h2 style={{fontSize: "5vh"}}><b><u>Drinks</u></b></h2>
         <br />
@@ -271,10 +440,10 @@ const MenuBoardGUI = () => {
         </div>
 
         <div className='menu-basic-div' style={{display: "table-cell", width: "35vw"}}>
-        <h2 style={{fontSize: "5vh"}}><b><u>Kids Menu (12 & under)</u></b></h2>
+        <h2 style={{fontSize: "5vh"}}><b><u>Kids Menu</u></b></h2>
 
         <p style={{fontSize: "2vh"}}>
-            <b>All kids meals are served with organic low-fat milk (110 cal), organic chocolate milk (150 cal), or apple juice (90 cal) </b><br /><br />
+            <b>(12 & Under) <br /> Choice of organic low-fat milk (110 cal), organic chocolate milk (150 cal), or apple juice (90 cal) </b><br /><br />
 
             <b>KIDS PASTA 6.99 (450 - 1240 CAL)</b><br />
             Pasta with choice of sauce. Choose grilled chicken, crispy chicken or steak and up to four toppings <br /><br />
@@ -289,11 +458,6 @@ const MenuBoardGUI = () => {
 
         </div>
         </div>
-
-
-
-
-
 
             <br /><br /><br /><br />
         </div>

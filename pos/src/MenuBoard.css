@@ -2,6 +2,7 @@
     font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     text-align: center;
+    background-image: url("Images/textured-background.jpg");
 }
 
 .menu-home-top-bar {
@@ -19,7 +20,7 @@
     color: white;
     text-align: left;
     position: fixed;
-    margin-top: 85vh;
+    bottom: 0%;
   }
 
   .menu-basic-div {
