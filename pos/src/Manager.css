@@ -4,3 +4,38 @@
     vertical-align: middle;
 }
 
+.ManagerContainer {
+    padding-left : 10px;
+    padding-right : 10px;
+}
+
+/*Style For Tabs Not Active */
+.ManagerContainer .nav-tabs .nav-item .nav-link {
+    font-size: 22px;
+    color: darkgrey;
+    background: white;
+    border: 1px solid lightgray; /* Adjust the border properties for unselected tabs */
+}
+
+/* Style For Selected Tabs */
+.ManagerContainer .nav-tabs .nav-item .nav-link.active {
+    color: black; /*Text Color For Selected Tab */
+    border: 2px solid darkgrey; /* Change Width Around Selected Tab*/
+}
+
+/* Hover Effect for Unselected Tabs */
+.ManagerContainer .nav-tabs .nav-item .nav-link:not(.active):hover {
+    color: darkgrey;
+    border: 1px solid darkgrey; /* Change Width Around Hovered Tab */
+}
+
+.Search-Container{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size : 16px;
+}
+
+.searchForm {
+    margin-left: 5px;
+}

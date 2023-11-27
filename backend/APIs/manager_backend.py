@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 import psycopg2 
+import random
 
 manager_BP = Blueprint('manager', __name__)
 
@@ -169,7 +170,7 @@ def edit_inventory():
 @manager_BP.route('/get_employee_list', methods=['POST'])
 def get_employee_list():
 
-    employee_info_query = f"SELECT * FROM EMPLOYEE;"
+    employee_info_query = f"SELECT * FROM EMPLOYEE ORDER BY employee_id ASC;"
     # Execute the query and fetch the data
     try:
         conn = psycopg2.connect(**DB_PARAMS)
@@ -205,10 +206,13 @@ def add_employee():
     salary  = employee_data['Salary']
     hours_per_week  = employee_data['Hours']
     manager_id  = employee_data['ManagerID']
+    username = str(random.randint(1000, 9999)) 
+    password = employee_data['Password']
 
     max_employee_query = f"SELECT MAX(employee_id) FROM EMPLOYEE;"
     manager_count_query = f"SELECT manager_id FROM MANAGER;"
-    add_employee_query = f"INSERT INTO EMPLOYEE(employee_id, last_name, first_name, salary, hours_per_week, manager_id) VALUES (%s, %s, %s, %s, %s, %s);"
+    username_query = f"SELECT username FROM EMPLOYEE;"
+    add_employee_query = f"INSERT INTO EMPLOYEE(employee_id, last_name, first_name, salary, hours_per_week, manager_id, username, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
     # Execute the query
     try:
         conn = psycopg2.connect(**DB_PARAMS)
@@ -221,16 +225,26 @@ def add_employee():
 
         #Check if ManagerID is within range
         cursor.execute(manager_count_query)
-        manager_ids = [id[0] for id in cursor.fetchall()]
+        manager_ids = [id[0] for id in cursor.fetchall()]        
 
         if str(manager_id) not in map(str, manager_ids):
             conn.close()
             return jsonify({'error': 'ManagerID out of range', 'available_manager_ids': manager_ids})
 
-        cursor.execute(add_employee_query, (employee_id, last_name, first_name, salary, hours_per_week, manager_id,))
+        #Check if username is unique
+        cursor.execute(username_query)
+        usernames_taken = [user[0] for user in cursor.fetchall()]
+        while str(username) in map(str, usernames_taken):
+            username = str(random.randint(1000, 9999))
+
+        cursor.execute(add_employee_query, (employee_id, last_name, first_name, salary, hours_per_week, manager_id, username, password,))
         conn.commit()
         conn.close()
-        return jsonify("Employee Added (From Backend)")
+        response_data = {
+            'message': 'Employee Added (From Backend)',
+            'username': username,
+        }
+        return jsonify(response_data)
     
     except Exception as e:
         print(e)
@@ -266,12 +280,13 @@ def update_employee():
     salary  = employee_data['Salary']
     hours_per_week  = employee_data['Hours']
     manager_id  = employee_data['ManagerID']
+    password = employee_data['Password']
 
-    update_query = """UPDATE EMPLOYEE SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, manager_id = %s WHERE employee_id = %s;"""
+    update_query = """UPDATE EMPLOYEE SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, manager_id = %s, password = %s WHERE employee_id = %s;"""
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, manager_id, employee_id, ))
+        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, manager_id, password, employee_id, ))
         conn.commit()
         conn.close()
         return jsonify("Employee Added (From Backend)")

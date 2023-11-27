@@ -1,5 +1,4 @@
 import React, { useEffect, useState} from 'react';
-
 import axios from "axios";
 
 interface Item {
@@ -124,8 +123,10 @@ const InventoryComponent = () => {
         </button>
 
         <br /> <br />
-        <form> <input style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-        placeholder='Search by Name...'/> </form>
+        <div className='Search-Container'>
+          Search: <form> <input className='searchForm' style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+          placeholder='Item Name...'/> </form>
+        </div>
 
       </div>
       <br /> {isLoading ? "Loading...": ""}

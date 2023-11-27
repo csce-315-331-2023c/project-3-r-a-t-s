@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import {MarkerF} from '@react-google-maps/api'
@@ -7,6 +7,9 @@ import { BsFillTelephoneFill, BsFillMapFill } from "react-icons/bs";
 import { AiFillShop } from "react-icons/ai";
 import { MdShelves, MdDeliveryDining, MdTableRestaurant } from "react-icons/md";
 import { IoRestaurant } from "react-icons/io5";
+
+import CashierLoginPopup from './LoginComponents/CashierLogin';
+// import axios, {AxiosError} from 'axios';
 
 import './App.css';
 
@@ -21,8 +24,52 @@ const center = {
     lng: -96.3397041449957, 
 };
 
-const Home = () => {
+
+const Home : React.FC = () => {
     const navigate = useNavigate();
+    const [showCashierLogin, setCashierLogin] = useState(false);
+    const googleLoginWindowRef = useRef<Window | null>(null);
+
+    const handleLoginSuccessCashier = () => {
+        navigate('CashierGUI');
+        setCashierLogin(false);
+    };
+
+    // Set up a callback function to handle the authentication response
+    const googleAuthenticationCallback = (event : MessageEvent) => {
+        try {
+            console.log('Received message:', event);
+            if (event.data === 'google-auth-success') {
+                // GitHub authentication successful, redirect to Manager GUI
+                console.log('Google authentication success. Navigating to ManagerGUI...');
+                navigate('ManagerGUI');
+            }
+        } catch (error) {
+            console.error('Error handling Google authentication:', error);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        // Open a new window for Google authentication
+        googleLoginWindowRef.current = window.open('http://127.0.0.1:5000/login', '_blank');
+        // Attempt to add the event listener
+        try {
+            //Listen for messages from the Google login window
+            window.addEventListener('message', googleAuthenticationCallback);
+            console.log('Event listener attached: true');
+        } catch (error) {
+            console.error('Error attaching event listener:', error);
+        }
+    };
+
+    useEffect(() => {
+        // Cleanup event listener when the component unmounts
+        const cleanup = () => {
+          window.removeEventListener('message', googleAuthenticationCallback);
+        };
+    
+        return cleanup;
+      }, []);
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCXTwo6bsK6GtUP8sIAVSEnYuV44AeRFAg',
@@ -81,7 +128,7 @@ const Home = () => {
                 1025 University Dr., Suite 109, 
                 <br />College Station, TX 77845
                 </a> <br /> <br />
-                <BsFillTelephoneFill /> &nbsp; 979.307.7611    <br />
+                <BsFillTelephoneFill /> &nbsp; (979) 307-7611    <br />
                 <AiFillShop /> &nbsp; Curbside Pick-up    <br />
                 <MdShelves /> &nbsp; Grab & Go Shelves <br />
                 <IoRestaurant /> &nbsp; Dine In <br />
@@ -122,6 +169,25 @@ const Home = () => {
             </div>
          
 
+        <div className="App">
+
+            <h3>Log in Here: </h3>
+            <button onClick={() => setCashierLogin(true)}>Cashier GUI</button>
+
+            {/* Login Popup */}
+            {showCashierLogin && (
+                <CashierLoginPopup
+                    message={'Cashier Login?'}
+                    onClose={() => setCashierLogin(false)}
+                    onLogin={handleLoginSuccessCashier}
+                />
+            )}
+            <h3> Click here if you're a customer: </h3>
+            <button onClick={() => navigate('CustomerGUI')}> Customer GUI </button>
+
+            <h3> Click here if you're a Manager: </h3>
+            <button onClick={handleGoogleLogin}> Manager GUI </button>
+        </div>
         </div>
 
     )
