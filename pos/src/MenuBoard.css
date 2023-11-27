@@ -21,3 +21,15 @@
     position: fixed;
     margin-top: 85vh;
   }
+
+  .menu-basic-div {
+    width: 90vw;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vh;
+    padding: 20px 20px 20px 20px;
+    background-color: whitesmoke;
+    border: 5px solid black;
+    border-radius: 20px;
+  }

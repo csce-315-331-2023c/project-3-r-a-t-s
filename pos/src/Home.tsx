@@ -86,8 +86,8 @@ const Home : React.FC = () => {
     return(
         <div className='home'>
             <div className='home-top-bar'>
-                <h1> 
-                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
+                <h1 style={{fontSize: "5vh"}}> 
+                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')} /> &nbsp;
                    <b>PIADA</b>  Italian Street Food 
                 <button onClick={() => navigate('ManagerGUI')} className='navigate-buttons'> Manager GUI</button>
                 <button onClick={() => navigate('CashierGUI')} className='navigate-buttons'> Cashier POS </button>
@@ -97,29 +97,31 @@ const Home : React.FC = () => {
 
             <div>
             <div className='home-top-block'>
+                <div>
                 <h1 style={{
-                    fontSize: "150px",
-                    opacity: "100%"
+                    fontSize: "20vh",
                 }}> <b> College Station </b></h1>
-
+                </div>
+                <div>
                 <button onClick={() => navigate('MenuBoardGUI')}
                 style={{
                     verticalAlign: "middle",
                     textAlign: "center",
                     borderRadius: "25px",
                     border: "2px solid #FFFFFF",
-                    width: "250px",
-                    fontSize: "40px",
-                    marginTop: "-15vh"
+                    width: "15vw",
+                    fontSize: "5vh",
+                    marginTop: "2vh"
                 }} 
                 > View Menu </button> 
+                </div>
             </div>
 
             <div className='home-bottom-block'>
             <div style={{
                 width: "30vw",
                 height: "40vh",
-                fontSize: "25px",
+                fontSize: "3vh",
                 display: "table-cell",
             }}> <br />
 
@@ -151,8 +153,8 @@ const Home : React.FC = () => {
                     <ul style={{
                         listStyleType: "none",
                         width: "30vw",
-                        height: "40vh"
-
+                        height: "40vh",
+                        fontSize: "2vh"
                         }}>
                             <br />
                         <li>Monday 10:45am-10:00pm</li>
