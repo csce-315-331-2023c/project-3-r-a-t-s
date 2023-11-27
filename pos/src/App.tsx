@@ -6,7 +6,7 @@ import Home from "./Home";
 import CashierGUI from "./CashierGUI";
 import CustomerGUI from "./CustomerGUI";
 import ManagerGUI from "./ManagerGUI";
-import MenuBoardGUI from "./MenuBoardGUI";
+// import MenuBoardGUI from "./MenuBoardGUI";
 
 const App = () => {
   return(
@@ -17,7 +17,7 @@ const App = () => {
         <Route path="/CashierGUI" element={<CashierGUI />} />
         <Route path="/CustomerGUI" element={<CustomerGUI />} />
         <Route path="/ManagerGUI" element={<ManagerGUI />} />
-        <Route path="/MenuBoardGUI" element={<MenuBoardGUI />} />
+        {/* <Route path="/MenuBoardGUI" element={<MenuBoardGUI />} /> */}
       </Routes>
   </Router>
   </div>
