@@ -19,7 +19,7 @@
   color: white;
   font-size: 25px;
   float: right;
-  margin: 2vh 20px 0px 20px;
+  margin: 2vh 2vw 0px 2vw;
 }
 
 .icon {
@@ -36,6 +36,7 @@
   height: 40vh;
   font-size: 150px;
 }
+
 
 .home-bottom-block {
   width: 100vw;

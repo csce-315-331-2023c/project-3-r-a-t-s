@@ -9,7 +9,6 @@ import { MdShelves, MdDeliveryDining, MdTableRestaurant } from "react-icons/md";
 import { IoRestaurant } from "react-icons/io5";
 
 import './App.css';
-//import MenuBoardGUI from './MenuBoardGUI';
 
 const mapContainerStyle = {
     width: '40vw',
@@ -41,8 +40,8 @@ const Home = () => {
         <div className='home'>
             <div className='home-top-bar'>
                 <h1> 
-                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon'/> &nbsp;
-                   <b>Piada</b>  Italian Street Food 
+                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
+                   <b>PIADA</b>  Italian Street Food 
                 <button onClick={() => navigate('ManagerGUI')} className='navigate-buttons'> Manager GUI</button>
                 <button onClick={() => navigate('CashierGUI')} className='navigate-buttons'> Cashier POS </button>
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>
@@ -52,7 +51,8 @@ const Home = () => {
             <div>
             <div className='home-top-block'>
                 <h1 style={{
-                    fontSize: "150px"
+                    fontSize: "150px",
+                    opacity: "100%"
                 }}> <b> College Station </b></h1>
 
                 <button onClick={() => navigate('MenuBoardGUI')}
@@ -63,10 +63,9 @@ const Home = () => {
                     border: "2px solid #FFFFFF",
                     width: "250px",
                     fontSize: "40px",
-                    marginTop: "-100px"
+                    marginTop: "-15vh"
                 }} 
                 > View Menu </button> 
-
             </div>
 
             <div className='home-bottom-block'>
@@ -76,8 +75,12 @@ const Home = () => {
                 fontSize: "25px",
                 display: "table-cell",
             }}> <br />
-                <BsFillMapFill/> &nbsp; 1025 University Dr., Suite 109, 
-                <br />College Station, TX 77845   <br /> <br />
+
+                <BsFillMapFill/> &nbsp; <a style={{color: "black"}}
+                href="https://www.google.com/maps/dir/?api=1&destination=1025%20University%20Dr.,%20Suite%20109,%20College%20Station,%20TX%2077845">
+                1025 University Dr., Suite 109, 
+                <br />College Station, TX 77845
+                </a> <br /> <br />
                 <BsFillTelephoneFill /> &nbsp; 979.307.7611    <br />
                 <AiFillShop /> &nbsp; Curbside Pick-up    <br />
                 <MdShelves /> &nbsp; Grab & Go Shelves <br />

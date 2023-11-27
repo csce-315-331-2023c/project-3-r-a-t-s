@@ -1,0 +1,15 @@
+.menu-board {
+    font-family:'Times New Roman', Times, serif;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.menu-home-top-bar {
+    height: 8vh;
+    width: 100vw;
+    background-color: rgb(27, 19, 19);
+    color: white;
+    text-align: left;
+    font-size: 60px;
+    position: fixed;
+  }
