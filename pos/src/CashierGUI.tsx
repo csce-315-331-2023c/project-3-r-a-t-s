@@ -6,72 +6,82 @@ import 'reactjs-popup/dist/index.css';
 import './Cashier.css';
 import axios, {AxiosError} from 'axios';
 
+import { BsFillTrashFill, BsFillPencilFill} from 'react-icons/bs';
+
+
 const CashierGUI = () => {
+   
 
     const navigate = useNavigate();
 
     const [BYO_Panel, Set_BYO_Panel] = useState([<div> </div>]);    // used to set what displays in BYO panel
 
-    let curr_item = "";
-    let curr_size = "";
-    let curr_type = "";
+    const [loading, setLoading] = useState(false);
+
+    const [item, setItem] = useState<string>("");
+    const [size, setSize] = useState<string>("");
+    const [type, setType] = useState<string>("");
 
     const [order, setOrder] = useState<string[]>([]);
-    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     const [prices, setPrices] = useState<number[]>([]);
 
-    const makeorderitem = (temp : number, item : string) => {
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);   // stores selected toppings
+    const [protein, setProtein] = useState(""); // stores selected protein, can only have one per custom order
+    const [sauce, setSauce] = useState(""); // stores selected sauce, can only have one
+
+
+    const makeorderitem = (temp : number, i : string) => {
         if (temp === 0) {
-            console.log("Choosing current item: ", item);
-            curr_item = item;
+            console.log("Choosing current item: ", i);
+            setItem(i);
+            setSize("");
+            setType("");
         }
         else if (temp === 1) {
-            console.log("Choosing a size: ", item);
-            curr_size = item;
+            console.log("Choosing a size: ", i);
+            setSize(i);
         }
         else if (temp === 2) {
-            console.log("Choosing a type: ", item);
-            curr_type = item;
+            console.log("Choosing a type: ", i);
+            setType(i);
         }
     }
 
     //Add Order Item Selected to Order Array
-    const addorderitem = (item : string) => {
-        if (item === "") {
-            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
-            updatePrice((curr_size + " " + curr_item + " " + curr_type).trim());
-            console.log("Added new order item:", curr_size + " " + curr_item + " " + curr_type);
+    const addorderitem = (i : string) => {
+        setLoading(true);
+        if (i === "") {
+            let temp = size + " " + item + " " + type;
+            setOrder(order.concat(temp)); 
+            updatePrice(temp);
+            console.log("Added new order item: ", temp);
         }
         else {
-            setOrder(order.concat(item)); 
-            updatePrice(item);
-            console.log("Added new order item:", item);
+            setOrder(order.concat(i)); 
+            updatePrice(i);
+            console.log("Added new order item:", i);
         }
-        curr_size = "";
-        curr_item = "";
-        curr_type = "";
     }
 
     // Add Custom Item to Order Array
-    const addBYOToOrder = (item : string) => {  
-        if (item === "") {
-            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
-            console.log("Added new order item:", item);
-        }
-        else {
-            setOrder(order.concat(item)); 
-            console.log("Added new order item:", item);
-        }
-        curr_size = "";
-        curr_item = "";
-        curr_type = "";
+    const addBYOToOrder = () => {  
+        // Check all fields were selected
+        //  one protein selected, size selected and sauce type
 
-        let ingredients = "";
-        if (selectedIngredients.length > 0) {
-            ingredients += `${selectedIngredients.join(', ')}`;
-            console.log("Added BYO Ingredients:", ingredients);
-            setSelectedIngredients([]); // Clear selected ingredients
-        }  
+        // Format custom ingredients to send request to backend
+        // item, size, type, protein, sauce and selectedIngred variables
+        
+        // send request to backend
+
+
+        // let ingredients = "";
+        // if (selectedIngredients.length > 0) {
+        //     ingredients += `${selectedIngredients.join(', ')}`;
+        //     console.log("Added BYO Ingredients:", ingredients);
+        // }  
+
+
+        setSelectedIngredients([]); // Clear selected ingredients
         main_panel();   // exits to main BYO panel after adding BYO item to order
     }
 
@@ -85,7 +95,6 @@ const CashierGUI = () => {
         console.log("Paying for Order");
         console.table(order);
         console.table(selectedIngredients);
-        setOrder([]);
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
@@ -120,6 +129,7 @@ const CashierGUI = () => {
 
     // Call to add price of a new Menu Item added to the order to the total order amount
     const updatePrice = (item : string) => {
+        setLoading(true);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -132,9 +142,11 @@ const CashierGUI = () => {
           .then((response) => {
             console.log(response.data.price);
             setPrices([...prices,parseFloat(response.data.price)]);
+            setLoading(false);
           })
           .catch((error) => {
             console.error('Failed to get Price: ', error);
+            setLoading(false);
           });
       };    
 
@@ -148,6 +160,15 @@ const CashierGUI = () => {
     }
 
     // TODO: Add customization back-end
+
+    const handleDeleteClick = (index : number) => {
+        const temp = [...order]; 
+        temp.splice(index, 1);
+        setOrder(temp);
+        const temp2 = [...prices];
+        temp2.splice(index, 1);
+        setPrices(temp2);
+    }
 
     const goback = () => {
         navigate(-1);
@@ -170,10 +191,16 @@ const CashierGUI = () => {
     }, [])
 
     const pasta_panel = () => {
+        makeorderitem(0, "Pasta");
+        setSelectedIngredients([]);
+        setSize("");
+        setProtein("");
+        setSauce("");
+        setType("");
         Set_BYO_Panel([
             <div>
                 <button onClick={main_panel} style={{
-                    justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
+                    justifyContent: "flex-end", display: "flex", marginLeft: "1vw", marginTop: "1vh"
                     }}> 
                 Back </button> 
                 <h2> 
@@ -183,8 +210,8 @@ const CashierGUI = () => {
                 <div>
                 <h3>
                     Size: &nbsp;
-                        <button onClick={() => makeorderitem(1, "SM Custom Pasta")}> Small </button> &nbsp;
-                        <button onClick={() => makeorderitem(1, "REG Custom Pasta")}> Regular </button> 
+                        <button onClick={() => makeorderitem(1, "SM")}> Small </button> &nbsp;
+                        <button onClick={() => makeorderitem(1, "REG")}> Regular </button> 
                         &nbsp;&nbsp; 
                     Pasta: &nbsp;
                         <button onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button> &nbsp;
@@ -193,23 +220,23 @@ const CashierGUI = () => {
                 </div>
                 <h3> Protein: 
                     <p>
-                        <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
-                        <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
-                        <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
+                        <button onClick={() => setProtein('Italian Sausage')}> Italian Sausage </button>
+                        <button onClick={() => setProtein('Grilled Chicken')}> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Crispy Chicken')}> Crispy Chicken </button>
+                        <button onClick={() => setProtein('Hot Friend Chicken')}> Hot Fried Chicken </button>
+                        <button onClick={() => setProtein('Grilled Chicken')}> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Meatballs')}> Grass-Fed Meatballs </button>
+                        <button onClick={() => setProtein('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Grilled Salmon')}> Grilled Salmon </button>
                     </p>
                 </h3>
                 <h3>
                     Pasta Sauces:
                     <p>
-                        <button onClick={() => handleIngredientSelection('Tomato Sauce')}> Marinara </button>
-                        <button onClick={() => handleIngredientSelection('Alfredo Sauce')}> Alfredo </button>
-                        <button onClick={() => handleIngredientSelection('Diavolo Sauce')}> Diavolo </button>
-                        <button onClick={() => handleIngredientSelection('Basil Pesto Sauce')}> Basil Pesto </button>
+                        <button onClick={() => setSauce('Tomato Sauce')}> Marinara </button>
+                        <button onClick={() => setSauce('Alfredo Sauce')}> Alfredo </button>
+                        <button onClick={() => setSauce('Diavolo Sauce')}> Diavolo </button>
+                        <button onClick={() => setSauce('Basil Pesto Sauce')}> Basil Pesto </button>
                     </p>
                 </h3>
                 <h3> 
@@ -238,14 +265,25 @@ const CashierGUI = () => {
                     </p>
                 </h3>
                 <br />
-                <p>Display Selected Items here: </p>
-                <button onClick={() => addBYOToOrder("")} className='add-to-order'> Add to order </button>
+                <p>
+                    {item}
+                    {size}
+                    {type}
+
+                </p>
+                <button onClick={() => addBYOToOrder()} className='add-to-order'> Add to order </button>
                 <br />
             </div>
         ]);
     }
 
     const piada_panel = () => {
+        makeorderitem(0, "Piada");
+        setSelectedIngredients([]);
+        setSize("");
+        setProtein("");
+        setSauce("");
+        setType("");
         Set_BYO_Panel([
             <div>
                 <button onClick={main_panel} style={{
@@ -256,23 +294,23 @@ const CashierGUI = () => {
                 <h3> 
                     Protein: 
                     <p >
-                        <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
-                        <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
-                        <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
+                        <button onClick={() => setProtein('Italian Sausage')}> Italian Sausage </button>
+                        <button onClick={() => setProtein('Grilled Chicken')}> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Crispy Chicken')}> Crispy Chicken </button>
+                        <button onClick={() => setProtein('Hot Friend Chicken')}> Hot Fried Chicken </button>
+                        <button onClick={() => setProtein('Grilled Chicken')}> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Meatballs')}> Grass-Fed Meatballs </button>
+                        <button onClick={() => setProtein('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Grilled Salmon')}> Grilled Salmon </button>
                     </p>
                 </h3>
                 <h3>
                     Pasta Sauces:
                     <p>
-                        <button onClick={() => handleIngredientSelection('Tomato Sauce')}> Marinara </button>
-                        <button onClick={() => handleIngredientSelection('Alfredo Sauce')}> Alfredo </button>
-                        <button onClick={() => handleIngredientSelection('Diavolo Sauce')}> Diavolo </button>
-                        <button onClick={() => handleIngredientSelection('Basil Pesto Sauce')}> Basil Pesto </button>
+                        <button onClick={() => setSauce('Tomato Sauce')}> Marinara </button>
+                        <button onClick={() => setSauce('Alfredo Sauce')}> Alfredo </button>
+                        <button onClick={() => setSauce('Diavolo Sauce')}> Diavolo </button>
+                        <button onClick={() => setSauce('Basil Pesto Sauce')}> Basil Pesto </button>
                     </p>
                 </h3>
                 <h3> 
@@ -301,7 +339,7 @@ const CashierGUI = () => {
                     </p>
                 </h3>
                 <p>Display Selected Items here: </p>
-                <button onClick={() => addBYOToOrder("")} className='add-to-order'>
+                <button onClick={() => addBYOToOrder()} className='add-to-order'>
                     Add to order
                 </button>
             </div>
@@ -309,6 +347,12 @@ const CashierGUI = () => {
     }
 
     const salad_panel = () => {
+        makeorderitem(0, "Salad");  
+        setSelectedIngredients([]);
+        setSize("");
+        setProtein("");
+        setSauce("");
+        setType("");
         Set_BYO_Panel([
         <div>
             <button onClick={main_panel} style={{
@@ -318,8 +362,8 @@ const CashierGUI = () => {
             <h3>
                 Size:
                 <p>
-                    <button> Small </button>
-                    <button> Regular </button>  
+                    <button onClick={() => makeorderitem(1, "SM")}> Small </button>
+                    <button onClick={() => makeorderitem(1, "REG")}> Regular </button>  
                 </p>
             </h3>
             <h3> Protein: 
@@ -339,7 +383,7 @@ const CashierGUI = () => {
                 <p>
                     <button onClick={() => handleIngredientSelection('Creamy Parmesan Sauce')}> Creamy Parmesan </button>
                     <button onClick={() => handleIngredientSelection('Lemon Basil Dressing')}> Lemon Basil </button>
-                    <button onClick={() => handleIngredientSelection('Classic Ceasar Dressing')}> Classic Caesar </button>
+                    <button onClick={() => handleIngredientSelection('Classic Caesar Dressing')}> Classic Caesar </button>
                     <button onClick={() => handleIngredientSelection('Basil Parmesan Dressing')}> Creamy Basil Parmesan </button>
                     <button onClick={() => handleIngredientSelection('Oil & Vinegar Dressing')}> Oil & Vinegar </button>
                     <button onClick={() => handleIngredientSelection('Spicy Ranch Dressing')}> Spicy Ranch </button>
@@ -372,7 +416,7 @@ const CashierGUI = () => {
                 </p>
             </h3>
             <p>Display Selected Items here: </p>
-            <button onClick={() => addBYOToOrder("")} className='add-to-order'>
+            <button onClick={() => addBYOToOrder()} className='add-to-order'>
                 Add to order
             </button>
         </div>
@@ -381,45 +425,21 @@ const CashierGUI = () => {
 
     return (
     <div className="Cashier">
-        <h2 className='order-panel'>
-        <div className="display-order">
-            <table className="table table-dark">
-            <thead>
-                  <tr>
-                    <th> # </th>
-                    <th> Name </th>
-                    <th> Price($) </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {order.map((order, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{order}</td>
-                      <td>{prices.at(index)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              </div>
-            <button className='pay-button' onClick={addorder} > <u>Pay</u>: 
-            ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
-            <button className='remove-button' onClick={removeAll}> Remove Items </button>
-        </h2> 
-
         <header className='header'>
-        <button onClick={goback} className='back-button'> Back </button>
             <h1 className='piada'>
+            <button onClick={goback} className='back-button'> Back </button>
             PIADA 
             </h1>
-            <p className='street-food'> Italian Street Food</p>
+            <p className='street-food'> &nbsp; Italian Street Food</p>
         </header>
-        
+
+        <div style={{display: "table"}}>    
         <div className='main-panel'>
+        <div style={{display: "table"}}>
         <h3 className='column'> Pasta:
         <p> 
         <Popup trigger=
-            {<button className='main-buttons'> Carbonara </button>} 
+            {<button className='main-buttons' disabled={loading}> Carbonara </button>} 
             position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
             <p className='basic-pop-up'>
             <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM") }> Small </button>
@@ -433,7 +453,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button className='main-buttons'> Diavolo </button>}
+            {<button className='main-buttons' disabled={loading}> Diavolo </button>}
             position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
@@ -447,7 +467,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button className='main-buttons'> Basil Pesto </button>}
+            {<button className='main-buttons' disabled={loading}> Basil Pesto </button>}
             position="right center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
@@ -461,7 +481,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button className='main-buttons'> Marinara </button>}
+            {<button className='main-buttons' disabled={loading}> Marinara </button>}
             position="right center" onOpen={() => makeorderitem(0, "Marinara")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
@@ -478,18 +498,18 @@ const CashierGUI = () => {
 
         <h3 className='column'>Piadas: 
             <p>
-            <button className='main-buttons' onClick={() => addorderitem("Avocado Piada")}> Avocado </button>
-            <button className='main-buttons' onClick={() => addorderitem("BLT Piada")}> BLT </button>
-            <button className='main-buttons' onClick={() => addorderitem("Chefs Favorite Piada")}> Chef's Favorite </button>
-            <button className='main-buttons' onClick={() => addorderitem("Mediterranean Piada")}> Mediterranean </button>
+            <button className='main-buttons' onClick={() => addorderitem("Avocado Piada")} disabled={loading}> Avocado </button>
+            <button className='main-buttons' onClick={() => addorderitem("BLT Piada")} disabled={loading}> BLT </button>
+            <button className='main-buttons' onClick={() => addorderitem("Chefs Favorite Piada")} disabled={loading}> Chef's Favorite </button>
+            <button className='main-buttons' onClick={() => addorderitem("Mediterranean Piada")} disabled={loading}> Mediterranean </button>
             </p>
         </h3>
 
         <h3 className='column'> Salad: 
         <p> 
           <Popup trigger=
-              {<button className='main-buttons'> Deluxe Ceasar </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
+              {<button className='main-buttons' disabled={loading}> Classic Caesar </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Classic Ceasar Salad")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
@@ -499,7 +519,7 @@ const CashierGUI = () => {
           </Popup>
 
           <Popup trigger=
-            {<button className='main-buttons'> Farmer's Market </button>}
+            {<button className='main-buttons' disabled={loading}> Farmer's Market </button>}
             position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
@@ -510,7 +530,7 @@ const CashierGUI = () => {
           </Popup>
 
           <Popup trigger=
-            {<button className='main-buttons'> Avocado Chop </button>}
+            {<button className='main-buttons' disabled={loading}> Avocado Chop </button>}
             position="right center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
@@ -520,7 +540,7 @@ const CashierGUI = () => {
             </p>
           </Popup>
 
-          <button className='main-buttons' onClick={() => addorderitem("Power Bowl")}> Power Bowl </button>
+          <button className='main-buttons' onClick={() => addorderitem("Power Bowl")} disabled={loading}> Power Bowl </button>
       </p>
       </h3>
       
@@ -528,7 +548,7 @@ const CashierGUI = () => {
       <h3 className='column'> Other:
       <div>
         <Popup contentStyle={{width: "1200px"}} trigger=
-            {<button className='main-buttons'> Build Your Own </button>} 
+            {<button className='main-buttons' disabled={loading}> Build Your Own </button>} 
             modal nested onClose={main_panel}>
             {
                 <div className='basic-pop-up'>
@@ -538,7 +558,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button className='main-buttons'> Sides </button>} 
+            {<button className='main-buttons' disabled={loading}> Sides </button>} 
             modal nested >
             {
               <div>
@@ -559,7 +579,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button className='main-buttons'> Drinks </button>} 
+            {<button className='main-buttons' disabled={loading}> Drinks </button>} 
             modal nested>
             {
                 <div className='basic-pop-up'>
@@ -580,7 +600,7 @@ const CashierGUI = () => {
         </Popup>
 
         <Popup trigger=
-            {<button className='main-buttons'> Kids </button>} 
+            {<button className='main-buttons' disabled={loading}> Kids </button>} 
             modal nested>
             {
                 <div className='basic-pop-up'>
@@ -621,6 +641,39 @@ const CashierGUI = () => {
         </Popup>
       </div>
       </h3>
+      </div>
+      </div>
+
+      <h2 className='order-panel'>
+        <div className="display-order">
+            <table className="table table-dark">
+            <thead>
+                  <tr>
+                    <th> # </th>
+                    <th> Name </th>
+                    <th> Price($) </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.map((order, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{order}</td>
+                      <td>{prices.at(index)}</td>
+                      <td>
+                      <BsFillTrashFill onClick={() => handleDeleteClick(index)}/>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
+            <button className='pay-button' onClick={addorder} > <u>Pay</u>: 
+            ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
+            <button className='remove-button' onClick={removeAll}> Remove Items </button>
+        </h2> 
+
       </div>
     </div>
   );
