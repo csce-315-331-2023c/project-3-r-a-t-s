@@ -435,7 +435,7 @@ const CashierGUI = () => {
     <div className="Cashier">
         <header className='header'>
             <h1 className='piada'>
-            <button onClick={goback} className='back-button'> Back </button>
+            <button onClick={goback} className='back-button'> Logout </button>
             PIADA 
             </h1>
             <p className='street-food'> &nbsp; Italian Street Food</p>
