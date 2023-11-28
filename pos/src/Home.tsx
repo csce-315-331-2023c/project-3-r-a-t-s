@@ -148,13 +148,12 @@ const Home : React.FC = () => {
             </div>
 
             <div style={{display: "table-cell"}}>
-                <h3 style={{}}> <br /> 
+                <h3 style={{fontSize: "3vh"}}> <br /> 
                  <u>Store Hours:</u> 
                     <ul style={{
                         listStyleType: "none",
                         width: "30vw",
                         height: "40vh",
-                        fontSize: "3vh"
                         }}>
                             <br />
                         <li>Monday 10:45am-10:00pm</li>
