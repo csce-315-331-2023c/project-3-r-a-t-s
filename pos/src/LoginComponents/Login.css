@@ -17,11 +17,18 @@
     z-index: 1000; 
 }
 
+.CashierLoginPopup h4 {
+    text-align: center;
+    color: black;
+    font-size: 25px;
+}
+
 
 .CashierForm {
     padding: 20px;
     margin: 5px 0;
     text-align: left;
+    color : black;
 }
 
 .CashierForm .CashierLogin {
@@ -37,6 +44,7 @@
     outline:none;
     background-color: white;
     border-radius: 5px;
+    font-size: 25px;
 }
 
 .CashierLoginPopup .CashierPopupClose {
@@ -46,7 +54,7 @@
     width: 15px;
     height: 15px;
     color: black;
-    font-size: 25px;
+    font-size: 28px;
 }
 
 .CashierForm .CashierLogin-btn button {
@@ -54,8 +62,14 @@
     height: 40px;
     border:none;
     outline:none;
-    font-size: 20px;
+    font-size: 25px;
     background: black;
     color: white;
     border-radius: 10px;
+}
+
+.WelcomeMessage{
+    text-align: center;
+    color : black;
+    font-size: 25px;
 }

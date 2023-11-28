@@ -89,8 +89,16 @@ const Home : React.FC = () => {
                 <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')} /> &nbsp;
                    <b>PIADA</b>  Italian Street Food 
-                <button onClick={() => navigate('ManagerGUI')} className='navigate-buttons'> Manager GUI</button>
-                <button onClick={() => navigate('CashierGUI')} className='navigate-buttons'> Cashier POS </button>
+                <button onClick={() => handleGoogleLogin()} className='navigate-buttons'> Manager GUI</button>
+                <button onClick={() => setCashierLogin(true)} className='navigate-buttons'> Cashier POS </button>
+                {/* Login Popup */}
+                {showCashierLogin && (
+                    <CashierLoginPopup
+                        message={'Cashier Login?'}
+                        onClose={() => setCashierLogin(false)}
+                        onLogin={handleLoginSuccessCashier}
+                    />
+                )}
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>
                 </h1>
             </div>
@@ -168,27 +176,6 @@ const Home : React.FC = () => {
             </div>
             </div>
             </div>
-         
-
-        <div className="App">
-
-            <h3>Log in Here: </h3>
-            <button onClick={() => setCashierLogin(true)}>Cashier GUI</button>
-
-            {/* Login Popup */}
-            {showCashierLogin && (
-                <CashierLoginPopup
-                    message={'Cashier Login?'}
-                    onClose={() => setCashierLogin(false)}
-                    onLogin={handleLoginSuccessCashier}
-                />
-            )}
-            <h3> Click here if you're a customer: </h3>
-            <button onClick={() => navigate('CustomerGUI')}> Customer GUI </button>
-
-            <h3> Click here if you're a Manager: </h3>
-            <button onClick={handleGoogleLogin}> Manager GUI </button>
-        </div>
         </div>
 
     )
