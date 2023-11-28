@@ -11,7 +11,7 @@ import InventoryComponent from './Components/Inventory';
 import OrderHistoryComponent from './Components/OrderHistory';
 import EmployeeComponent from './Components/Employee';
 import MenuComponent from './Components/Menu';
-import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { CiLogout } from "react-icons/ci";
 
 
 const ManagerGUI: React.FC = () => {
@@ -309,7 +309,7 @@ const ManagerGUI: React.FC = () => {
   return(
     <div style={{ display: 'block'}} className='manager'> 
       <h4 style={{textAlign: 'left', fontSize: 40, background: 'darkgray', padding: 5, paddingTop: 10}}>
-          <FaArrowAltCircleLeft style={{fontSize: 60, paddingRight: 30, paddingLeft: 30, padding: 10, verticalAlign: 'middle'}} onClick={() => goback()}/>
+          <CiLogout style={{fontSize: 60, paddingRight: 30, paddingLeft: 30, padding: 10, verticalAlign: 'middle'}} onClick={() => goback()}/>
           Manager Dashboard
       </h4>      
 
