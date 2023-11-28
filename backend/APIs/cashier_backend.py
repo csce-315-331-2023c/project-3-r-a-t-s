@@ -125,7 +125,7 @@ def get_price():
         cursor.execute(query)
         price = cursor.fetchall()
 
-        return jsonify({"price": price})
+        return jsonify({"price": price, "item" : menu_item})
 
 
     except Exception as e:

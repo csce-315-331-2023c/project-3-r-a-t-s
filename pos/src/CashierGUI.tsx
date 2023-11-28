@@ -51,7 +51,13 @@ const CashierGUI = () => {
     const addorderitem = (i : string) => {
         setLoading(true);
         if (i === "") {
-            let temp = size + " " + item + " " + type;
+            let temp = "";
+            if (type === "") {
+                temp = size + " " + item;
+            }
+            else {
+                temp = size + " " + item + " " + type;
+            }
             setOrder(order.concat(temp)); 
             updatePrice(temp);
             console.log("Added new order item: ", temp);
@@ -128,8 +134,9 @@ const CashierGUI = () => {
     }
 
     // Call to add price of a new Menu Item added to the order to the total order amount
-    const updatePrice = (item : string) => {
-        setLoading(true);
+    const updatePrice = (i : string) => {
+        console.log(i)
+;        setLoading(true);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -137,10 +144,11 @@ const CashierGUI = () => {
             },
         };
         axios
-        //   .post('http://127.0.0.1:5000/api/cashier/get_price', item, config)
-          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, item, config)
+        //   .post('http://127.0.0.1:5000/api/cashier/get_price', i, config)
+          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, i, config)
           .then((response) => {
             console.log(response.data.price);
+            console.log(response.data.item);
             setPrices([...prices,parseFloat(response.data.price)]);
             setLoading(false);
           })
@@ -509,7 +517,7 @@ const CashierGUI = () => {
         <p> 
           <Popup trigger=
               {<button className='main-buttons' disabled={loading}> Classic Caesar </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Classic Ceasar Salad")}>
+            position="right center" onOpen={() => makeorderitem(0, "Classic Caesar Salad")}>
             <p className='basic-pop-up'>
             <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
             <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
@@ -564,14 +572,14 @@ const CashierGUI = () => {
               <div>
                 <h2 className='basic-pop-up'> Street Sides
                 <p>
-                <button onClick={() => addorderitem("Sweet Corn Salad")} className='other-buttons'> Sweet Corn Salad </button>
-                <button onClick={() => addorderitem("Garlic Dough")} className='other-buttons'> Garlic Dough </button>
-                <button onClick={() => addorderitem("Meatballs")} className='other-buttons'> Meatballs </button>
-                <button onClick={() => addorderitem("Pepperoni Piada Stick")} className='other-buttons'> Pepperoni Piada Stick </button>
-                <button onClick={() => addorderitem("Cup of Lobster Bisque")} className='other-buttons'> Lobster Bisque </button>
-                <button onClick={() => addorderitem("Chocolate Brownie")} className='other-buttons'> Sweet Street Chocolate Brownie </button>
-                <button onClick={() => addorderitem("Chocolate Chunk Cookie")} className='other-buttons'> Chocolate Chunk Cookie </button>
-                <button onClick={() => addorderitem("Salted Caramel Cookie")} className='other-buttons'> Salted Caramel Cookie </button>
+                <button onClick={() => addorderitem("Sweet Corn Salad")} className='other-buttons' disabled={loading}> Sweet Corn Salad </button>
+                <button onClick={() => addorderitem("Garlic Dough")} className='other-buttons'  disabled={loading}> Garlic Dough </button>
+                <button onClick={() => addorderitem("Meatballs")} className='other-buttons' disabled={loading}> Meatballs </button>
+                <button onClick={() => addorderitem("Pepperoni Piada Stick")} className='other-buttons' disabled={loading}> Pepperoni Piada Stick </button>
+                <button onClick={() => addorderitem("Cup of Lobster Bisque")} className='other-buttons' disabled={loading}> Lobster Bisque </button>
+                <button onClick={() => addorderitem("Chocolate Brownie")} className='other-buttons' disabled={loading}> Sweet Street Chocolate Brownie </button>
+                <button onClick={() => addorderitem("Chocolate Chunk Cookie")} className='other-buttons' disabled={loading}> Chocolate Chunk Cookie </button>
+                <button onClick={() => addorderitem("Salted Caramel Cookie")} className='other-buttons' disabled={loading}> Salted Caramel Cookie </button>
               </p>
               </h2>
               </div>  
@@ -585,15 +593,15 @@ const CashierGUI = () => {
                 <div className='basic-pop-up'>
                 <h2> Drinks </h2>
                 <p>
-                <button onClick={() => addorderitem("Blackberry Hibiscus Lemonade")} className='other-buttons'> Blackberry Hibiscus Lemonade </button>
-                <button onClick={() => addorderitem("Orange Soda")} className='other-buttons'> Orange Soda </button>
-                <button onClick={() => addorderitem("Berry Soda")} className='other-buttons'> Berry Soda </button>
-                <button onClick={() => addorderitem("Peach Tea")} className='other-buttons'> Peach Tea </button>
-                <button onClick={() => addorderitem("Lemon Tea")} className='other-buttons'> Lemon Tea </button>
-                <button onClick={() => addorderitem("Acqua Panna Spring Water")} className='other-buttons'> Acqua Panna Spring Water </button>
-                <button onClick={() => addorderitem("San Pellegrino Sparkling Water")} className='other-buttons'> San Pellegrino Sparkling Water </button>
-                <button onClick={() => addorderitem("REG Soft Drink")} className='other-buttons'> Regular Soft Drink </button>
-                <button onClick={() => addorderitem("LG Soft Drink")} className='other-buttons'> Large Soft Drink </button>
+                <button onClick={() => addorderitem("Blackberry Hibiscus Lemonade")} className='other-buttons' disabled={loading}> Blackberry Hibiscus Lemonade </button>
+                <button onClick={() => addorderitem("Orange Soda")} className='other-buttons' disabled={loading}> Orange Soda </button>
+                <button onClick={() => addorderitem("Berry Soda")} className='other-buttons' disabled={loading}> Berry Soda </button>
+                <button onClick={() => addorderitem("Peach Tea")} className='other-buttons' disabled={loading}> Peach Tea </button>
+                <button onClick={() => addorderitem("Lemon Tea")} className='other-buttons' disabled={loading}> Lemon Tea </button>
+                <button onClick={() => addorderitem("Acqua Panna Spring Water")} className='other-buttons' disabled={loading}> Acqua Panna Spring Water </button>
+                <button onClick={() => addorderitem("San Pellegrino Sparkling Water")} className='other-buttons' disabled={loading}> San Pellegrino Sparkling Water </button>
+                <button onClick={() => addorderitem("REG Soft Drink")} className='other-buttons' disabled={loading}> Regular Soft Drink </button>
+                <button onClick={() => addorderitem("LG Soft Drink")} className='other-buttons' disabled={loading}> Large Soft Drink </button>
               </p>
               </div>
             }
@@ -606,7 +614,7 @@ const CashierGUI = () => {
                 <div className='basic-pop-up'>
                     <h2> Kids Menu </h2>
                     <Popup trigger=
-                    {<button className='other-buttons'> Kids Pasta  </button>}
+                    {<button className='other-buttons' disabled={loading}> Kids Pasta  </button>}
                     position="bottom center" >
                     <div className='basic-pop-up'>
                     <button className='basic-option-buttons'> Grilled Chicken </button>
@@ -620,7 +628,7 @@ const CashierGUI = () => {
                     </Popup>
 
                     <Popup trigger=
-                    {<button className='other-buttons'> Kids Meatballs  </button>}
+                    {<button className='other-buttons' disabled={loading}> Kids Meatballs  </button>}
                     position="bottom center" >
                     <div className='basic-pop-up'>
                     <button className='basic-option-buttons'> Spaghetti </button>
@@ -629,13 +637,13 @@ const CashierGUI = () => {
                     </div>
                     </Popup>
                     
-                    <button onClick={() => addorderitem("Kids Chicken Fingers")} className='other-buttons'> Chicken Fingers </button>
+                    <button onClick={() => addorderitem("Kids Chicken Fingers")} className='other-buttons' disabled={loading}> Chicken Fingers </button>
 
                     <br /><br />
                     <h3> Drinks: </h3>
-                    <button onClick={() => addorderitem("Kids Low-Fat Milk")} className='other-buttons'> Low-Fat Milk </button>
-                    <button onClick={() => addorderitem("Kids Chocolate Milk")} className='other-buttons'> Chocolate Milk </button>
-                    <button onClick={() => addorderitem("Kids Apple Juice")} className='other-buttons'> Apple Juice </button>
+                    <button onClick={() => addorderitem("Kids Low-Fat Milk")} className='other-buttons' disabled={loading}> Low-Fat Milk </button>
+                    <button onClick={() => addorderitem("Kids Chocolate Milk")} className='other-buttons' disabled={loading}> Chocolate Milk </button>
+                    <button onClick={() => addorderitem("Kids Apple Juice")} className='other-buttons' disabled={loading}> Apple Juice </button>
                 </div>
             }
         </Popup>
@@ -652,7 +660,7 @@ const CashierGUI = () => {
                     <th> # </th>
                     <th> Name </th>
                     <th> Price($) </th>
-                    <th></th>
+                    <th><BsFillTrashFill onClick={removeAll}/></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -671,7 +679,6 @@ const CashierGUI = () => {
               </div>
             <button className='pay-button' onClick={addorder} > <u>Pay</u>: 
             ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
-            <button className='remove-button' onClick={removeAll}> Remove Items </button>
         </h2> 
 
       </div>
