@@ -41,7 +41,7 @@ const EmployeeComponent: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    interface EmployeeData {
+    interface ManagerData {
         employee_id: number;
         first_name: string;
         last_name: string;
@@ -52,7 +52,7 @@ const EmployeeComponent: React.FC = () => {
         password: string;
     }
     
-    interface AddEmployee {
+    interface AddManager {
         FirstName: string;
         LastName: string;
         Salary: string;
@@ -61,7 +61,7 @@ const EmployeeComponent: React.FC = () => {
         Username: string;
         Password: string;
     }
-    interface EditEmployee {
+    interface EditManager {
         FirstName: string;
         LastName: string;
         Salary: string;
@@ -70,15 +70,15 @@ const EmployeeComponent: React.FC = () => {
         Password: string;
     }
 
-    const [employeeList, setEmployeeList] = useState<EmployeeData[]>([]);
+    const [employeeList, setEmployeeList] = useState<ManagerData[]>([]);
     const [availableManagerIds, setAvailableManagerIds] = useState([]);
-    const [newEmployee, setNewEmployee] = useState<AddEmployee>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Username: '', Password: '',});
+    const [newEmployee, setNewEmployee] = useState<AddManager>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Username: '', Password: '',});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
     const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Password: '',});
     const [errorManagerID, setErrorManagerID] = useState<string>('');
 
-    const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddEmployee) => {
+    const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddManager) => {
         const { value } = e.target;
         setNewEmployee((prevNewEmployee) => ({ ...prevNewEmployee, [fieldName]: value }));
     };
@@ -207,7 +207,7 @@ const EmployeeComponent: React.FC = () => {
         });
     };
 
-    const handleSubmitNewEmployee = async (newEmployee: AddEmployee) => {
+    const handleSubmitNewEmployee = async (newEmployee: AddManager) => {
         try {
             await add_employee();
 
@@ -256,7 +256,7 @@ const EmployeeComponent: React.FC = () => {
           });
         }
     };
-    const handleSaveEdit = async (employeeId: number, editedData : EditEmployee) => {
+    const handleSaveEdit = async (employeeId: number, editedData : EditManager) => {
         try {
             await update_employee(employeeId);
             await generate_employee_info();
@@ -319,7 +319,7 @@ const EmployeeComponent: React.FC = () => {
                         <tbody>
                         {employeeList.filter((item) => { 
                             return query.toLowerCase() === '' ? item: item.last_name.toLowerCase().includes(query.toLowerCase())
-                        }).map((employee: EmployeeData) => (
+                        }).map((employee: ManagerData) => (
                         <tr key={employee.employee_id}>
                         <td>{employee.employee_id}</td>
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : employee.last_name}</td>
@@ -397,7 +397,7 @@ const EmployeeComponent: React.FC = () => {
                             <span>
                                 <button className="add-row-btn" onClick={handleAddRow}>
                                     <IoPersonAddSharp className="add-icon" />
-                                    Add Employee
+                                    Add Manager
                                 </button>
                             </span>
                         </div>
