@@ -127,17 +127,17 @@ def add_inventory():
 def remove_inventory():
     try:
         data = request.get_json()
-        item_name = data['name']
+        item_id = data['ingredient_id']
         
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM inventory WHERE name = %s', (item_name,))
+        cursor.execute('DELETE FROM inventory WHERE ingredient_id = %s', (item_id,))
         conn.commit()
 
         cursor.close()
         conn.close()
 
-        return jsonify({"message": f"Item {item_name} removed from inventory"}), 200
+        return jsonify({"message": f"Item {item_id} removed from inventory"}), 200
 
     except Exception as e:
         cursor.close()
@@ -166,6 +166,40 @@ def edit_inventory():
         cursor.close()
         conn.close()
         return jsonify({"error": str(e)}), 500
+    
+# Python Flask function
+
+@manager_BP.route('/update_inventory_item', methods=['POST'])
+def update_inventory_item():
+    try:
+        data = request.get_json()
+        item_id = data['id']
+        new_name = data['name']
+        new_quantity = data['quantity']
+        new_price = data['price']
+        new_unit = data['unit']
+
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        query = """
+        UPDATE inventory 
+        SET name = %s, quantity = %s, price = %s, unit = %s 
+        WHERE ingredient_id = %s
+        """
+        cursor.execute(query, (new_name, new_quantity, new_price, new_unit, item_id))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": f"Inventory item {item_id} updated successfully"}), 200
+
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+
 
 @manager_BP.route('/get_employee_list', methods=['POST'])
 def get_employee_list():
