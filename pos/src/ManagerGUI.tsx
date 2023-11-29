@@ -335,19 +335,19 @@ const ManagerGUI: React.FC = () => {
           <OrderHistoryComponent />
           </Tab> 
 
-          <Tab eventKey={5} title="Menu"> 
+          <Tab eventKey={3} title="Menu"> 
           <MenuComponent />
           </Tab>
 
-          <Tab eventKey={3} title="Employees"> 
+          <Tab eventKey={4} title="Employees"> 
           <EmployeeComponent />
           </Tab>
 
-          <Tab eventKey={4} title="Managers"> 
+          <Tab eventKey={5} title="Managers"> 
             <ManagerComponent/>
           </Tab>
 
-          <Tab eventKey={5} title="Reports"> 
+          <Tab eventKey={6} title="Reports"> 
             <br />
             <p>
             Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/> &nbsp;

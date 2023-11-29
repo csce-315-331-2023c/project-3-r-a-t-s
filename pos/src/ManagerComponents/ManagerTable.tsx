@@ -6,9 +6,7 @@ import { MdCancel } from "react-icons/md";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { AiOutlineCloseSquare } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 interface PopupProps {
     message: string;
@@ -31,93 +29,51 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
 };
 
 const ManagerTableComponent: React.FC = () => {
+    const [query, setQuery] = useState(''); 
 
     useEffect(() => {
         generate_manager_info();
     }, []);
 
-    const [query, setQuery] = useState(''); 
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    interface EmployeeData {
-        employee_id: number;
-        first_name: string;
+    interface ManagerData {
+        manager_id: number;
         last_name: string;
+        first_name: string;
         salary: string;
         hours_per_week: string;
-        manager_id: string;
-        username: string;
-        password: string;
-    }
-    
-    interface AddEmployee {
-        FirstName: string;
-        LastName: string;
-        Salary: string;
-        Hours: string;
-        ManagerID: string;
-        Username: string;
-        Password: string;
-    }
-    interface EditEmployee {
-        FirstName: string;
-        LastName: string;
-        Salary: string;
-        Hours: string;
-        ManagerID: string;
-        Password: string;
+        email: string;
+        admin: string;
     }
 
-    const [employeeList, setEmployeeList] = useState<EmployeeData[]>([]);
+    interface AddManager {
+        last_name: string;
+        first_name: string;
+        salary: string;
+        hours_per_week: string;
+        email: string;
+        admin: string;
+    }
+
+    interface EditManager {
+        last_name: string;
+        first_name: string;
+        salary: string;
+        hours_per_week: string;
+        email: string;
+        admin: string;
+    }
+
+    const [managerList, setManagerList] = useState<ManagerData[]>([]);
+    
     const [availableManagerIds, setAvailableManagerIds] = useState([]);
-    const [newEmployee, setNewEmployee] = useState<AddEmployee>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Username: '', Password: '',});
+    const [newManager, setNewManager] = useState<AddManager>({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '', admin: ''});
     const [showInputFields, setShowInputFields] = useState(false);
-    const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
-    const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Password: '',});
+    const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
+    const [editedData, setEditedData] = useState({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '', admin: ''});
     const [errorManagerID, setErrorManagerID] = useState<string>('');
 
-    const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddEmployee) => {
-        const { value } = e.target;
-        setNewEmployee((prevNewEmployee) => ({ ...prevNewEmployee, [fieldName]: value }));
-    };
 
-    const [employeeToDeleteId, setEmployeeToDeleteId] = useState<number>(0);
-    const [showPopup, setShowPopup] = useState(false);
-
-    const handleDeleteClick = (employeeId: number) => {
-        setEmployeeToDeleteId(employeeId);
-        setShowPopup(true);
-    };
-
-
-    const handleCancelDelete = () => {
-        setEmployeeToDeleteId(0);
-        setShowPopup(false);
-    };
-
-    const handleDeleteEmployee = async () => {
-        if (employeeToDeleteId != 0) {
-            const employeeId = employeeToDeleteId;
-            try {
-                // Assuming remove_employee is asynchronous and handles individual deletions
-                await remove_employee(employeeId);
-                // Update the employee list to reflect the deletion
-                setEmployeeList((prevEmployeeList) =>
-                    prevEmployeeList.filter((employee) => employee.employee_id !== employeeId)
-                );
-                console.log(`Employee with ID ${employeeId} deleted`);
-            } catch (error) {
-                console.error(`Error deleting employee with ID ${employeeId}:`, error);
-            }
-            setEmployeeToDeleteId(0);
-            setShowPopup(false);
-        }
-    };
-
-    // Function to Generate Employees' Information
     const generate_manager_info = async () => {
-        setIsLoading(true);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -125,19 +81,57 @@ const ManagerTableComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         await axios 
-        .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
+        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
         .then((response) => {
-            setEmployeeList(response.data);
-            console.log(response.data);
+            setManagerList(response.data);
+            // console.log(response.data);
+            console.log("Successfully generated Manager Information");
         })
         .catch((error) => {
-            console.error('Error with Generating Employee Information:', error);
+            console.error('Error with Generating Manager Information:', error);
         })
-    };  
+    }
 
-    //Function To Add Employee
-    const add_employee = async () => { 
+    const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddManager) => {
+        const { value } = e.target;
+        setNewManager((prevNewManager) => ({ ...prevNewManager, [fieldName]: value }));
+    };
+
+    const [ManagerToDeleteId, setManagerToDeleteId] = useState<number>(0);
+    const [showPopup, setShowPopup] = useState(false);
+
+    
+    const handleDeleteClick = (id: number) => {
+        setManagerToDeleteId(id);
+        setShowPopup(true);
+    };
+
+
+    const handleCancelDelete = () => {
+        setManagerToDeleteId(0);
+        setShowPopup(false);
+    };
+
+    const handleDeleteManager = async () => {
+        if (ManagerToDeleteId != 0) {
+            const managerID = ManagerToDeleteId;
+            try {
+                await remove_manager(managerID);
+                setManagerList((prevMaanagerList) =>
+                    prevMaanagerList.filter((manager) => manager.manager_id !== managerID)
+                );
+                console.log(`Manager with ID ${managerID} deleted`);
+            } catch (error) {
+                console.error(`Error deleting Manager with ID ${managerID}:`, error);
+            }
+            setManagerToDeleteId(0);
+            setShowPopup(false);
+        }
+    };
+
+    //Function To Add Manager
+    const add_manager = async () => { 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -145,28 +139,19 @@ const ManagerTableComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/add_employee', newEmployee, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, newEmployee, config)
+        .post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
         .then((response) => {
             console.log(response.data.message); 
             // Check for available_manager_ids in the response
-            const ids = response.data.available_manager_ids;
-            if (ids) {
-                setAvailableManagerIds(ids);
-                setErrorManagerID('Unavailable Manager ID! Please Choose From Available IDs: ' + ids.join(', '));
-            }
-            else {
-                setAvailableManagerIds([]);
-                setErrorManagerID('');                
-            }
         })
         .catch((error) => {
-            console.error('Error with Adding Employee:', error);
+            console.error('Error with Adding Manager:', error);
         });
     };
 
-    //Function to Remove Employee
-    const remove_employee = async (employeeId : number) => { 
+    //Function to Remove Manager
+    const remove_manager = async (managerID : number) => { 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -174,17 +159,17 @@ const ManagerTableComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/remove_employee', employeeId, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_employee`, removeEmployee, config)
+        .post('http://127.0.0.1:5000/api/manager/remove_manager', managerID, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_manager`, managerID, config)
         .then((response) => {
             console.log(response.data.message); 
         })
         .catch((error) => {
-            console.error('Error with Removing Employee:', error);
+            console.error('Error with Removing Manager:', error);
         });
     };
-    //Function to Remove Employee
-    const update_employee = async (employeeId : number) => { 
+
+    const update_manager = async (managerID : number) => { 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -192,114 +177,101 @@ const ManagerTableComponent: React.FC = () => {
         };
         const requestData = {
             ...editedData,
-            employee_id: employeeId,
+            manager_id: managerID,
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/update_employee', requestData, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_employee`, requestData, config)
+        .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
             console.log(response.data.message); 
         })
         .catch((error) => {
-            console.error('Error with Updating Employee Information:', error);
+            console.error('Error with Updating Manager Information:', error);
         });
     };
 
-    const handleSubmitNewEmployee = async (newEmployee: AddEmployee) => {
+    const handleSubmitNewManager = async (newManager: AddManager) => {
         try {
-            await add_employee();
+            await add_manager();
 
             if (availableManagerIds.length == 0) {
                 await generate_manager_info();
-                console.log("Submit List", employeeList);
+                console.log("Submit List", managerList);
 
-                setNewEmployee({
-                FirstName: '',
-                LastName: '',
-                Salary: '',
-                Hours: '',
-                ManagerID: '',
-                Username: '',
-                Password: '',
+                setNewManager({
+                first_name: '',
+                last_name: '',
+                salary: '',
+                hours_per_week: '',
+                email: '',
+                admin: '',
                 });
 
                 setShowInputFields(false);
             }
         } catch (error) {
-            console.error('Error with Adding Employee:', error);
+            console.error('Error with Adding Manager:', error);
         }
     };
 
-    // Function to add a new row for employee
+    // Function to add a new row for Manager
     const handleAddRow = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowInputFields(true);
     };
-    // Function to delete the new row for new employee
+    // Function to delete the new row for new Manager
     const handleCancelRow = () => {
         setShowInputFields(false);
     };
     
 
-    const handleEdit = (employeeId: number) => {
-        setEditingEmployeeId(employeeId);
-        const employeeToEdit = employeeList.find((employee) => employee.employee_id === employeeId);
-        if (employeeToEdit) {
+    const handleEdit = (managerID: number) => {
+        setEditingManagerId(managerID);
+        const managerToEdit = managerList.find((manager) => manager.manager_id === managerID);
+        if (managerToEdit) {
           setEditedData({
-            FirstName: employeeToEdit.first_name,
-            LastName: employeeToEdit.last_name,
-            Salary: employeeToEdit.salary,
-            Hours: employeeToEdit.hours_per_week,
-            ManagerID: employeeToEdit.manager_id,
-            Password: employeeToEdit.password,
+            first_name: managerToEdit.first_name,
+            last_name: managerToEdit.last_name,
+            salary: managerToEdit.salary,
+            hours_per_week: managerToEdit.hours_per_week,
+            email: managerToEdit.email,
+            admin: managerToEdit.admin,
           });
         }
     };
-    const handleSaveEdit = async (employeeId: number, editedData : EditEmployee) => {
+    const handleSaveEdit = async (managerID: number, editedData : EditManager) => {
+
         try {
-            await update_employee(employeeId);
+            await update_manager(managerID);
+     
             await generate_manager_info();
+            
             setEditedData({
-            FirstName: '',
-            LastName: '',
-            Salary: '',
-            Hours: '',
-            ManagerID: '',
-            Password: '',
+            first_name: '',
+            last_name: '',
+            salary: '',
+            hours_per_week: '',
+            email: '',
+            admin: '',
             });
-            setEditingEmployeeId(null);
+            setEditingManagerId(null);
         } catch (error) {
-            console.error('Error with Updating Employee:', error);
+            console.error('Error with Updating Manager:', error);
         }
     };
 
-    const handleCancelEdit = async (employeeId: number) => {
-        try {
-            await generate_manager_info();
-        
-            setEditedData({
-                FirstName: '',
-                LastName: '',
-                Salary: '',
-                Hours: '',
-                ManagerID: '',
-                Password: '',
-            });
-            setEditingEmployeeId(null);
-        } catch (error) {
-            console.error('Error with Canceling Edit Employee:', error);
-        }
-    };
+
 
     return (
-        <div> 
+        <div>
+            <div> 
             <div className='Search-Container'>
                     Search: <form> <input className="searchForm" style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
                                 placeholder='Manager Last Name...'/> 
                             </form>
             </div>
-
-            {!!employeeList.length && (
+            <div style={{height: "fit-content"}}>
+            {!!managerList.length && (
                     <div className="order-table-section">
                     <table className='table table-striped w-100'>
                         <thead>
@@ -310,78 +282,70 @@ const ManagerTableComponent: React.FC = () => {
                             <th>Salary</th>
                             <th>Hours Per Week</th>
                             <th>Email</th>
+                            <th>Admin</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {employeeList.filter((item) => { 
+                        {managerList.filter((item) => { 
                             return query.toLowerCase() === '' ? item: item.last_name.toLowerCase().includes(query.toLowerCase())
-                        }).map((employee: EmployeeData) => (
-                        <tr key={employee.employee_id}>
-                        <td>{employee.employee_id}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : employee.last_name}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required/> : employee.first_name}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : employee.salary}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : employee.hours_per_week}</td>
-                        <td>test@gmail.com</td>
+                        }).map((manager: ManagerData) => (
+                        <tr key={manager.manager_id}>
+                        <td>{manager.manager_id}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.last_name} onChange={(e) => setEditedData({ ...editedData, last_name: e.target.value })} required/> : manager.last_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.first_name} onChange={(e) => setEditedData({ ...editedData, first_name: e.target.value })} required/> : manager.first_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.salary} onChange={(e) => setEditedData({ ...editedData, salary: e.target.value })} required/> : manager.salary}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.hours_per_week} onChange={(e) => setEditedData({ ...editedData, hours_per_week: e.target.value })} required/> : manager.hours_per_week}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.email} onChange={(e) => setEditedData({ ...editedData, email: e.target.value })} required/> : manager.email}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.admin} onChange={(e) => setEditedData({ ...editedData, admin: e.target.value })} required/> : manager.admin}</td>
                         <td>
-                                {editingEmployeeId === employee.employee_id ? (
-                                    <span>
-                                        <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(employee.employee_id)}/>
-                                        <FiSave className="save-icon" onClick={() => handleSaveEdit(employee.employee_id, editedData)} />
-                                    </span>
-                                ) : (
-                                    <span>
-                                        <BsFillTrashFill className="delete-btn"
-                                            onClick={() => handleDeleteClick(employee.employee_id)}
-                                        />
-                                        <BsFillPencilFill className="edit-btn"
-                                            onClick={() => handleEdit(employee.employee_id)}
-                                        />
-                                    </span>
+                            <span>
+                                <BsFillTrashFill className="delete-btn"
+                                    onClick={() => handleDeleteClick(manager.manager_id)}
+                                />
+                                <BsFillPencilFill className="edit-btn"
+                                    onClick={() => handleEdit(manager.manager_id)}
+                                />
+                                {editingManagerId === manager.manager_id && (
+                                    <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData)} />
                                 )}
+                            </span>
                         </td>
                         </tr>
                         ))}
                        {showPopup && (
                             <Popup
-                            message="Delete Employee?"
-                            onConfirm={handleDeleteEmployee}
+                            message="Delete Manager?"
+                            onConfirm={handleDeleteManager}
                             onCancel={handleCancelDelete}
                             />
                         )}
                         {showInputFields && (
                             <tr>
-                                <td>{employeeList.length > 0 ? employeeList[employeeList.length - 1].employee_id + 1 : 1}</td>
+                                <td>{managerList.length > 0 ? managerList[managerList.length - 1].manager_id + 1 : 1}</td>
                                 <td>
                                     <input
-                                        type="text" name="LastName" value={newEmployee.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required />
+                                        type="text" name="LastName" value={newManager.last_name} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'last_name')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="FirstName" value={newEmployee.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required />
+                                    <input type="text" name="FirstName" value={newManager.first_name} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'first_name')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="Salary" value={newEmployee.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required />
+                                    <input type="text" name="Salary" value={newManager.salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'salary')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="Hours" value={newEmployee.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required />
+                                    <input type="text" name="Hours" value={newManager.hours_per_week} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'hours_per_week')} required />
                                 </td>
                                 <td>
-                                    <div className='MangerID-Container'>
-                                        <input type="text" name="ManagerID" value={newEmployee.ManagerID} placeholder="Manager ID" onChange={(e) => handleAddInputChange(e, 'ManagerID')} required />
-                                        {errorManagerID && <span className='Error-MangerID'>{errorManagerID}</span>}
-                                    </div>
+                                    <input type="text" name="text" value={newManager.email} placeholder="Email" onChange={(e) => handleAddInputChange(e, 'email')} required />
                                 </td>
                                 <td>
-                                    {/* <input type="text" name="UserName" value={newEmployee.Username} placeholder="UserName (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Username')} required /> */}
-                                </td>
-                                <td>
-                                    <input type="text" name="text" value={newEmployee.Password} placeholder="Password (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Password')} required />
+                                    <input type="text" name="text" value={newManager.admin} placeholder="Admin" onChange={(e) => handleAddInputChange(e, 'admin')} required />
                                 </td>
                                 
                                 <td>
                                     <span className="submit-container">
-                                        <FaRegCheckCircle className="submit-icon" onClick={() => handleSubmitNewEmployee(newEmployee)} />
+                                        <FaRegCheckCircle className="submit-icon" onClick={() => handleSubmitNewManager(newManager)} />
                                         <MdCancel className="cancel-icon" onClick={() => handleCancelRow()} />
                                     </span>
                                 </td>
@@ -392,7 +356,7 @@ const ManagerTableComponent: React.FC = () => {
                             <span>
                                 <button className="add-row-btn" onClick={handleAddRow}>
                                     <IoPersonAddSharp className="add-icon" />
-                                    Add Employee
+                                    Add Manager
                                 </button>
                             </span>
                         </div>
@@ -400,7 +364,10 @@ const ManagerTableComponent: React.FC = () => {
                     </table>
                     </div>
             )}
+            </div>
         </div>
+        </div>
+
     );
 };
 export default ManagerTableComponent;
