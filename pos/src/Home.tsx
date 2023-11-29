@@ -12,6 +12,7 @@ import CashierLoginPopup from './LoginComponents/CashierLogin';
 // import axios, {AxiosError} from 'axios';
 
 import './App.css';
+import WeatherComponent from './Components/Weather';
 
 const mapContainerStyle = {
     width: '40vw',
@@ -100,6 +101,7 @@ const Home : React.FC = () => {
                     />
                 )}
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>
+                <WeatherComponent />
                 </h1>
             </div>
 
