@@ -19,10 +19,6 @@ const OrderHistoryComponent: React.FC = () => {
         set_order_end_date(e.target.value);
     };
 
-    useEffect(() => {
-      generate_order_history(order_start_date, order_end_date);
-    }, [order_end_date, order_start_date])
-
     interface OrderData {
         order_id: number;
         employee_id: number;

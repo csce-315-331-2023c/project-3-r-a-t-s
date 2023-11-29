@@ -5,7 +5,7 @@ import { GiFireBowl } from "react-icons/gi";
 import { LuVegan, LuWheatOff } from "react-icons/lu";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { FaBagShopping } from "react-icons/fa6";
-
+import { FaHome } from "react-icons/fa";
 
 import './MenuBoard.css'
 import { url } from 'inspector';
@@ -20,17 +20,10 @@ const MenuBoardGUI = () => {
                 <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                    <b>PIADA</b>  Italian Street Food
-                <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons' 
-                style={{
-                    verticalAlign: "middle",
-                    textAlign: "center",
-                    borderRadius: "25px",
-                    border: "0.25vh solid #FFFFFF",
-                    padding: "0.5vh 1vw 0.5vh 1vw",
-                    fontSize: "3vh",
-                    marginTop: "1.5vh"
-                    }}> 
+                <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons'> 
                 <FaBagShopping />  &nbsp; Order Online Here!  </button>
+                <button onClick={() => navigate(-1)} className='navigate-buttons'> 
+                <FaHome /> &nbsp; Home  </button>
                 </h1>
             </div> 
             

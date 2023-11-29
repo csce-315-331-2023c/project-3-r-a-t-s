@@ -458,7 +458,7 @@ def get_manager_list():
             manager_info.append(manager_data)
 
         conn.close()
-        return jsonify(employee_info)
+        return jsonify(manager_info)
     
     except Exception as e:
         print(e)
@@ -515,7 +515,7 @@ def remove_manager():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to Remove Manager'}), 500
-
+    
 @manager_BP.route('/update_manager', methods=['POST'])
 def update_manager():
     manager_data = request.get_json()

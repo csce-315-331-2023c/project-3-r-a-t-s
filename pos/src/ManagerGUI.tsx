@@ -7,10 +7,18 @@ import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css'; 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+<<<<<<< HEAD
 import InventoryComponent from './ManagerComponents/Inventory';
 import OrderHistoryComponent from './ManagerComponents/OrderHistory';
 import EmployeeComponent from './ManagerComponents/Employee';
 import MenuComponent from './ManagerComponents/Menu';
+=======
+import InventoryComponent from './Components/Inventory';
+import OrderHistoryComponent from './Components/OrderHistory';
+import EmployeeComponent from './Components/Employee';
+import ManagerComponent from './Components/Manager';
+import MenuComponent from './Components/Menu';
+>>>>>>> 9d0a61628b4c70fb15da1d041f7e983c07f4cf0a
 import { CiLogout } from "react-icons/ci";
 
 
@@ -308,9 +316,20 @@ const ManagerGUI: React.FC = () => {
 
   return(
     <div style={{ display: 'block'}} className='manager'> 
-      <h4 style={{textAlign: 'left', fontSize: 40, background: 'darkgray', padding: 5, paddingTop: 10}}>
-          <CiLogout style={{fontSize: 60, paddingRight: 30, paddingLeft: 30, padding: 10, verticalAlign: 'middle'}} onClick={() => goback()}/>
-          Manager Dashboard
+      <h4 style={{textAlign: 'left', fontSize: "5vh", background: 'rgb(35,31,32,255)', padding: "2vh"}}>
+          <button style={{
+            verticalAlign: 'middle', 
+            textAlign: 'center',
+            border: "0.5vh solid black",
+            borderRadius: "25px",
+            boxShadow: "3px 3px white",
+            margin: "-1vh 10vw auto 0vw",
+            width: "12vw",
+            height: "6vh",
+            fontSize: "3vh"
+            }} onClick={() => navigate(-1)}><CiLogout size={"5vh"}/> <b>Logout</b> &nbsp;
+            </button>
+            <b style={{color: "white"}}><u>Manager Dashboard</u></b>
       </h4>      
 
       <div className="ManagerContainer">
@@ -331,7 +350,11 @@ const ManagerGUI: React.FC = () => {
           <EmployeeComponent />
           </Tab>
 
-          <Tab eventKey={4} title="Reports"> 
+          <Tab eventKey={4} title="Managers"> 
+            <ManagerComponent/>
+          </Tab>
+
+          <Tab eventKey={5} title="Reports"> 
             <br />
             <p>
             Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/> &nbsp;

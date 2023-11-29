@@ -1,7 +1,7 @@
 .order-table-section {
     padding: 8px; 
-    max-height: 400px; 
     overflow-y: auto; 
+    height: fit-content;
 }
 
 .add-icon { 

@@ -143,3 +143,7 @@
     margin: 5px 5px 5px 5px;
 }
 
+.custom-select-buttons {
+    padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+    margin: 0.5vh 0.5vw 0.5vh 0.5vw;
+}
