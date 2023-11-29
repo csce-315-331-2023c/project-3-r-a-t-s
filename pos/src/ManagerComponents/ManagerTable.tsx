@@ -46,32 +46,30 @@ const ManagerTableComponent: React.FC = () => {
     }
 
     interface AddManager {
-        last_name: string;
-        first_name: string;
-        salary: string;
-        hours_per_week: string;
-        email: string;
-        admin: string;
+        FirstName: string;
+        LastName: string;
+        Salary: string;
+        Hours: string;
+        Email: string;
+        Admin: string;
     }
 
     interface EditManager {
-        last_name: string;
-        first_name: string;
-        salary: string;
-        hours_per_week: string;
-        email: string;
-        admin: string;
+        FirstName: string;
+        LastName: string;
+        Salary: string;
+        Hours: string;
+        Email: string;
+        Admin: string;
     }
 
     const [managerList, setManagerList] = useState<ManagerData[]>([]);
     
     const [availableManagerIds, setAvailableManagerIds] = useState([]);
-    const [newManager, setNewManager] = useState<AddManager>({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '', admin: ''});
+    const [newManager, setNewManager] = useState<AddManager>({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
-    const [editedData, setEditedData] = useState({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '', admin: ''});
-    const [errorManagerID, setErrorManagerID] = useState<string>('');
-
+    const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
 
     const generate_manager_info = async () => {
         const config = {
@@ -143,7 +141,6 @@ const ManagerTableComponent: React.FC = () => {
         //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
         .then((response) => {
             console.log(response.data.message); 
-            // Check for available_manager_ids in the response
         })
         .catch((error) => {
             console.error('Error with Adding Manager:', error);
@@ -200,12 +197,12 @@ const ManagerTableComponent: React.FC = () => {
                 console.log("Submit List", managerList);
 
                 setNewManager({
-                first_name: '',
-                last_name: '',
-                salary: '',
-                hours_per_week: '',
-                email: '',
-                admin: '',
+                    FirstName: '',
+                    LastName: '',
+                    Salary: '',
+                    Hours: '',
+                    Email: '',
+                    Admin: '',
                 });
 
                 setShowInputFields(false);
@@ -230,12 +227,12 @@ const ManagerTableComponent: React.FC = () => {
         const managerToEdit = managerList.find((manager) => manager.manager_id === managerID);
         if (managerToEdit) {
           setEditedData({
-            first_name: managerToEdit.first_name,
-            last_name: managerToEdit.last_name,
-            salary: managerToEdit.salary,
-            hours_per_week: managerToEdit.hours_per_week,
-            email: managerToEdit.email,
-            admin: managerToEdit.admin,
+            FirstName: managerToEdit.first_name,
+            LastName: managerToEdit.last_name,
+            Salary: managerToEdit.salary,
+            Hours: managerToEdit.hours_per_week,
+            Email: managerToEdit.email,
+            Admin: managerToEdit.admin,
           });
         }
     };
@@ -247,12 +244,12 @@ const ManagerTableComponent: React.FC = () => {
             await generate_manager_info();
             
             setEditedData({
-            first_name: '',
-            last_name: '',
-            salary: '',
-            hours_per_week: '',
-            email: '',
-            admin: '',
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                Email: '',
+                Admin: '',
             });
             setEditingManagerId(null);
         } catch (error) {
@@ -292,12 +289,12 @@ const ManagerTableComponent: React.FC = () => {
                         }).map((manager: ManagerData) => (
                         <tr key={manager.manager_id}>
                         <td>{manager.manager_id}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.last_name} onChange={(e) => setEditedData({ ...editedData, last_name: e.target.value })} required/> : manager.last_name}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.first_name} onChange={(e) => setEditedData({ ...editedData, first_name: e.target.value })} required/> : manager.first_name}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.salary} onChange={(e) => setEditedData({ ...editedData, salary: e.target.value })} required/> : manager.salary}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.hours_per_week} onChange={(e) => setEditedData({ ...editedData, hours_per_week: e.target.value })} required/> : manager.hours_per_week}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.email} onChange={(e) => setEditedData({ ...editedData, email: e.target.value })} required/> : manager.email}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.admin} onChange={(e) => setEditedData({ ...editedData, admin: e.target.value })} required/> : manager.admin}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : manager.last_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required/> : manager.first_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : manager.salary}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : manager.hours_per_week}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required/> : manager.email}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required/> : manager.admin}</td>
                         <td>
                             <span>
                                 <BsFillTrashFill className="delete-btn"
@@ -325,22 +322,22 @@ const ManagerTableComponent: React.FC = () => {
                                 <td>{managerList.length > 0 ? managerList[managerList.length - 1].manager_id + 1 : 1}</td>
                                 <td>
                                     <input
-                                        type="text" name="LastName" value={newManager.last_name} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'last_name')} required />
+                                        type="text" name="LastName" value={newManager.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="FirstName" value={newManager.first_name} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'first_name')} required />
+                                    <input type="text" name="FirstName" value={newManager.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="Salary" value={newManager.salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'salary')} required />
+                                    <input type="text" name="Salary" value={newManager.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="Hours" value={newManager.hours_per_week} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'hours_per_week')} required />
+                                    <input type="text" name="Hours" value={newManager.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="text" value={newManager.email} placeholder="Email" onChange={(e) => handleAddInputChange(e, 'email')} required />
+                                    <input type="text" name="text" value={newManager.Email} placeholder="Email" onChange={(e) => handleAddInputChange(e, 'Email')} required />
                                 </td>
                                 <td>
-                                    <input type="text" name="text" value={newManager.admin} placeholder="Admin" onChange={(e) => handleAddInputChange(e, 'admin')} required />
+                                    <input type="text" name="text" value={newManager.Admin} placeholder="Admin" onChange={(e) => handleAddInputChange(e, 'Admin')} required />
                                 </td>
                                 
                                 <td>
