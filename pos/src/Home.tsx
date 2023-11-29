@@ -8,7 +8,7 @@ import { AiFillShop } from "react-icons/ai";
 import { MdShelves, MdDeliveryDining, MdTableRestaurant } from "react-icons/md";
 import { IoRestaurant } from "react-icons/io5";
 
-import CashierLoginPopup from './LoginComponents/CashierLogin';
+import CashierLoginPopup from './HomeComponents/CashierLogin';
 // import axios, {AxiosError} from 'axios';
 
 import './App.css';
