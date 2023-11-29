@@ -493,13 +493,12 @@ def add_manager():
     last_name = manager_data['last_name']
     first_name = manager_data['first_name']
     salary  = manager_data['salary']
-    hours  = manager_data['hours']
+    hours  = manager_data['hours_per_week']
     email  = manager_data['email']
+    admin = manager_data['admin']
 
     max_manager_query = f"SELECT MAX(manager_id) FROM manager;"
-    manager_count_query = f"SELECT manager_id FROM MANAGER;"
-    username_query = f"SELECT username FROM EMPLOYEE;"
-    add_employee_query = f"INSERT INTO Manager(manager_id, last_name, first_name, salary, hours_per_week, email) VALUES (%s, %s, %s, %s, %s, %s);"
+    add_employee_query = f"INSERT INTO Manager(manager_id, last_name, first_name, salary, hours_per_week, email, admin) VALUES (%s, %s, %s, %s, %s, %s, %s);"
     # Execute the query
     try:
         conn = psycopg2.connect(**DB_PARAMS)
@@ -510,7 +509,7 @@ def add_manager():
         manager_max = cursor.fetchone()
         manager_id = int(manager_max[0]) + 1
 
-        cursor.execute(add_employee_query, (manager_id, last_name, first_name, salary, hours, email,))
+        cursor.execute(add_employee_query, (manager_id, last_name, first_name, salary, hours, email, admin,))
         conn.commit()
         conn.close()
         response_data = {
@@ -536,12 +535,13 @@ def update_manager():
     salary  = manager_data['salary']
     hours_per_week  = manager_data['hours_per_week']
     email = manager_data['email']
+    admin = manager_data['admin']
 
-    update_query = """UPDATE MANAGER SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, email = %s WHERE manager_id = %s;"""
+    update_query = """UPDATE MANAGER SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, email = %s, admin = %s WHERE manager_id = %s;"""
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, manager_id,))
+        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, admin, manager_id,))
         conn.commit()
         conn.close()
         return jsonify("Manager Updated (From Backend)")

@@ -138,6 +138,7 @@ const ManagerComponent: React.FC = () => {
                 'Content-Type': 'application/json',
             },
         };
+        console.log(newManager);
         //Send Post rquest to Flask API
         await axios
         .post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
