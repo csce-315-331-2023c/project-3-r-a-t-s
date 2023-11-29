@@ -6,9 +6,7 @@ import { MdCancel } from "react-icons/md";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { AiOutlineCloseSquare } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 interface PopupProps {
     message: string;

@@ -114,12 +114,15 @@ const Home : React.FC = () => {
                 <button onClick={() => navigate('MenuBoardGUI')}
                 style={{
                     verticalAlign: "middle",
+                    background: "black",
                     textAlign: "center",
                     borderRadius: "25px",
-                    border: "2px solid #FFFFFF",
+                    border: "5px solid white",
                     width: "15vw",
                     fontSize: "5vh",
-                    marginTop: "2vh"
+                    marginTop: "2vh",
+                    boxShadow: "5px 5px white",
+                    color: 'white'
                 }} 
                 > View Menu </button> 
                 </div>
