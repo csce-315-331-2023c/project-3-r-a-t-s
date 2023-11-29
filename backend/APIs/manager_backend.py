@@ -434,16 +434,15 @@ def change_menu_item():
         conn.close()
         return jsonify({"error": str(e)}), 500
 
-
 @manager_BP.route('/get_manager_list', methods=['POST'])
 def get_manager_list():
 
-    employee_info_query = f"SELECT * FROM Manager ORDER BY manager_id ASC;"
+    manager_info_query = f"SELECT * FROM MANAGER ORDER BY manager_id ASC;"
     # Execute the query and fetch the data
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(employee_info_query)
+        cursor.execute(manager_info_query)
 
         # Get column names from the cursor description
         column_names = [desc[0] for desc in cursor.description]
@@ -463,9 +462,41 @@ def get_manager_list():
     
     except Exception as e:
         print(e)
-        return jsonify({'error': 'Failed to Fetch Employee Information'}), 500
-    
+        return jsonify({'error': 'Failed to Fetch Manager Information'}), 500
 
+@manager_BP.route('/add_manager', methods=['POST'])
+def add_manager():
+    manager_data = request.get_json()
+
+    last_name = manager_data['LastName']
+    first_name = manager_data['FirstName']
+    salary = manager_data['Salary']
+    hours_per_week = manager_data['Hours']
+    email = manager_data['Email']
+
+    max_manager_query = f"SELECT MAX(manager_id) FROM MANAGER;"
+    add_manager_query = f"INSERT INTO MANAGER(manager_id, last_name, first_name, salary, hours_per_week, email) VALUES (%s, %s, %s, %s, %s, %s);"
+    # Execute the query
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        #Get Next Available Manager ID
+        cursor.execute(max_manager_query)
+        manager_max = cursor.fetchone()
+        manager_id = int(manager_max[0]) + 1
+
+        cursor.execute(add_manager_query, (manager_id, last_name, first_name, salary, hours_per_week, email,))
+        conn.commit()
+        conn.close()
+        response_data = {
+            'message': 'Manager Added (From Backend)',
+        }
+        return jsonify(response_data)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Add Manager'}), 500
 
 @manager_BP.route('/remove_manager', methods=['POST'])
 def remove_manager():
@@ -485,45 +516,6 @@ def remove_manager():
         print(e)
         return jsonify({'error': 'Failed to Remove Manager'}), 500
     
-
-@manager_BP.route('/add_manager', methods=['POST'])
-def add_manager():
-    manager_data = request.get_json()
-
-    last_name = manager_data['last_name']
-    first_name = manager_data['first_name']
-    salary  = manager_data['salary']
-    hours  = manager_data['hours']
-    email  = manager_data['email']
-
-    max_manager_query = f"SELECT MAX(manager_id) FROM manager;"
-    manager_count_query = f"SELECT manager_id FROM MANAGER;"
-    username_query = f"SELECT username FROM EMPLOYEE;"
-    add_employee_query = f"INSERT INTO Manager(manager_id, last_name, first_name, salary, hours_per_week, email) VALUES (%s, %s, %s, %s, %s, %s);"
-    # Execute the query
-    try:
-        conn = psycopg2.connect(**DB_PARAMS)
-        cursor = conn.cursor()
-
-        #Get Next Available Employee ID
-        cursor.execute(max_manager_query)
-        manager_max = cursor.fetchone()
-        manager_id = int(manager_max[0]) + 1
-
-        cursor.execute(add_employee_query, (manager_id, last_name, first_name, salary, hours, email,))
-        conn.commit()
-        conn.close()
-        response_data = {
-            'message': 'Manager Added (From Backend)',
-        }
-        return jsonify(response_data)
-    
-    except Exception as e:
-        print(e)
-        return jsonify({'error': 'Failed to Add Manager'}), 500
-    
-
-    
 @manager_BP.route('/update_manager', methods=['POST'])
 def update_manager():
     manager_data = request.get_json()
@@ -531,21 +523,21 @@ def update_manager():
         return jsonify({'error': 'Invalid JSON format'}), 400
 
     manager_id = manager_data['manager_id']
-    last_name = manager_data['last_name']
-    first_name = manager_data['first_name']
-    salary  = manager_data['salary']
-    hours_per_week  = manager_data['hours_per_week']
-    email = manager_data['email']
+    last_name = manager_data['LastName']
+    first_name = manager_data['FirstName']
+    salary  = manager_data['Salary']
+    hours_per_week  = manager_data['Hours']
+    email = manager_data['Email']
 
     update_query = """UPDATE MANAGER SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, email = %s WHERE manager_id = %s;"""
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, manager_id,))
+        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, ))
         conn.commit()
         conn.close()
         return jsonify("Manager Updated (From Backend)")
     
     except Exception as e:
         print(e)
-        return jsonify({'error': 'Failed to update Manager'}), 500
+        return jsonify({'error': 'Failed to Update Manager'}), 500
