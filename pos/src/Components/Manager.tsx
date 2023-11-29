@@ -43,6 +43,7 @@ const ManagerComponent: React.FC = () => {
         salary: string;
         hours_per_week: string;
         email: string;
+        admin: string;
     }
 
     interface AddManager {
@@ -51,6 +52,7 @@ const ManagerComponent: React.FC = () => {
         salary: string;
         hours_per_week: string;
         email: string;
+        admin: string;
     }
 
     interface EditManager {
@@ -59,15 +61,16 @@ const ManagerComponent: React.FC = () => {
         salary: string;
         hours_per_week: string;
         email: string;
+        admin: string;
     }
 
     const [managerList, setManagerList] = useState<ManagerData[]>([]);
     
     const [availableManagerIds, setAvailableManagerIds] = useState([]);
-    const [newManager, setNewManager] = useState<AddManager>({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '',});
+    const [newManager, setNewManager] = useState<AddManager>({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '', admin: ''});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
-    const [editedData, setEditedData] = useState({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '',});
+    const [editedData, setEditedData] = useState({last_name: '', first_name: '', salary: '', hours_per_week: '', email: '', admin: ''});
     const [errorManagerID, setErrorManagerID] = useState<string>('');
 
 
@@ -203,6 +206,7 @@ const ManagerComponent: React.FC = () => {
                 salary: '',
                 hours_per_week: '',
                 email: '',
+                admin: '',
                 });
 
                 setShowInputFields(false);
@@ -232,6 +236,7 @@ const ManagerComponent: React.FC = () => {
             salary: managerToEdit.salary,
             hours_per_week: managerToEdit.hours_per_week,
             email: managerToEdit.email,
+            admin: managerToEdit.admin,
           });
         }
     };
@@ -248,6 +253,7 @@ const ManagerComponent: React.FC = () => {
             salary: '',
             hours_per_week: '',
             email: '',
+            admin: '',
             });
             setEditingManagerId(null);
         } catch (error) {
@@ -277,6 +283,7 @@ const ManagerComponent: React.FC = () => {
                             <th>Salary</th>
                             <th>Hours Per Week</th>
                             <th>Email</th>
+                            <th>Admin</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -291,6 +298,7 @@ const ManagerComponent: React.FC = () => {
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.salary} onChange={(e) => setEditedData({ ...editedData, salary: e.target.value })} required/> : manager.salary}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.hours_per_week} onChange={(e) => setEditedData({ ...editedData, hours_per_week: e.target.value })} required/> : manager.hours_per_week}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.email} onChange={(e) => setEditedData({ ...editedData, email: e.target.value })} required/> : manager.email}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.admin} onChange={(e) => setEditedData({ ...editedData, admin: e.target.value })} required/> : manager.admin}</td>
                         <td>
                             <span>
                                 <BsFillTrashFill className="delete-btn"
@@ -331,6 +339,9 @@ const ManagerComponent: React.FC = () => {
                                 </td>
                                 <td>
                                     <input type="text" name="text" value={newManager.email} placeholder="Email" onChange={(e) => handleAddInputChange(e, 'email')} required />
+                                </td>
+                                <td>
+                                    <input type="text" name="text" value={newManager.admin} placeholder="Admin" onChange={(e) => handleAddInputChange(e, 'admin')} required />
                                 </td>
                                 
                                 <td>
