@@ -29,6 +29,7 @@ const Home : React.FC = () => {
     const navigate = useNavigate();
     const [showCashierLogin, setCashierLogin] = useState(false);
     const googleLoginWindowRef = useRef<Window | null>(null);
+    const [ManagerEmail, setManagerEmail] = useState('');
 
     const handleLoginSuccessCashier = () => {
         navigate('CashierGUI');
@@ -39,9 +40,11 @@ const Home : React.FC = () => {
     const googleAuthenticationCallback = (event : MessageEvent) => {
         try {
             console.log('Received message:', event);
-            if (event.data === 'google-auth-success') {
+            if (event.data.event === 'google-auth-success') {
                 // GitHub authentication successful, redirect to Manager GUI
                 console.log('Google authentication success. Navigating to ManagerGUI...');
+                setManagerEmail(event.data.email);
+                console.log('User Email Logged In : ', ManagerEmail);
                 navigate('ManagerGUI');
             }
         } catch (error) {

@@ -9,6 +9,8 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+import ManagerTableComponent from './ManagerTable';
+
 
 interface PopupProps {
     message: string;
@@ -256,12 +258,9 @@ const EmployeeComponent: React.FC = () => {
         }
     };
     const handleSaveEdit = async (employeeId: number, editedData : EditEmployee) => {
-
         try {
             await update_employee(employeeId);
-     
             await generate_employee_info();
-            
             setEditedData({
             FirstName: '',
             LastName: '',
@@ -273,6 +272,24 @@ const EmployeeComponent: React.FC = () => {
             setEditingEmployeeId(null);
         } catch (error) {
             console.error('Error with Updating Employee:', error);
+        }
+    };
+
+    const handleCancelEdit = async (employeeId: number) => {
+        try {
+            await generate_employee_info();
+        
+            setEditedData({
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                ManagerID: '',
+                Password: '',
+            });
+            setEditingEmployeeId(null);
+        } catch (error) {
+            console.error('Error with Canceling Edit Employee:', error);
         }
     };
 
@@ -314,17 +331,21 @@ const EmployeeComponent: React.FC = () => {
                         <td>{employee.username}</td>
                         <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Password} onChange={(e) => setEditedData({ ...editedData, Password: e.target.value })} required/> : '*'.repeat(employee.password.length + 2)}</td>
                         <td>
-                            <span>
-                                <BsFillTrashFill className="delete-btn"
-                                    onClick={() => handleDeleteClick(employee.employee_id)}
-                                />
-                                <BsFillPencilFill className="edit-btn"
-                                    onClick={() => handleEdit(employee.employee_id)}
-                                />
-                                {editingEmployeeId === employee.employee_id && (
-                                    <FiSave className="save-icon" onClick={() => handleSaveEdit(employee.employee_id, editedData)} />
+                                {editingEmployeeId === employee.employee_id ? (
+                                    <span>
+                                        <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(employee.employee_id)}/>
+                                        <FiSave className="save-icon" onClick={() => handleSaveEdit(employee.employee_id, editedData)} />
+                                    </span>
+                                ) : (
+                                    <span>
+                                        <BsFillTrashFill className="delete-btn"
+                                            onClick={() => handleDeleteClick(employee.employee_id)}
+                                        />
+                                        <BsFillPencilFill className="edit-btn"
+                                            onClick={() => handleEdit(employee.employee_id)}
+                                        />
+                                    </span>
                                 )}
-                            </span>
                         </td>
                         </tr>
                         ))}
@@ -385,6 +406,7 @@ const EmployeeComponent: React.FC = () => {
                     </table>
                     </div>
             )}
+            <ManagerTableComponent/>
         </div>
     );
 };

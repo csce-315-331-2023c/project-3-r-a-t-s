@@ -69,11 +69,15 @@ def callback():
 
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
+    user_email = id_info.get("email")
 
     # Use JavaScript to close the popup window
-    close_popup_script = """
+    close_popup_script = f"""
         <script>
-            window.opener.postMessage('google-auth-success', '*');
+            window.opener.postMessage({{
+                event : 'google-auth-success',
+                email : '{user_email}'
+                }} , '*');
             window.close();
         </script>
     """
