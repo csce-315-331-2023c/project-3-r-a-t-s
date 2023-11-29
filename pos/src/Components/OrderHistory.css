@@ -1,6 +1,6 @@
 .order-table-section {
     padding: 8px; 
-    max-height: 400px; 
+    max-height: 80vh; 
     overflow-y: auto; 
 }
 
