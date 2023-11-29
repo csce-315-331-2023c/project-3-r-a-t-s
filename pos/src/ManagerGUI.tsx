@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css'; 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import InventoryComponent from './Components/Inventory';
-import OrderHistoryComponent from './Components/OrderHistory';
-import EmployeeComponent from './Components/Employee';
-import ManagerComponent from './Components/Manager';
-import MenuComponent from './Components/Menu';
+import InventoryComponent from './ManagerComponents/Inventory';
+import OrderHistoryComponent from './ManagerComponents/OrderHistory';
+import EmployeeComponent from './ManagerComponents/Employee';
+import ManagerComponent from './ManagerComponents/ManagerTable';
+import MenuComponent from './ManagerComponents/Menu';
 import { CiLogout } from "react-icons/ci";
 
 
