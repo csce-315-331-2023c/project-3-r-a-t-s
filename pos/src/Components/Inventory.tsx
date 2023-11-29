@@ -214,6 +214,7 @@ const InventoryComponent = () => {
       console.error("Error saving edits:", error);
     }
   };
+  
 
   const handleEdit = (ingredientId: number) => {
     setEditingItemId(ingredientId);
