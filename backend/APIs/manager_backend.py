@@ -528,13 +528,14 @@ def update_manager():
     salary  = manager_data['Salary']
     hours_per_week  = manager_data['Hours']
     email = manager_data['Email']
+    admin = manager_data['Admin']
 
-    update_query = """UPDATE MANAGER SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, email = %s WHERE manager_id = %s;"""
-
+    update_query = """UPDATE MANAGER SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, email = %s, admin = %s WHERE manager_id = %s;"""
+    
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, manager_id, ))
+        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, admin, manager_id, ))
         conn.commit()
         conn.close()
         return jsonify("Manager Updated (From Backend)")
@@ -542,3 +543,28 @@ def update_manager():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to Update Manager'}), 500
+
+@manager_BP.route('/check_if_admin', methods=['POST'])
+def check_if_admin():
+    request_data = request.get_json()
+    manager_email = request_data.get('email')
+
+    verify_query = f"SELECT admin FROM MANAGER where email = %s;"
+    # Execute the query
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(verify_query, (manager_email,))
+        verify_result = cursor.fetchone()
+        verify_status = verify_result[0]  # Extract the admin status from the result
+        conn.commit()
+        conn.close()
+        response_data = {
+            'message': 'Verification Completed (From Backend)',
+            'isAdmin': verify_status
+        }
+        return jsonify(response_data)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Remove Manager'}), 500
