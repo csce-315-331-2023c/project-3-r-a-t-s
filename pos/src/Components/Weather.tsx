@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import WeatherCard from "./WeatherCard";
 
 interface WeatherData {
   main: {
@@ -11,6 +12,17 @@ interface WeatherData {
     humidity: number;
     sea_level: number;
     grnd_level: number;
+  },
+  weather: {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  }[],
+  wind: {
+    speed: number;
+    deg: number;
+    gust: number;
   };
 }
 
@@ -25,6 +37,7 @@ const WeatherComponent = () => {
       try {
         const response = await axios.get(url);
         setWeather(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching weather data", error);
       }
@@ -35,12 +48,17 @@ const WeatherComponent = () => {
 
   if (!weather) return <div>Loading weather...</div>;
 
-  return (
-    <div>
-      <h3>Current Weather in College Station, TX</h3>
-      <p>Temperature: {weather.main.temp}°F</p>
-    </div>
-  );
+  return <WeatherCard weatherData={weather} />;
+
+  // return (
+  //   <div>
+  //     <p>Icon: {weather.weather.icon}</p>
+  //     <p>Temperature: {weather.main.temp}°F</p>
+  //     <p>Feels like: {weather.main.feels_like}°F</p>
+  //     <p>Humidity: {weather.main.humidity}%</p>
+  //     <p>Wind Speed: {weather.wind.speed}</p>
+  //   </div>
+  // );
 };
 
 export default WeatherComponent;

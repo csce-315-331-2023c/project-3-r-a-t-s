@@ -13,6 +13,7 @@ import CashierLoginPopup from './LoginComponents/CashierLogin';
 
 import './App.css';
 import WeatherComponent from './Components/Weather';
+import WeatherCard from './Components/WeatherCard';
 
 const mapContainerStyle = {
     width: '40vw',
@@ -101,7 +102,6 @@ const Home : React.FC = () => {
                     />
                 )}
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>
-                <WeatherComponent />
                 </h1>
             </div>
 
@@ -158,12 +158,12 @@ const Home : React.FC = () => {
             </div>
 
             <div style={{display: "table-cell"}}>
-                <h3 style={{fontSize: "3vh"}}> <br /> 
+                <h3 style={{fontSize: "3vh", marginBottom: 0}}> <br /> 
                  <u>Store Hours:</u> 
                     <ul style={{
                         listStyleType: "none",
                         width: "30vw",
-                        height: "40vh",
+                        height: "30vh",
                         }}>
                             <br />
                         <li>Monday 10:45am-10:00pm</li>
@@ -174,7 +174,11 @@ const Home : React.FC = () => {
                         <li>Saturday 10:45am-10:00pm</li>
                         <li>Sunday 10:45am-10:00pm</li>
                     </ul>
+                    {/* <WeatherComponent /> */}
                 </h3>
+                <div>
+                    <WeatherComponent />
+                </div>
             </div>
             </div>
             </div>
