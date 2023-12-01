@@ -64,8 +64,6 @@ const ManagerTableComponent: React.FC = () => {
     }
 
     const [managerList, setManagerList] = useState<ManagerData[]>([]);
-    
-    const [availableManagerIds, setAvailableManagerIds] = useState([]);
     const [newManager, setNewManager] = useState<AddManager>({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
@@ -112,7 +110,7 @@ const ManagerTableComponent: React.FC = () => {
     };
 
     const handleDeleteManager = async () => {
-        if (ManagerToDeleteId != 0) {
+        if (ManagerToDeleteId !== 0) {
             const managerID = ManagerToDeleteId;
             try {
                 await remove_manager(managerID);
@@ -192,21 +190,19 @@ const ManagerTableComponent: React.FC = () => {
         try {
             await add_manager();
 
-            if (availableManagerIds.length == 0) {
-                await generate_manager_info();
-                console.log("Submit List", managerList);
+            await generate_manager_info();
+            console.log("Submit List", managerList);
 
-                setNewManager({
-                    FirstName: '',
-                    LastName: '',
-                    Salary: '',
-                    Hours: '',
-                    Email: '',
-                    Admin: '',
-                });
+            setNewManager({
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                Email: '',
+                Admin: '',
+            });
 
-                setShowInputFields(false);
-            }
+            setShowInputFields(false);
         } catch (error) {
             console.error('Error with Adding Manager:', error);
         }
@@ -256,8 +252,23 @@ const ManagerTableComponent: React.FC = () => {
             console.error('Error with Updating Manager:', error);
         }
     };
-
-
+    const handleCancelEdit = async (managerId: number) => {
+        try {
+            await generate_manager_info();
+        
+            setEditedData({
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                Email: '',
+                Admin: '',
+            });
+            setEditingManagerId(null);
+        } catch (error) {
+            console.error('Error with Canceling Edit Manager:', error);
+        }
+    };
 
     return (
         <div>
@@ -296,17 +307,21 @@ const ManagerTableComponent: React.FC = () => {
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required/> : manager.email}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required/> : manager.admin}</td>
                         <td>
-                            <span>
-                                <BsFillTrashFill className="delete-btn"
-                                    onClick={() => handleDeleteClick(manager.manager_id)}
-                                />
-                                <BsFillPencilFill className="edit-btn"
-                                    onClick={() => handleEdit(manager.manager_id)}
-                                />
-                                {editingManagerId === manager.manager_id && (
-                                    <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData)} />
+                                {editingManagerId === manager.manager_id ? (
+                                    <span>
+                                        <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(manager.manager_id)}/>
+                                        <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData)} />
+                                    </span>
+                                ) : (
+                                    <span>
+                                        <BsFillTrashFill className="delete-btn"
+                                            onClick={() => handleDeleteClick(manager.manager_id)}
+                                        />
+                                        <BsFillPencilFill className="edit-btn"
+                                            onClick={() => handleEdit(manager.manager_id)}
+                                        />
+                                    </span>
                                 )}
-                            </span>
                         </td>
                         </tr>
                         ))}

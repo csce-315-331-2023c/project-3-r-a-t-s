@@ -397,7 +397,7 @@ const EmployeeComponent: React.FC = () => {
                             <span>
                                 <button className="add-row-btn" onClick={handleAddRow}>
                                     <IoPersonAddSharp className="add-icon" />
-                                    Add Manager
+                                    Add Employee
                                 </button>
                             </span>
                         </div>

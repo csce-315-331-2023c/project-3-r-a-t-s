@@ -184,7 +184,7 @@ const CashierGUI = () => {
         const temp = [...selectedIngredients];
         temp.push(ingredient);
         setSelectedIngredients(temp);
-        console.log(selectedIngredients);
+        console.log('Selected Ingredients', selectedIngredients);
     }
 
     const deleteIngredient = (i : number) => {

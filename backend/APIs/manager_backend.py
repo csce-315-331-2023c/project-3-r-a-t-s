@@ -530,10 +530,11 @@ def update_manager():
     email = manager_data['Email']
 
     update_query = """UPDATE MANAGER SET last_name = %s, first_name = %s, salary = %s, hours_per_week = %s, email = %s WHERE manager_id = %s;"""
+
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, ))
+        cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, manager_id, ))
         conn.commit()
         conn.close()
         return jsonify("Manager Updated (From Backend)")
