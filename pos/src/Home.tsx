@@ -161,23 +161,11 @@ const Home : React.FC = () => {
             </GoogleMap>
             </div>
 
-            <div style={{display: "table-cell"}}>
-                <h3 style={{fontSize: "3vh"}}> <br /> 
-                 <u>Store Hours:</u> 
-                    <ul style={{
-                        listStyleType: "none",
-                        width: "30vw",
-                        height: "40vh",
-                        }}>
-                            <br />
-                        <li>Monday 10:45am-10:00pm</li>
-                        <li>Tuesday 10:45am-10:00pm</li>
-                        <li>Wednesday 10:45am-10:00pm</li>
-                        <li>Thursday 10:45am-10:00pm</li>
-                        <li>Friday 10:45am-10:00pm</li>
-                        <li>Saturday 10:45am-10:00pm</li>
-                        <li>Sunday 10:45am-10:00pm</li>
-                    </ul>
+            <div style={{display: "table-cell", width: "30vw"}}>
+                <h3 style={{fontSize: "3vh", textAlign: "center"}}> <br /> 
+                 <u>Store Hours:</u> <br />
+                    Monday to Sunday  <br />
+                    10:45am-10:00pm
                 </h3>
             </div>
             </div>
