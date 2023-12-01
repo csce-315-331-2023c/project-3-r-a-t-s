@@ -538,7 +538,11 @@ def update_manager():
         cursor.execute(update_query, (last_name, first_name, salary, hours_per_week, email, admin, manager_id, ))
         conn.commit()
         conn.close()
-        return jsonify("Manager Updated (From Backend)")
+        response_data = {
+            'message': 'Manager Updated (From Backend)',
+            'isAdmin': admin
+        }
+        return jsonify(response_data)
     
     except Exception as e:
         print(e)
