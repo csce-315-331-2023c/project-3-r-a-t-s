@@ -1,4 +1,3 @@
-// ManagerEmailContext.tsx
 import React, { createContext, useContext, ReactNode } from 'react';
 
 interface ManagerEmailContextProps {

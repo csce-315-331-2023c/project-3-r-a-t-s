@@ -66,7 +66,9 @@ const ManagerGUI: React.FC = () => {
     .post('http://127.0.0.1:5000/api/manager/check_if_admin', {email : ManagerEmail}, config)
     //.post('https://pos-backend-3c6o.onrender.com/api/manager/check_if_admin', requestData, config)
     .then((response) => {
-        console.log(response.data.message); 
+        console.log("Message is :" , response.data.message); 
+        console.log("Status is :" , response.data.isAdmin); 
+        setIsAdmin(response.data.isAdmin);
     })
     .catch((error) => {
         console.error('Error with Checking If User Is Admin:', error);
@@ -372,12 +374,14 @@ const ManagerGUI: React.FC = () => {
           </Tab>
 
           <Tab eventKey={4} title="Employees"> 
-          <EmployeeComponent />
+          <EmployeeComponent isAdmin = {isAdmin} />
           </Tab>
 
-          <Tab eventKey={5} title="Managers"> 
-            <ManagerComponent/>
-          </Tab>
+          {(isAdmin === 'Yes') && 
+            <Tab eventKey={5} title="Managers"> 
+              <ManagerComponent/>
+            </Tab>
+          }
 
           <Tab eventKey={6} title="Reports"> 
             <br />

@@ -548,7 +548,6 @@ def update_manager():
 def check_if_admin():
     request_data = request.get_json()
     manager_email = request_data.get('email')
-    print("manger : " + manager_email)
 
     verify_query = f"SELECT admin FROM MANAGER where email = %s;"
     # Execute the query
@@ -556,12 +555,8 @@ def check_if_admin():
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
         cursor.execute(verify_query, (manager_email,))
-        verify_status = cursor.fetchone()
-        if verify_result is not None:
-            verify_status = verify_result[0]  # Extract the admin status from the result
-        else:
-            verify_status = None  # Set to a default value if None
-        print("saturs:" + verify_status)
+        verify_result = cursor.fetchone()
+        verify_status = verify_result[0]  # Extract the admin status from the result
         conn.commit()
         conn.close()
         response_data = {

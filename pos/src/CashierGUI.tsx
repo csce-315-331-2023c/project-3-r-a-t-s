@@ -10,6 +10,10 @@ import { BsFillTrashFill, BsFillPencilFill} from 'react-icons/bs';
 
 
 const CashierGUI = () => {
+
+    useEffect(() => {
+        getNewMenuItems();
+    }, [])
    
     const navigate = useNavigate();
 
@@ -151,14 +155,59 @@ const CashierGUI = () => {
         navigate(-1);
     }
 
+    const [newItems, setNewitems] = useState<string[]>([]);
+
+    const getNewMenuItems = () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Client-Type': 'cashier'
+            },
+        };
+        axios
+        //   .post('http://127.0.0.1:5000/api/cashier/get_new_menu_items', i, config)
+          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_new_menu_items`, config)
+          .then((response) => {
+            console.log(response.data.data);
+            setNewitems(response.data.data);
+          })
+          .catch((error) => {
+            console.error('Failed to get any new menu items: ', error);
+          });
+      };    
+
     /*
         CUSTOMIZATIONS CODE BELOW
     */
     const [BYO_Panel, Set_BYO_Panel] = useState([<div> </div>]);    // used to set what displays in BYO panel
 
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);   // stores selected toppings
+    const [byo, setBYO] = useState(""); // stores if Custom Salad, Piada or Pasta
+    const [customSize, setCustomSize] = useState("");   // stores size
+    const [customType, setCustomType] = useState("");   // stores type of pasta
     const [protein, setProtein] = useState(""); // stores selected protein, can only have one per custom order
     const [sauce, setSauce] = useState(""); // stores selected sauce, can only have one
+
+    useEffect(() => {
+        if (byo === "Custom Pasta") {
+            BYO_pasta();
+        }
+        else if (byo === "Custom Piada") {
+            BYO_piada();
+        }
+        else if (byo === "Custom Salad") {
+            BYO_salad();
+        }
+    }, [byo, customSize, protein, sauce, customType, selectedIngredients])
+
+    const clearBYOSelections = () => {
+        setSelectedIngredients([]);
+        setBYO("");
+        setCustomSize("");
+        setProtein("");
+        setSauce("");
+        setCustomType("");
+    }
 
     // Adds Completed Custom item to Order
     const addBYOToOrder = () => {  
@@ -181,10 +230,7 @@ const CashierGUI = () => {
     }
 
     const handleIngredientSelection = (ingredient : string) => {
-        const temp = [...selectedIngredients];
-        temp.push(ingredient);
-        setSelectedIngredients(temp);
-        console.log('Selected Ingredients', selectedIngredients);
+        setSelectedIngredients([...selectedIngredients, ingredient]);
     }
 
     const deleteIngredient = (i : number) => {
@@ -194,12 +240,27 @@ const CashierGUI = () => {
     }
 
     const main_panel = () => {
+        clearBYOSelections();
+
+        const temp = [<div></div>];
+        if (newItems.length !== 0) {    // new items exist 
+            
+        }
+
         Set_BYO_Panel([
         <div style={{border: "5px solid black", padding: "2vh 0vw 2vh 0vw"}}>
-        <h2> <u>Build Your Own </u></h2>
-        <button className='other-buttons' onClick={pasta_panel}> Pasta </button>
-        <button className='other-buttons' onClick={piada_panel}> Piada </button>
-        <button className='other-buttons' onClick={salad_panel}> Salad </button> 
+            <h2> <u>Build Your Own </u></h2>
+            <button className='other-buttons' onClick={pasta_panel}> Pasta </button>
+            <button className='other-buttons' onClick={piada_panel}> Piada </button>
+            <button className='other-buttons' onClick={salad_panel}> Salad </button> 
+            <br /><br />
+            <div>
+            <h2> <u>Seasonal Items </u></h2>
+                {newItems.map((item, index) => (
+                    <button className='other-buttons' onClick={() => addorderitem(item)} disabled={loading}> {item} </button>
+                ))}
+            </div>
+            
         </div>
         ]);
     }
@@ -208,19 +269,13 @@ const CashierGUI = () => {
         main_panel();
     }, [])
 
-    const pasta_panel = () => {
-        makeorderitem(0, "Pasta");
-        setSelectedIngredients([]);
-        setSize("");
-        setProtein("");
-        setSauce("");
-        setType("");
+    const BYO_pasta = () => {
         Set_BYO_Panel([
             <div style={{border: "5px solid black", }}>
                 <div style={{}}>
                 <button onClick={main_panel}  className='custom-select-buttons' style={{float:"left", width: "5vw"}}> 
                 Back </button> 
-                <h2 style={{textAlign:"left", marginLeft:"25vw"}}> 
+                <h2 style={{textAlign:"left", marginLeft:"30vw"}}> 
                     <u >Custom Pasta</u>
                 </h2>
                 </div>
@@ -229,23 +284,23 @@ const CashierGUI = () => {
                 <div style={{display:"table-cell", border: "3px solid black"}}>
                 <h3>
                     Size: &nbsp;
-                        <button onClick={() => makeorderitem(1, "SM")} className='custom-select-buttons'> Small </button>
-                        <button onClick={() => makeorderitem(1, "REG")} className='custom-select-buttons'> Regular </button> 
+                        <button onClick={() => setCustomSize("SM")} className='custom-select-buttons'> Small </button>
+                        <button onClick={() => setCustomSize("REG")} className='custom-select-buttons'> Regular </button> 
                         &nbsp;&nbsp; 
                     Pasta: &nbsp;
-                        <button onClick={() => makeorderitem(2, "Spaghetti")} className='custom-select-buttons'> Spaghetti </button> 
-                        <button onClick={() => makeorderitem(2, "Penne")} className='custom-select-buttons'> Penne </button>
+                        <button onClick={() => setCustomType("Spaghetti")} className='custom-select-buttons'> Spaghetti </button> 
+                        <button onClick={() => setCustomType("Penne")} className='custom-select-buttons'> Penne </button>
                 </h3>
                 <h3> Protein: 
                     <p>
-                        <button onClick={() => makeorderitem(3,'Italian Sausage')} className='custom-select-buttons'> Italian Sausage </button>
-                        <button onClick={() => makeorderitem(3, 'Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
-                        <button onClick={() => makeorderitem(3, 'Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
-                        <button onClick={() => makeorderitem(3, 'Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
-                        <button onClick={() => makeorderitem(3, 'Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
-                        <button onClick={() => makeorderitem(3, 'Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
-                        <button onClick={() => makeorderitem(3, 'Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
-                        <button onClick={() => makeorderitem(3, 'Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
+                        <button onClick={() => setProtein('Italian Sausage')} className='custom-select-buttons'> Italian Sausage </button>
+                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
+                        <button onClick={() => setProtein('Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
+                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
+                        <button onClick={() => setProtein('Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
                     </p>
                 </h3>
                 <h3>
@@ -286,7 +341,8 @@ const CashierGUI = () => {
 
                 <div style={{display:"table-cell", width: "25vw", border: "3px solid black", }}>
                     <div style={{height: "75vh",}}>
-                        <b style={{fontSize: "3vh", height: "5vh"}}>{size} &nbsp; Pasta &nbsp; {type}</b>
+                        <b style={{fontSize: "2vh", height: "6vh"}}> 
+                        <u>{customSize}&nbsp;{customType}</u> <br /> {protein} &nbsp; {sauce}</b>
                         <br /><br />
                     <div style={{border: "3px solid black", height: "70vh"}}>
                     <table className="table table-dark" style={{overflow: "scroll", }}>
@@ -311,28 +367,34 @@ const CashierGUI = () => {
                     </table>
                     </div>
                     </div>
-                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3vh"}}> Add to order </button>
+                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3.5vh"}}> Add to order </button>
                 </div>
                 </div>
             </div>
         ]);
     }
 
-    const piada_panel = () => {
-        makeorderitem(0, "Piada");
-        setSelectedIngredients([]);
-        setSize("");
-        setProtein("");
-        setSauce("");
-        setType("");
+    const pasta_panel = () => {
+        clearBYOSelections();
+        setBYO("Custom Pasta");
+        BYO_pasta();
+    }
+
+    const BYO_piada = () => {
         Set_BYO_Panel([
-            <div>
-                <button onClick={main_panel} className='custom-select-buttons' style={{float:"left"}}> 
+            <div style={{border: "5px solid black", }}>
+                <div style={{}}>
+                <button onClick={main_panel}  className='custom-select-buttons' style={{float:"left", width: "5vw"}}> 
                 Back </button> 
-                <h2> <u> Custom Piada </u></h2>
-                <h3> 
-                    Protein: 
-                    <p >
+                <h2 style={{textAlign:"left", marginLeft:"30vw"}}> 
+                    <u >Custom Piada</u>
+                </h2>
+                </div>
+                
+                <div style={{display:"table", margin: "1vh 1vw 1vh 1vw"}}>
+                <div style={{display:"table-cell", border: "3px solid black"}}> <br />
+                <h3> Protein: 
+                    <p>
                         <button onClick={() => setProtein('Italian Sausage')} className='custom-select-buttons'> Italian Sausage </button>
                         <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
                         <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
@@ -366,7 +428,7 @@ const CashierGUI = () => {
                         <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='custom-select-buttons'> Roasted Sweet Potato </button>
                         <button onClick={() => handleIngredientSelection('Hummus')} className='custom-select-buttons'> Hummus </button>
                         <button onClick={() => handleIngredientSelection('Feta')} className='custom-select-buttons'> Feta </button>
-                        <button onClick={() => handleIngredientSelection('Mozzarella')} className='custom-select-buttons'> Mozzarella </button>
+                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
                         <button onClick={() => handleIngredientSelection('Parmesan')} className='custom-select-buttons'> Parmesan </button>
                         <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='custom-select-buttons'> Sweet & Spicy Peppers</button>
                         <button onClick={() => handleIngredientSelection('Strawberries')} className='custom-select-buttons'> Strawberries </button>
@@ -374,90 +436,161 @@ const CashierGUI = () => {
                         <button onClick={() => handleIngredientSelection('Bacon')} className='custom-select-buttons'> Pancetta(Bacon)</button>
                         <button onClick={() => handleIngredientSelection('Broccoli')} className='custom-select-buttons'> Roasted Broccoli </button>
                         <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')} className='custom-select-buttons'> Sweet Corn & Tomato</button>
-                        <button onClick={() => handleIngredientSelection('Avocado')} className='custom-select-buttons'> Avocado </button>
+                        <button onClick={() => handleIngredientSelection('Avocado')} className='custom-select-buttons'  > Avocado </button>
                     </p>
                 </h3>
-                <p>Display Selected Items here: </p>
-                <button onClick={() => addBYOToOrder()} className='add-to-order'>
-                    Add to order
-                </button>
+                </div>
+
+                <div style={{display:"table-cell", width: "25vw", border: "3px solid black", }}>
+                    <div style={{height: "75vh",}}>
+                        <b style={{fontSize: "2vh", height: "6vh"}}> 
+                         <br /> {protein} &nbsp; {sauce}</b>
+                        <br /><br />
+                    <div style={{border: "3px solid black", height: "70vh"}}>
+                    <table className="table table-dark" style={{overflow: "scroll", }}>
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Name </th>
+                            <th><BsFillTrashFill onClick={() => setSelectedIngredients([])}/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {selectedIngredients.map((ingredient, index) => (
+                            <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{ingredient}</td>
+                            <td>
+                            <BsFillTrashFill onClick={() => deleteIngredient(index)}/>
+                            </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3.5vh"}}> Add to order </button>
+                </div>
+                </div>
             </div>
         ]);
     }
 
-    const salad_panel = () => {
-        makeorderitem(0, "Salad");  
-        setSelectedIngredients([]);
-        setSize("");
-        setProtein("");
-        setSauce("");
-        setType("");
+    const piada_panel = () => {
+        clearBYOSelections();
+        setBYO("Custom Piada");
+        BYO_piada();
+    }
+
+    const BYO_salad = () => {
         Set_BYO_Panel([
-        <div>
-            <button onClick={main_panel} className='custom-select-buttons' style={{float:"left"}}> Back </button>
-            <h2> <u>Custom Salad</u> </h2>
-            <h3>
-                Size:
-                <p>
-                    <button onClick={() => makeorderitem(1, "SM")} className='custom-select-buttons'> Small </button>
-                    <button onClick={() => makeorderitem(1, "REG")} className='custom-select-buttons'> Regular </button>  
-                </p>
-            </h3>
-            <h3> Protein: 
-                <p>
-                    <button onClick={() => setProtein('Italian Sausage')} className='custom-select-buttons'> Italian Sausage </button>
-                    <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
-                    <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
-                    <button onClick={() => setProtein('Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
-                    <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
-                    <button onClick={() => setProtein('Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
-                    <button onClick={() => setProtein('Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
-                    <button onClick={() => setProtein('Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
-                </p>
-            </h3>
-            <h3>
-                Salad Dressings:
-                <p>
-                    <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='custom-select-buttons'> Creamy Parmesan </button>
-                    <button onClick={() => setSauce('Lemon Basil Dressing')} className='custom-select-buttons'> Lemon Basil </button>
-                    <button onClick={() => setSauce('Classic Caesar Dressing')} className='custom-select-buttons'> Classic Caesar </button>
-                    <button onClick={() => setSauce('Basil Parmesan Dressing')} className='custom-select-buttons'> Creamy Basil Parmesan </button>
-                    <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='custom-select-buttons'> Oil & Vinegar </button>
-                    <button onClick={() => setSauce('Spicy Ranch Dressing')} className='custom-select-buttons'> Spicy Ranch </button>
-                    <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='custom-select-buttons'> Yogurt Harissa </button>
-                </p>
-            </h3>
-            <h3> 
-                Toppings:
-                <p>
-                    <button onClick={() => handleIngredientSelection('Cucumbers')} className='custom-select-buttons'> Cucumbers </button>
-                    <button onClick={() => handleIngredientSelection('Cucumber Salad')} className='custom-select-buttons'> Cucumber Salad </button>
-                    <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')} className='custom-select-buttons'> Bruschetta Tomatoes </button>
-                    <button onClick={() => handleIngredientSelection('Pickled Red Onions')} className='custom-select-buttons'> Pickled Red Onions </button>
-                    <button onClick={() => handleIngredientSelection('Romaine')} className='custom-select-buttons'> Romaine </button>
-                    <button onClick={() => handleIngredientSelection('Arugula')} className='custom-select-buttons'> Arugula </button>
-                    <button onClick={() => handleIngredientSelection('Spinach')} className='custom-select-buttons'> Spinach </button>
-                    <button onClick={() => handleIngredientSelection('Chopped Greens')} className='custom-select-buttons'> Chopped Greens </button>
-                    <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='custom-select-buttons'> Roasted Sweet Potato </button>
-                    <button onClick={() => handleIngredientSelection('Hummus')} className='custom-select-buttons'> Hummus </button>
-                    <button onClick={() => handleIngredientSelection('Feta')} className='custom-select-buttons'> Feta </button>
-                    <button onClick={() => handleIngredientSelection('Mozzarella')} className='custom-select-buttons'> Mozzarella </button>
-                    <button onClick={() => handleIngredientSelection('Parmesan')} className='custom-select-buttons'> Parmesan </button>
-                    <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='custom-select-buttons'> Sweet & Spicy Peppers</button>
-                    <button onClick={() => handleIngredientSelection('Strawberries')} className='custom-select-buttons'> Strawberries </button>
-                    <button onClick={() => handleIngredientSelection('Glazed Pecans')} className='custom-select-buttons'> Glazed Pecans </button>
-                    <button onClick={() => handleIngredientSelection('Bacon')} className='custom-select-buttons'> Pancetta(Bacon)</button>
-                    <button onClick={() => handleIngredientSelection('Broccoli')} className='custom-select-buttons'> Roasted Broccoli </button>
-                    <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')} className='custom-select-buttons'> Sweet Corn & Tomato</button>
-                    <button onClick={() => handleIngredientSelection('Avocado')} className='custom-select-buttons'> Avocado </button>
-                </p>
-            </h3>
-            <p>Display Selected Items here: </p>
-            <button onClick={() => addBYOToOrder()} className='add-to-order'>
-                Add to order
-            </button>
-        </div>
-        ]);
+            <div style={{border: "5px solid black", }}>
+                <div style={{}}>
+                <button onClick={main_panel}  className='custom-select-buttons' style={{float:"left", width: "5vw"}}> 
+                Back </button> 
+                <h2 style={{textAlign:"left", marginLeft:"30vw"}}> 
+                    <u >Custom Pasta</u>
+                </h2>
+                </div>
+                
+                <div style={{display:"table", margin: "1vh 1vw 1vh 1vw"}}>
+                <div style={{display:"table-cell", border: "3px solid black"}}>
+                <h3>
+                    Size: &nbsp;
+                        <button onClick={() => setCustomSize("SM")} className='custom-select-buttons'> Small </button>
+                        <button onClick={() => setCustomSize("REG")} className='custom-select-buttons'> Regular </button> 
+                        &nbsp;&nbsp; 
+                </h3>
+                <h3> Protein: 
+                    <p>
+                        <button onClick={() => setProtein('Italian Sausage')} className='custom-select-buttons'> Italian Sausage </button>
+                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
+                        <button onClick={() => setProtein('Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
+                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
+                        <button onClick={() => setProtein('Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
+                    </p>
+                </h3>
+                <h3>
+                    Salad Dressings:
+                    <p>
+                        <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='custom-select-buttons'> Creamy Parmesan </button>
+                        <button onClick={() => setSauce('Lemon Basil Dressing')} className='custom-select-buttons'> Lemon Basil </button>
+                        <button onClick={() => setSauce('Classic Caesar Dressing')} className='custom-select-buttons'> Classic Caesar </button>
+                        <button onClick={() => setSauce('Basil Parmesan Dressing')} className='custom-select-buttons'> Creamy Basil Parmesan </button>
+                        <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='custom-select-buttons'> Oil & Vinegar </button>
+                        <button onClick={() => setSauce('Spicy Ranch Dressing')} className='custom-select-buttons'> Spicy Ranch </button>
+                        <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='custom-select-buttons'> Yogurt Harissa </button>
+                    </p>
+                </h3>
+                <h3> 
+                    Toppings:
+                    <p>
+                        <button onClick={() => handleIngredientSelection('Cucumbers')} className='custom-select-buttons'> Cucumbers </button>
+                        <button onClick={() => handleIngredientSelection('Cucumber Salad')} className='custom-select-buttons'> Cucumber Salad </button>
+                        <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')} className='custom-select-buttons'> Bruschetta Tomatoes </button>
+                        <button onClick={() => handleIngredientSelection('Pickled Red Onions')} className='custom-select-buttons'> Pickled Red Onions </button>
+                        <button onClick={() => handleIngredientSelection('Romaine')} className='custom-select-buttons'> Romaine </button>
+                        <button onClick={() => handleIngredientSelection('Arugula')} className='custom-select-buttons'> Arugula </button>
+                        <button onClick={() => handleIngredientSelection('Spinach')} className='custom-select-buttons'> Spinach </button>
+                        <button onClick={() => handleIngredientSelection('Chopped Greens')} className='custom-select-buttons'> Chopped Greens </button>
+                        <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='custom-select-buttons'> Roasted Sweet Potato </button>
+                        <button onClick={() => handleIngredientSelection('Hummus')} className='custom-select-buttons'> Hummus </button>
+                        <button onClick={() => handleIngredientSelection('Feta')} className='custom-select-buttons'> Feta </button>
+                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                        <button onClick={() => handleIngredientSelection('Parmesan')} className='custom-select-buttons'> Parmesan </button>
+                        <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='custom-select-buttons'> Sweet & Spicy Peppers</button>
+                        <button onClick={() => handleIngredientSelection('Strawberries')} className='custom-select-buttons'> Strawberries </button>
+                        <button onClick={() => handleIngredientSelection('Glazed Pecans')} className='custom-select-buttons'> Glazed Pecans </button>
+                        <button onClick={() => handleIngredientSelection('Bacon')} className='custom-select-buttons'> Pancetta(Bacon)</button>
+                        <button onClick={() => handleIngredientSelection('Broccoli')} className='custom-select-buttons'> Roasted Broccoli </button>
+                        <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')} className='custom-select-buttons'> Sweet Corn & Tomato</button>
+                        <button onClick={() => handleIngredientSelection('Avocado')} className='custom-select-buttons'  > Avocado </button>
+                    </p>
+                </h3>
+                </div>
+
+                <div style={{display:"table-cell", width: "25vw", border: "3px solid black", }}>
+                    <div style={{height: "75vh",}}>
+                        <b style={{fontSize: "2vh", height: "6vh"}}> 
+                        <u>{customSize}&nbsp;{customType}</u> <br /> {protein} &nbsp; {sauce}</b>
+                        <br /><br />
+                    <div style={{border: "3px solid black", height: "70vh"}}>
+                    <table className="table table-dark" style={{overflow: "scroll", }}>
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Name </th>
+                            <th><BsFillTrashFill onClick={() => setSelectedIngredients([])}/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {selectedIngredients.map((ingredient, index) => (
+                            <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{ingredient}</td>
+                            <td>
+                            <BsFillTrashFill onClick={() => deleteIngredient(index)}/>
+                            </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3.5vh"}}> Add to order </button>
+                </div>
+                </div>
+            </div>               
+            ]);
+    }
+
+    const salad_panel = () => {
+        clearBYOSelections();
+        setBYO("Custom Salad");
+        BYO_salad();
     }
 
     return (
@@ -584,8 +717,8 @@ const CashierGUI = () => {
 
       <h3 className='column'> Other:
       <div>
-        <Popup contentStyle={{width: "1200px"}} trigger=
-            {<button className='main-buttons' disabled={loading}> Build Your Own </button>} 
+        <Popup contentStyle={{width: "fit-content"}} trigger=
+            {<button className='main-buttons' disabled={loading}> BYO/Seasonal </button>} 
             modal nested onClose={main_panel}>
             {
                 <div className='basic-pop-up'>

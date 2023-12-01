@@ -15,7 +15,11 @@ interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
-  }
+}
+
+interface AdminProps {
+    isAdmin : string;
+}
   
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
@@ -31,7 +35,8 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
-const EmployeeComponent: React.FC = () => {
+const EmployeeComponent: React.FC<AdminProps> = ({isAdmin}) => {
+    console.log("Employe Admin State (Employee.tsx) : ", isAdmin);
 
     useEffect(() => {
         generate_employee_info();
@@ -331,9 +336,11 @@ const EmployeeComponent: React.FC = () => {
                                     </span>
                                 ) : (
                                     <span>
+                                        {(isAdmin === 'Yes') && 
                                         <BsFillTrashFill className="delete-btn"
                                             onClick={() => handleDeleteClick(employee.employee_id)}
                                         />
+                                        }
                                         <BsFillPencilFill className="edit-btn"
                                             onClick={() => handleEdit(employee.employee_id)}
                                         />
@@ -387,14 +394,16 @@ const EmployeeComponent: React.FC = () => {
                             </tr>
                             )}
                         </tbody>
-                        <div className="add-container">
-                            <span>
-                                <button className="add-row-btn" onClick={handleAddRow}>
-                                    <IoPersonAddSharp className="add-icon" />
-                                    Add Employee
-                                </button>
-                            </span>
-                        </div>
+                        {(isAdmin === 'Yes') && 
+                            <div className="add-container">
+                                <span>
+                                    <button className="add-row-btn" onClick={handleAddRow}>
+                                        <IoPersonAddSharp className="add-icon" />
+                                        Add Employee
+                                    </button>
+                                </span>
+                            </div>
+}
                         
                     </table>
                     </div>
