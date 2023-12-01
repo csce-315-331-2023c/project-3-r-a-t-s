@@ -130,3 +130,22 @@ def get_price():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+    
+
+@cashier_BP.route('/get_new_menu_items', methods=['POST'])
+def get_new_menu_items():
+
+    query = "SELECT menu_item_name FROM menu_items WHERE menu_item_id > 70;"
+    
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        return jsonify({"data" : data})
+
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
