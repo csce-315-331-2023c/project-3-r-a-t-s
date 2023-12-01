@@ -12,6 +12,8 @@ import CashierLoginPopup from './HomeComponents/CashierLogin';
 // import axios, {AxiosError} from 'axios';
 
 import './App.css';
+import WeatherComponent from './Components/Weather';
+import WeatherCard from './Components/WeatherCard';
 
 const mapContainerStyle = {
     width: '40vw',
@@ -161,12 +163,15 @@ const Home : React.FC = () => {
             </GoogleMap>
             </div>
 
-            <div style={{display: "table-cell", width: "30vw"}}>
-                <h3 style={{fontSize: "3vh", textAlign: "center"}}> <br /> 
+            <div style={{display: "table-cell"}}>
+                <h3 style={{fontSize: "3vh", marginBottom: 0}}> <br /> 
                  <u>Store Hours:</u> <br />
-                    Monday to Sunday  <br />
-                    10:45am-10:00pm
+                    Monday to Sunday:<br />
+                     10:45am - 10:00pm
                 </h3>
+                <div>
+                    <WeatherComponent />
+                </div>
             </div>
             </div>
             </div>
