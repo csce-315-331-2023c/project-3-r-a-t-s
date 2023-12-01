@@ -8,8 +8,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-import ManagerTableComponent from './ManagerTable';
-
+import { Dispatch, SetStateAction} from 'react';
 
 interface PopupProps {
     message: string;
@@ -18,7 +17,12 @@ interface PopupProps {
 }
 
 interface AdminProps {
-    isAdmin : string;
+    isAdmin: string;
+    setIsAdmin: React.Dispatch<React.SetStateAction<string>>;
+  }
+
+interface EmployeeProps {
+    adminProps: AdminProps;
 }
   
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
@@ -35,8 +39,8 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
-const EmployeeComponent: React.FC<AdminProps> = ({isAdmin}) => {
-    console.log("Employe Admin State (Employee.tsx) : ", isAdmin);
+const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
+    console.log("Employe Admin State (Employee.tsx) : ", adminProps.isAdmin);
 
     useEffect(() => {
         generate_employee_info();
@@ -336,7 +340,7 @@ const EmployeeComponent: React.FC<AdminProps> = ({isAdmin}) => {
                                     </span>
                                 ) : (
                                     <span>
-                                        {(isAdmin === 'Yes') && 
+                                        {(adminProps.isAdmin === 'Yes') && 
                                         <BsFillTrashFill className="delete-btn"
                                             onClick={() => handleDeleteClick(employee.employee_id)}
                                         />
@@ -394,7 +398,7 @@ const EmployeeComponent: React.FC<AdminProps> = ({isAdmin}) => {
                             </tr>
                             )}
                         </tbody>
-                        {(isAdmin === 'Yes') && 
+                        {(adminProps.isAdmin === 'Yes') && 
                             <div className="add-container">
                                 <span>
                                     <button className="add-row-btn" onClick={handleAddRow}>

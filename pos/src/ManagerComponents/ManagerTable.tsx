@@ -7,13 +7,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
+import { Dispatch, SetStateAction} from 'react';
 
 interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
-  }
-  
+}
+
+interface AdminProps {
+    isAdmin: string;
+    setIsAdmin: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface ManagerProps {
+    adminProps: AdminProps;
+}
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
         <div className="EmployeeDeletePopup">
@@ -28,7 +37,8 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
-const ManagerTableComponent: React.FC = () => {
+const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
+    console.log("ManagerTable.tsx Admin Status", adminProps.isAdmin);
     const [query, setQuery] = useState(''); 
 
     useEffect(() => {
@@ -176,7 +186,9 @@ const ManagerTableComponent: React.FC = () => {
         .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
         //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
-            console.log("Updated Manager : ", response.data.message); 
+            console.log("Updated Manager Successfully"); 
+            console.log("ManagerAdmin Status:", response.data.isAdmin);
+            adminProps.setIsAdmin(response.data.isAdmin);
         })
         .catch((error) => {
             console.error('Error with Updating Manager Information:', error);
@@ -301,7 +313,8 @@ const ManagerTableComponent: React.FC = () => {
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : manager.hours_per_week}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required/> : manager.email}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required/> : manager.admin}</td>
-                        <td>
+                        {(adminProps.isAdmin === 'Yes') && 
+                            <td>
                                 {editingManagerId === manager.manager_id ? (
                                     <span>
                                         <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(manager.manager_id)}/>
@@ -317,7 +330,14 @@ const ManagerTableComponent: React.FC = () => {
                                         />
                                     </span>
                                 )}
-                        </td>
+                            </td>
+                        }
+                        {(adminProps.isAdmin === 'No') && 
+                            <td>
+                            Disabled
+                            </td>
+                        }
+                        
                         </tr>
                         ))}
                        {showPopup && (
@@ -359,15 +379,16 @@ const ManagerTableComponent: React.FC = () => {
                             </tr>
                             )}
                         </tbody>
-                        <div className="add-container">
-                            <span>
-                                <button className="add-row-btn" onClick={handleAddRow}>
-                                    <IoPersonAddSharp className="add-icon" />
-                                    Add Manager
-                                </button>
-                            </span>
-                        </div>
-                        
+                        {(adminProps.isAdmin === 'Yes') && 
+                            <div className="add-container">
+                                <span>
+                                    <button className="add-row-btn" onClick={handleAddRow}>
+                                        <IoPersonAddSharp className="add-icon" />
+                                        Add Manager
+                                    </button>
+                                </span>
+                            </div>
+                        }
                     </table>
                     </div>
             )}

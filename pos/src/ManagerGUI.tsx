@@ -15,7 +15,6 @@ import MenuComponent from './ManagerComponents/Menu';
 import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer'; 
 import { CiLogout } from "react-icons/ci";
 
-
 const ManagerGUI: React.FC = () => {
   const {ManagerEmail} = useManagerEmail();
   const[isAdmin, setIsAdmin] = useState('');
@@ -374,14 +373,14 @@ const ManagerGUI: React.FC = () => {
           </Tab>
 
           <Tab eventKey={4} title="Employees"> 
-          <EmployeeComponent isAdmin = {isAdmin} />
+          <EmployeeComponent adminProps={{ isAdmin, setIsAdmin }} />
           </Tab>
 
-          {(isAdmin === 'Yes') && 
+          {/* {(isAdmin === 'Yes') &&  */}
             <Tab eventKey={5} title="Managers"> 
-              <ManagerComponent/>
+              <ManagerComponent adminProps={{ isAdmin, setIsAdmin }}/>
             </Tab>
-          }
+          {/* } */}
 
           <Tab eventKey={6} title="Reports"> 
             <br />
