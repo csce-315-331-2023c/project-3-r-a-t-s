@@ -44,7 +44,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
 
   return (
     <section>
-      <MDBContainer className=" py-0">
+      <MDBContainer className=" py-4">
         <MDBRow className="justify-content-center align-items-center">
           <MDBCol md="8" lg="6" xl="4" style={{ width: '20vw', maxWidth: '100%' }}>
             <MDBCard className="shadow-0 border" style={{ width: '100%' }}>
