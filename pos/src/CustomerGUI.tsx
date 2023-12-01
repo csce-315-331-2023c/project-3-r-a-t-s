@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Popup from 'reactjs-popup';
 import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
+import './Customer.css';
 import axios, {AxiosError} from 'axios';
 
 const CustomerGUI = () => {
@@ -371,10 +372,16 @@ const CustomerGUI = () => {
     }
 
     return (
-    <div>
-        <h2>
+    <div className='Customer'>
+        <div className='CustomerHeader'>
+            <h1 style={{fontSize: "5vh"}}> 
+                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
+                   <b>PIADA</b>  Italian Street Food
+            </h1>
+        </div> 
+
         <div>
-            <table className="table table-dark" style={{width:"400px"}}>
+            <table className="table table-dark" style={{width:"300px"}}>
             <thead>
                   <tr>
                     <th> # </th>
@@ -392,95 +399,163 @@ const CustomerGUI = () => {
                   ))}
                 </tbody>
               </table>
-              </div>
-            <button onClick={addorder} > <u>Pay</u>: 
-            ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
-            <button onClick={removeAll}> Remove Items </button>
-        </h2> 
-
-        <header>
-        <button onClick={goback} > Back </button>
-            <h1>
-            PIADA 
-            </h1>
-            <p> Italian Street Food</p>
-        </header>
+                <button onClick={addorder} > <u>Pay</u>: 
+                ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
+                <button onClick={removeAll}> Remove Items </button> 
+        </div>
+                 
         
-        <div>
-        <h3> Pasta:
-        <p> 
-        <Popup trigger=
-            {<button > Carbonara </button>} 
-            position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
-            <p >
-            <button  onClick={() => makeorderitem(1, "SM") }> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
-            <br />
-            <button  onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-            <button  onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
-            <br /> 
-            <button onClick={() => addorderitem("")} > Add to order </button>
-         </p>
-        </Popup>
+        
+        <div>    
+        <h3> <p className='CategoryText'>Pasta</p>
+        <p>
+        <div className='float-container'>
+            <div className='float-child'>
+                <p>Carbonara</p>
+                <Popup trigger=
+                {<button className='MenuItemButton'>
+                    <img src='https://images.mypiada.com/piada-one/product/423/197051.jpg' alt='Carbonara'
+                    style={{width: "13.5vw"}}/>
+                </button>}
+                    position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
+                    <p >
+                        <button  onClick={() => makeorderitem(1, "SM") }> Small </button>
+                        <button onClick={() => makeorderitem(1, "REG")}> Regular </button>
+                        <br />
+                        <button  onClick={() => makeorderitem(2, "Penne")}> Penne </button>
+                        <button  onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
+                        <br /> 
+                        <button onClick={() => addorderitem("")} > Add to order </button>
+                    </p>
+                </Popup>
+                <p className='PriceText'>SM $5  Reg $10</p>
+                <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah will this wrap around if it gets too long</p>
+            </div>
+        
 
-        <Popup trigger=
-            {<button > Diavolo </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
-            <p >
-            <button onClick={() => makeorderitem(1, "SM")} > Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
-            <br />
-            <button onClick={() => makeorderitem(2, "Penne")} > Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")} > Spaghetti </button>
-            <br /> 
-            <button onClick={() => addorderitem("")} > Add to order </button>
-            </p>
-        </Popup>
-
-        <Popup trigger=
-            {<button > Basil Pesto </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
-            <p >
-            <button onClick={() => makeorderitem(1, "SM")} > Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
-            <br />
-            <button onClick={() => makeorderitem(2, "Penne")} > Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")} > Spaghetti </button>
-            <br /> 
-            <button onClick={() => addorderitem("")} > Add to order </button>
-            </p>
-        </Popup>
-
-        <Popup trigger=
-            {<button > Marinara </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Marinara")}>
-            <p >
-            <button onClick={() => makeorderitem(1, "SM")} > Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
-            <br />
-            <button onClick={() => makeorderitem(2, "Penne")} > Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")} > Spaghetti </button>
-            <br /> 
-            <button onClick={() => addorderitem("")} > Add to order </button>
-            </p>
-        </Popup>
+            <div className='float-child'>
+            <p>Diavolo</p>
+            <Popup trigger=
+                {<button className='MenuItemButton'>
+                    <img src='https://images.mypiada.com/piada-one/product/459/123678.jpg' alt='Diavolo'
+                    style={{width: "13.5vw"}}/>
+                </button>}
+                position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
+                <p >
+                <button onClick={() => makeorderitem(1, "SM")} > Small </button>
+                <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
+                <br />
+                <button onClick={() => makeorderitem(2, "Penne")} > Penne </button>
+                <button onClick={() => makeorderitem(2, "Spaghetti")} > Spaghetti </button>
+                <br /> 
+                <button onClick={() => addorderitem("")} > Add to order </button>
+                </p>
+            </Popup>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+        
+            <div className='float-child'>
+            <p>Basil Pesto</p>
+            <Popup trigger=
+                {<button className='MenuItemButton'>
+                    <img src='https://images.mypiada.com/piada-one/product/322/197053.jpg' alt='Basil Pesto'
+                    style={{width: "13.5vw"}}/>
+                </button>}
+                position="right center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
+                <p >
+                <button onClick={() => makeorderitem(1, "SM")} > Small </button>
+                <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
+                <br />
+                <button onClick={() => makeorderitem(2, "Penne")} > Penne </button>
+                <button onClick={() => makeorderitem(2, "Spaghetti")} > Spaghetti </button>
+                <br /> 
+                <button onClick={() => addorderitem("")} > Add to order </button>
+                </p>
+            </Popup>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+            
+            <div className='float-child'>
+            <p>Marinara</p>
+            <Popup trigger=
+                {<button className='MenuItemButton'>
+                    <img src='https://images.mypiada.com/piada-one/product/565/325680.jpg' alt='Marinara'
+                    style={{width: "13.5vw"}}/>
+                </button>}
+                position="right center" onOpen={() => makeorderitem(0, "Marinara")}>
+                <p >
+                <button onClick={() => makeorderitem(1, "SM")} > Small </button>
+                <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
+                <br />
+                <button onClick={() => makeorderitem(2, "Penne")} > Penne </button>
+                <button onClick={() => makeorderitem(2, "Spaghetti")} > Spaghetti </button>
+                <br /> 
+                <button onClick={() => addorderitem("")} > Add to order </button>
+                </p>
+            </Popup>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+        </div>
         </p>
         </h3>
 
-        <h3 >Piadas: 
+        <h3 > <p className='CategoryText'>Piadas</p>  
             <p>
-            <button  onClick={() => addorderitem("Avocado Piada")}> Avocado </button>
-            <button  onClick={() => addorderitem("BLT Piada")}> BLT </button>
-            <button  onClick={() => addorderitem("Chefs Favorite Piada")}> Chef's Favorite </button>
-            <button  onClick={() => addorderitem("Mediterranean Piada")}> Mediterranean </button>
+            <div className='float-container'>
+            <div className='float-child'>
+            <p>Avocado Piada</p>
+            <button onClick={() => addorderitem("Avocado Piada")} className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/315/196632.jpg' alt='Avocado'
+                style={{width: "13.5vw"}}/>
+            </button>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+            <div className='float-child'>
+            <p>BLT Piada</p>
+            <button onClick={() => addorderitem("BLT Piada")} className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/453/185657.jpg' alt='BLT'
+                style={{width: "13.5vw"}}/>
+            </button>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+            <div className='float-child'>
+            <p>Chef's Favorite Piada</p>
+            <button onClick={() => addorderitem("Chefs Favorite Piada")} className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/279/196634.jpg' alt="Chef's Favorite"
+                style={{width: "13.5vw"}}/>
+            </button>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+            <div className='float-child'>
+            <p>Mediterranean Piada</p>
+            <button onClick={() => addorderitem("Mediterranean Piada")} className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/548/386780.jpg' alt='Mediterranean'
+                style={{width: "13.5vw"}}/>
+            </button>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+            </div>
             </p>
         </h3>
 
-        <h3 > Salad: 
-        <p> 
+        <h3 > <p className='CategoryText'>Salad</p> 
+        <p>
+        <div className='float-container'>
+          <div className='float-child'>
+          <p>Deluxe Caeser</p>
           <Popup trigger=
-              {<button > Deluxe Ceasar </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
+            {<button className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/456/196981.jpg' alt='Deluxe Caeser'
+                style={{width: "13.5vw"}}/>
+            </button>}
+            position="right center" onOpen={() => makeorderitem(0, "Deluxe Caesar Salad")}>
             <p >
             <button onClick={() => makeorderitem(1, "SM")} > Small </button>
             <button onClick={() => makeorderitem(1, "REG")} > Regular </button>
@@ -488,9 +563,17 @@ const CustomerGUI = () => {
             <button onClick={() => addorderitem("")} > Add to order </button>
             </p>
           </Popup>
+          <p className='PriceText'>SM $5  Reg $10</p>
+          <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+          </div>
 
+          <div className='float-child'>
+          <p>Farmer's Market</p>
           <Popup trigger=
-            {<button > Farmer's Market </button>}
+            {<button className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/467/product_web_category.png' alt="Farmer's Market"
+                style={{width: "13.5vw"}}/>
+            </button>}
             position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
             <p >
             <button onClick={() => makeorderitem(1, "SM")} > Small </button>
@@ -499,9 +582,17 @@ const CustomerGUI = () => {
             <button onClick={() => addorderitem("")} > Add to order </button>
             </p>
           </Popup>
-
+          <p className='PriceText'>SM $5  Reg $10</p>
+          <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+          </div>
+          
+          <div className='float-child'>
+          <p>Avocado Chop</p>
           <Popup trigger=
-            {<button > Avocado Chop </button>}
+            {<button className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/782/product_web_category.png' alt= 'Avocado Chop'
+                style={{width: "13.5vw"}}/>
+            </button>}
             position="right center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
             <p >
             <button onClick={() => makeorderitem(1, "SM")} > Small </button>
@@ -510,10 +601,22 @@ const CustomerGUI = () => {
             <button onClick={() => addorderitem("")} > Add to order </button>
             </p>
           </Popup>
+          <p className='PriceText'>SM $5  Reg $10</p>
+          <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+          </div>
 
-          <button  onClick={() => addorderitem("Power Bowl")}> Power Bowl </button>
-      </p>
-      </h3>
+            <div className='float-child'>
+            <p>Power Bowl</p>
+            <button onClick={() => addorderitem("Power Bowl")} className='MenuItemButton'>
+                <img src='https://images.mypiada.com/piada-one/product/562/324991.jpg' alt='Power Bowl'
+                style={{width: "13.5vw"}}/>
+            </button>
+            <p className='PriceText'>SM $5  Reg $10</p>
+            <p className='IngredientText'>Ingredients blah blah blah blah blah blah blah</p>
+            </div>
+        </div>
+        </p>
+        </h3>
       
 
       <h3 > Other:

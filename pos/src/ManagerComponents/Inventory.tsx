@@ -263,7 +263,14 @@ const InventoryComponent = () => {
     <div>
       <br />
       <div>
-        
+      <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          disabled={isLoading}
+          className="btn btn-success"
+        >
+          {"Add to Inventory"}
+        </button>
+        <br /> <br />
         <div className="Search-Container">
           Search:{" "}
           <form>
