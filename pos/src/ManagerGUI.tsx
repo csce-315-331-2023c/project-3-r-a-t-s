@@ -12,11 +12,24 @@ import OrderHistoryComponent from './ManagerComponents/OrderHistory';
 import EmployeeComponent from './ManagerComponents/Employee';
 import ManagerComponent from './ManagerComponents/ManagerTable';
 import MenuComponent from './ManagerComponents/Menu';
+import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer'; 
 import { CiLogout } from "react-icons/ci";
 
 
 const ManagerGUI: React.FC = () => {
+  const {ManagerEmail} = useManagerEmail();
+  const[isAdmin, setIsAdmin] = useState('');
+
+  useEffect(() => {
+    check_admin();
+  }, []); 
+
+  useEffect(() => {
+    console.log('ManagerEmail in ManagerGUI:', ManagerEmail);
+  }, [ManagerEmail]);
+
   const navigate = useNavigate();
+
   const goback = () => {
     navigate(-1);
   }
@@ -40,6 +53,25 @@ const ManagerGUI: React.FC = () => {
       createRestockTable();
     }
   }, [query])
+
+  //Check if Email Belongs To Admin
+  const check_admin = async () => { 
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    //Send Post rquest to Flask API
+    await axios
+    .post('http://127.0.0.1:5000/api/manager/check_if_admin', {email : ManagerEmail}, config)
+    //.post('https://pos-backend-3c6o.onrender.com/api/manager/check_if_admin', requestData, config)
+    .then((response) => {
+        console.log(response.data.message); 
+    })
+    .catch((error) => {
+        console.error('Error with Checking If User Is Admin:', error);
+    });
+  };
 
 
   // Manages start/end date in Reports Tab for any reports that require a date
@@ -70,7 +102,7 @@ const ManagerGUI: React.FC = () => {
     menu_items: number;
   }
   const [productReport, setProductReport] = useState<ProductReportData[]>([]);
-    const generateProductReport = async() => {
+  const generateProductReport = async() => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       // console.log("Invalid Dates selected");
       return;

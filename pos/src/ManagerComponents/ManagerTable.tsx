@@ -69,26 +69,6 @@ const ManagerTableComponent: React.FC = () => {
     const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
     const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
 
-    const generate_manager_info = async () => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        //Send Post rquest to Flask API
-        await axios 
-        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
-        .then((response) => {
-            setManagerList(response.data);
-            // console.log(response.data);
-            console.log("Successfully generated Manager Information");
-        })
-        .catch((error) => {
-            console.error('Error with Generating Manager Information:', error);
-        })
-    }
-
     const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddManager) => {
         const { value } = e.target;
         setNewManager((prevNewManager) => ({ ...prevNewManager, [fieldName]: value }));
@@ -96,13 +76,11 @@ const ManagerTableComponent: React.FC = () => {
 
     const [ManagerToDeleteId, setManagerToDeleteId] = useState<number>(0);
     const [showPopup, setShowPopup] = useState(false);
-
     
-    const handleDeleteClick = (id: number) => {
-        setManagerToDeleteId(id);
+    const handleDeleteClick = (managerId: number) => {
+        setManagerToDeleteId(managerId);
         setShowPopup(true);
     };
-
 
     const handleCancelDelete = () => {
         setManagerToDeleteId(0);
@@ -124,6 +102,25 @@ const ManagerTableComponent: React.FC = () => {
             setManagerToDeleteId(0);
             setShowPopup(false);
         }
+    };
+
+    const generate_manager_info = async () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        //Send Post rquest to Flask API
+        await axios 
+        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
+        .then((response) => {
+            setManagerList(response.data);
+            console.log("Successfully generated Manager Information");
+        })
+        .catch((error) => {
+            console.error('Error with Generating Manager Information:', error);
+        })
     };
 
     //Function To Add Manager
@@ -179,7 +176,7 @@ const ManagerTableComponent: React.FC = () => {
         .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
         //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
-            console.log(response.data.message); 
+            console.log("Updated Manager : ", response.data.message); 
         })
         .catch((error) => {
             console.error('Error with Updating Manager Information:', error);
@@ -217,7 +214,6 @@ const ManagerTableComponent: React.FC = () => {
         setShowInputFields(false);
     };
     
-
     const handleEdit = (managerID: number) => {
         setEditingManagerId(managerID);
         const managerToEdit = managerList.find((manager) => manager.manager_id === managerID);
@@ -236,9 +232,7 @@ const ManagerTableComponent: React.FC = () => {
 
         try {
             await update_manager(managerID);
-     
             await generate_manager_info();
-            
             setEditedData({
                 FirstName: '',
                 LastName: '',
@@ -252,6 +246,7 @@ const ManagerTableComponent: React.FC = () => {
             console.error('Error with Updating Manager:', error);
         }
     };
+
     const handleCancelEdit = async (managerId: number) => {
         try {
             await generate_manager_info();
@@ -278,7 +273,7 @@ const ManagerTableComponent: React.FC = () => {
                                 placeholder='Manager Last Name...'/> 
                             </form>
             </div>
-            <div style={{height: "fit-content"}}>
+
             {!!managerList.length && (
                     <div className="order-table-section">
                     <table className='table table-striped w-100'>
@@ -377,7 +372,6 @@ const ManagerTableComponent: React.FC = () => {
                     </div>
             )}
             </div>
-        </div>
         </div>
 
     );
