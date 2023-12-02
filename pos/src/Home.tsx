@@ -163,13 +163,13 @@ const Home : React.FC = () => {
             </GoogleMap>
             </div>
 
-            <div style={{display: "table-cell"}}>
+            <div style={{display: "table-cell", width: "30vw"}}>
                 <h3 style={{fontSize: "3vh", marginBottom: 0}}> <br /> 
                  <u>Store Hours:</u> <br />
                     Monday to Sunday:<br />
                      10:45am - 10:00pm
-                </h3>
-                <div>
+                </h3><br />
+                <div >
                     <WeatherComponent />
                 </div>
             </div>

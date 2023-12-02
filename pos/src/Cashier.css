@@ -1,7 +1,6 @@
 .Cashier {
     text-align: center;
     background-color: rgb(31, 27, 27);
-    font-family:'Times New Roman', Times, serif;
     width: 100%;
     height: 100vh;
 }
@@ -78,13 +77,17 @@
 }
 
 .pay-button {
+    background-color: rgb(163, 252, 255);
     color: rgb(0, 0, 0);
-    font-family:'Times New Roman', Times, serif;
     vertical-align: middle;
     font-weight: bold;
     text-align: center;
     font-size: 5vh;
-    padding: 2vh 1vw 2vh 1vw;
+    width: 20vw;
+    height: 10vh;
+    border: 5px solid black;
+    box-shadow: 5px 5px 5px black;
+    border-radius: 25px;
 }
 
 .order-total {
@@ -98,7 +101,7 @@
 .display-order {
     background-color: whitesmoke;
     font-size: 2.5vh;
-    height: 75vh;
+    height: 73vh;
     text-align: left;
     overflow: scroll;
     margin-bottom: 2vh;
@@ -146,4 +149,17 @@
 .custom-select-buttons {
     padding: 0.5vh 0.5vw 0.5vh 0.5vw;
     margin: 0.5vh 0.5vw 0.5vh 0.5vw;
+}
+
+.payment-confirmation {
+    position : absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px 30px;
+    background: rgb(31, 27, 27);
+    box-shadow: 2px 2px 5px 5px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    z-index: 1000; 
 }

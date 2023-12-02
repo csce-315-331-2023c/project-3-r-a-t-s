@@ -7,6 +7,7 @@ import './Cashier.css';
 import axios, {AxiosError} from 'axios';
 
 import { BsFillTrashFill, BsFillPencilFill} from 'react-icons/bs';
+import { CiLogout } from "react-icons/ci";
 
 
 const CashierGUI = () => {
@@ -26,6 +27,7 @@ const CashierGUI = () => {
     const [order, setOrder] = useState<string[]>([]);
     const [prices, setPrices] = useState<number[]>([]);
 
+    const [kidsProtein, setKidsProtein] = useState<string>("");
 
     const makeorderitem = (temp : number, i : string) => {
         if (temp === 0) {
@@ -70,9 +72,19 @@ const CashierGUI = () => {
         }
     }
 
+    const [showSuccessPanel, setShowSuccessPanel] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+          setShowSuccessPanel(false);
+        }, 3000);
+      }, []); 
 
     // Add Order Array to Database
     const addorder = () => {
+        if (order.length === 0) {
+            return;
+        }
         console.log("Paying for Order");
         console.table(order);
         console.table(selectedIngredients);
@@ -97,6 +109,7 @@ const CashierGUI = () => {
                 // Handle the response from the Flask API
                 console.log(response.data); 
                 if (response.data.message === "Order placed successfully (From Backend)") {
+                    alert("Successfuly placed order!");
                 } else {
                     console.error("Unexpected response:", response.data);
                 }
@@ -597,7 +610,17 @@ const CashierGUI = () => {
     <div className="Cashier">
         <header className='header'>
             <h1 className='piada'>
-            <button onClick={goback} className='back-button'> Logout </button>
+            <button onClick={goback} style={{
+                verticalAlign: 'middle', 
+                textAlign: 'center',
+                border: "0.5vh solid black",
+                borderRadius: "25px",
+                boxShadow: "3px 3px white",
+                margin: "-1vh 10vw auto 2vw",
+                width: "12vw",
+                height: "6vh",
+                fontSize: "3vh"
+            }}> <CiLogout size={"5vh"}/> Logout </button>
             PIADA 
             </h1>
             <p className='street-food'> &nbsp; Italian Street Food</p>
@@ -612,11 +635,11 @@ const CashierGUI = () => {
             {<button className='main-buttons' disabled={loading}> Carbonara </button>} 
             position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
             <p className='basic-pop-up'>
-            <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM") }> Small </button>
-            <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")}> Regular </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM")} disabled={size === 'SM' ? true : false}> Small </button>
+            <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")} disabled={size === 'REG' ? true : false}> Regular </button>
             <br />
-            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
             <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
          </p>
@@ -626,11 +649,11 @@ const CashierGUI = () => {
             {<button className='main-buttons' disabled={loading}> Diavolo </button>}
             position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
             <p className='basic-pop-up'>
-            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM")} disabled={size === 'SM' ? true : false}> Small </button>
+            <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")} disabled={size === 'REG' ? true : false}> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
             <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
@@ -640,11 +663,11 @@ const CashierGUI = () => {
             {<button className='main-buttons' disabled={loading}> Basil Pesto </button>}
             position="right center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
             <p className='basic-pop-up'>
-            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM")} disabled={size === 'SM' ? true : false}> Small </button>
+            <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")} disabled={size === 'REG' ? true : false}> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
             <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
@@ -654,11 +677,11 @@ const CashierGUI = () => {
             {<button className='main-buttons' disabled={loading}> Marinara </button>}
             position="right center" onOpen={() => makeorderitem(0, "Marinara")}>
             <p className='basic-pop-up'>
-            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(1, "SM")} disabled={size === 'SM' ? true : false}> Small </button>
+            <button className='basic-option-buttons'onClick={() => makeorderitem(1, "REG")} disabled={size === 'REG' ? true : false}> Regular </button>
             <br />
-            <button onClick={() => makeorderitem(2, "Penne")} className='basic-option-buttons'> Penne </button>
-            <button onClick={() => makeorderitem(2, "Spaghetti")} className='basic-option-buttons'> Spaghetti </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
+            <button className='basic-option-buttons' onClick={() => makeorderitem(2, "Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
             <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
@@ -681,8 +704,8 @@ const CashierGUI = () => {
               {<button className='main-buttons' disabled={loading}> Classic Caesar </button>}
             position="right center" onOpen={() => makeorderitem(0, "Classic Caesar Salad")}>
             <p className='basic-pop-up'>
-            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons' disabled={size === 'SM' ? true : false}> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons' disabled={size === 'REG' ? true : false}> Regular </button>
             <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
@@ -692,8 +715,8 @@ const CashierGUI = () => {
             {<button className='main-buttons' disabled={loading}> Farmer's Market </button>}
             position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
             <p className='basic-pop-up'>
-            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons' disabled={size === 'SM' ? true : false}> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons' disabled={size === 'REG' ? true : false}> Regular </button>
             <br /> 
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
@@ -703,9 +726,9 @@ const CashierGUI = () => {
             {<button className='main-buttons' disabled={loading}> Avocado Chop </button>}
             position="right center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
             <p className='basic-pop-up'>
-            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons'> Small </button>
-            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons'> Regular </button>
-            <br /> 
+            <button onClick={() => makeorderitem(1, "SM")} className='basic-option-buttons' disabled={size === 'SM' ? true : false}> Small </button>
+            <button onClick={() => makeorderitem(1, "REG")} className='basic-option-buttons' disabled={size === 'REG' ? true : false}> Regular </button>
+            <br />  
             <button onClick={() => addorderitem("")} className='add-to-order'> Add to order </button>
             </p>
           </Popup>
@@ -779,12 +802,12 @@ const CashierGUI = () => {
                     {<button className='other-buttons' disabled={loading}> Kids Pasta  </button>}
                     position="bottom center" >
                     <div className='basic-pop-up'>
-                    <button className='basic-option-buttons'> Grilled Chicken </button>
-                    <button className='basic-option-buttons'> Crispy Chicken </button>
-                    <button className='basic-option-buttons'> Steak </button>
-
-                    <button className='basic-option-buttons'> Spaghetti </button>
-                    <button className='basic-option-buttons'> Penne </button>
+                    <button className='basic-option-buttons' onClick={() => setKidsProtein("Grilled Chicken")} disabled={kidsProtein === 'Grilled Chicken' ? true : false}> Grilled Chicken </button>
+                    <button className='basic-option-buttons' onClick={() => setKidsProtein("Crispy Chicken")} disabled={kidsProtein === 'Crispy Chicken' ? true : false}> Crispy Chicken </button>
+                    <button className='basic-option-buttons'onClick={() => setKidsProtein("Steak")} disabled={kidsProtein === 'Steak' ? true : false}> Steak </button>
+                    <br />
+                    <button className='basic-option-buttons' onClick={() => setType("Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
+                    <button className='basic-option-buttons' onClick={() => setType("Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
                     <button className='add-to-order'> Add to Order </button>
                     </div>
                     </Popup>
@@ -793,8 +816,8 @@ const CashierGUI = () => {
                     {<button className='other-buttons' disabled={loading}> Kids Meatballs  </button>}
                     position="bottom center" >
                     <div className='basic-pop-up'>
-                    <button className='basic-option-buttons'> Spaghetti </button>
-                    <button className='basic-option-buttons'> Penne </button>
+                    <button className='basic-option-buttons' onClick={() => setType("Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
+                    <button className='basic-option-buttons' onClick={() => setType("Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
                     <button className='add-to-order'> Add to Order </button>
                     </div>
                     </Popup>
@@ -839,8 +862,13 @@ const CashierGUI = () => {
                 </tbody>
               </table>
               </div>
-            <button className='pay-button' onClick={addorder} > <u>Pay</u>: 
+            <button className='pay-button' onClick={addorder} disabled={loading}> <u>Pay</u>: 
             ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
+            {showSuccessPanel && 
+                <div className='payment-confirmation'>
+                    <h3>Successfuly Placed Order!</h3>
+                </div>
+            }
         </h2> 
 
       </div>

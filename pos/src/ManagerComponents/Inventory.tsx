@@ -4,6 +4,7 @@ import { MdCancel } from "react-icons/md";
 import { FiSave, FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
+import { CiSearch } from "react-icons/ci";
 
 interface Item {
   ingredient_id: number;
@@ -13,10 +14,34 @@ interface Item {
   unit: string;
 }
 
+
+interface PopupProps {
+  message: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+  const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
+    return (
+        <div className="EmployeeDeletePopup">
+                <div>{message}</div>
+                <div className="ConfirmEmployee-btn">
+                    <button className="delete" onClick={onConfirm}>Delete</button>
+                </div>
+                <div className="ConfirmEmployee-btn">
+                    <button className="cancel" onClick={onCancel}>Cancel</button>
+                </div>
+        </div>
+    );
+};
+
+
 const InventoryComponent = () => {
   useEffect(() => {
     fetchInventory();
   }, []);
+
+  const [showPopup, setShowPopup] = useState(false);
 
   const [query, setQuery] = useState("");
 
@@ -67,6 +92,8 @@ const InventoryComponent = () => {
     },
   };
 
+  const [deleteID, setDeleteID] = useState(-1);
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
@@ -81,6 +108,11 @@ const InventoryComponent = () => {
       // const response = await axios.post("https://pos-backend-3c6o.onrender.com/api/manager/add_inventory", formData);
       // console.log(response.data);
       // Optionally, fetch inventory again to update the list
+      formData.name = "";
+      formData.price = "";
+      formData.quantity = "";
+      formData.threshold = "";
+      formData.unit = "";
       fetchInventory();
     } catch (error) {
       console.error("Failed to add to inventory:", error);
@@ -234,7 +266,17 @@ const InventoryComponent = () => {
     }
   };
 
-  const handleDelete = async (ingredient_id: number) => {
+  const handleDeleteClick = (i: number) => {
+    setDeleteID(i);
+    setShowPopup(true);
+};
+
+const handleCancelDelete = () => {
+  setShowPopup(false);
+};
+
+  const handleDelete = async () => {
+    setShowPopup(true);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -242,7 +284,7 @@ const InventoryComponent = () => {
     };
 
     const removeFormData = {
-      ingredient_id: ingredient_id,
+      ingredient_id: deleteID,
     };
 
     try {
@@ -257,37 +299,39 @@ const InventoryComponent = () => {
     } catch (error) {
       console.error("Failed to remove from inventory:", error);
     }
+  setShowPopup(false);
+
   };
 
   return (
     <div>
-      <br />
       <div>
-      <button
-          onClick={() => setShowAddForm(!showAddForm)}
-          disabled={isLoading}
-          className="btn btn-success"
-        >
-          {"Add to Inventory"}
-        </button>
-        <br /> <br />
         <div className="Search-Container">
-          Search:{" "}
+          {" "}
           <form>
             {" "}
             <input
               className="searchForm"
-              style={{ width: "370px" }}
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Item Name..."
-            />{" "}
+              placeholder= " Search by Item Name..."
+            />  {" "}
           </form>
         </div>
+        {/* <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          disabled={isLoading}
+          className="btn btn-success"
+        >
+          {"Add a New Inventory Item"}
+        </button> */}
       </div>
+
       <br /> {isLoading ? "Loading..." : ""}
-      {showRemoveForm && (
+     
+     
+      {/* {showRemoveForm && (
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -303,8 +347,9 @@ const InventoryComponent = () => {
           />
           <button type="submit">Remove</button>
         </form>
-      )}
-      {showAddForm && (
+      )} */}
+
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -314,6 +359,8 @@ const InventoryComponent = () => {
           <input
             name="name"
             placeholder="Name"
+            className="input-forms"
+            style={{width: "15vw"}}
             value={formData.name}
             onChange={handleFormChange}
             required
@@ -321,6 +368,7 @@ const InventoryComponent = () => {
           <input
             name="quantity"
             placeholder="Quantity"
+            className="input-forms"
             type="number"
             value={formData.quantity}
             onChange={handleFormChange}
@@ -329,6 +377,7 @@ const InventoryComponent = () => {
           <input
             name="unit"
             placeholder="Unit"
+            className="input-forms"
             value={formData.unit}
             onChange={handleFormChange}
             required
@@ -336,6 +385,7 @@ const InventoryComponent = () => {
           <input
             name="price"
             placeholder="Price"
+            className="input-forms"
             type="number"
             value={formData.price}
             onChange={handleFormChange}
@@ -343,16 +393,16 @@ const InventoryComponent = () => {
           />
           <input
             name="threshold"
-            placeholder="Threshold"
+            placeholder="Restock Amount"
             type="number"
+            className="input-forms"
             value={formData.threshold}
             onChange={handleFormChange}
             required
           />
-          <button type="submit">Submit</button>
+          <button type="submit" className="btn btn-success" style={{marginTop: "-1vh"}}>Add new Inventory Item</button>
         </form>
-      )}
-      {showEditForm && (
+      {/* {showEditForm && (
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -377,6 +427,9 @@ const InventoryComponent = () => {
           <button type="submit">Edit</button>
         </form>
       )}
+       */}
+       <br />
+      <div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
       {inventoryData && (
         <table className="table table-striped w-100">
           <thead>
@@ -389,7 +442,10 @@ const InventoryComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {inventoryData.map((item) => (
+            {inventoryData.filter((item) => { 
+              return query.toLowerCase() === '' ? item: item.name.toLowerCase().includes(query.toLowerCase())
+            })
+            .map((item) => (
               <tr key={item.ingredient_id}>
                 <td>
                   {editingItemId === item.ingredient_id ? (
@@ -471,7 +527,7 @@ const InventoryComponent = () => {
                     <span>
                       <BsFillTrashFill
                         className="delete-btn"
-                        onClick={() => handleDelete(item.ingredient_id)}
+                        onClick={() => handleDeleteClick(item.ingredient_id)}
                       />
                       <BsFillPencilFill
                         className="edit-btn"
@@ -484,6 +540,15 @@ const InventoryComponent = () => {
             ))}
           </tbody>
         </table>
+      )}
+      </div>
+
+      {showPopup && (
+          <Popup
+          message="Delete from Inventory?"
+          onConfirm={handleDelete}
+          onCancel={handleCancelDelete}
+          />
       )}
     </div>
   );

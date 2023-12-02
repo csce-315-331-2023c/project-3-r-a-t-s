@@ -295,10 +295,10 @@ const EmployeeComponent: React.FC = () => {
     return (
         <div> 
             <div className='Search-Container'>
-                    Search: <form> <input className="searchForm" style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-                                placeholder='Employee Last Name...'/> 
-                            </form>
-            </div>
+                <form> <input className="searchForm"  type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+                    placeholder='Search by Employee Last Name...'/> 
+                </form>
+            </div> <br />
 
             {!!employeeList.length && (
                     <div className="order-table-section">
@@ -360,20 +360,20 @@ const EmployeeComponent: React.FC = () => {
                                 <td>{employeeList.length > 0 ? employeeList[employeeList.length - 1].employee_id + 1 : 1}</td>
                                 <td>
                                     <input
-                                        type="text" name="LastName" value={newEmployee.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required />
+                                        type="text" name="LastName" value={newEmployee.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="FirstName" value={newEmployee.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required />
+                                    <input type="text" name="FirstName" value={newEmployee.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="Salary" value={newEmployee.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required />
+                                    <input type="text" name="Salary" value={newEmployee.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="Hours" value={newEmployee.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required />
+                                    <input type="text" name="Hours" value={newEmployee.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required className='input-forms'/>
                                 </td>
                                 <td>
                                     <div className='MangerID-Container'>
-                                        <input type="text" name="ManagerID" value={newEmployee.ManagerID} placeholder="Manager ID" onChange={(e) => handleAddInputChange(e, 'ManagerID')} required />
+                                        <input type="text" name="ManagerID" value={newEmployee.ManagerID} placeholder="Manager ID" onChange={(e) => handleAddInputChange(e, 'ManagerID')} required className='input-forms'/>
                                         {errorManagerID && <span className='Error-MangerID'>{errorManagerID}</span>}
                                     </div>
                                 </td>
@@ -381,7 +381,7 @@ const EmployeeComponent: React.FC = () => {
                                     {/* <input type="text" name="UserName" value={newEmployee.Username} placeholder="UserName (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Username')} required /> */}
                                 </td>
                                 <td>
-                                    <input type="text" name="text" value={newEmployee.Password} placeholder="Password (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Password')} required />
+                                    <input type="text" name="text" value={newEmployee.Password} placeholder="Password (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Password')} required className='input-forms'/>
                                 </td>
                                 
                                 <td>
@@ -405,7 +405,7 @@ const EmployeeComponent: React.FC = () => {
                     </table>
                     </div>
             )}
-            <ManagerTableComponent/>
+            {/* <ManagerTableComponent/> */}
         </div>
     );
 };

@@ -47,16 +47,16 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
       <MDBContainer className=" py-2">
         <MDBRow className="justify-content-center align-items-center">
           <MDBCol md="6" lg="5" xl="4" style={{ width: '20vw', maxWidth: '100%' }}>
-            <MDBCard className="shadow-0 border" style={{ width: '100%' }}>
-              <MDBCardBody className="pt-4 pb-4 pl-0 pr-4">
+            <MDBCard style={{ width: '100%', border: "5px solid black", boxShadow: "10px 5px 5px black" }}>
+              <MDBCardBody className="pt-4 pb-4 pl-0 pr-4" >
                 <MDBTypography tag="h4" className="mb-1 sfw-normal">
-                  College Station, TX
+                  <b><u>College Station, TX</u></b>
                 </MDBTypography>
-                <p className="mb-2">
-                  Current temperature:{" "}
+                <p className="mb-2" style={{fontSize: "5vh", }}>
+                  {" "}
                   <strong>{weatherData.main.temp}°F</strong>
                 </p>
-                <p>
+                {/* <p>
                   Feels like: <strong>{weatherData.main.feels_like}°F</strong>
                 </p>
                 <p>
@@ -65,14 +65,14 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
                 <p>
                   Max: <strong>{weatherData.main.temp_max}°F</strong>, Min:{" "}
                   <strong>{weatherData.main.temp_min}°F</strong>
-                </p>
+                </p> */}
 
                 <div className="d-flex justify-content-center align-items-center">
-                  <p className="mb-0 me-4">{weatherData.weather[0].main}</p>
+                  <p className="mb-0 me-4" style={{fontSize: "3vh"}}> <b>{weatherData.weather[0].main}</b></p>
                   <img
                     src={iconUrl}
                     alt="Weather Icon"
-                    style={{ width: "3rem" }}
+                    style={{ width: "5vw" }}
                   />
                 </div>
               </MDBCardBody>
