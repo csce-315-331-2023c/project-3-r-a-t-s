@@ -566,6 +566,7 @@ def get_ingredients():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to fetch Ingredients list'}), 500
+        
 @manager_BP.route('/check_if_admin', methods=['POST'])
 def check_if_admin():
     request_data = request.get_json()
