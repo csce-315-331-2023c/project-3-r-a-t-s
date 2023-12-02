@@ -87,7 +87,6 @@ const CashierGUI = () => {
         }
         console.log("Paying for Order");
         console.table(order);
-        console.table(selectedIngredients);
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
@@ -101,13 +100,11 @@ const CashierGUI = () => {
             },
         };
         // Send a POST request to the Flask API
-        // Run locally with .post('http://127.0.0.1:5000/place_order', orderData)
         axios
-            //.post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
-            .post(`https://pos-backend-3c6o.onrender.com/api/cashier/place_order`, orderData, config)
+            .post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
+            //.post(`https://pos-backend-3c6o.onrender.com/api/cashier/place_order`, orderData, config)
             .then((response) => {
                 // Handle the response from the Flask API
-                console.log(response.data); 
                 if (response.data.message === "Order placed successfully (From Backend)") {
                     alert("Successfuly placed order!");
                 } else {
@@ -132,16 +129,15 @@ const CashierGUI = () => {
             },
         };
         axios
-        //   .post('http://127.0.0.1:5000/api/cashier/get_price', i, config)
-          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, i, config)
+          .post('http://127.0.0.1:5000/api/cashier/get_price', i, config)
+          //.post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, i, config)
           .then((response) => {
-            console.log(response.data.price);
-            console.log(response.data.item);
+            console.log("Update Price Response:", response.data);
             setPrices([...prices,parseFloat(response.data.price)]);
             setLoading(false);
           })
           .catch((error) => {
-            console.error('Failed to get Price: ', error);
+            console.error(error);
             setLoading(false);
           });
       };    
@@ -200,16 +196,20 @@ const CashierGUI = () => {
     const [customType, setCustomType] = useState("");   // stores type of pasta
     const [protein, setProtein] = useState(""); // stores selected protein, can only have one per custom order
     const [sauce, setSauce] = useState(""); // stores selected sauce, can only have one
+    const [customName, setCustomName] = useState<string>(""); //store the custom menu item name (For backend)
 
     useEffect(() => {
         if (byo === "Custom Pasta") {
             BYO_pasta();
+            setCustomName(customSize + " " + byo + " " + customType);
         }
         else if (byo === "Custom Piada") {
             BYO_piada();
+            setCustomName(byo);
         }
         else if (byo === "Custom Salad") {
             BYO_salad();
+            setCustomName(customSize + " " + byo);
         }
     }, [byo, customSize, protein, sauce, customType, selectedIngredients])
 
@@ -220,24 +220,19 @@ const CashierGUI = () => {
         setProtein("");
         setSauce("");
         setCustomType("");
+        setCustomName("");
     }
 
     // Adds Completed Custom item to Order
     const addBYOToOrder = () => {  
-        // Check all fields were selected
-        //  one protein selected, size selected and sauce type
+        // const newOrderItem = `${customName},\n\tProtein: ${protein},\n\tSauce: ${sauce}\n\t,Ingredients: ${selectedIngredients.join(", ")}`;
+        const newOrderItem = `${customName}, ${protein}, ${sauce}, ${selectedIngredients.join(", ")}`; //Dont Change (I cant add \n\tProtein: to database)
+        setOrder(prevOrder => [...prevOrder, newOrderItem]);
 
-        // Format custom ingredients to be able to send request to backend when order is placed
-        // item, size, type, protein, sauce and selectedIngred variables
-        
+        updatePrice(customName);
+        console.log("Added new order item: ", customName);
 
-        // let ingredients = "";
-        // if (selectedIngredients.length > 0) {
-        //     ingredients += `${selectedIngredients.join(', ')}`;
-        //     console.log("Added BYO Ingredients:", ingredients);
-        // }  
-
-
+        setCustomName(""); //Clear the selected custom item name
         setSelectedIngredients([]); // Clear selected ingredients
         main_panel();   // exits to main BYO panel after adding BYO item to order
     }
@@ -321,7 +316,7 @@ const CashierGUI = () => {
                     <p>
                         <button onClick={() => setSauce('Tomato Sauce')} className='custom-select-buttons'> Marinara </button>
                         <button onClick={() => setSauce('Alfredo Sauce')} className='custom-select-buttons'> Alfredo </button>
-                        <button onClick={() => setSauce('Diavolo Sauce')} className='custom-select-buttons'> Diavolo </button>
+                        <button onClick={() => setSauce('Spicy Diavolo Sauce')} className='custom-select-buttons'> Diavolo </button>
                         <button onClick={() => setSauce('Basil Pesto Sauce')} className='custom-select-buttons'> Basil Pesto </button>
                     </p>
                 </h3>
@@ -423,7 +418,7 @@ const CashierGUI = () => {
                     <p>
                         <button onClick={() => setSauce('Tomato Sauce')} className='custom-select-buttons'> Marinara </button>
                         <button onClick={() => setSauce('Alfredo Sauce')} className='custom-select-buttons'> Alfredo </button>
-                        <button onClick={() => setSauce('Diavolo Sauce')} className='custom-select-buttons'> Diavolo </button>
+                        <button onClick={() => setSauce('Spicy Diavolo Sauce')} className='custom-select-buttons'> Diavolo </button>
                         <button onClick={() => setSauce('Basil Pesto Sauce')} className='custom-select-buttons'> Basil Pesto </button>
                     </p>
                 </h3>

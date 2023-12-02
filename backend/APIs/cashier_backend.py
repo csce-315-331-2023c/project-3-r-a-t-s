@@ -18,8 +18,6 @@ DB_PARAMS = {
 
 @cashier_BP.route('/place_order', methods=['POST'])
 def place_order():
-    # Log the request method
-    # app.logger.info(f"Received {request.method} request to /place_order")
     # Process the order data and update the database
     try:
         data = request.get_json()
@@ -37,45 +35,66 @@ def place_order():
         elif client_type == 'customer':  
             employeeID = 5
 
-        #app.logger.info("After EmployeeID")
-
         # Insert into the ORDERS table 
         insert_order_query = "INSERT INTO ORDERS (employee_id, order_total, date) VALUES (%s, %s, %s) RETURNING order_id"
         order_total = 0.0  # Initialize the order total
-        cursor.execute(insert_order_query, (employeeID, order_total, current_date))
+        cursor.execute(insert_order_query, (employeeID, order_total, current_date,))
         order_id = cursor.fetchone()[0]
 
-        #app.logger.info("Before For Loop")
-
         for item in data['items']:
+            #Check if item is an array and parse by commas. The first item in the array will be the menu_item_name
+            if ',' in item:
+                item_list = item.split(', ')
+                menu_item_name = item_list[0]
+                ingredients = item_list[1:]
+                print("Ingredients List", ingredients)
+            else:
+                menu_item_name = item
+
             # Get Menu Item ID
-            item_query = "SELECT menu_item_id, price FROM MENU_ITEMS WHERE menu_item_name = %s"
-            cursor.execute(item_query, (item,))
+            item_query = "SELECT menu_item_id, price, is_customizable FROM MENU_ITEMS WHERE menu_item_name = %s"
+            cursor.execute(item_query, (menu_item_name,))
             menu_item_data = cursor.fetchone()
             
-            #app.logger.info("Entered For Loop")
-
             if menu_item_data:
-                menu_item_id, menu_item_price = menu_item_data
+                menu_item_id, menu_item_price, is_customizable = menu_item_data
                 order_total += menu_item_price
                 # Insert into ORDER_ITEMS table for each menu item
-                order_items_query = "INSERT INTO ORDER_ITEMS (order_id, menu_item_id, quantity) VALUES (%s, %s, %s)"
+                order_items_query = "INSERT INTO ORDER_ITEMS (order_id, menu_item_id, quantity) VALUES (%s, %s, %s) RETURNING item_id"
                 cursor.execute(order_items_query, (order_id, menu_item_id, 1,))
-                # Reduce Menu Item's Ingredients From Inventory
-                FetchIngredients_query = (
-                    "SELECT I.ingredient_id, I.quantity AS inventory_quantity "
-                    "FROM MENU_ITEMS MI "
-                    "JOIN MENU_ITEM_INGREDIENTS MII ON MI.menu_item_id = MII.menu_item_id "
-                    "JOIN INVENTORY I ON MII.ingredient_id = I.ingredient_id "
-                    "WHERE MI.menu_item_name = %s"
-                )
-                cursor.execute(FetchIngredients_query, (item,))
+                item_id = cursor.fetchone()[0]
+
+                #If Menu Item Is Customizable, insert into selected_ingredients
+                if is_customizable == True:
+                    for ingredient_name in ingredients:
+                        get_ingredient_id_query = "SELECT ingredient_id FROM INVENTORY where name = %s"
+                        cursor.execute(get_ingredient_id_query, (ingredient_name,))
+                        ingredient_id = cursor.fetchone()[0]
+                        print("Got Ingredient ID: ", ingredient_id)
+                        insert_selections_query = "INSERT INTO SELECTED_INGREDIENTS(order_id, item_id, menu_item_id, ingredient_id) VALUES(%s, %s, %s, %s)"
+                        cursor.execute(insert_selections_query, (order_id, item_id, menu_item_id, ingredient_id,))
+
+                    #Use Selected Ingredients to reduce them from inventory
+                    FetchIngredients_query = (
+                        "SELECT I.ingredient_id, I.quantity AS inventory_quantity "
+                        "FROM MENU_ITEMS MI "
+                        "JOIN SELECTED_INGREDIENTS MII ON MI.menu_item_id = MII.menu_item_id "
+                        "JOIN INVENTORY I ON MII.ingredient_id = I.ingredient_id "
+                        "WHERE MI.menu_item_name = %s"
+                    )
+                else: 
+                    # Reduce Menu Item's Ingredients From Inventory
+                    FetchIngredients_query = (
+                        "SELECT I.ingredient_id, I.quantity AS inventory_quantity "
+                        "FROM MENU_ITEMS MI "
+                        "JOIN MENU_ITEM_INGREDIENTS MII ON MI.menu_item_id = MII.menu_item_id "
+                        "JOIN INVENTORY I ON MII.ingredient_id = I.ingredient_id "
+                        "WHERE MI.menu_item_name = %s"
+                    )
+
+                cursor.execute(FetchIngredients_query, (menu_item_name,))
                 result_set = cursor.fetchall()
-
-                #app.logger.info("Before If Result Set")
-
                 if result_set:
-                    # Process Result Set For Menu Items with Predefined Ingredients
                     for row in result_set:
                         ingredientId = row[0]
                         inventoryQuantity = row[1]
@@ -85,12 +104,13 @@ def place_order():
                         cursor.execute(UpdateInventory_query, (updatedQuantity, ingredientId,))
                 else:
                     UpdateInventory_query = "UPDATE INVENTORY SET quantity = quantity - 1 WHERE name = %s"
-                    cursor.execute(UpdateInventory_query, (item,))
+                    cursor.execute(UpdateInventory_query, (menu_item_name,))
             else:
                 # Handle the case where no menu item data is found
-                error_message = f"No menu item found for: {item}"
-                #app.logger.error(error_message)
-        #app.logger.info("Before Updating Orders")        
+                error_message = f"No menu item found for: {menu_item_name}"
+                print(error_message)
+
+        print("Before Updating Orders")        
         # Update the total in the ORDERS table
         update_total_query = "UPDATE ORDERS SET order_total = %s WHERE order_id = %s"
         cursor.execute(update_total_query, (order_total, order_id,))
@@ -105,12 +125,11 @@ def place_order():
         response_data = {
             "order_total": order_total,
             "message": "Order placed successfully (From Backend)"}
+        print("Response Data", response_data)
         return jsonify(response_data)
 
     except Exception as e:
         return jsonify({"error": str(e)})
-
-# Add other routes below
 
 @cashier_BP.route('/get_price', methods=['POST'])
 def get_price():
@@ -125,8 +144,10 @@ def get_price():
         cursor.execute(query)
         price = cursor.fetchall()
 
-        return jsonify({"price": price, "item" : menu_item})
-
+        if price:
+            return jsonify({"price": price[0], "item": menu_item})
+        else:
+            return jsonify({"error": "No price found for Menu Item: " + menu_item})
 
     except Exception as e:
         return jsonify({"error": str(e)})
