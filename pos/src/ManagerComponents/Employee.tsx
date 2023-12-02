@@ -8,14 +8,22 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-import ManagerTableComponent from './ManagerTable';
-
+import { Dispatch, SetStateAction} from 'react';
 
 interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
+}
+
+interface AdminProps {
+    isAdmin: string;
+    setIsAdmin: React.Dispatch<React.SetStateAction<string>>;
   }
+
+interface EmployeeProps {
+    adminProps: AdminProps;
+}
   
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
@@ -31,7 +39,8 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
-const EmployeeComponent: React.FC = () => {
+const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
+    console.log("Employe Admin State (Employee.tsx) : ", adminProps.isAdmin);
 
     useEffect(() => {
         generate_employee_info();
@@ -39,9 +48,7 @@ const EmployeeComponent: React.FC = () => {
 
     const [query, setQuery] = useState(''); 
 
-    const [isLoading, setIsLoading] = useState(false);
-
-    interface ManagerData {
+    interface EmployeeData {
         employee_id: number;
         first_name: string;
         last_name: string;
@@ -52,7 +59,7 @@ const EmployeeComponent: React.FC = () => {
         password: string;
     }
     
-    interface AddManager {
+    interface AddEmployee {
         FirstName: string;
         LastName: string;
         Salary: string;
@@ -61,7 +68,7 @@ const EmployeeComponent: React.FC = () => {
         Username: string;
         Password: string;
     }
-    interface EditManager {
+    interface EditEmployee {
         FirstName: string;
         LastName: string;
         Salary: string;
@@ -70,15 +77,15 @@ const EmployeeComponent: React.FC = () => {
         Password: string;
     }
 
-    const [employeeList, setEmployeeList] = useState<ManagerData[]>([]);
+    const [employeeList, setEmployeeList] = useState<EmployeeData[]>([]);
     const [availableManagerIds, setAvailableManagerIds] = useState([]);
-    const [newEmployee, setNewEmployee] = useState<AddManager>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Username: '', Password: '',});
+    const [newEmployee, setNewEmployee] = useState<AddEmployee>({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Username: '', Password: '',});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
     const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Password: '',});
     const [errorManagerID, setErrorManagerID] = useState<string>('');
 
-    const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddManager) => {
+    const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddEmployee) => {
         const { value } = e.target;
         setNewEmployee((prevNewEmployee) => ({ ...prevNewEmployee, [fieldName]: value }));
     };
@@ -91,7 +98,6 @@ const EmployeeComponent: React.FC = () => {
         setShowPopup(true);
     };
 
-
     const handleCancelDelete = () => {
         setEmployeeToDeleteId(0);
         setShowPopup(false);
@@ -101,7 +107,6 @@ const EmployeeComponent: React.FC = () => {
         if (employeeToDeleteId !== 0) {
             const employeeId = employeeToDeleteId;
             try {
-                // Assuming remove_employee is asynchronous and handles individual deletions
                 await remove_employee(employeeId);
                 // Update the employee list to reflect the deletion
                 setEmployeeList((prevEmployeeList) =>
@@ -118,7 +123,6 @@ const EmployeeComponent: React.FC = () => {
 
     // Function to Generate Employees' Information
     const generate_employee_info = async () => {
-        setIsLoading(true);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -207,7 +211,7 @@ const EmployeeComponent: React.FC = () => {
         });
     };
 
-    const handleSubmitNewEmployee = async (newEmployee: AddManager) => {
+    const handleSubmitNewEmployee = async (newEmployee: AddEmployee) => {
         try {
             await add_employee();
 
@@ -241,7 +245,6 @@ const EmployeeComponent: React.FC = () => {
         setShowInputFields(false);
     };
     
-
     const handleEdit = (employeeId: number) => {
         setEditingEmployeeId(employeeId);
         const employeeToEdit = employeeList.find((employee) => employee.employee_id === employeeId);
@@ -256,17 +259,17 @@ const EmployeeComponent: React.FC = () => {
           });
         }
     };
-    const handleSaveEdit = async (employeeId: number, editedData : EditManager) => {
+    const handleSaveEdit = async (employeeId: number, editedData : EditEmployee) => {
         try {
             await update_employee(employeeId);
             await generate_employee_info();
             setEditedData({
-            FirstName: '',
-            LastName: '',
-            Salary: '',
-            Hours: '',
-            ManagerID: '',
-            Password: '',
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                ManagerID: '',
+                Password: '',
             });
             setEditingEmployeeId(null);
         } catch (error) {
@@ -319,17 +322,17 @@ const EmployeeComponent: React.FC = () => {
                         <tbody>
                         {employeeList.filter((item) => { 
                             return query.toLowerCase() === '' ? item: item.last_name.toLowerCase().includes(query.toLowerCase())
-                        }).map((employee: ManagerData) => (
+                        }).map((employee: EmployeeData) => (
                         <tr key={employee.employee_id}>
                         <td>{employee.employee_id}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : employee.last_name}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required/> : employee.first_name}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : employee.salary}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : employee.hours_per_week}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.ManagerID} onChange={(e) => setEditedData({ ...editedData, ManagerID: e.target.value })} required/> : employee.manager_id}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required className='input-forms'/> : employee.last_name}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required className='input-forms'/> : employee.first_name}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required className='input-forms'/> : employee.salary}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required className='input-forms'/> : employee.hours_per_week}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.ManagerID} onChange={(e) => setEditedData({ ...editedData, ManagerID: e.target.value })} required className='input-forms'/> : employee.manager_id}</td>
                         <td>{employee.username}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Password} onChange={(e) => setEditedData({ ...editedData, Password: e.target.value })} required/> : '*'.repeat(employee.password.length + 2)}</td>
-                        <td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Password} onChange={(e) => setEditedData({ ...editedData, Password: e.target.value })} required className='input-forms'/> : '*'.repeat(employee.password.length + 2)}</td>
+                        <td style={{width: "10vw"}}>
                                 {editingEmployeeId === employee.employee_id ? (
                                     <span>
                                         <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(employee.employee_id)}/>
@@ -337,9 +340,11 @@ const EmployeeComponent: React.FC = () => {
                                     </span>
                                 ) : (
                                     <span>
+                                        {(adminProps.isAdmin === 'Yes') && 
                                         <BsFillTrashFill className="delete-btn"
                                             onClick={() => handleDeleteClick(employee.employee_id)}
                                         />
+                                        }
                                         <BsFillPencilFill className="edit-btn"
                                             onClick={() => handleEdit(employee.employee_id)}
                                         />
@@ -393,19 +398,20 @@ const EmployeeComponent: React.FC = () => {
                             </tr>
                             )}
                         </tbody>
-                        <div className="add-container">
-                            <span>
-                                <button className="add-row-btn" onClick={handleAddRow}>
-                                    <IoPersonAddSharp className="add-icon" />
-                                    Add Manager
-                                </button>
-                            </span>
-                        </div>
+                        {(adminProps.isAdmin === 'Yes') && 
+                            <div className="add-container">
+                                <span>
+                                    <button className="add-row-btn" onClick={handleAddRow}>
+                                        <IoPersonAddSharp className="add-icon" />
+                                        Add Employee
+                                    </button>
+                                </span>
+                            </div>
+}
                         
                     </table>
                     </div>
             )}
-            {/* <ManagerTableComponent/> */}
         </div>
     );
 };

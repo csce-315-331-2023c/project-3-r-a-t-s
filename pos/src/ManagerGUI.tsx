@@ -12,17 +12,30 @@ import OrderHistoryComponent from './ManagerComponents/OrderHistory';
 import EmployeeComponent from './ManagerComponents/Employee';
 import ManagerComponent from './ManagerComponents/ManagerTable';
 import MenuComponent from './ManagerComponents/Menu';
+import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer'; 
 import { CiLogout } from "react-icons/ci";
 
-
 const ManagerGUI: React.FC = () => {
+  const {ManagerEmail} = useManagerEmail();
+  const[isAdmin, setIsAdmin] = useState('');
+
+  useEffect(() => {
+    check_admin();
+    generateProductReport();
+    createProductReportTable();
+  }, []); 
+
+  useEffect(() => {
+    console.log('ManagerEmail in ManagerGUI:', ManagerEmail);
+  }, [ManagerEmail]);
 
   const navigate = useNavigate();
+
   const goback = () => {
     navigate(-1);
   }
 
-  const[selected_report, set_selected_report] = useState(-1);
+  const[selected_report, set_selected_report] = useState(1);
 
   const [query, setQuery] = useState('');
 
@@ -51,6 +64,27 @@ const ManagerGUI: React.FC = () => {
     date.setMonth(date.getMonth() - 1);
   }
   const date_month_ago = date.toISOString().slice(0, 10);
+  //Check if Email Belongs To Admin
+  const check_admin = async () => { 
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    //Send Post rquest to Flask API
+    await axios
+    .post('http://127.0.0.1:5000/api/manager/check_if_admin', {email : ManagerEmail}, config)
+    //.post('https://pos-backend-3c6o.onrender.com/api/manager/check_if_admin', requestData, config)
+    .then((response) => {
+        console.log("Message is :" , response.data.message); 
+        console.log("Status is :" , response.data.isAdmin); 
+        setIsAdmin(response.data.isAdmin);
+    })
+    .catch((error) => {
+        console.error('Error with Checking If User Is Admin:', error);
+    });
+  };
+
 
   // Manages start/end date in Reports Tab for any reports that require a date
   const [report_start_date, set_report_start_date] = useState(date_month_ago);
@@ -66,37 +100,6 @@ const ManagerGUI: React.FC = () => {
     set_report_end_date(e.target.value);
   }; 
 
-  useEffect(() => {
-    generateProductReport(report_start_date, report_end_date);
-    generateExcessReport();
-    generateRestockReport();
-    generateSellsTogetherReport();
-  }, [report_start_date, report_end_date]);
-
-  useEffect(() => {
-    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
-              <table className='table table-striped w-100'>
-                <thead>
-                  <tr>
-                    <th>Menu Item Name</th>
-                    <th> Quantity </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productReport.filter((item) => { 
-                    return query.toLowerCase() === '' ? item: item.menu_item_name.toLowerCase().includes(query.toLowerCase())
-                  })
-                  .map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.menu_item_name}</td>
-                      <td>{item.menu_items}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>]);
-  }, [])
-
 
   // Reports 
   interface ProductReportData {
@@ -104,7 +107,7 @@ const ManagerGUI: React.FC = () => {
     menu_items: number;
   }
   const [productReport, setProductReport] = useState<ProductReportData[]>([]);
-    const generateProductReport = async(report_start_date : string, report_end_date: string) => {
+    const generateProductReport = async() => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       // console.log("Invalid Dates selected");
       return;
@@ -127,7 +130,7 @@ const ManagerGUI: React.FC = () => {
           
           setProductReport(response.data.report);
           // console.log(productReport)
-          console.log('Successfully generated Product Report');
+          console.log('Successfully generated Product Report');   
         })
         .catch((error) => {
           console.error('Failed to generate Product Report: ', error);
@@ -136,6 +139,13 @@ const ManagerGUI: React.FC = () => {
   }
 
   const[table, setTable]= useState([<div></div>]);
+
+  useEffect(() => {
+    generateProductReport();
+    generateExcessReport();
+    generateRestockReport();
+    generateSellsTogetherReport();
+  }, [report_start_date, report_end_date, table]);
 
   interface PairData {
     str_pair: string;
@@ -235,33 +245,13 @@ const ManagerGUI: React.FC = () => {
 
   const createProductReportTable = async() => {
     set_selected_report(1);
-    generateProductReport(report_start_date, report_end_date);
-    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
-              <table className='table table-striped w-100'>
-                <thead>
-                  <tr>
-                    <th>Menu Item Name</th>
-                    <th> Quantity </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productReport.filter((item) => { 
-                    return query.toLowerCase() === '' ? item: item.menu_item_name.toLowerCase().includes(query.toLowerCase())
-                  })
-                  .map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.menu_item_name}</td>
-                      <td>{item.menu_items}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>]);
+    generateProductReport();
+    setTable([<div></div>]);
   }
 
   const createWhatSellsTogetherTable = async() => {
     set_selected_report(2);
-    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> <br />
+    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
       <table className='table table-striped w-100'>
           <thead>
           <tr>
@@ -286,8 +276,7 @@ const ManagerGUI: React.FC = () => {
 
   const createExcessTable =async () => {
     set_selected_report(3);
-    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
-              <br />
+    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
               <table className="table table-striped w-100">
                 <thead>
                   <tr>
@@ -314,7 +303,7 @@ const ManagerGUI: React.FC = () => {
 
   const createRestockTable = async() => {
     set_selected_report(4);
-    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> <br />
+    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
               {restockReport && restockReport.length > 0 ? (
                 <table className='table table-striped w-100'>
                   <thead>
@@ -376,12 +365,14 @@ const ManagerGUI: React.FC = () => {
           </Tab>
 
           <Tab eventKey={4} title="Employees"> 
-          <EmployeeComponent />
+          <EmployeeComponent adminProps={{ isAdmin, setIsAdmin }} />
           </Tab>
 
-          <Tab eventKey={5} title="Managers"> 
-            <ManagerComponent/>
-          </Tab>
+          {/* {(isAdmin === 'Yes') &&  */}
+            <Tab eventKey={5} title="Managers"> 
+              <ManagerComponent adminProps={{ isAdmin, setIsAdmin }}/>
+            </Tab>
+          {/* } */}
 
           <Tab eventKey={6} title="Reports"> 
             <br />
@@ -395,17 +386,38 @@ const ManagerGUI: React.FC = () => {
               <form> <input className='searchForm' type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
               placeholder=' Search by Menu Item...'/> </form>
             </div>
-            <br />
             </div>
             
             <div>
-            <button className="btn btn-secondary" onClick={createProductReportTable} style={{marginRight: "2vw"}}> Product Report </button> 
-            <button className="btn btn-secondary" onClick={createWhatSellsTogetherTable}  style={{marginRight: "2vw"}}> What Sells Together Report </button>
-            <button className="btn btn-secondary" onClick={createExcessTable} style={{marginRight: "2vw"}}> Excess Report </button>
-            <button className="btn btn-secondary" onClick={createRestockTable} style={{marginRight: "2vw"}}> Restock Report </button>
+            <button className="btn btn-secondary" onClick={createProductReportTable} style={{marginRight: "2vw"}} disabled={selected_report === 1}> Product Report </button> 
+            <button className="btn btn-secondary" onClick={createWhatSellsTogetherTable}  style={{marginRight: "2vw"}} disabled={selected_report === 2}> What Sells Together Report </button>
+            <button className="btn btn-secondary" onClick={createExcessTable} style={{marginRight: "2vw"}} disabled={selected_report === 3}> Excess Report </button>
+            <button className="btn btn-secondary" onClick={createRestockTable} style={{marginRight: "2vw"}} disabled={selected_report === 4}> Restock Report </button>
             </div><br />
             <div>
               {table}
+
+                {selected_report === 1 ? <div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
+                <table className='table table-striped w-100'>
+                  <thead>
+                    <tr>
+                      <th>Menu Item Name</th>
+                      <th> Quantity </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productReport.filter((item) => { 
+                      return query.toLowerCase() === '' ? item: item.menu_item_name.toLowerCase().includes(query.toLowerCase())
+                    })
+                    .map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.menu_item_name}</td>
+                        <td>{item.menu_items}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div> : <div></div>}
             </div>
           
           </Tab>

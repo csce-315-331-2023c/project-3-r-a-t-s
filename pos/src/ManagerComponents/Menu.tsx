@@ -245,8 +245,8 @@ const fetchInventory = async () => {
                     return query.toLowerCase() === '' ? item: item.name.toLowerCase().includes(query.toLowerCase())
                   }).map((item, index) => (
                   <tr key={index}>
-                    <td>{editingMenuID === item.menu_item_id ? <input type="text" value={editedData.name} onChange={(e) => setEditedData({ ...editedData, name: e.target.value })} required/> : item.name}</td>
-                    <td>{editingMenuID === item.menu_item_id ? <input type="text" value={editedData.price} onChange={(e) => setEditedData({ ...editedData, price: e.target.value })} required/> : item.price}</td>
+                    <td>{editingMenuID === item.menu_item_id ? <input type="text" value={editedData.name} onChange={(e) => setEditedData({ ...editedData, name: e.target.value })} required className='input-forms'/> : item.name}</td>
+                    <td>{editingMenuID === item.menu_item_id ? <input type="text" value={editedData.price} onChange={(e) => setEditedData({ ...editedData, price: e.target.value })} required className='input-forms'/> : item.price}</td>
                     <td style={{maxWidth: "45vw"}}>{item.ingredients.join(", ")}</td>
                     <td>
                             {editingMenuID === item.menu_item_id ? (

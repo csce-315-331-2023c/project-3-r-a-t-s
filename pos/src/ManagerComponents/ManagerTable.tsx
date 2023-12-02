@@ -7,13 +7,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
+import { Dispatch, SetStateAction} from 'react';
 
 interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
-  }
-  
+}
+
+interface AdminProps {
+    isAdmin: string;
+    setIsAdmin: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface ManagerProps {
+    adminProps: AdminProps;
+}
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
         <div className="EmployeeDeletePopup">
@@ -28,7 +37,8 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
-const ManagerTableComponent: React.FC = () => {
+const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
+    console.log("ManagerTable.tsx Admin Status", adminProps.isAdmin);
     const [query, setQuery] = useState(''); 
 
     useEffect(() => {
@@ -64,32 +74,10 @@ const ManagerTableComponent: React.FC = () => {
     }
 
     const [managerList, setManagerList] = useState<ManagerData[]>([]);
-    
-    const [availableManagerIds, setAvailableManagerIds] = useState([]);
     const [newManager, setNewManager] = useState<AddManager>({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
     const [showInputFields, setShowInputFields] = useState(false);
     const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
     const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
-
-    const generate_manager_info = async () => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        //Send Post rquest to Flask API
-        await axios 
-        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
-        .then((response) => {
-            setManagerList(response.data);
-            // console.log(response.data);
-            console.log("Successfully generated Manager Information");
-        })
-        .catch((error) => {
-            console.error('Error with Generating Manager Information:', error);
-        })
-    }
 
     const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddManager) => {
         const { value } = e.target;
@@ -98,13 +86,11 @@ const ManagerTableComponent: React.FC = () => {
 
     const [ManagerToDeleteId, setManagerToDeleteId] = useState<number>(0);
     const [showPopup, setShowPopup] = useState(false);
-
     
-    const handleDeleteClick = (id: number) => {
-        setManagerToDeleteId(id);
+    const handleDeleteClick = (managerId: number) => {
+        setManagerToDeleteId(managerId);
         setShowPopup(true);
     };
-
 
     const handleCancelDelete = () => {
         setManagerToDeleteId(0);
@@ -112,7 +98,7 @@ const ManagerTableComponent: React.FC = () => {
     };
 
     const handleDeleteManager = async () => {
-        if (ManagerToDeleteId != 0) {
+        if (ManagerToDeleteId !== 0) {
             const managerID = ManagerToDeleteId;
             try {
                 await remove_manager(managerID);
@@ -126,6 +112,25 @@ const ManagerTableComponent: React.FC = () => {
             setManagerToDeleteId(0);
             setShowPopup(false);
         }
+    };
+
+    const generate_manager_info = async () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        //Send Post rquest to Flask API
+        await axios 
+        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
+        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
+        .then((response) => {
+            setManagerList(response.data);
+            console.log("Successfully generated Manager Information");
+        })
+        .catch((error) => {
+            console.error('Error with Generating Manager Information:', error);
+        })
     };
 
     //Function To Add Manager
@@ -181,7 +186,9 @@ const ManagerTableComponent: React.FC = () => {
         .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
         //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
-            console.log(response.data.message); 
+            console.log("Updated Manager Successfully"); 
+            console.log("ManagerAdmin Status:", response.data.isAdmin);
+            adminProps.setIsAdmin(response.data.isAdmin);
         })
         .catch((error) => {
             console.error('Error with Updating Manager Information:', error);
@@ -192,21 +199,19 @@ const ManagerTableComponent: React.FC = () => {
         try {
             await add_manager();
 
-            if (availableManagerIds.length == 0) {
-                await generate_manager_info();
-                console.log("Submit List", managerList);
+            await generate_manager_info();
+            console.log("Submit List", managerList);
 
-                setNewManager({
-                    FirstName: '',
-                    LastName: '',
-                    Salary: '',
-                    Hours: '',
-                    Email: '',
-                    Admin: '',
-                });
+            setNewManager({
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                Email: '',
+                Admin: '',
+            });
 
-                setShowInputFields(false);
-            }
+            setShowInputFields(false);
         } catch (error) {
             console.error('Error with Adding Manager:', error);
         }
@@ -221,7 +226,6 @@ const ManagerTableComponent: React.FC = () => {
         setShowInputFields(false);
     };
     
-
     const handleEdit = (managerID: number) => {
         setEditingManagerId(managerID);
         const managerToEdit = managerList.find((manager) => manager.manager_id === managerID);
@@ -240,9 +244,7 @@ const ManagerTableComponent: React.FC = () => {
 
         try {
             await update_manager(managerID);
-     
             await generate_manager_info();
-            
             setEditedData({
                 FirstName: '',
                 LastName: '',
@@ -257,7 +259,23 @@ const ManagerTableComponent: React.FC = () => {
         }
     };
 
-
+    const handleCancelEdit = async (managerId: number) => {
+        try {
+            await generate_manager_info();
+        
+            setEditedData({
+                FirstName: '',
+                LastName: '',
+                Salary: '',
+                Hours: '',
+                Email: '',
+                Admin: '',
+            });
+            setEditingManagerId(null);
+        } catch (error) {
+            console.error('Error with Canceling Edit Manager:', error);
+        }
+    };
 
     return (
         <div>
@@ -290,25 +308,37 @@ const ManagerTableComponent: React.FC = () => {
                         }).map((manager: ManagerData) => (
                         <tr key={manager.manager_id}>
                         <td>{manager.manager_id}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : manager.last_name}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required/> : manager.first_name}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : manager.salary}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : manager.hours_per_week}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required/> : manager.email}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required/> : manager.admin}</td>
-                        <td style={{width: "10vw"}}>
-                            <span>
-                                <BsFillTrashFill className="delete-btn"
-                                    onClick={() => handleDeleteClick(manager.manager_id)}
-                                />
-                                <BsFillPencilFill className="edit-btn"
-                                    onClick={() => handleEdit(manager.manager_id)}
-                                />
-                                {editingManagerId === manager.manager_id && (
-                                    <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData)} />
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required className='input-forms'/> : manager.last_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required className='input-forms'/> : manager.first_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required className='input-forms'/> : manager.salary}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required className='input-forms'/> : manager.hours_per_week}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required className='input-forms'/> : manager.email}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required className='input-forms'/> : manager.admin}</td>
+                        {(adminProps.isAdmin === 'Yes') && 
+                            <td>
+                                {editingManagerId === manager.manager_id ? (
+                                    <span>
+                                        <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(manager.manager_id)}/>
+                                        <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData)} />
+                                    </span>
+                                ) : (
+                                    <span>
+                                        <BsFillTrashFill className="delete-btn"
+                                            onClick={() => handleDeleteClick(manager.manager_id)}
+                                        />
+                                        <BsFillPencilFill className="edit-btn"
+                                            onClick={() => handleEdit(manager.manager_id)}
+                                        />
+                                    </span>
                                 )}
-                            </span>
-                        </td>
+                            </td>
+                        }
+                        {(adminProps.isAdmin === 'No') && 
+                            <td>
+                            Disabled
+                            </td>
+                        }
+                        
                         </tr>
                         ))}
                        {showPopup && (
@@ -350,22 +380,22 @@ const ManagerTableComponent: React.FC = () => {
                             </tr>
                             )}
                         </tbody>
-                        <div className="add-container">
-                            <span>
-                                <button className="add-row-btn" onClick={handleAddRow}>
-                                    <IoPersonAddSharp className="add-icon" />
-                                    Add Manager
-                                </button>
-                            </span>
-                        </div>
-                        
+                        {(adminProps.isAdmin === 'Yes') && 
+                            <div className="add-container">
+                                <span>
+                                    <button className="add-row-btn" onClick={handleAddRow}>
+                                        <IoPersonAddSharp className="add-icon" />
+                                        Add Manager
+                                    </button>
+                                </span>
+                            </div>
+                        }
                     </table>
                     </div>
             )}
             </div>
         </div>
-        </div>
-
+    </div>
     );
 };
 export default ManagerTableComponent;

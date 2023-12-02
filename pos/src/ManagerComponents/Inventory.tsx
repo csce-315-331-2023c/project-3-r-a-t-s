@@ -459,6 +459,7 @@ const handleCancelDelete = () => {
                         })
                       }
                       required
+                      className='input-forms'
                     />
                   ) : (
                     item.name
@@ -476,6 +477,7 @@ const handleCancelDelete = () => {
                         })
                       }
                       required
+                      className='input-forms'
                     />
                   ) : (
                     item.quantity
@@ -493,6 +495,7 @@ const handleCancelDelete = () => {
                         })
                       }
                       required
+                      className='input-forms'
                     />
                   ) : (
                     item.price
@@ -510,6 +513,7 @@ const handleCancelDelete = () => {
                         })
                       }
                       required
+                      className='input-forms'
                     />
                   ) : (
                     item.unit

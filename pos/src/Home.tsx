@@ -9,7 +9,7 @@ import { MdShelves, MdDeliveryDining, MdTableRestaurant } from "react-icons/md";
 import { IoRestaurant } from "react-icons/io5";
 
 import CashierLoginPopup from './HomeComponents/CashierLogin';
-// import axios, {AxiosError} from 'axios';
+import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer';
 
 import './App.css';
 import WeatherComponent from './Components/Weather';
@@ -31,7 +31,7 @@ const Home : React.FC = () => {
     const navigate = useNavigate();
     const [showCashierLogin, setCashierLogin] = useState(false);
     const googleLoginWindowRef = useRef<Window | null>(null);
-    const [ManagerEmail, setManagerEmail] = useState('');
+    const {setManagerEmail} = useManagerEmail();
 
     const handleLoginSuccessCashier = () => {
         navigate('CashierGUI');
@@ -46,7 +46,7 @@ const Home : React.FC = () => {
                 // GitHub authentication successful, redirect to Manager GUI
                 console.log('Google authentication success. Navigating to ManagerGUI...');
                 setManagerEmail(event.data.email);
-                console.log('User Email Logged In : ', ManagerEmail);
+                console.log("Email Logged In:", event.data.email);
                 navigate('ManagerGUI');
             }
         } catch (error) {
