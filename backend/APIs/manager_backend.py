@@ -22,7 +22,7 @@ def get_order_history():
     end_datetime = f"{end_date} 23:59:59"
 
     # Use start_date and end_date to query the database
-    order_history_query = f"SELECT * FROM ORDERS WHERE date BETWEEN '{start_datetime}' AND '{end_datetime}';"
+    order_history_query = f"SELECT * FROM ORDERS WHERE date BETWEEN '{start_datetime}' AND '{end_datetime}' ORDER BY date DESC;"
 
     # Execute the query and fetch the data
     try:
@@ -548,6 +548,24 @@ def update_manager():
         print(e)
         return jsonify({'error': 'Failed to Update Manager'}), 500
 
+@manager_BP.route('/get_ingredients', methods=['POST'])
+def get_ingredients():
+
+    manager_info_query = f"SELECT name FROM inventory ORDER BY name;"
+    # Execute the query and fetch the data
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(manager_info_query)
+
+        # Fetch all rows and create a list of dicstionaries
+        data = cursor.fetchall()
+    
+        conn.close()
+        return jsonify(data)
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to fetch Ingredients list'}), 500
 @manager_BP.route('/check_if_admin', methods=['POST'])
 def check_if_admin():
     request_data = request.get_json()

@@ -2,6 +2,7 @@
     background-color: whitesmoke;
     text-align: left;
     vertical-align: middle;
+    text-align: center;
 }
 
 .ManagerContainer {
@@ -30,12 +31,27 @@
 }
 
 .Search-Container{
-    display: flex;
     align-items: center;
-    margin-top: 10px;
-    font-size : 16px;
+    margin: 10px;
 }
 
 .searchForm {
-    margin-left: 5px;
+    width: 40vw;
+    height: 5vh;
+    border: 3px solid black;
+    border-radius: 10px;
+    display: block;
+    margin: 0vh auto 0vh auto;
+    font-size: 2vh;
+}
+
+.input-forms {
+    width: 10vw;
+    height: 4vh;
+    padding: 0px 0.5vw 0px 0.5vw;
+    border: 2px solid black;
+    border-radius: 25px;
+    font-size: 2vh;
+    text-align: center;
+    margin-right: 0.5vw ;
 }

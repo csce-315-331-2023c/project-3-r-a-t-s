@@ -51,9 +51,10 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
     };
 
     return (
+        <div style={{height: "100vh", width: "100vw", position: "absolute", backgroundColor: "rgba(0, 0, 0, .9)", zIndex: 1000}}>
             <div className="CashierLoginPopup">
                 <div className="CashierPopupClose"><IoMdCloseCircleOutline onClick={onClose}/></div>
-                <h4>Cashier Login</h4>
+                <h4><b><u>Cashier Login</u></b></h4>
                     {LoginState === 'Successful' && (
                         <div className="WelcomeMessage">Welcome, {CashierName}!</div>
                     )}
@@ -73,9 +74,9 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
                         <div className="CashierLogin-btn">
                             <button onClick={handleLogin}>Login</button>
                     </div>    
-
                 </div>
             </div>
+        </div>
     );
 };
 

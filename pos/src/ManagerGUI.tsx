@@ -21,6 +21,8 @@ const ManagerGUI: React.FC = () => {
 
   useEffect(() => {
     check_admin();
+    generateProductReport();
+    createProductReportTable();
   }, []); 
 
   useEffect(() => {
@@ -33,8 +35,7 @@ const ManagerGUI: React.FC = () => {
     navigate(-1);
   }
 
-  const[table, setTable]= useState([ <div><br/><p>Select a Start and End date to generate the Reports!!!</p></div>]);
-  const[selected_report, set_selected_report] = useState(-1);
+  const[selected_report, set_selected_report] = useState(1);
 
   const [query, setQuery] = useState('');
 
@@ -53,6 +54,16 @@ const ManagerGUI: React.FC = () => {
     }
   }, [query])
 
+  const date = new Date();
+  const date_today = date.toISOString().slice(0, 10);
+  if (date.getMonth() === 1) {
+    date.setFullYear(date.getFullYear() - 1);
+    date.setMonth(12);
+  }
+  else {
+    date.setMonth(date.getMonth() - 1);
+  }
+  const date_month_ago = date.toISOString().slice(0, 10);
   //Check if Email Belongs To Admin
   const check_admin = async () => { 
     const config = {
@@ -76,8 +87,8 @@ const ManagerGUI: React.FC = () => {
 
 
   // Manages start/end date in Reports Tab for any reports that require a date
-  const [report_start_date, set_report_start_date] = useState('');
-  const [report_end_date, set_report_end_date] = useState('');
+  const [report_start_date, set_report_start_date] = useState(date_month_ago);
+  const [report_end_date, set_report_end_date] = useState(date_today);  
 
   const report_ref1 = useRef(null);
   const report_ref2 = useRef(null);
@@ -89,13 +100,6 @@ const ManagerGUI: React.FC = () => {
     set_report_end_date(e.target.value);
   }; 
 
-  useEffect(() => {
-    generateProductReport();
-    generateExcessReport();
-    generateRestockReport();
-    generateSellsTogetherReport();
-  }, [report_start_date, report_end_date]);
-   
 
   // Reports 
   interface ProductReportData {
@@ -103,7 +107,7 @@ const ManagerGUI: React.FC = () => {
     menu_items: number;
   }
   const [productReport, setProductReport] = useState<ProductReportData[]>([]);
-  const generateProductReport = async() => {
+    const generateProductReport = async() => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       // console.log("Invalid Dates selected");
       return;
@@ -126,7 +130,7 @@ const ManagerGUI: React.FC = () => {
           
           setProductReport(response.data.report);
           // console.log(productReport)
-          console.log('Successfully generated Product Report');
+          console.log('Successfully generated Product Report');   
         })
         .catch((error) => {
           console.error('Failed to generate Product Report: ', error);
@@ -134,6 +138,14 @@ const ManagerGUI: React.FC = () => {
     };    
   }
 
+  const[table, setTable]= useState([<div></div>]);
+
+  useEffect(() => {
+    generateProductReport();
+    generateExcessReport();
+    generateRestockReport();
+    generateSellsTogetherReport();
+  }, [report_start_date, report_end_date, table]);
 
   interface PairData {
     str_pair: string;
@@ -231,34 +243,15 @@ const ManagerGUI: React.FC = () => {
     }
   };
 
-  const createProductReportTable = () => {
+  const createProductReportTable = async() => {
     set_selected_report(1);
-    setTable([<div style={{overflow: 'scroll', height: 750}}> <br />
-              <table className='table table-striped w-100'>
-                <thead>
-                  <tr>
-                    <th>Menu Item Name</th>
-                    <th> Quantity </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productReport.filter((item) => { 
-                    return query.toLowerCase() === '' ? item: item.menu_item_name.toLowerCase().includes(query.toLowerCase())
-                  })
-                  .map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.menu_item_name}</td>
-                      <td>{item.menu_items}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>]);
+    generateProductReport();
+    setTable([<div></div>]);
   }
 
-  const createWhatSellsTogetherTable = () => {
+  const createWhatSellsTogetherTable = async() => {
     set_selected_report(2);
-    setTable([<div> <br />
+    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
       <table className='table table-striped w-100'>
           <thead>
           <tr>
@@ -281,10 +274,9 @@ const ManagerGUI: React.FC = () => {
     </div>]);
   }
 
-  const createExcessTable = () => {
+  const createExcessTable =async () => {
     set_selected_report(3);
-    setTable([<div style={{overflow: 'scroll', height: 750}}>
-              <br />
+    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
               <table className="table table-striped w-100">
                 <thead>
                   <tr>
@@ -309,9 +301,9 @@ const ManagerGUI: React.FC = () => {
             </div>]);
   }
 
-  const createRestockTable = () => {
+  const createRestockTable = async() => {
     set_selected_report(4);
-    setTable([<div style={{overflow: 'scroll', height: 750}}> <br />
+    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
               {restockReport && restockReport.length > 0 ? (
                 <table className='table table-striped w-100'>
                   <thead>
@@ -384,26 +376,48 @@ const ManagerGUI: React.FC = () => {
 
           <Tab eventKey={6} title="Reports"> 
             <br />
+            <div>
             <p>
-            Start Date: <input type="date" onChange={change_report_start_date} ref={report_ref1}/> &nbsp;
-            End Date: <input type="date" onChange={change_report_end_date} ref={report_ref2}/>
+            <b>Start Date:</b> <input type="date" onChange={change_report_start_date} ref={report_ref1} value={report_start_date}/> &nbsp;
+            <b>End Date:</b> <input type="date" onChange={change_report_end_date} ref={report_ref2} value={report_end_date}/>
             </p>
 
             <div className='Search-Container'>
-              Search: <form> <input className='searchForm'style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-              placeholder='Name...'/> </form>
+              <form> <input className='searchForm' type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+              placeholder=' Search by Menu Item...'/> </form>
             </div>
-            <br />
+            </div>
             
             <div>
-            <button className="btn btn-secondary" onClick={createProductReportTable}> Product Report </button>
-            <button className="btn btn-secondary" onClick={createWhatSellsTogetherTable}> What Sells Together Report </button>
-            <button className="btn btn-secondary" onClick={createExcessTable}> Excess Report </button>
-            <button className="btn btn-secondary" onClick={createRestockTable}> Restock Report </button>
-            </div>
-            
+            <button className="btn btn-secondary" onClick={createProductReportTable} style={{marginRight: "2vw"}} disabled={selected_report === 1}> Product Report </button> 
+            <button className="btn btn-secondary" onClick={createWhatSellsTogetherTable}  style={{marginRight: "2vw"}} disabled={selected_report === 2}> What Sells Together Report </button>
+            <button className="btn btn-secondary" onClick={createExcessTable} style={{marginRight: "2vw"}} disabled={selected_report === 3}> Excess Report </button>
+            <button className="btn btn-secondary" onClick={createRestockTable} style={{marginRight: "2vw"}} disabled={selected_report === 4}> Restock Report </button>
+            </div><br />
             <div>
               {table}
+
+                {selected_report === 1 ? <div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
+                <table className='table table-striped w-100'>
+                  <thead>
+                    <tr>
+                      <th>Menu Item Name</th>
+                      <th> Quantity </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productReport.filter((item) => { 
+                      return query.toLowerCase() === '' ? item: item.menu_item_name.toLowerCase().includes(query.toLowerCase())
+                    })
+                    .map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.menu_item_name}</td>
+                        <td>{item.menu_items}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div> : <div></div>}
             </div>
           
           </Tab>

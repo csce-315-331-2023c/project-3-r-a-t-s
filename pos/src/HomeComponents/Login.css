@@ -6,12 +6,12 @@
 
 .CashierLoginPopup {
     position : absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 300px;
     padding: 20px 30px;
-    background: rgb(183, 183, 185);
+    background: rgb(211, 211, 211);
     box-shadow: 2px 2px 5px 5px rgba(0,0,0,0.15);
     border-radius: 10px;
     z-index: 1000; 
@@ -20,7 +20,9 @@
 .CashierLoginPopup h4 {
     text-align: center;
     color: black;
-    font-size: 25px;
+    font-size: 3vh;
+    /* width: 100vw; */
+    /* height: 100vh; */
 }
 
 
@@ -29,7 +31,8 @@
     margin: 5px 0;
     text-align: left;
     color : black;
-    font-size: 30px;
+    font-size: 2vh;
+    font-weight: bold;
 }
 
 .CashierForm .CashierLogin {

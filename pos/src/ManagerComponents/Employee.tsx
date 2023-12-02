@@ -298,10 +298,10 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
     return (
         <div> 
             <div className='Search-Container'>
-                    Search: <form> <input className="searchForm" style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-                                placeholder='Employee Last Name...'/> 
-                            </form>
-            </div>
+                <form> <input className="searchForm"  type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+                    placeholder='Search by Employee Last Name...'/> 
+                </form>
+            </div> <br />
 
             {!!employeeList.length && (
                     <div className="order-table-section">
@@ -325,14 +325,14 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                         }).map((employee: EmployeeData) => (
                         <tr key={employee.employee_id}>
                         <td>{employee.employee_id}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : employee.last_name}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required/> : employee.first_name}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : employee.salary}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : employee.hours_per_week}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.ManagerID} onChange={(e) => setEditedData({ ...editedData, ManagerID: e.target.value })} required/> : employee.manager_id}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required className='input-forms'/> : employee.last_name}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required className='input-forms'/> : employee.first_name}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required className='input-forms'/> : employee.salary}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required className='input-forms'/> : employee.hours_per_week}</td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.ManagerID} onChange={(e) => setEditedData({ ...editedData, ManagerID: e.target.value })} required className='input-forms'/> : employee.manager_id}</td>
                         <td>{employee.username}</td>
-                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Password} onChange={(e) => setEditedData({ ...editedData, Password: e.target.value })} required/> : '*'.repeat(employee.password.length + 2)}</td>
-                        <td>
+                        <td>{editingEmployeeId === employee.employee_id ? <input type="text" value={editedData.Password} onChange={(e) => setEditedData({ ...editedData, Password: e.target.value })} required className='input-forms'/> : '*'.repeat(employee.password.length + 2)}</td>
+                        <td style={{width: "10vw"}}>
                                 {editingEmployeeId === employee.employee_id ? (
                                     <span>
                                         <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(employee.employee_id)}/>
@@ -365,20 +365,20 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                                 <td>{employeeList.length > 0 ? employeeList[employeeList.length - 1].employee_id + 1 : 1}</td>
                                 <td>
                                     <input
-                                        type="text" name="LastName" value={newEmployee.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required />
+                                        type="text" name="LastName" value={newEmployee.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="FirstName" value={newEmployee.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required />
+                                    <input type="text" name="FirstName" value={newEmployee.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="Salary" value={newEmployee.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required />
+                                    <input type="text" name="Salary" value={newEmployee.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="Hours" value={newEmployee.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required />
+                                    <input type="text" name="Hours" value={newEmployee.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required className='input-forms'/>
                                 </td>
                                 <td>
                                     <div className='MangerID-Container'>
-                                        <input type="text" name="ManagerID" value={newEmployee.ManagerID} placeholder="Manager ID" onChange={(e) => handleAddInputChange(e, 'ManagerID')} required />
+                                        <input type="text" name="ManagerID" value={newEmployee.ManagerID} placeholder="Manager ID" onChange={(e) => handleAddInputChange(e, 'ManagerID')} required className='input-forms'/>
                                         {errorManagerID && <span className='Error-MangerID'>{errorManagerID}</span>}
                                     </div>
                                 </td>
@@ -386,7 +386,7 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                                     {/* <input type="text" name="UserName" value={newEmployee.Username} placeholder="UserName (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Username')} required /> */}
                                 </td>
                                 <td>
-                                    <input type="text" name="text" value={newEmployee.Password} placeholder="Password (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Password')} required />
+                                    <input type="text" name="text" value={newEmployee.Password} placeholder="Password (4 Digit)" onChange={(e) => handleAddInputChange(e, 'Password')} required className='input-forms'/>
                                 </td>
                                 
                                 <td>

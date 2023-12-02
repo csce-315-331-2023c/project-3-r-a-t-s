@@ -281,11 +281,12 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         <div>
             <div> 
             <div className='Search-Container'>
-                    Search: <form> <input className="searchForm" style={{width: "370px"}} type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-                                placeholder='Manager Last Name...'/> 
-                            </form>
-            </div>
+                <form> <input className="searchForm"  type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
+                    placeholder='Search by Manager Last Name...'/> 
+                </form>
+            </div><br />
 
+            <div style={{height: "fit-content"}}>
             {!!managerList.length && (
                     <div className="order-table-section">
                     <table className='table table-striped w-100'>
@@ -307,12 +308,12 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                         }).map((manager: ManagerData) => (
                         <tr key={manager.manager_id}>
                         <td>{manager.manager_id}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required/> : manager.last_name}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required/> : manager.first_name}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required/> : manager.salary}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required/> : manager.hours_per_week}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required/> : manager.email}</td>
-                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required/> : manager.admin}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.LastName} onChange={(e) => setEditedData({ ...editedData, LastName: e.target.value })} required className='input-forms'/> : manager.last_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.FirstName} onChange={(e) => setEditedData({ ...editedData, FirstName: e.target.value })} required className='input-forms'/> : manager.first_name}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Salary} onChange={(e) => setEditedData({ ...editedData, Salary: e.target.value })} required className='input-forms'/> : manager.salary}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required className='input-forms'/> : manager.hours_per_week}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required className='input-forms'/> : manager.email}</td>
+                        <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required className='input-forms'/> : manager.admin}</td>
                         {(adminProps.isAdmin === 'Yes') && 
                             <td>
                                 {editingManagerId === manager.manager_id ? (
@@ -352,22 +353,22 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                                 <td>{managerList.length > 0 ? managerList[managerList.length - 1].manager_id + 1 : 1}</td>
                                 <td>
                                     <input
-                                        type="text" name="LastName" value={newManager.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required />
+                                        type="text" name="LastName" value={newManager.LastName} placeholder="Last Name" onChange={(e) => handleAddInputChange(e, 'LastName')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="FirstName" value={newManager.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required />
+                                    <input type="text" name="FirstName" value={newManager.FirstName} placeholder="First Name" onChange={(e) => handleAddInputChange(e, 'FirstName')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="Salary" value={newManager.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required />
+                                    <input type="text" name="Salary" value={newManager.Salary} placeholder="Salary" onChange={(e) => handleAddInputChange(e, 'Salary')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="Hours" value={newManager.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required />
+                                    <input type="text" name="Hours" value={newManager.Hours} placeholder="Hours Per Week" onChange={(e) => handleAddInputChange(e, 'Hours')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="text" value={newManager.Email} placeholder="Email" onChange={(e) => handleAddInputChange(e, 'Email')} required />
+                                    <input type="text" name="text" value={newManager.Email} placeholder="Email" onChange={(e) => handleAddInputChange(e, 'Email')} required className='input-forms'/>
                                 </td>
                                 <td>
-                                    <input type="text" name="text" value={newManager.Admin} placeholder="Admin" onChange={(e) => handleAddInputChange(e, 'Admin')} required />
+                                    <input type="text" name="text" value={newManager.Admin} placeholder="Admin" onChange={(e) => handleAddInputChange(e, 'Admin')} required className='input-forms'/>
                                 </td>
                                 
                                 <td>
@@ -394,7 +395,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
             )}
             </div>
         </div>
-
+    </div>
     );
 };
 export default ManagerTableComponent;
