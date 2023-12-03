@@ -5,8 +5,6 @@ import { FiSave } from "react-icons/fi";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 
 import Select, { MultiValue } from 'react-select'
-import { Col, Form } from "react-bootstrap";
-import { MultiSelect } from 'primereact/multiselect';
 
 interface MenuItem {
   menu_item_id: number;
