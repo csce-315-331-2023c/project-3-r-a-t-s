@@ -349,9 +349,9 @@ const ManagerGUI: React.FC = () => {
             </button>
             <b style={{color: "white"}}><u>Manager Dashboard</u></b>
       </h4>      
-      <div>
+      {/* <div>
         <GoogleTranslate />
-      </div>
+      </div> */}
       <div className="ManagerContainer">
         <Tabs defaultActiveKey={1} className="ManagerTabs"> 
           <Tab eventKey={1} className="nav-link" title="Inventory"> 
