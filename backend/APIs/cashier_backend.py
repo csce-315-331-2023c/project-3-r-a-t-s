@@ -47,7 +47,6 @@ def place_order():
                 item_list = item.split(', ')
                 menu_item_name = item_list[0]
                 ingredients = item_list[1:]
-                print("Ingredients List", ingredients)
             else:
                 menu_item_name = item
 
@@ -66,11 +65,18 @@ def place_order():
 
                 #If Menu Item Is Customizable, insert into selected_ingredients
                 if is_customizable == True:
+                    if "Penne" in menu_item_name:
+                        ingredients.append("Penne")
+                    if "Spaghetti" in menu_item_name:
+                        ingredients.append("Spaghetti")
+                    if "Meatballs" in menu_item_name:
+                        ingredients.append("Meatballs")
+
                     for ingredient_name in ingredients:
                         get_ingredient_id_query = "SELECT ingredient_id FROM INVENTORY where name = %s"
                         cursor.execute(get_ingredient_id_query, (ingredient_name,))
                         ingredient_id = cursor.fetchone()[0]
-                        print("Got Ingredient ID: ", ingredient_id)
+
                         insert_selections_query = "INSERT INTO SELECTED_INGREDIENTS(order_id, item_id, menu_item_id, ingredient_id) VALUES(%s, %s, %s, %s)"
                         cursor.execute(insert_selections_query, (order_id, item_id, menu_item_id, ingredient_id,))
 
@@ -110,7 +116,6 @@ def place_order():
                 error_message = f"No menu item found for: {menu_item_name}"
                 print(error_message)
 
-        print("Before Updating Orders")        
         # Update the total in the ORDERS table
         update_total_query = "UPDATE ORDERS SET order_total = %s WHERE order_id = %s"
         cursor.execute(update_total_query, (order_total, order_id,))
@@ -125,7 +130,6 @@ def place_order():
         response_data = {
             "order_total": order_total,
             "message": "Order placed successfully (From Backend)"}
-        print("Response Data", response_data)
         return jsonify(response_data)
 
     except Exception as e:

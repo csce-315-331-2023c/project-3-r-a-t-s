@@ -27,8 +27,6 @@ const CashierGUI = () => {
     const [order, setOrder] = useState<string[]>([]);
     const [prices, setPrices] = useState<number[]>([]);
 
-    const [kidsProtein, setKidsProtein] = useState<string>("");
-
     const makeorderitem = (temp : number, i : string) => {
         if (temp === 0) {
             console.log("Choosing current item: ", i);
@@ -197,6 +195,9 @@ const CashierGUI = () => {
     const [protein, setProtein] = useState(""); // stores selected protein, can only have one per custom order
     const [sauce, setSauce] = useState(""); // stores selected sauce, can only have one
     const [customName, setCustomName] = useState<string>(""); //store the custom menu item name (For backend)
+    const [kidsBYO, setKidsBYO] = useState("");
+    const [kidsProtein, setKidsProtein] = useState<string>("");
+    const [kidsType, setKidsType] = useState<string>("");
 
     useEffect(() => {
         if (byo === "Custom Pasta") {
@@ -223,16 +224,45 @@ const CashierGUI = () => {
         setCustomName("");
     }
 
+    useEffect(() => {    
+        if (kidsBYO === 'Kids Pasta') {
+            setCustomName(kidsBYO + " " + kidsType);
+            if (kidsType == 'Penne') {
+                setSelectedIngredients(['Penne']); 
+            } else {
+                setSelectedIngredients(['Spaghetti']); 
+            }
+        } else if (kidsBYO === 'Kids Meatballs'){
+            setCustomName(kidsBYO + " " + kidsType);
+        }
+    }, [kidsBYO, kidsType])
+
+    const addKidsBYOToOrder = () => {
+        if (kidsBYO === 'Kids Pasta') {
+            const newOrderItem = `${customName}, ${kidsProtein}`; //Dont Change (I cant add \n\tProtein: to database)
+            setOrder(prevOrder => [...prevOrder, newOrderItem]);
+        } else if (kidsBYO === 'Kids Meatballs') {
+            const newOrderItem = `${customName}`; 
+            setOrder(prevOrder => [...prevOrder, newOrderItem]);
+        }
+        updatePrice(customName);
+        console.log("Added new order item: ", customName);
+        setCustomName(""); //Clear the selected custom item name
+        setKidsProtein("");
+        setKidsType("");
+    }
+
     // Adds Completed Custom item to Order
-    const addBYOToOrder = () => {  
-        // const newOrderItem = `${customName},\n\tProtein: ${protein},\n\tSauce: ${sauce}\n\t,Ingredients: ${selectedIngredients.join(", ")}`;
-        const newOrderItem = `${customName}, ${protein}, ${sauce}, ${selectedIngredients.join(", ")}`; //Dont Change (I cant add \n\tProtein: to database)
+    const addBYOToOrder = () => {
+        const newOrderItem = `${customName}, ${protein}, ${sauce}, ${selectedIngredients.join(", ")}`;
         setOrder(prevOrder => [...prevOrder, newOrderItem]);
 
         updatePrice(customName);
         console.log("Added new order item: ", customName);
 
         setCustomName(""); //Clear the selected custom item name
+        setKidsProtein("");
+        setKidsType("");
         setSelectedIngredients([]); // Clear selected ingredients
         main_panel();   // exits to main BYO panel after adding BYO item to order
     }
@@ -795,25 +825,25 @@ const CashierGUI = () => {
                     <h2> Kids Menu </h2>
                     <Popup trigger=
                     {<button className='other-buttons' disabled={loading}> Kids Pasta  </button>}
-                    position="bottom center" >
+                    position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
                     <div className='basic-pop-up'>
                     <button className='basic-option-buttons' onClick={() => setKidsProtein("Grilled Chicken")} disabled={kidsProtein === 'Grilled Chicken' ? true : false}> Grilled Chicken </button>
                     <button className='basic-option-buttons' onClick={() => setKidsProtein("Crispy Chicken")} disabled={kidsProtein === 'Crispy Chicken' ? true : false}> Crispy Chicken </button>
                     <button className='basic-option-buttons'onClick={() => setKidsProtein("Steak")} disabled={kidsProtein === 'Steak' ? true : false}> Steak </button>
                     <br />
-                    <button className='basic-option-buttons' onClick={() => setType("Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
-                    <button className='basic-option-buttons' onClick={() => setType("Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
-                    <button className='add-to-order'> Add to Order </button>
+                    <button className='basic-option-buttons' onClick={() => setKidsType("Spaghetti")} disabled={kidsType === 'Spaghetti' ? true : false}> Spaghetti </button>
+                    <button className='basic-option-buttons' onClick={() => setKidsType("Penne")} disabled={kidsType === 'Penne' ? true : false}> Penne </button>
+                    <button onClick={() => addKidsBYOToOrder()} className='add-to-order'> Add to Order </button>
                     </div>
                     </Popup>
 
                     <Popup trigger=
                     {<button className='other-buttons' disabled={loading}> Kids Meatballs  </button>}
-                    position="bottom center" >
+                    position="bottom center" onOpen={() => setKidsBYO('Kids Meatballs')}>
                     <div className='basic-pop-up'>
-                    <button className='basic-option-buttons' onClick={() => setType("Spaghetti")} disabled={type === 'Spaghetti' ? true : false}> Spaghetti </button>
-                    <button className='basic-option-buttons' onClick={() => setType("Penne")} disabled={type === 'Penne' ? true : false}> Penne </button>
-                    <button className='add-to-order'> Add to Order </button>
+                    <button className='basic-option-buttons' onClick={() => setKidsType("Spaghetti")} disabled={kidsType === 'Spaghetti' ? true : false}> Spaghetti </button>
+                    <button className='basic-option-buttons' onClick={() => setKidsType("Penne")} disabled={kidsType === 'Penne' ? true : false}> Penne </button>
+                    <button onClick={() => addKidsBYOToOrder()} className='add-to-order'> Add to Order </button>
                     </div>
                     </Popup>
                     
