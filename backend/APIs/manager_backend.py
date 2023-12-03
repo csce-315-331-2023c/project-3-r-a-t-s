@@ -334,29 +334,52 @@ def get_menu_items():
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        
-        # This query assumes that there's a table called MENU_ITEM_INGREDIENTS which links menu items to ingredients
-        cursor.execute('''
-            SELECT 
-                mi.menu_item_id, 
-                mi.menu_item_name, 
-                mi.price, 
-                array_agg(i.name) AS ingredients
-            FROM 
-                menu_items mi
-            JOIN 
-                menu_item_ingredients mii ON mi.menu_item_id = mii.menu_item_id
-            JOIN 
-                inventory i ON mii.ingredient_id = i.ingredient_id
-            GROUP BY 
-                mi.menu_item_id
-        ''')
+
+        cursor.execute('''SELECT menu_item_id, menu_item_name, price FROM menu_items ORDER BY menu_item_name;''')
         menu_items = cursor.fetchall()
 
         items = [
-            {"menu_item_id": item[0], "name": item[1], "price": item[2], "ingredients": item[3]}
+            {"menu_item_id": item[0], "name": item[1], "price": item[2], "ingredients": []}
             for item in menu_items
         ]
+
+        for i in items:
+            cursor.execute('''
+            SELECT 
+                i.name AS ingredient_name
+            FROM 
+                MENU_ITEMS mi
+            JOIN 
+                MENU_ITEM_INGREDIENTS mii ON mi.menu_item_id = mii.menu_item_id
+            JOIN 
+                INVENTORY i ON mii.ingredient_id = i.ingredient_id
+            WHERE 
+                mi.menu_item_name = %s;
+            ''', (i.get('name'),))
+            ingredients = cursor.fetchall()
+            i.update({'ingredients': ingredients})
+        
+        # cursor.execute('''
+        #     SELECT 
+        #         mi.menu_item_id, 
+        #         mi.menu_item_name, 
+        #         mi.price, 
+        #         array_agg(i.name) AS ingredients
+        #     FROM 
+        #         menu_items mi
+        #     JOIN 
+        #         menu_item_ingredients mii ON mi.menu_item_id = mii.menu_item_id
+        #     JOIN 
+        #         inventory i ON mii.ingredient_id = i.ingredient_id
+        #     GROUP BY 
+        #         mi.menu_item_id;
+        # ''')
+        # menu_items = cursor.fetchall()
+
+        # items = [
+        #     {"menu_item_id": item[0], "name": item[1], "price": item[2], "ingredients": item[3]}
+        #     for item in menu_items
+        # ]
 
         cursor.close()
         conn.close()
@@ -377,15 +400,31 @@ def add_menu_item():
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
         
-        cursor.execute('INSERT INTO menu_items (menu_item_name, price) VALUES (%s, %s)',
+        # Update menu_items
+        cursor.execute('INSERT INTO menu_items (menu_item_name, price, is_customizable) VALUES (%s, %s, FALSE);',
                        (data['name'], data['price']))
         conn.commit()  
-        
+
+        # get new menu_item id
+        cursor.execute('SELECT menu_item_id FROM menu_items WHERE menu_item_name=%s;',
+                       (data['name'],))
+        temp = cursor.fetchone()
+        id = int(temp[0])
+
+        # map new menu_item ingredients with menu_item 
+        for i in data['ingredients']:
+            # get ingredient id
+            cursor.execute('SELECT ingredient_id FROM inventory WHERE name=%s;', (i,))
+            temp = cursor.fetchone() 
+            id2 = int(temp[0])
+
+            # add to menu_item_ingredients
+            cursor.execute('INSERT INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (%s, %s);', (id, id2,))
+            conn.commit()  
+
         cursor.close()
         conn.close()
-        
         return jsonify({"message": "Menu item added"}), 200
-
     except Exception as e:
         cursor.close()
         conn.close()
@@ -395,17 +434,22 @@ def add_menu_item():
 def delete_menu_item():
     try:
         data = request.get_json()
-        item_name = data['name']
-        
+        id = data['id']
+
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM menu_items WHERE menu_item_name = %s', (item_name,))
+
+        # remove ingredients
+        cursor.execute('DELETE FROM MENU_ITEM_INGREDIENTS WHERE menu_item_id= %s;', (id,))
+        conn.commit()
+
+        cursor.execute('DELETE FROM menu_items WHERE menu_item_id = %s;', (id,))
         conn.commit()
 
         cursor.close()
         conn.close()
 
-        return jsonify({"message": f"Menu item {item_name} removed"}), 200
+        return jsonify({"message": f"Menu item {id} removed"}), 200
 
     except Exception as e:
         cursor.close()
@@ -418,11 +462,29 @@ def change_menu_item():
         data = request.get_json()
         item_name = data['name']
         new_price = data['price']
+        id = data['id']
+        ingredients = data['ingredients']
         
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
+
         cursor.execute('UPDATE menu_items SET price = %s WHERE menu_item_name = %s', (new_price, item_name,))
         conn.commit()
+
+        # remove ingredients
+        cursor.execute('DELETE FROM MENU_ITEM_INGREDIENTS WHERE menu_item_id= %s;', (id,))
+        conn.commit()
+
+        # # re-map menu_item ingredients with menu_item 
+        for i in ingredients:
+            # get ingredient id
+            cursor.execute('SELECT ingredient_id FROM inventory WHERE name=%s;', (i,))
+            temp = cursor.fetchone() 
+            id2 = int(temp[0])
+
+            # add to menu_item_ingredients
+            cursor.execute('INSERT INTO menu_item_ingredients (menu_item_id, ingredient_id) VALUES (%s, %s);', (id, id2,))
+            conn.commit()  
 
         cursor.close()
         conn.close()
@@ -560,9 +622,14 @@ def get_ingredients():
 
         # Fetch all rows and create a list of dicstionaries
         data = cursor.fetchall()
-    
+
+        items = [
+            {"value": item[0], "label": item[0]}
+            for item in data
+        ]
+
         conn.close()
-        return jsonify(data)
+        return jsonify(items)
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to fetch Ingredients list'}), 500

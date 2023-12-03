@@ -122,8 +122,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         };
         //Send Post rquest to Flask API
         await axios 
-        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
+        // .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
         .then((response) => {
             setManagerList(response.data);
             console.log("Successfully generated Manager Information");
@@ -142,8 +142,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
+        // .post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
         .then((response) => {
             console.log(response.data.message); 
         })
@@ -161,8 +161,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/remove_manager', managerID, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_manager`, managerID, config)
+        // .post('http://127.0.0.1:5000/api/manager/remove_manager', managerID, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_manager`, managerID, config)
         .then((response) => {
             console.log(response.data.message); 
         })
@@ -183,8 +183,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
+        // .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
             console.log("Updated Manager Successfully"); 
             console.log("ManagerAdmin Status:", response.data.isAdmin);
@@ -314,7 +314,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Hours} onChange={(e) => setEditedData({ ...editedData, Hours: e.target.value })} required className='input-forms'/> : manager.hours_per_week}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Email} onChange={(e) => setEditedData({ ...editedData, Email: e.target.value })} required className='input-forms'/> : manager.email}</td>
                         <td>{editingManagerId === manager.manager_id ? <input type="text" value={editedData.Admin} onChange={(e) => setEditedData({ ...editedData, Admin: e.target.value })} required className='input-forms'/> : manager.admin}</td>
-                        {(adminProps.isAdmin === 'Yes') && 
+                        {(adminProps.isAdmin === 'Yes') ? 
                             <td>
                                 {editingManagerId === manager.manager_id ? (
                                     <span>
@@ -332,6 +332,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                                     </span>
                                 )}
                             </td>
+                            :
+                            <td> ---</td>
                         }
                         {(adminProps.isAdmin === 'No') && 
                             <td>

@@ -99,8 +99,8 @@ const CashierGUI = () => {
         };
         // Send a POST request to the Flask API
         axios
-            .post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
-            //.post(`https://pos-backend-3c6o.onrender.com/api/cashier/place_order`, orderData, config)
+            // .post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
+            .post(`https://pos-backend-3c6o.onrender.com/api/cashier/place_order`, orderData, config)
             .then((response) => {
                 // Handle the response from the Flask API
                 if (response.data.message === "Order placed successfully (From Backend)") {
@@ -127,8 +127,8 @@ const CashierGUI = () => {
             },
         };
         axios
-          .post('http://127.0.0.1:5000/api/cashier/get_price', i, config)
-          //.post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, i, config)
+        //   .post('http://127.0.0.1:5000/api/cashier/get_price', i, config)
+          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_price`, i, config)
           .then((response) => {
             console.log("Update Price Response:", response.data);
             setPrices([...prices,parseFloat(response.data.price)]);
@@ -227,7 +227,7 @@ const CashierGUI = () => {
     useEffect(() => {    
         if (kidsBYO === 'Kids Pasta') {
             setCustomName(kidsBYO + " " + kidsType);
-            if (kidsType == 'Penne') {
+            if (kidsType === 'Penne') {
                 setSelectedIngredients(['Penne']); 
             } else {
                 setSelectedIngredients(['Spaghetti']); 

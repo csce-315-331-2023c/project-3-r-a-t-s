@@ -3,7 +3,10 @@ import axios from "axios";
 import { MdCancel } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
-import Select from 'react-select'
+
+import Select, { MultiValue } from 'react-select'
+import { Col, Form } from "react-bootstrap";
+import { MultiSelect } from 'primereact/multiselect';
 
 interface MenuItem {
   menu_item_id: number;
@@ -48,17 +51,14 @@ const MenuComponent = () => {
   // Variables for changing data for menu items
   const [addMenuItemName, setAddMenuItemName] = useState("");
   const [addMenuItemPrice, setAddMenuItemPrice] = useState("");
+  const [selectedIngredient, setSelectedIngredients] = useState<string[]>([]);
 
   const [deleteMenuItemID, setDeleteMenuItemID] = useState(0);
-
-  const [changeMenuItemName, setChangeMenuItemName] = useState("");
-  const [changeMenuItemPrice, setChangeMenuItemPrice] = useState("");
 
   const [showPopup, setShowPopup] = useState(false);
 
   const [editingMenuID, setEditingMenuID] = useState<number | null>(null); 
-  const [editedData, setEditedData] = useState({name: '', price: ''});
-
+  const [editedData, setEditedData] = useState({name: '', price: '', ingredients: ['']});
 
   const config = {
     headers: {
@@ -69,6 +69,7 @@ const MenuComponent = () => {
 
   const handleDeleteClick = (id : number) => {
     setDeleteMenuItemID(id);
+    fetchMenuItems();
     setShowPopup(true);
   }
 
@@ -85,11 +86,11 @@ const MenuComponent = () => {
   const fetchMenuItems = async () => {
     setIsLoading(true);
     try {
-      // const response = await axios.get(
-      //   "http://127.0.0.1:5000/api/manager/get_menu_items",
-      //   config
-      // );
-      const response = await axios.get("https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items", config);
+      const response = await axios.get(
+        "http://127.0.0.1:5000/api/manager/get_menu_items",
+        config
+      );
+      // const response = await axios.get("https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items", config);
       setMenuData(response.data);
       // console.log(response.data);
       console.log("Successfully fetched Menu Items");
@@ -106,7 +107,8 @@ const MenuComponent = () => {
     if (menuToEdit) {
       setEditedData({
         name: menuToEdit.name,
-        price: menuToEdit.price.toString()
+        price: menuToEdit.price.toString(),
+        ingredients: menuToEdit.ingredients
       })
     }
 };
@@ -120,9 +122,9 @@ const handleCancelEdit = async () => {
   }
 };
 
-  const handleSaveEdit = async (id: number, editedData: { name: string; price: string; }) => {
+  const handleSaveEdit = async (id: number, editedData: { name: string; price: string; ingredients: string[] }) => {
     try {
-        // await update_employee(employeeId);
+        await changeMenuItem();
         await fetchMenuItems();
         setEditingMenuID(null);
     } catch (error) {
@@ -130,34 +132,41 @@ const handleCancelEdit = async () => {
     }
 };
 
+const [ingredients, setIngredients] = useState([{value: '', label: '' }])
+
 const fetchInventory = async () => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5000/api/manager/get_ingredients",
-      // "https://pos-backend-3c6o.onrender.com/api/manager/get_ingredients",
+      // "http://127.0.0.1:5000/api/manager/get_ingredients",
+      "https://pos-backend-3c6o.onrender.com/api/manager/get_ingredients",
       config
     );
     // console.log(response.data);
     console.log("Fetched Ingredients list")
-    // setIngredients(response.data);
+    setIngredients(response.data);
+    // console.log(ingredients);
   } catch (error) {
-    console.error("Failed to add menu item:", error);
+    console.error("Failed to Fetch Ingredients list:", error);
   }
 };
 
   const addMenuItem = async () => {
     try {
       const response = await axios.post(
-        //"http://127.0.0.1:5000/api/manager/add_menu_item",
-        "https://pos-backend-3c6o.onrender.com/api/manager/add_menu_item",
+        "http://127.0.0.1:5000/api/manager/add_menu_item",
+        // "https://pos-backend-3c6o.onrender.com/api/manager/add_menu_item",
         {
           name: addMenuItemName,
           price: addMenuItemPrice,
+          ingredients: selectedIngredient
         },
         config
       );
       // console.log(response.data);
       // Optionally, fetch menu items again to update the list
+      setAddMenuItemName("")
+      setAddMenuItemPrice("")
+      setSelectedIngredients([])
       fetchMenuItems();
     } catch (error) {
       console.error("Failed to add menu item:", error);
@@ -167,7 +176,7 @@ const fetchInventory = async () => {
   const deleteMenuItem = async () => {
     try {
       const response = await axios.post(
-        //"http://127.0.0.1:5000/api/manager/delete_menu_item",
+        // "http://127.0.0.1:5000/api/manager/delete_menu_item",
         "https://pos-backend-3c6o.onrender.com/api/manager/delete_menu_item",
         {
           id: deleteMenuItemID,
@@ -186,11 +195,13 @@ const fetchInventory = async () => {
   const changeMenuItem = async () => {
     try {
       const response = await axios.post(
-        //"http://127.0.0.1:5000/api/manager/change_menu_item",
+        // "http://127.0.0.1:5000/api/manager/change_menu_item",
         "https://pos-backend-3c6o.onrender.com/api/manager/change_menu_item",
         {
-          name: changeMenuItemName,
-          price: changeMenuItemPrice,
+          id: editingMenuID,
+          name: editedData.name,
+          price: editedData.price,
+          ingredients: editedData.ingredients
         },
         config
       );
@@ -201,6 +212,10 @@ const fetchInventory = async () => {
       console.error("Failed to change menu item:", error);
     }
   };
+
+  const handleChange = async(e: any[] | MultiValue<{ value: string; label: string; }>) => {
+    setSelectedIngredients(e.map((x: { value: any; }) => x.value));
+  }
 
   return (
     <div>
@@ -214,6 +229,7 @@ const fetchInventory = async () => {
           type="text"
           placeholder="New Item Name"
           className="input-forms"
+          value={addMenuItemName}
           style={{width: "15vw"}}
           onChange={(e) => setAddMenuItemName(e.target.value)}
         />
@@ -221,14 +237,24 @@ const fetchInventory = async () => {
           type="price"
           placeholder="Price"
           className="input-forms"
+          value={addMenuItemPrice}
           onChange={(e) => setAddMenuItemPrice(e.target.value)}
         />
 
+        <div style={{width: "50vw", margin: "1vh auto 2vh auto"}}>
+        <Select
+            isMulti
+            isClearable
+            value={ingredients.filter(obj => selectedIngredient.includes(obj.value))}
+            options={ingredients}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+
         <button onClick={addMenuItem} className="btn btn-success" style={{marginTop: "-1vh"}}>Add New Menu Item</button>
 
-
       <br /><br />
-      <div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+      <div style={{overflow: "scroll", height: "50vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
         {menuData.length > 0 && (
           <div>
             <table className="table table-striped w-100">
@@ -247,7 +273,20 @@ const fetchInventory = async () => {
                   <tr key={index}>
                     <td>{editingMenuID === item.menu_item_id ? <input type="text" value={editedData.name} onChange={(e) => setEditedData({ ...editedData, name: e.target.value })} required className='input-forms'/> : item.name}</td>
                     <td>{editingMenuID === item.menu_item_id ? <input type="text" value={editedData.price} onChange={(e) => setEditedData({ ...editedData, price: e.target.value })} required className='input-forms'/> : item.price}</td>
-                    <td style={{maxWidth: "45vw"}}>{item.ingredients.join(", ")}</td>
+                    <td style={{maxWidth: "45vw"}}> 
+                      {editingMenuID === item.menu_item_id ? 
+                      <Select 
+                      isMulti
+                      isClearable
+                      value={editedData.ingredients.map(x => {
+                        return {value: x, label: x}
+                      }).filter(obj => editedData.ingredients.includes(obj.value))}
+                      options={ingredients}
+                      onChange={(e) => setEditedData({...editedData, ingredients: e.map((x: { value: any; }) => x.value)})}
+                      /> 
+                      
+                      : item.ingredients.join(", ")}
+                    </td>
                     <td>
                             {editingMenuID === item.menu_item_id ? (
                                 <span>

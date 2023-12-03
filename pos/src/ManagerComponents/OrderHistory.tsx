@@ -54,8 +54,8 @@ const OrderHistoryComponent: React.FC = () => {
       };
       //Send Post rquest to Flask API
       axios
-        .post('http://127.0.0.1:5000/api/manager/get_order_history', requestDates, config)
-        // .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_order_history`, requestDates, config)
+        // .post('http://127.0.0.1:5000/api/manager/get_order_history', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_order_history`, requestDates, config)
         .then((response) => {
           setOrderHistory(response.data);
           // console.log(response.data); 

@@ -130,8 +130,8 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         };
         //Send Post rquest to Flask API
         await axios 
-        .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
+        // .post('http://127.0.0.1:5000/api/manager/get_employee_list',config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
             console.log(response.data);
@@ -150,8 +150,8 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/add_employee', newEmployee, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, newEmployee, config)
+        // .post('http://127.0.0.1:5000/api/manager/add_employee', newEmployee, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, newEmployee, config)
         .then((response) => {
             console.log(response.data.message); 
             // Check for available_manager_ids in the response
@@ -179,8 +179,8 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/remove_employee', employeeId, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_employee`, removeEmployee, config)
+        // .post('http://127.0.0.1:5000/api/manager/remove_employee', employeeId, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_employee`, employeeId, config)
         .then((response) => {
             console.log(response.data.message); 
         })
@@ -201,8 +201,8 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/update_employee', requestData, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_employee`, requestData, config)
+        // .post('http://127.0.0.1:5000/api/manager/update_employee', requestData, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/update_employee`, requestData, config)
         .then((response) => {
             console.log(response.data.message); 
         })

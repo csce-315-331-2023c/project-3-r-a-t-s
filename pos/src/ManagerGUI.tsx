@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState} from 'react';
-import ReactDOM from "react-dom";
 import 'reactjs-popup/dist/index.css';
 import './Manager.css';
 import axios, { AxiosResponse, AxiosError } from 'axios';
@@ -73,8 +72,8 @@ const ManagerGUI: React.FC = () => {
     };
     //Send Post rquest to Flask API
     await axios
-    .post('http://127.0.0.1:5000/api/manager/check_if_admin', {email : ManagerEmail}, config)
-    //.post('https://pos-backend-3c6o.onrender.com/api/manager/check_if_admin', requestData, config)
+    // .post('http://127.0.0.1:5000/api/manager/check_if_admin', {email : ManagerEmail}, config)
+    .post('https://pos-backend-3c6o.onrender.com/api/manager/check_if_admin', {email : ManagerEmail}, config)
     .then((response) => {
         console.log("Message is :" , response.data.message); 
         console.log("Status is :" , response.data.isAdmin); 
@@ -124,8 +123,8 @@ const ManagerGUI: React.FC = () => {
           },
       };
       axios
-        .post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
-        // .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
+        // .post('http://127.0.0.1:5000/api/manager_reports/get_product_report', requestDates, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager_reports/get_product_report`, requestDates, config)
         .then((response) => {
           
           setProductReport(response.data.report);
@@ -384,7 +383,7 @@ const ManagerGUI: React.FC = () => {
 
             <div className='Search-Container'>
               <form> <input className='searchForm' type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
-              placeholder=' Search by Menu Item...'/> </form>
+              placeholder=' Search by Name...'/> </form>
             </div>
             </div>
             
