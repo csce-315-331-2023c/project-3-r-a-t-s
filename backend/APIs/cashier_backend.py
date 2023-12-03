@@ -1,6 +1,5 @@
 # Define Routes and Application Logic
 from flask import Blueprint, request, jsonify
-# from flask_cors import CORS 
 import psycopg2
 from datetime import date
 import random
