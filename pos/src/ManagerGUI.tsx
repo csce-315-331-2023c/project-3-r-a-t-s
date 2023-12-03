@@ -13,6 +13,7 @@ import ManagerComponent from './ManagerComponents/ManagerTable';
 import MenuComponent from './ManagerComponents/Menu';
 import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer'; 
 import { CiLogout } from "react-icons/ci";
+import GoogleTranslate from './Components/GoogleTranslate';
 
 const ManagerGUI: React.FC = () => {
   const {ManagerEmail} = useManagerEmail();
@@ -348,7 +349,9 @@ const ManagerGUI: React.FC = () => {
             </button>
             <b style={{color: "white"}}><u>Manager Dashboard</u></b>
       </h4>      
-
+      <div>
+        <GoogleTranslate />
+      </div>
       <div className="ManagerContainer">
         <Tabs defaultActiveKey={1} className="ManagerTabs"> 
           <Tab eventKey={1} className="nav-link" title="Inventory"> 
