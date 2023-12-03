@@ -73,12 +73,21 @@ def place_order():
                         ingredients.append("Meatballs")
 
                     for ingredient_name in ingredients:
-                        get_ingredient_id_query = "SELECT ingredient_id FROM INVENTORY where name = %s"
-                        cursor.execute(get_ingredient_id_query, (ingredient_name,))
-                        ingredient_id = cursor.fetchone()[0]
+                        try:
+                            get_ingredient_id_query = "SELECT ingredient_id FROM INVENTORY where name = %s"
+                            cursor.execute(get_ingredient_id_query, (ingredient_name,))
+                            ingredient_id = cursor.fetchone()[0]
 
-                        insert_selections_query = "INSERT INTO SELECTED_INGREDIENTS(order_id, item_id, menu_item_id, ingredient_id) VALUES(%s, %s, %s, %s)"
-                        cursor.execute(insert_selections_query, (order_id, item_id, menu_item_id, ingredient_id,))
+                            if ingredient_id:
+                                {}
+                            else:
+                                return jsonify({"error": "No Ingredient Info Found For: " + ingredient_name})
+
+                            insert_selections_query = "INSERT INTO SELECTED_INGREDIENTS(order_id, item_id, menu_item_id, ingredient_id) VALUES(%s, %s, %s, %s)"
+                            cursor.execute(insert_selections_query, (order_id, item_id, menu_item_id, ingredient_id,))
+
+                        except Exception as e:
+                            return jsonify({"error": str(e)})
 
                     #Use Selected Ingredients to reduce them from inventory
                     FetchIngredients_query = (
