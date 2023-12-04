@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import { GiFireBowl } from "react-icons/gi";
@@ -14,6 +14,60 @@ const MenuBoardGUI = () => {
 
     const navigate = useNavigate();
 
+    //Added THIS FOR SPEECH API
+    const [listening, setListening] = useState(false);
+    const [recognizedText, setRecognizedText] = useState('');
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setRecognizedText(transcript);
+    };
+    const startListening = () => {
+        recognition.start();
+        setListening(true);
+    };
+    const stopListening = () => {
+        recognition.stop();
+        setListening(false);
+    };
+    const handleVoiceCommand = () => {
+        if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
+            navigate(-1);
+        }
+
+        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase() === 'order online') {
+            navigate('/CustomerGUI');
+        }
+
+        if (recognizedText.toLowerCase().includes('scroll up') ) {
+            window.scroll(0, window.scrollY - 400);
+            setRecognizedText('');
+            startListening();
+        }
+        if (recognizedText.toLowerCase().includes('top') ) {
+            window.scrollTo(0, 0);
+            setRecognizedText('');
+            startListening();
+        }
+
+        if (recognizedText.toLowerCase().includes('scroll down') ) {
+            window.scroll(0, window.scrollY + 400);
+            setRecognizedText('');
+            startListening();
+        }  
+        
+        if (recognizedText.toLowerCase().includes('bottom')) {
+            window.scrollTo(0, document.body.scrollHeight);
+            setRecognizedText('');
+            startListening();
+        }  
+    };
+    useEffect(() => {
+        handleVoiceCommand();
+    }, [recognizedText]);
+    ////Ends HERE
+
     return (
         <div className='menu-board'>
             <div className='menu-home-top-bar'>
@@ -26,6 +80,17 @@ const MenuBoardGUI = () => {
                 <FaHome /> &nbsp; Home  </button>
                 </h1>
             </div> 
+
+            {/* Added For Speech API */}
+            <div>
+                <button onClick={startListening} disabled={listening}>
+                Start Voice Command
+                </button>
+                <button onClick={stopListening} disabled={!listening}>
+                Stop Voice Command
+                </button>
+                <p>Recognized Text: {recognizedText}</p>
+            </div>
             
             <div className='menu-bottom-bar'>
                 <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh"}}>
