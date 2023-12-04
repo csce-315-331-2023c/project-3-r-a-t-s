@@ -6,8 +6,50 @@ import './Customer.css';
 import axios, {AxiosError} from 'axios';
 import TextSizeAdjuster from "./Components/TextAdjuster";
 
+interface CustomerProps {
+    startListening: () => void;
+    stopListening: () => void;
+    recognizedText: string;
+}
 
-const CustomerGUI = () => {
+const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, recognizedText}) => {
+    //Speech API Starts Here
+    const handleVoiceCommand = () => {
+        if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
+            navigate(-1);
+        }
+
+        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase() === 'order online') {
+            navigate('/CustomerGUI');
+        }
+
+        if (recognizedText.toLowerCase().includes('scroll up') ) {
+            window.scroll(0, window.scrollY - 400);
+            // setRecognizedText('');
+            startListening();
+        }
+        if (recognizedText.toLowerCase().includes('top') ) {
+            window.scrollTo(0, 0);
+            // setRecognizedText('');
+            startListening();
+        }
+
+        if (recognizedText.toLowerCase().includes('scroll down') ) {
+            window.scroll(0, window.scrollY + 400);
+            // setRecognizedText('');
+            startListening();
+        }  
+
+        if (recognizedText.toLowerCase().includes('bottom')) {
+            window.scrollTo(0, document.body.scrollHeight);
+            // setRecognizedText('');
+            startListening();
+        }  
+    };
+    useEffect(() => {
+        handleVoiceCommand();
+    }, [recognizedText]);
+    ////Ends HERE
 
     const navigate = useNavigate();
 

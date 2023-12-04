@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ManagerEmailProvider } from "./ManagerComponents/ManagerEmailTransfer"; // Adjust the path based on your project structure
 import "./App.css";
@@ -18,6 +18,37 @@ import { FontSizeProvider } from "./Components/FontSizeContext";
 import { FaAngleDown } from "react-icons/fa";
 
 const App = () => {
+    //Speech API
+    const [listening, setListening] = useState(false);
+    const [recognizedText, setRecognizedText] = useState('');
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setRecognizedText(transcript);
+    };
+    recognition.onend = () => {
+      setListening(false);
+    };
+    const startListening = () => {
+        recognition.start();
+        setListening(true);
+    };
+    const stopListening = () => {
+        recognition.stop();
+        setListening(false);
+    };
+    //Speech API Ends Here
+    useEffect(() => {
+      // Add logic to handle voice command
+      if (listening) {
+        // Use recognizedText as needed
+        console.log('Recognized Text:', recognizedText);
+  
+        // Add more logic based on recognized text
+      }
+    }, [recognizedText, listening]);
+  
 
   const [open, setOpen] = useState(false);
   return (
@@ -44,6 +75,17 @@ const App = () => {
               fontSize: "3vh"}}>
             <GoogleTranslate />
             <TextSizeAdjuster />
+            {/* Added For Speech API  */}
+            <div className='SpeechButtons'>
+                <button className='SpeechStart-btn' onClick={startListening} disabled={listening}>
+                Start Voice Command
+                </button>
+                <button className='SpeechStop-btn' onClick={stopListening} disabled={!listening}>
+                Stop Voice Command
+                </button>
+                {/* <p>Recognized Text: {recognizedText}</p> */}
+            </div>
+
             <button onClick={() => setOpen(false)} style={{width:"20vw", margin: "2vh 0vw 0vh 5vw"}}><b>^ Close</b></button>
             </div>
             :
@@ -65,11 +107,11 @@ const App = () => {
             <div>
               <Router>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<Home startListening={startListening} stopListening={stopListening} recognizedText={recognizedText} />} />                  
                   <Route path="/CashierGUI" element={<CashierGUI />} />
-                  <Route path="/CustomerGUI" element={<CustomerGUI />} />
+                  <Route path="/CustomerGUI" element={<CustomerGUI startListening={startListening} stopListening={stopListening} recognizedText={recognizedText}/>} />
                   <Route path="/ManagerGUI" element={<ManagerGUI />} />
-                  <Route path="/MenuBoardGUI" element={<MenuBoardGUI />} />
+                  <Route path="/MenuBoardGUI" element={<MenuBoardGUI startListening={startListening} stopListening={stopListening} recognizedText={recognizedText}/>} />
                 </Routes>
               </Router>
             </div>

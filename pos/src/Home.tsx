@@ -29,31 +29,18 @@ const center = {
     lng: -96.3397041449957, 
 };
 
+interface HomeProps {
+    startListening: () => void;
+    stopListening: () => void;
+    recognizedText: string;
+}
 
-const Home : React.FC = () => {
+const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
     const [showCashierLogin, setCashierLogin] = useState(false);
     const googleLoginWindowRef = useRef<Window | null>(null);
     const {setManagerEmail} = useManagerEmail();
 
-    //Added THIS FOR SPEECH API
-    const [listening, setListening] = useState(false);
-    const [recognizedText, setRecognizedText] = useState('');
-    const recognition = new (window as any).webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setRecognizedText(transcript);
-    };
-    const startListening = () => {
-        recognition.start();
-        setListening(true);
-    };
-    const stopListening = () => {
-        recognition.stop();
-        handleVoiceCommand();
-        setListening(false);
-    };
     const handleVoiceCommand = () => {
         if (recognizedText.toLowerCase().includes('menu') || recognizedText.toLowerCase() === 'click menu' ) {
             navigate('MenuBoardGUI');
@@ -72,6 +59,9 @@ const Home : React.FC = () => {
         }
         
     };
+    useEffect(() => {
+        handleVoiceCommand();
+    }, [recognizedText]);
     ////Ends HERE
 
     const handleLoginSuccessCashier = (username: string) => {
@@ -148,18 +138,6 @@ const Home : React.FC = () => {
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>
                 </h1>
             </div>
-
-            {/* Added For Speech API */}
-            <div>
-                <button onClick={startListening} disabled={listening}>
-                Start Voice Command
-                </button>
-                <button onClick={stopListening} disabled={!listening}>
-                Stop Voice Command
-                </button>
-                <p>Recognized Text: {recognizedText}</p>
-            </div>
-            
 
             <div>
             <div className='home-top-block'>

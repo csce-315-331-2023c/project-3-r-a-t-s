@@ -49,3 +49,18 @@
   height: 52vh;
   display: table;
 }
+
+.SpeechButtons {
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size : 20px;
+}
+.SpeechStart-btn {
+  background-color: rgb(30, 116, 30);
+}
+
+.SpeechStop-btn {
+  background-color: rgb(176, 31, 31);
+  color : black;
+}
