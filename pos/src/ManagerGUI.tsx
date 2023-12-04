@@ -343,7 +343,7 @@ const ManagerGUI: React.FC = () => {
             fontSize: "3vh"
             }} onClick={() => navigate(-1)}><CiLogout size={"5vh"}/> <b>Logout</b> &nbsp;
             </button>
-            PIADA 
+            <u><b>PIADA</b></u>
             <p className='street-food'> &nbsp; ~ Cashier POS ~</p>
             </h4>
       </div>      

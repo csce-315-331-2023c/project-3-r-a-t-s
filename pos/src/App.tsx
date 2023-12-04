@@ -74,8 +74,10 @@ const App = () => {
                 </button>
                 {/* <p>Recognized Text: {recognizedText}</p> */}
             </div>
+            {listening ? <div style={{color: "white", marginLeft: "8vw"}}>Recording...</div> : <div></div>}
 
-            <button onClick={() => setOpen(false)} style={{width:"20vw", margin: "2vh 0vw 0vh 5vw"}}><b>^ Close</b></button>
+
+            <button onClick={() => setOpen(false)} style={{width:"20vw", margin: "2vh 0vw 0vh 2.5vw"}}><b><AiFillCaretUp /> Close</b></button>
             </div>
             :
             <button style={{

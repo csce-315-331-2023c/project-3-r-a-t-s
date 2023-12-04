@@ -666,7 +666,7 @@ const CashierGUI = () => {
                 height: "6vh",
                 fontSize: "3vh"
             }}> <CiLogout size={"5vh"}/> Logout </button>
-            PIADA 
+            <b><u>PIADA</u></b> 
             </h1>
             <p className='street-food'> &nbsp; ~ Cashier POS ~</p>
         </header>

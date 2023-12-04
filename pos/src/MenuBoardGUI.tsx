@@ -55,7 +55,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             <div className='menu-home-top-bar'>
                 <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
-                   <b>PIADA</b>  ~ Menu Board ~
+                   <b><u>PIADA</u></b>  ~ Menu Board ~
                 <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons'> 
                 <FaBagShopping />  &nbsp; Order Online Here!  </button>
                 <button onClick={() => navigate(-1)} className='navigate-buttons'> 

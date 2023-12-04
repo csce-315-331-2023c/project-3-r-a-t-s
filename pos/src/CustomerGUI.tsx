@@ -418,7 +418,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
             <h1 style={{fontSize: "5vh", width:"100vw"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
-                   <b>PIADA</b>  ~ Customer Self-Service ~ 
+                   <b><u>PIADA</u></b>  ~ Customer Self-Service ~ 
             </h1>            
         </div> 
 
