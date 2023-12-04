@@ -64,7 +64,7 @@ const TextSizeAdjuster: React.FC = () => {
         height: "6vh", 
         width: "15vw", 
         borderRadius: "25px", 
-        margin: "2vh 0vw 0vh 8vw"
+        margin: "2vh 0vw 0vh 5.5vw"
         }}>
       
       <div>
@@ -75,6 +75,7 @@ const TextSizeAdjuster: React.FC = () => {
         width: "2.5vw",
         height: "4.5vh",
         borderRadius: "20px",
+        marginRight: "1vw"
         }}>
           <FaMinus />
         </button>
@@ -91,6 +92,7 @@ const TextSizeAdjuster: React.FC = () => {
         width: "2.5vw",
         height: "4.5vh",
         borderRadius: "20px",
+        marginLeft: "1vw"
         }}>
         <FaPlus />
       </button>

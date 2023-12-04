@@ -73,7 +73,7 @@ const MenuBoardGUI = () => {
             <div className='menu-home-top-bar'>
                 <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
-                   <b>PIADA</b>  Italian Street Food
+                   <b>PIADA</b>  ~ Menu Board ~
                 <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons'> 
                 <FaBagShopping />  &nbsp; Order Online Here!  </button>
                 <button onClick={() => navigate(-1)} className='navigate-buttons'> 
