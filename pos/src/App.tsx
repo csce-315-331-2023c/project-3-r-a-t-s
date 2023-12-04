@@ -10,18 +10,24 @@ import ManagerGUI from "./ManagerGUI";
 import MenuBoardGUI from "./MenuBoardGUI";
 import GoogleTranslate from "./Components/GoogleTranslate";
 import UseScript from "./Components/UseScript";
+import TextSizeAdjuster from "./Components/TextAdjuster";
+import { ScaleProvider } from "./Components/ScaleContext";
+import ScaleWrapper from "./Components/ScaleWrapper";
 
 const App = () => {
   return (
     <div>
-      <header>
+      <ScaleProvider>
+        <ScaleWrapper>
+          <TextSizeAdjuster />
+          <header>
         <link
           href="https://fonts.googleapis.com/css?family=Lato:400,700"
           rel="stylesheet"
           type="text/css"
         />
       </header>
-      <div>
+      <div style={{ maxWidth: '30vw' }}>
         <GoogleTranslate />
       </div>
       <ManagerEmailProvider>
@@ -37,6 +43,9 @@ const App = () => {
           </Router>
         </div>
       </ManagerEmailProvider>
+        </ScaleWrapper>
+      </ScaleProvider>
+      
     </div>
   );
 };

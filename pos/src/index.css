@@ -7,7 +7,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  --text-size: 2.5vh; /* Default text size */
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body, p, h1, h2, h3, h4, h5, h6, button, input, textarea {
+  font-size: var(--text-size);
+}
+
+
