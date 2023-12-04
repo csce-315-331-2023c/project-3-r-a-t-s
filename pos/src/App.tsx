@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ManagerEmailProvider } from "./ManagerComponents/ManagerEmailTransfer"; // Adjust the path based on your project structure
 import "./App.css";
@@ -19,7 +19,26 @@ import { FaAngleDown } from "react-icons/fa";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
 const App = () => {
-
+  //Speech API
+  const [listening, setListening] = useState(false);
+  const [recognizedText, setRecognizedText] = useState('');
+  const recognition = new (window as any).webkitSpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setRecognizedText(transcript);
+  };
+  recognition.onend = () => {
+    setListening(false);
+  };
+  const startListening = () => {
+      recognition.start();
+      setListening(true);
+  };
+  const stopListening = () => {
+      recognition.stop();
+      setListening(false);
+  };
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -45,7 +64,18 @@ const App = () => {
               fontSize: "3vh"}}>
             <GoogleTranslate />
             <TextSizeAdjuster />
-            <button onClick={() => setOpen(false)} style={{width:"20vw", margin: "3vh 0vw 1vh 3vw"}}><b><AiFillCaretUp />&nbsp; Close</b></button>
+            {/* Added For Speech API  */}
+            <div className='SpeechButtons'>
+                <button className='SpeechStart-btn' onClick={startListening} disabled={listening}>
+                Start Voice Command
+                </button>
+                <button className='SpeechStop-btn' onClick={stopListening} disabled={!listening}>
+                Stop Voice Command
+                </button>
+                {/* <p>Recognized Text: {recognizedText}</p> */}
+            </div>
+
+            <button onClick={() => setOpen(false)} style={{width:"20vw", margin: "2vh 0vw 0vh 5vw"}}><b>^ Close</b></button>
             </div>
             :
             <button style={{
@@ -65,11 +95,11 @@ const App = () => {
             <div>
               <Router>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<Home startListening={startListening} stopListening={stopListening} recognizedText={recognizedText} />} />                  
                   <Route path="/CashierGUI" element={<CashierGUI />} />
-                  <Route path="/CustomerGUI" element={<CustomerGUI />} />
+                  <Route path="/CustomerGUI" element={<CustomerGUI startListening={startListening} stopListening={stopListening} recognizedText={recognizedText}/>} />
                   <Route path="/ManagerGUI" element={<ManagerGUI />} />
-                  <Route path="/MenuBoardGUI" element={<MenuBoardGUI />} />
+                  <Route path="/MenuBoardGUI" element={<MenuBoardGUI startListening={startListening} stopListening={stopListening} recognizedText={recognizedText}/>} />
                 </Routes>
               </Router>
             </div>
