@@ -44,17 +44,8 @@ const GoogleTranslate: React.FC = () => {
   }, []);
 
   return <div id="google_translate_element" style={{
-              margin: "8vh 0vw 0vh 81vw",
-              position: "absolute",
-              zIndex: "1000",
-              backgroundColor: "",
-              width: "fit-content",
-              border: '5px solid black'
+              margin: "2vh 0vw 0vh 10vw"
             }}  
-  
-  
-  
-  
           ></div>;
 };
 

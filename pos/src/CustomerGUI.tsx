@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 import './Customer.css';
 import axios, {AxiosError} from 'axios';
+import TextSizeAdjuster from "./Components/TextAdjuster";
+
 
 const CustomerGUI = () => {
 
@@ -183,6 +185,7 @@ const CustomerGUI = () => {
                         <button onClick={() => makeorderitem(2, "Penne")}> Penne </button>
                 </h3>
                 </div>
+                
                 <h3> Protein: 
                     <p>
                         <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
@@ -374,10 +377,13 @@ const CustomerGUI = () => {
     return (
     <div className='Customer'>
         <div className='CustomerHeader'>
-            <h1 style={{fontSize: "5vh"}}> 
+
+            <h1 style={{fontSize: "5vh", width:"100vw"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
-                   <b>PIADA</b>  Italian Street Food
+                   <b>PIADA</b>  Italian Street Food 
             </h1>
+            <TextSizeAdjuster />
+            
         </div> 
 
         <div>

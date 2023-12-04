@@ -57,7 +57,16 @@ const TextSizeAdjuster: React.FC = () => {
   const decreaseSize = () => setScale(Math.max(1, scale - 0.1));
 
   return (
-    <div className='home' style={{color: "white", border: "4px solid white", height: "6vh", width: "15vw", borderRadius: "25px"}}>
+    <div className='home' 
+      style={{
+        color: "white", 
+        border: "4px solid white", 
+        height: "6vh", 
+        width: "15vw", 
+        borderRadius: "25px", 
+        margin: "2vh 0vw 0vh 8vw"
+        }}>
+      
       <div>
       <button onClick={decreaseSize} style={{
         color: "white", 
@@ -71,7 +80,6 @@ const TextSizeAdjuster: React.FC = () => {
         </button>
 
         <b style={{
-          margin: "0vh 1vw 0vh 1vw",
           fontSize: "3vh"
         }}
         >Zoom</b> 
