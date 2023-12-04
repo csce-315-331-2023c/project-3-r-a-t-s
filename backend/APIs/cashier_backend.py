@@ -30,7 +30,11 @@ def place_order():
         current_date = date.today()
 
         if client_type == 'cashier':
-            employeeID = random.randint(1, 4)
+            user_id = data['username']
+            get_employee_query = "SELECT employee_id FROM EMPLOYEE where username = %s;"
+            cursor.execute(get_employee_query, (user_id,))
+            employeeID = cursor.fetchone()[0]
+            print("EmployeeID", employeeID)
         elif client_type == 'customer':  
             employeeID = 5
 
