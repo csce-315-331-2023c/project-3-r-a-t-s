@@ -18,6 +18,7 @@ const GoogleTranslate: React.FC = () => {
 
     // Load the Google Translate script
     const script = document.createElement('script');
+    script.type = 'text/javascript';
     script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
     script.async = true;
     script.defer = true;
@@ -42,7 +43,7 @@ const GoogleTranslate: React.FC = () => {
     };
   }, []);
 
-  return <div id="google_translate_element"></div>;
+  return <div id="google_translate_element" ></div>;
 };
 
 export default GoogleTranslate;
