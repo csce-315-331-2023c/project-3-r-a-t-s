@@ -177,6 +177,22 @@ const CashierGUI = () => {
           .then((response) => {
             console.log(response.data.data);
             setNewitems(response.data.data);
+            Set_BYO_Panel([
+                <div style={{border: "5px solid black", padding: "2vh 0vw 2vh 0vw"}}>
+                    <h2> <u>Build Your Own </u></h2>
+                    <button className='other-buttons' onClick={pasta_panel}> Pasta </button>
+                    <button className='other-buttons' onClick={piada_panel}> Piada </button>
+                    <button className='other-buttons' onClick={salad_panel}> Salad </button> 
+                    <br /><br />
+                    <div>
+                    <h2> <u>Seasonal Items </u></h2>
+                        {newItems.map((item) => (
+                            <button className='other-buttons' onClick={() => addorderitem(item)} disabled={loading}> {item} </button>
+                        ))}
+                    </div>
+                    
+                </div>
+                ]);
           })
           .catch((error) => {
             console.error('Failed to get any new menu items: ', error);
@@ -294,7 +310,7 @@ const CashierGUI = () => {
             <br /><br />
             <div>
             <h2> <u>Seasonal Items </u></h2>
-                {newItems.map((item, index) => (
+                {newItems.map((item) => (
                     <button className='other-buttons' onClick={() => addorderitem(item)} disabled={loading}> {item} </button>
                 ))}
             </div>
