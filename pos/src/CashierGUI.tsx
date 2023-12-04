@@ -661,14 +661,14 @@ const CashierGUI = () => {
                 border: "0.5vh solid black",
                 borderRadius: "25px",
                 boxShadow: "3px 3px white",
-                margin: "-1vh 10vw auto 2vw",
+                margin: "-1vh 5vw auto 2vw",
                 width: "12vw",
                 height: "6vh",
                 fontSize: "3vh"
             }}> <CiLogout size={"5vh"}/> Logout </button>
             PIADA 
             </h1>
-            <p className='street-food'> &nbsp; Italian Street Food</p>
+            <p className='street-food'> &nbsp; ~ Cashier POS ~</p>
         </header>
 
         <div style={{display: "table"}}>    

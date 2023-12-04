@@ -16,6 +16,7 @@ import ScaleWrapper from "./Components/ScaleWrapper";
 import FontSizeAdjuster from "./Components/FontSizeAdjuster";
 import { FontSizeProvider } from "./Components/FontSizeContext";
 import { FaAngleDown } from "react-icons/fa";
+import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
 const App = () => {
   //Speech API
@@ -52,12 +53,12 @@ const App = () => {
           </header>
           {open ? 
             <div style={{
-              margin: "8vh 0vw 0vh 68vw",
+              margin: "8vh 0vw 0vh 72vw",
               position: "absolute",
               zIndex: "1000",
               backgroundColor: "rgb(35,31,32,255)",
-              height: "30vh",
-              width: "30vw",
+              height: "fit-content",
+              width: "25vw",
               border: "3px solid white",
               boxShadow: "10px 10px 5px black",
               fontSize: "3vh"}}>
@@ -78,16 +79,15 @@ const App = () => {
             </div>
             :
             <button style={{
-              margin: "8vh 0vw 0vh 75vw",
+              margin: "8vh 0vw 0vh 77vw",
               position: "absolute",
               zIndex: "1000",
-              backgroundColor: "",
               width: "15vw",
               border: '5px solid black',
               fontSize: "3vh"
             
             }} onClick={() => setOpen(true)}>
-              <FaAngleDown />&nbsp;<b>Accessibility</b>
+              <AiFillCaretDown />&nbsp;<b>Accessibility</b>
             </button>
           }
 

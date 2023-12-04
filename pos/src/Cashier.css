@@ -1,8 +1,6 @@
 .Cashier {
     text-align: center;
     background-color: rgb(31, 27, 27);
-    width: 100%;
-    height: 100vh;
 }
 
 .header {
@@ -41,8 +39,6 @@
 
 .column {
     color: white;
-    width: 20vw;
-    height: 85vh;
     display: table-cell;
     font-size: 3vh;
   }
@@ -50,9 +46,8 @@
 .main-panel {
     border: 2vh solid rgb(0, 0, 0);
     display: table-cell;
-    margin: -10vh 0vw 2vh 0vw;
     height: 92vh;
-    width: 80vw;
+    width: 70vw;
 }
 
 .main-buttons   {
@@ -72,7 +67,6 @@
     width: 40vw;
     background-image: url("Images/watercolor-paper-texture.jpg");
     background-color: rgba(23, 20, 20);
-    height: 90vh;
     flex-direction: column;
     border: 2vh solid rgb(0, 0, 0);
     display: table-cell;
@@ -106,8 +100,7 @@
     height: 73vh;
     text-align: left;
     overflow: scroll;
-    margin-bottom: 2vh;
-    border-top: 2vh solid black;
+    margin-top: 3vh;
 }
 
 .add-to-order {

@@ -56,14 +56,9 @@ const ManagerGUI: React.FC = () => {
 
   const date = new Date();
   const date_today = date.toISOString().slice(0, 10);
-  if (date.getMonth() === 1) {
-    date.setFullYear(date.getFullYear() - 1);
-    date.setMonth(12);
-  }
-  else {
-    date.setMonth(date.getMonth() - 1);
-  }
+  date.setUTCDate(date.getUTCDate() - 7);
   const date_month_ago = date.toISOString().slice(0, 10);
+  
   //Check if Email Belongs To Admin
   const check_admin = async () => { 
     const config = {
@@ -335,20 +330,21 @@ const ManagerGUI: React.FC = () => {
   return(
     <div style={{ display: 'block'}} className='manager'> 
       <div style={{textAlign: 'left', fontSize: "5vh", background: 'rgb(35,31,32,255)',  height: "8vh"}}>
-      <h4 style={{marginTop: "-2h"}}>
+      <h4 style={{marginTop: "-2h"}} className='piada'>
           <button style={{
             verticalAlign: 'middle', 
             textAlign: 'center',
             border: "0.5vh solid black",
             borderRadius: "25px",
             boxShadow: "3px 3px white",
-            margin: "-2vh 10vw auto 0vw",
+            margin: "-2vh 5vw auto 2vw",
             width: "12vw",
             height: "6vh",
             fontSize: "3vh"
             }} onClick={() => navigate(-1)}><CiLogout size={"5vh"}/> <b>Logout</b> &nbsp;
             </button>
-            <b style={{color: "white", marginTop: "-5vh", fontSize: "6vh"}}><u>Manager Dashboard</u></b>
+            PIADA 
+            <p className='street-food'> &nbsp; ~ Cashier POS ~</p>
             </h4>
       </div>      
       {/* <div>

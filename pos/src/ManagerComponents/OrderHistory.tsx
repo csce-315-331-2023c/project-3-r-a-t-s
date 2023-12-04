@@ -8,13 +8,7 @@ const OrderHistoryComponent: React.FC = () => {
 
     const date = new Date();
     const date_today = date.toISOString().slice(0, 10);
-    if (date.getMonth() === 1) {
-      date.setFullYear(date.getFullYear() - 1);
-      date.setMonth(12);
-    }
-    else {
-      date.setMonth(date.getMonth() - 1);
-    }
+    date.setUTCDate(date.getUTCDate() - 7);
     const date_month_ago = date.toISOString().slice(0, 10);
 
     // Manages start/end date in the Order History Tab
