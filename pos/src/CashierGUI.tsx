@@ -368,7 +368,7 @@ const CashierGUI = () => {
                         <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='custom-select-buttons'> Roasted Sweet Potato </button>
                         <button onClick={() => handleIngredientSelection('Hummus')} className='custom-select-buttons'> Hummus </button>
                         <button onClick={() => handleIngredientSelection('Feta')} className='custom-select-buttons'> Feta </button>
-                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                        <button onClick={() => handleIngredientSelection('Mozzarella')} className='custom-select-buttons'> Mozzarella </button>
                         <button onClick={() => handleIngredientSelection('Parmesan')} className='custom-select-buttons'> Parmesan </button>
                         <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='custom-select-buttons'> Sweet & Spicy Peppers</button>
                         <button onClick={() => handleIngredientSelection('Strawberries')} className='custom-select-buttons'> Strawberries </button>
@@ -470,7 +470,7 @@ const CashierGUI = () => {
                         <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='custom-select-buttons'> Roasted Sweet Potato </button>
                         <button onClick={() => handleIngredientSelection('Hummus')} className='custom-select-buttons'> Hummus </button>
                         <button onClick={() => handleIngredientSelection('Feta')} className='custom-select-buttons'> Feta </button>
-                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                        <button onClick={() => handleIngredientSelection('Mozzarella')} className='custom-select-buttons'> Mozzarella </button>
                         <button onClick={() => handleIngredientSelection('Parmesan')} className='custom-select-buttons'> Parmesan </button>
                         <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='custom-select-buttons'> Sweet & Spicy Peppers</button>
                         <button onClick={() => handleIngredientSelection('Strawberries')} className='custom-select-buttons'> Strawberries </button>
@@ -581,7 +581,7 @@ const CashierGUI = () => {
                         <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='custom-select-buttons'> Roasted Sweet Potato </button>
                         <button onClick={() => handleIngredientSelection('Hummus')} className='custom-select-buttons'> Hummus </button>
                         <button onClick={() => handleIngredientSelection('Feta')} className='custom-select-buttons'> Feta </button>
-                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
+                        <button onClick={() => handleIngredientSelection('Mozzarella')} className='custom-select-buttons'> Mozzarella </button>
                         <button onClick={() => handleIngredientSelection('Parmesan')} className='custom-select-buttons'> Parmesan </button>
                         <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='custom-select-buttons'> Sweet & Spicy Peppers</button>
                         <button onClick={() => handleIngredientSelection('Strawberries')} className='custom-select-buttons'> Strawberries </button>
