@@ -56,7 +56,8 @@ const Home : React.FC = () => {
 
     const handleGoogleLogin = async () => {
         // Open a new window for Google authentication
-        googleLoginWindowRef.current = window.open('http://127.0.0.1:5000/login', '_blank');
+        googleLoginWindowRef.current = window.open('https://pos-backend-3c6o.onrender.com/login', '_blank');
+        //googleLoginWindowRef.current = window.open('http://127.0.0.1:5000/login', '_blank');
         // Attempt to add the event listener
         try {
             //Listen for messages from the Google login window
