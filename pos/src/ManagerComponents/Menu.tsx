@@ -85,7 +85,7 @@ const MenuComponent = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://127.0.0.1:5000/api/manager/get_menu_items",
+        "https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items",
         config
       );
       // const response = await axios.get("https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items", config);
@@ -151,8 +151,8 @@ const fetchInventory = async () => {
   const addMenuItem = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/manager/add_menu_item",
-        // "https://pos-backend-3c6o.onrender.com/api/manager/add_menu_item",
+        //"http://127.0.0.1:5000/api/manager/add_menu_item",
+        "https://pos-backend-3c6o.onrender.com/api/manager/add_menu_item",
         {
           name: addMenuItemName,
           price: addMenuItemPrice,

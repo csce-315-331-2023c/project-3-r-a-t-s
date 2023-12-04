@@ -82,8 +82,8 @@ const ManagerComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         await axios 
-        .post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
+        //.post('http://127.0.0.1:5000/api/manager/get_manager_list',config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
         .then((response) => {
             setManagerList(response.data);
             // console.log(response.data);
@@ -141,8 +141,8 @@ const ManagerComponent: React.FC = () => {
         console.log(newManager);
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
+        //.post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
         .then((response) => {
             console.log(response.data.message); 
             // Check for available_manager_ids in the response
@@ -161,8 +161,8 @@ const ManagerComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         axios
-        .post('http://127.0.0.1:5000/api/manager/remove_manager', managerID, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_manager`, managerID, config)
+        //.post('http://127.0.0.1:5000/api/manager/remove_manager', managerID, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_manager`, managerID, config)
         .then((response) => {
             console.log(response.data.message); 
         })
@@ -183,8 +183,8 @@ const ManagerComponent: React.FC = () => {
         };
         //Send Post rquest to Flask API
         await axios
-        .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
-        //.post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
+        //.post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
             console.log(response.data.message); 
         })

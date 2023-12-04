@@ -99,7 +99,7 @@ const CashierGUI = () => {
         };
         // Send a POST request to the Flask API
         axios
-            // .post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
+            //.post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
             .post(`https://pos-backend-3c6o.onrender.com/api/cashier/place_order`, orderData, config)
             .then((response) => {
                 // Handle the response from the Flask API
