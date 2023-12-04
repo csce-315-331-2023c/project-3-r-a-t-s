@@ -5,10 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: var(--font-size-percent);
 }
 
 :root {
-  --text-size: 2.5vh; /* Default text size */
+  --font-size-percent: 100%;
 }
 
 code {
