@@ -301,10 +301,21 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                 <form> <input className="searchForm"  type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
                     placeholder='Search by Employee Last Name...'/> 
                 </form>
-            </div> <br />
+            </div> 
 
-            {!!employeeList.length && (
-                    <div className="order-table-section">
+            <div className="add-container">
+                {(adminProps.isAdmin === 'Yes') && 
+                    <span>
+                        <button className="btn btn-success" style={{marginTop: "-1vh"}} onClick={handleAddRow}>
+                            <IoPersonAddSharp className="add-icon" />
+                            Add Employee
+                        </button>
+                    </span>
+                }
+            </div> <br/> <br/>
+
+            <div style={{overflow: "scroll", height: "50vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+                {!!employeeList.length && (
                     <table className='table table-striped w-100'>
                         <thead>
                         <tr>
@@ -353,7 +364,7 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                         </td>
                         </tr>
                         ))}
-                       {showPopup && (
+                        {showPopup && (
                             <Popup
                             message="Delete Employee?"
                             onConfirm={handleDeleteEmployee}
@@ -398,7 +409,8 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                             </tr>
                             )}
                         </tbody>
-                        {(adminProps.isAdmin === 'Yes') && 
+
+                        {/* {(adminProps.isAdmin === 'Yes') && 
                             <div className="add-container">
                                 <span>
                                     <button className="add-row-btn" onClick={handleAddRow}>
@@ -407,11 +419,11 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                                     </button>
                                 </span>
                             </div>
-}
-                        
-                    </table>
-                    </div>
-            )}
+                        }
+                            */}
+                    </table>                        
+                )}
+            </div>
         </div>
     );
 };

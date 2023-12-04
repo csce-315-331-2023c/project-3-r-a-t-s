@@ -278,17 +278,26 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
     };
 
     return (
-        <div>
-            <div> 
+        <div>                
             <div className='Search-Container'>
                 <form> <input className="searchForm"  type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
                     placeholder='Search by Manager Last Name...'/> 
                 </form>
-            </div><br />
+            </div>
 
-            <div style={{height: "fit-content"}}>
-            {!!managerList.length && (
-                    <div className="order-table-section">
+            <div className="add-container">
+                {(adminProps.isAdmin === 'Yes') && 
+                    <span>
+                        <button className="btn btn-success" style={{marginTop: "-1vh"}} onClick={handleAddRow}>
+                            <IoPersonAddSharp className="add-icon" />
+                            Add Manager
+                        </button>
+                    </span>
+                }
+            </div> <br/> <br/>
+
+            <div style={{overflow: "scroll", height: "50vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+                {!!managerList.length && (
                     <table className='table table-striped w-100'>
                         <thead>
                         <tr>
@@ -343,7 +352,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                         
                         </tr>
                         ))}
-                       {showPopup && (
+                    {showPopup && (
                             <Popup
                             message="Delete Manager?"
                             onConfirm={handleDeleteManager}
@@ -382,22 +391,10 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                             </tr>
                             )}
                         </tbody>
-                        {(adminProps.isAdmin === 'Yes') && 
-                            <div className="add-container">
-                                <span>
-                                    <button className="add-row-btn" onClick={handleAddRow}>
-                                        <IoPersonAddSharp className="add-icon" />
-                                        Add Manager
-                                    </button>
-                                </span>
-                            </div>
-                        }
                     </table>
-                    </div>
-            )}
+                )}
             </div>
         </div>
-    </div>
     );
 };
 export default ManagerTableComponent;
