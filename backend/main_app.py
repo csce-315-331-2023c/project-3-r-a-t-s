@@ -4,11 +4,10 @@ from APIs.manager_backend import manager_BP
 from APIs.cashier_backend import cashier_BP
 from APIs.manager_reports import reports_BP
 from APIs.login_routes import login_BP
-from flask import Flask, redirect, url_for, flash, request, session, abort
+from flask import Flask, redirect, url_for, flash, request, session
 from flask_dance.contrib.google import make_google_blueprint, google
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
-from pip._vendor import cachecontrol
 import google.auth.transport.requests
 import os
 import pathlib
