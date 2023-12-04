@@ -1,9 +1,10 @@
 .order-table-section {
-    padding: 8px; 
+    padding: 0px; 
     overflow-y: auto; 
     height: fit-content;
     width: 90vw;
     margin: 0px auto 0px auto;
+    border: 2px solid #010101; 
 }
 
 .add-icon { 
@@ -13,11 +14,18 @@
     color: white;
 }
 
+.add-container {
+    position: absolute;
+    padding : 10px;
+    left: 30px;
+}
+
 .add-container .add-row-btn{
+    padding: 10px;
     background: rgb(74, 131, 61);
     color: white;
     border-radius: 5px;
-    font-size: 15px; 
+    font-size: 18px; 
 }
 
 .delete-btn {
