@@ -18,38 +18,26 @@ import { FontSizeProvider } from "./Components/FontSizeContext";
 import { FaAngleDown } from "react-icons/fa";
 
 const App = () => {
-    //Speech API
-    const [listening, setListening] = useState(false);
-    const [recognizedText, setRecognizedText] = useState('');
-    const recognition = new (window as any).webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setRecognizedText(transcript);
-    };
-    recognition.onend = () => {
+  //Speech API
+  const [listening, setListening] = useState(false);
+  const [recognizedText, setRecognizedText] = useState('');
+  const recognition = new (window as any).webkitSpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setRecognizedText(transcript);
+  };
+  recognition.onend = () => {
+    setListening(false);
+  };
+  const startListening = () => {
+      recognition.start();
+      setListening(true);
+  };
+  const stopListening = () => {
+      recognition.stop();
       setListening(false);
-    };
-    const startListening = () => {
-        recognition.start();
-        setListening(true);
-    };
-    const stopListening = () => {
-        recognition.stop();
-        setListening(false);
-    };
-    //Speech API Ends Here
-    useEffect(() => {
-      // Add logic to handle voice command
-      if (listening) {
-        // Use recognizedText as needed
-        console.log('Recognized Text:', recognizedText);
-  
-        // Add more logic based on recognized text
-      }
-    }, [recognizedText, listening]);
-  
-
+  };
   const [open, setOpen] = useState(false);
   return (
     <div>

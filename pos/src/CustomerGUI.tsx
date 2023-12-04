@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 import './Customer.css';
 import axios, {AxiosError} from 'axios';
+import './App.css';
 import TextSizeAdjuster from "./Components/TextAdjuster";
 
 interface CustomerProps {
@@ -13,45 +14,40 @@ interface CustomerProps {
 }
 
 const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, recognizedText}) => {
+    const navigate = useNavigate();
     //Speech API Starts Here
     const handleVoiceCommand = () => {
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
-            navigate(-1);
+            navigate('/');
         }
 
-        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase() === 'order online') {
-            navigate('/CustomerGUI');
+        if (recognizedText.toLowerCase().includes('menu') || recognizedText.toLowerCase() === 'order online') {
+            stopListening();
+            navigate('/MenuBoardGUI');
         }
 
         if (recognizedText.toLowerCase().includes('scroll up') ) {
             window.scroll(0, window.scrollY - 400);
-            // setRecognizedText('');
             startListening();
         }
         if (recognizedText.toLowerCase().includes('top') ) {
             window.scrollTo(0, 0);
-            // setRecognizedText('');
             startListening();
         }
 
         if (recognizedText.toLowerCase().includes('scroll down') ) {
             window.scroll(0, window.scrollY + 400);
-            // setRecognizedText('');
             startListening();
         }  
 
         if (recognizedText.toLowerCase().includes('bottom')) {
             window.scrollTo(0, document.body.scrollHeight);
-            // setRecognizedText('');
             startListening();
         }  
     };
     useEffect(() => {
         handleVoiceCommand();
     }, [recognizedText]);
-    ////Ends HERE
-
-    const navigate = useNavigate();
 
     const [BYO_Panel, Set_BYO_Panel] = useState([<div> </div>]);    // used to set what displays in BYO panel
 

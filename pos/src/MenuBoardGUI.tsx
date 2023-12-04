@@ -1,12 +1,10 @@
 import React, {useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
 import { GiFireBowl } from "react-icons/gi";
 import { LuVegan, LuWheatOff } from "react-icons/lu";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { FaBagShopping } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
-
 import './MenuBoard.css'
 import { url } from 'inspector';
 
@@ -17,18 +15,15 @@ interface MenuProps {
 }
 
 const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, recognizedText}) => {
-
     const navigate = useNavigate();
-
     const handleVoiceCommand = () => {
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
-            navigate(-1);
+            navigate('/');
         }
 
-        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase() === 'order online') {
+        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase() === 'customer self service') {
             navigate('/CustomerGUI');
         }
-
         if (recognizedText.toLowerCase().includes('scroll up') ) {
             window.scroll(0, window.scrollY - 400);
             startListening();
@@ -37,12 +32,14 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             window.scrollTo(0, 0);
             startListening();
         }
-
+        if (recognizedText.toLowerCase().includes('stop') ) {
+            window.scrollTo(0, 0);
+            stopListening();
+        }
         if (recognizedText.toLowerCase().includes('scroll down') ) {
             window.scroll(0, window.scrollY + 400);
             startListening();
         }  
-
         if (recognizedText.toLowerCase().includes('bottom')) {
             window.scrollTo(0, document.body.scrollHeight);
             startListening();
