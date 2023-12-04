@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 //import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Popup from 'reactjs-popup';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 import './Cashier.css';
 import axios, {AxiosError} from 'axios';
@@ -11,6 +11,9 @@ import { CiLogout } from "react-icons/ci";
 
 
 const CashierGUI = () => {
+    const location = useLocation();
+    const LoginUsername = location.state && location.state.LoginUsername;
+    console.log("CashierGUI Username", LoginUsername);
 
     useEffect(() => {
         getNewMenuItems();
@@ -88,6 +91,7 @@ const CashierGUI = () => {
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
+            username : LoginUsername,
         };
 
         // Set the Content-Type header to application/json
@@ -99,7 +103,7 @@ const CashierGUI = () => {
         };
         // Send a POST request to the Flask API
         axios
-            // .post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
+            //.post('http://127.0.0.1:5000/api/cashier/place_order', orderData, config)
             .post(`https://pos-backend-3c6o.onrender.com/api/cashier/place_order`, orderData, config)
             .then((response) => {
                 // Handle the response from the Flask API

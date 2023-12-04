@@ -77,3 +77,23 @@
     color : black;
     font-size: 25px;
 }
+
+.ErrorMessage{
+    text-align: center;
+    color : red;
+    font-size: 25px;
+}
+
+.NumericKeypad {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 5px;
+}
+  
+.NumericKeypad button {
+    width: 33%;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 10px;
+}
