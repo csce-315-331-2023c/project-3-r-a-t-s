@@ -49,17 +49,47 @@ def get_order_history():
 
             stmt = conn.cursor()
             menu_items = ""
-            menu_items_query = f"""SELECT MENU_ITEMS.menu_item_name AS menu_items FROM ORDERS
+            #Query Returns Menu Item Name From Specific Order ID 
+            menu_items_query = f"""SELECT MENU_ITEMS.menu_item_name AS menu_item_name,
+                                    ORDER_ITEMS.item_id as item_id FROM ORDERS
                                     JOIN ORDER_ITEMS ON ORDERS.order_id = ORDER_ITEMS.order_id
                                     JOIN MENU_ITEMS ON ORDER_ITEMS.menu_item_id = MENU_ITEMS.menu_item_id
                                     WHERE ORDERS.order_id = %s;"""
             stmt.execute(menu_items_query, (order_id,))
             results = stmt.fetchall()
-            for result in results:
-                menu_items += result[0] + ", "
-            
-            menu_items = menu_items[:-2]
 
+            #Result will be the menu item name from order_id 
+            for result in results:
+                menu_item_name, item_id = result
+                menu_id_query = f"SELECT menu_item_id from MENU_ITEMS where menu_item_name = %s;"
+                cursor.execute(menu_id_query, (menu_item_name,))
+                menu_item_id = cursor.fetchone()[0]
+
+                boolean_query = "SELECT is_customizable FROM MENU_ITEMS WHERE menu_item_name = %s"
+                cursor.execute(boolean_query, (menu_item_name,))
+                is_customizable = cursor.fetchone()[0]
+
+                if is_customizable == True:
+                    #Fetch Ingredient Names FROM SELECTED_INGREDIENTS given the menu_item_id, order item id, and order id 
+                    menu_ingredients_query = f"""SELECT i.name AS ingredient_name FROM SELECTED_INGREDIENTS mi JOIN 
+                                            INVENTORY i ON mi.ingredient_id = i.ingredient_id WHERE
+                                            mi.menu_item_id = %s
+                                            AND mi.order_id = %s
+                                            AND mi.item_id = %s;"""
+                    cursor.execute(menu_ingredients_query, (menu_item_id, order_id, item_id, ))
+                else:               
+                    #Fetch Ingredient Names FROM MENU_ITEM_INGREDIENTS given the menu_item_id
+                    menu_ingredients_query = f"""SELECT i.name AS ingredient_name FROM MENU_ITEM_INGREDIENTS mi JOIN 
+                                                INVENTORY i ON mi.ingredient_id = i.ingredient_id WHERE
+                                                mi.menu_item_id = %s;"""
+                    cursor.execute(menu_ingredients_query, (menu_item_id,))
+
+                ingredients = cursor.fetchall() #Format is [('Name',), ('Name2',), ...]
+                names = [ingredient[0] for ingredient in ingredients] #Convert to List of String
+                ingredient_names = ", ".join(names) #Join list of strings to one string
+                menu_items += result[0] + ": (" + ingredient_names + ")" + ", "
+                
+            menu_items = menu_items[:-2] #To remove the last ", " 
             order_data['menu_items'] = menu_items
             order_history.append(order_data)
 
