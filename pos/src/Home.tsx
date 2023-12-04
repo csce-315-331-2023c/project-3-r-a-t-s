@@ -33,8 +33,8 @@ const Home : React.FC = () => {
     const googleLoginWindowRef = useRef<Window | null>(null);
     const {setManagerEmail} = useManagerEmail();
 
-    const handleLoginSuccessCashier = () => {
-        navigate('CashierGUI');
+    const handleLoginSuccessCashier = (username: string) => {
+        navigate('CashierGUI', {state : {LoginUsername : username}});
         setCashierLogin(false);
     };
 
@@ -102,7 +102,7 @@ const Home : React.FC = () => {
                     <CashierLoginPopup
                         message={'Cashier Login?'}
                         onClose={() => setCashierLogin(false)}
-                        onLogin={handleLoginSuccessCashier}
+                        onLogin={(username: string) => handleLoginSuccessCashier(username)}
                     />
                 )}
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 //import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Popup from 'reactjs-popup';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 import './Cashier.css';
 import axios, {AxiosError} from 'axios';
@@ -11,6 +11,9 @@ import { CiLogout } from "react-icons/ci";
 
 
 const CashierGUI = () => {
+    const location = useLocation();
+    const LoginUsername = location.state && location.state.LoginUsername;
+    console.log("CashierGUI Username", LoginUsername);
 
     useEffect(() => {
         getNewMenuItems();
@@ -88,6 +91,7 @@ const CashierGUI = () => {
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
+            username : LoginUsername,
         };
 
         // Set the Content-Type header to application/json

@@ -8,7 +8,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 interface LoginPopupProps {
     message: string;
     onClose: () => void;
-    onLogin: () => void;
+    onLogin: (username: string) => void;
 }
 
 const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogin }) => {
@@ -20,7 +20,6 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
     const passwordInputRef = useRef<HTMLInputElement>(null); 
     const [currentInput, setCurrentInput] = useState('username');
 
-        
     useEffect(() => {
         setLoginState('');
     }, [Username, Password]);
@@ -44,9 +43,9 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
                 switch (response.data.message) {
                     case 'Cashier Login Successful':
                         setLoginState('Successful');
-                        setCashierName(response.data.name_of_user)
+                        setCashierName(response.data.name_of_user);
                         setTimeout(() => {
-                            onLogin(); // Navigate after a delay
+                            onLogin(Username); // Navigate after a delay
                         }, 2000);
                         break;
                     case 'Cashier Login Unsuccessful':
