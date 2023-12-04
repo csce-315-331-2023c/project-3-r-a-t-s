@@ -251,7 +251,7 @@ const ManagerGUI: React.FC = () => {
 
   const createWhatSellsTogetherTable = async() => {
     set_selected_report(2);
-    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
+    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
       <table className='table table-striped w-100'>
           <thead>
           <tr>
@@ -276,7 +276,7 @@ const ManagerGUI: React.FC = () => {
 
   const createExcessTable =async () => {
     set_selected_report(3);
-    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
               <table className="table table-striped w-100">
                 <thead>
                   <tr>
@@ -303,7 +303,7 @@ const ManagerGUI: React.FC = () => {
 
   const createRestockTable = async() => {
     set_selected_report(4);
-    setTable([<div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
+    setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
               {restockReport && restockReport.length > 0 ? (
                 <table className='table table-striped w-100'>
                   <thead>
@@ -334,21 +334,23 @@ const ManagerGUI: React.FC = () => {
 
   return(
     <div style={{ display: 'block'}} className='manager'> 
-      <h4 style={{textAlign: 'left', fontSize: "5vh", background: 'rgb(35,31,32,255)', padding: "2vh"}}>
+      <div style={{textAlign: 'left', fontSize: "5vh", background: 'rgb(35,31,32,255)',  height: "8vh"}}>
+      <h4 style={{marginTop: "-2h"}}>
           <button style={{
             verticalAlign: 'middle', 
             textAlign: 'center',
             border: "0.5vh solid black",
             borderRadius: "25px",
             boxShadow: "3px 3px white",
-            margin: "-1vh 10vw auto 0vw",
+            margin: "-2vh 10vw auto 0vw",
             width: "12vw",
             height: "6vh",
             fontSize: "3vh"
             }} onClick={() => navigate(-1)}><CiLogout size={"5vh"}/> <b>Logout</b> &nbsp;
             </button>
-            <b style={{color: "white"}}><u>Manager Dashboard</u></b>
-      </h4>      
+            <b style={{color: "white", marginTop: "-5vh", fontSize: "6vh"}}><u>Manager Dashboard</u></b>
+            </h4>
+      </div>      
       {/* <div>
         <GoogleTranslate />
       </div> */}
@@ -399,7 +401,7 @@ const ManagerGUI: React.FC = () => {
             <div>
               {table}
 
-                {selected_report === 1 ? <div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
+                {selected_report === 1 ? <div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
                 <table className='table table-striped w-100'>
                   <thead>
                     <tr>

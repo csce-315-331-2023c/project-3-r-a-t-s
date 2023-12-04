@@ -7,17 +7,17 @@
 
 .header {
     text-align: left;
-    height: 10vh;
+    height: 8vh;
     background-image: url("Images/watercolor-paper-texture.jpg");
 }
 
 .back-button {
-    font-size: 5vh;
+    font-size: 4vh;
     background-color: rgba(23, 20, 20);
     color: white;
     vertical-align: middle;
     width: auto;
-    height: 8vh;
+    height: 6vh;
     margin-right: 10vw;
     margin-left: 5vw;
     border: 1vh solid black;
@@ -26,15 +26,17 @@
 .piada {
     display: inline-block;
     text-decoration: underline;
-    font-size: 8vh;
+    font-size: 6vh;
     font-weight: bold;
     color: white;
+    margin-top: -1vh;
 }
 
 .street-food {
     display: inline-block;
     color: white;
     font-size: 6vh;
+    margin-top: -1vh;
 }
 
 .column {
@@ -49,7 +51,7 @@
     border: 2vh solid rgb(0, 0, 0);
     display: table-cell;
     margin: -10vh 0vw 2vh 0vw;
-    height: 90vh;
+    height: 92vh;
     width: 80vw;
 }
 
@@ -62,7 +64,7 @@
     font-size: 3.5vh;
     height: 19vh;  
     width: 17vw;
-    margin-bottom: 1vh;
+    margin-bottom: 1.5vh;
 }
 
 .order-panel {
@@ -105,6 +107,7 @@
     text-align: left;
     overflow: scroll;
     margin-bottom: 2vh;
+    border-top: 2vh solid black;
 }
 
 .add-to-order {
