@@ -15,6 +15,9 @@ import './App.css';
 import WeatherComponent from './Components/Weather';
 import WeatherCard from './Components/WeatherCard';
 
+import GoogleTranslate from "./Components/GoogleTranslate";
+
+
 const mapContainerStyle = {
     width: '40vw',
     height: '45vh',

@@ -430,7 +430,7 @@ const handleCancelDelete = () => {
       )}
        */}
        <br />
-      <div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+      <div style={{overflow: "scroll", height: "65vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
       {inventoryData && (
         <table className="table table-striped w-100">
           <thead>

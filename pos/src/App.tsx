@@ -28,16 +28,12 @@ const App = () => {
               type="text/css"
             />
           </header>
-          <div
+          <div 
             style={{
-              display: "flex",
-              flexDirection: "row",
-              maxWidth: "30vw",
-              overflowX: "auto",
             }}
           >
             <GoogleTranslate />
-            <TextSizeAdjuster />
+            {/* <TextSizeAdjuster /> */}
           </div>
           <ManagerEmailProvider>
             <div>

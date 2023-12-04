@@ -48,6 +48,7 @@
 
 import React, { useState, useContext } from 'react';
 import { ScaleContext } from './ScaleContext';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 
 const TextSizeAdjuster: React.FC = () => {
   const { scale, setScale } = useContext(ScaleContext);
@@ -56,9 +57,36 @@ const TextSizeAdjuster: React.FC = () => {
   const decreaseSize = () => setScale(Math.max(1, scale - 0.1));
 
   return (
-    <div>
-      <button onClick={increaseSize}>A+</button>
-      <button onClick={decreaseSize}>A-</button>
+    <div className='home' style={{color: "white", border: "4px solid white", height: "6vh", width: "15vw", borderRadius: "25px"}}>
+      <div>
+      <button onClick={decreaseSize} style={{
+        color: "white", 
+        backgroundColor: "rgb(35,31,32,255)", 
+        border: "3px solid white",
+        width: "2.5vw",
+        height: "4.5vh",
+        borderRadius: "20px",
+        }}>
+          <FaMinus />
+        </button>
+
+        <b style={{
+          margin: "0vh 1vw 0vh 1vw",
+          fontSize: "3vh"
+        }}
+        >Zoom</b> 
+
+      <button onClick={increaseSize}style={{
+        color: "white", 
+        backgroundColor: "rgb(35,31,32,255)", 
+        border: "3px solid white",
+        width: "2.5vw",
+        height: "4.5vh",
+        borderRadius: "20px",
+        }}>
+        <FaPlus />
+      </button>
+      </div>
     </div>
   );
 };
