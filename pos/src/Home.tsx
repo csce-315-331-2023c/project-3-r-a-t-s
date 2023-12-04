@@ -51,7 +51,26 @@ const Home : React.FC = () => {
     };
     const stopListening = () => {
         recognition.stop();
+        handleVoiceCommand();
         setListening(false);
+    };
+    const handleVoiceCommand = () => {
+        if (recognizedText.toLowerCase().includes('menu') || recognizedText.toLowerCase() === 'click menu' ) {
+            navigate('MenuBoardGUI');
+        }
+
+        if (recognizedText.toLowerCase().includes('customer') || recognizedText.toLowerCase() === 'customer self service') {
+            navigate('CustomerGUI');
+        }
+
+        if (recognizedText.toLowerCase().includes('cashier') || recognizedText.toLowerCase() === 'cashier pos') {
+            setCashierLogin(true);
+        }
+
+        if (recognizedText.toLowerCase().includes('manager') || recognizedText.toLowerCase() === 'manager gui') {
+            handleGoogleLogin();
+        }
+        
     };
     ////Ends HERE
 
@@ -94,9 +113,7 @@ const Home : React.FC = () => {
         // Cleanup event listener when the component unmounts
         const cleanup = () => {
           window.removeEventListener('message', googleAuthenticationCallback);
-          recognition.stop(); //Added THIS FOR SPEECH API
         };
-    
         return cleanup;
     }, []);
 
@@ -152,7 +169,8 @@ const Home : React.FC = () => {
                 }}> <b> College Station </b></h1>
                 </div>
                 <div>
-                <button onClick={() => navigate('MenuBoardGUI')}
+
+                <button onClick={() => { navigate('MenuBoardGUI') }}
                 style={{
                     verticalAlign: "middle",
                     background: "black",
