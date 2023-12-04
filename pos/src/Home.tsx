@@ -36,6 +36,25 @@ const Home : React.FC = () => {
     const googleLoginWindowRef = useRef<Window | null>(null);
     const {setManagerEmail} = useManagerEmail();
 
+    //Added THIS FOR SPEECH API
+    const [listening, setListening] = useState(false);
+    const [recognizedText, setRecognizedText] = useState('');
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setRecognizedText(transcript);
+    };
+    const startListening = () => {
+        recognition.start();
+        setListening(true);
+    };
+    const stopListening = () => {
+        recognition.stop();
+        setListening(false);
+    };
+    ////Ends HERE
+
     const handleLoginSuccessCashier = (username: string) => {
         navigate('CashierGUI', {state : {LoginUsername : username}});
         setCashierLogin(false);
@@ -75,10 +94,11 @@ const Home : React.FC = () => {
         // Cleanup event listener when the component unmounts
         const cleanup = () => {
           window.removeEventListener('message', googleAuthenticationCallback);
+          recognition.stop(); //Added THIS FOR SPEECH API
         };
     
         return cleanup;
-      }, []);
+    }, []);
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCXTwo6bsK6GtUP8sIAVSEnYuV44AeRFAg',
@@ -111,6 +131,18 @@ const Home : React.FC = () => {
                 <button onClick={() => navigate('CustomerGUI')} className='navigate-buttons'> Customer Self-Service  </button>
                 </h1>
             </div>
+
+            {/* Added For Speech API */}
+            <div>
+                <button onClick={startListening} disabled={listening}>
+                Start Voice Command
+                </button>
+                <button onClick={stopListening} disabled={!listening}>
+                Stop Voice Command
+                </button>
+                <p>Recognized Text: {recognizedText}</p>
+            </div>
+            
 
             <div>
             <div className='home-top-block'>
