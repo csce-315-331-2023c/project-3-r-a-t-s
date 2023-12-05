@@ -344,7 +344,7 @@ const ManagerGUI: React.FC = () => {
             }} onClick={() => navigate(-1)}><CiLogout size={"5vh"}/> <b>Logout</b> &nbsp;
             </button>
             <u><b>PIADA</b></u>
-            <p className='street-food'> &nbsp; ~ Cashier POS ~</p>
+            <p className='street-food'> &nbsp; ~ Manager Dashboard ~</p>
             </h4>
       </div>      
       {/* <div>
