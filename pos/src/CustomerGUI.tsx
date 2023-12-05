@@ -8,6 +8,7 @@ import axios, {AxiosError} from 'axios';
 import './App.css';
 import TextSizeAdjuster from "./Components/TextAdjuster";
 import { BsFillTrashFill } from 'react-icons/bs';
+import { FaHome } from 'react-icons/fa';
 
 interface CustomerProps {
     startListening: () => void;
@@ -18,6 +19,8 @@ interface CustomerProps {
 const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
     //Speech API Starts Here
+
+    const [creatingBYO, setCreatingBYO] = useState(false);
     const handleVoiceCommand = () => {
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
             navigate('/');
@@ -191,14 +194,25 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         if (recognizedText.toLowerCase().includes('all')) {
             removeAll();
         }
-        else {
-            // delete specific item in order
-        }
     }
 
     if (recognizedText.toLowerCase().includes('pay') || recognizedText.toLowerCase().includes('complete') || recognizedText.toLowerCase().includes('finished')) {
         addorder();
     }
+
+
+    if (recognizedText.toLowerCase().includes("create byo")) {
+        setCreatingBYO(true);
+    }
+
+
+    if ((recognizedText.toLowerCase().includes("finished") || recognizedText.toLowerCase().includes("complete")) && recognizedText.toLowerCase().includes("byo")) {
+        setCreatingBYO(false);
+    }
+
+
+
+    
     };
     useEffect(() => {
         handleVoiceCommand();
@@ -434,7 +448,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         {/* className={selectedSize === 'Penne' ? 'selectedButton' : 'normalButton'}> Penne </button> */}
                 </h3>
                 </div>
-                
+                 
                 <h3> Protein: 
                     <p>
                         <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
@@ -630,7 +644,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                 <b><u>PIADA</u></b>  ~ Customer Self-Service ~ 
                 {/* <button onClick={() => navigate(-1)} className='navigate-buttons'> <FaHome /> &nbsp; Home </button> */}
-                <button onClick={() => navigate(-1)} className='navigate-buttons'> &nbsp; Home </button>
+                <button onClick={() => navigate(-1)} className='navigate-buttons'><FaHome /> &nbsp; Home </button>
                 <Popup trigger=
                     {<button > Cart </button>} 
                     modal nested >
