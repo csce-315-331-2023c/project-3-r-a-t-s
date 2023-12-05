@@ -91,7 +91,8 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
 
         if (recognizedText.toLowerCase().includes('cashier') || recognizedText.toLowerCase() === 'cashier pos') {
-            handleCashierGoogleLogin();
+            // handleCashierGoogleLogin();
+            setCashierLogin(true);
         }
 
         if (recognizedText.toLowerCase().includes('manager') || recognizedText.toLowerCase() === 'manager gui') {
@@ -118,21 +119,21 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         setCashierLogin(false);
     };
 
-    const handleCheckEmployee = async () => {
-        try {            
-            if (isEmployee.trim().toLowerCase() === 'yes') {
-                setCashierLogin(true);
-            } else if (isEmployee.trim().toLowerCase() === 'no') {
-                alert("Error: Employee Information Not Found!");
-            } 
-        } catch (error) {
-            console.error("Error checking if user is an employee:", error);
-        }
-    };
-    useEffect(() => {
-        // Trigger handleCheckEmployee when isEmployee changes
-        handleCheckEmployee();
-    }, [isEmployee]);
+    // const handleCheckEmployee = async () => {
+    //     try {            
+    //         if (isEmployee.trim().toLowerCase() === 'yes') {
+    //             setCashierLogin(true);
+    //         } else if (isEmployee.trim().toLowerCase() === 'no') {
+    //             alert("Error: Employee Information Not Found!");
+    //         } 
+    //     } catch (error) {
+    //         console.error("Error checking if user is an employee:", error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     // Trigger handleCheckEmployee when isEmployee changes
+    //     handleCheckEmployee();
+    // }, [isEmployee]);
 
     /**
      * Checks if the logged-in user's email belongs to an employee.
@@ -142,24 +143,24 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
      * @memberof Home
      * @returns {Promise<void>}
      */  
-    const check_if_employee = async (email : string) => { 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        //Send Post rquest to Flask API
-        await axios
-        //.post('http://127.0.0.1:5000/api/login_routes/check_if_employee', email, config)
-        .post('https://pos-backend-3c6o.onrender.com/api/login_routes/check_if_employee', email, config)
+    // const check_if_employee = async (email : string) => { 
+    //     const config = {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     };
+    //     //Send Post rquest to Flask API
+    //     await axios
+    //     //.post('http://127.0.0.1:5000/api/login_routes/check_if_employee', email, config)
+    //     .post('https://pos-backend-3c6o.onrender.com/api/login_routes/check_if_employee', email, config)
 
-        .then((response) => {
-            setIsEmployee(response.data.isEmployee);
-        })
-        .catch((error) => {
-            console.error('Error with Checking If User Is Employee:', error);
-        });
-    };
+    //     .then((response) => {
+    //         setIsEmployee(response.data.isEmployee);
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error with Checking If User Is Employee:', error);
+    //     });
+    // };
 
 
     /**
@@ -186,18 +187,18 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
     };
 
-    const cashierGoogleAuthenticationCallback = (event: MessageEvent) => {
-        try {
-            console.log('Received message:', event);
-            if (event.data.event === 'google-auth-success') {
-                // Google authentication successful for cashier, show cashier login popup
-                console.log('Cashier Google authentication success');
-                check_if_employee(event.data.email);
-            }
-        } catch (error) {
-            console.error('Error handling Cashier Google authentication:', error);
-        }
-    };
+    // const cashierGoogleAuthenticationCallback = (event: MessageEvent) => {
+    //     try {
+    //         console.log('Received message:', event);
+    //         if (event.data.event === 'google-auth-success') {
+    //             // Google authentication successful for cashier, show cashier login popup
+    //             console.log('Cashier Google authentication success');
+    //             check_if_employee(event.data.email);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error handling Cashier Google authentication:', error);
+    //     }
+    // };
 
     /**
      * Initiates the Google login process.
@@ -220,22 +221,22 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
             console.error('Error attaching event listener:', error);
         }
     };
-    const handleCashierGoogleLogin = async () => {
-        // Open a new window for Google authentication
-        googleLoginWindowRef.current = window.open('https://pos-backend-3c6o.onrender.com/login', '_blank');
-        try {
-            // Listen for messages from the Google login window
-            window.addEventListener('message', cashierGoogleAuthenticationCallback);
-        } catch (error) {
-            console.error('Error attaching event listener:', error);
-        }
-    };
+    // const handleCashierGoogleLogin = async () => {
+    //     // Open a new window for Google authentication
+    //     googleLoginWindowRef.current = window.open('https://pos-backend-3c6o.onrender.com/login', '_blank');
+    //     try {
+    //         // Listen for messages from the Google login window
+    //         window.addEventListener('message', cashierGoogleAuthenticationCallback);
+    //     } catch (error) {
+    //         console.error('Error attaching event listener:', error);
+    //     }
+    // };
 
     useEffect(() => {
         // Cleanup event listener when the component unmounts
         const cleanup = () => {
           window.removeEventListener('message', googleAuthenticationCallback);
-          window.removeEventListener('message', cashierGoogleAuthenticationCallback);
+        //   window.removeEventListener('message', cashierGoogleAuthenticationCallback);
         };
         return cleanup;
     }, []);
@@ -259,7 +260,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')} /> &nbsp;
                    <b><u>PIADA</u></b> ~ Italian Street Food ~
                 <button onClick={() => handleGoogleLogin()} className='navigate-buttons'> Manager GUI</button>
-                <button onClick={() =>  handleCashierGoogleLogin()} className='navigate-buttons'> Cashier POS </button>
+                <button onClick={() =>  setCashierLogin(true)} className='navigate-buttons'> Cashier POS </button>
                 {/* Login Popup */}
                 {showCashierLogin && (
                     <CashierLoginPopup

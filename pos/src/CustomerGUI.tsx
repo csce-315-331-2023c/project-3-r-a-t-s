@@ -582,6 +582,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
+            username : '0005',
         };
 
         // Set the Content-Type header to application/json
@@ -761,7 +762,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='BYOpanel-buttons'> 
                             <img src='https://images.mypiada.com/piada-one/option/377/roasted-sweet-potatoes-230_2x.jpg' alt='Roasted Sweet Potatoes'/> <span>Roasted Sweet Potato</span> </button>
                         <button onClick={() => handleIngredientSelection('Hummus')} className='BYOpanel-buttons'> 
-                            <img src='https://images.mypiada.com/piada-one/option/350/hummus-230_2x.jpg' alt='Spread of Hummus'/> <span>Hummu</span>s </button>
+                            <img src='https://images.mypiada.com/piada-one/option/350/hummus-230_2x.jpg' alt='Spread of Hummus'/> <span>Hummus</span> </button>
                         <button onClick={() => handleIngredientSelection('Feta')} className='BYOpanel-buttons'> 
                             <img src='https://images.mypiada.com/piada-one/option/385/feta-230_2x.jpg' alt='Feta'/> <span>Feta</span> </button>
                         <button onClick={() => handleIngredientSelection('Mozzarella')} className='BYOpanel-buttons'> 
@@ -1269,20 +1270,21 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         <h3 > <p className='CategoryText'>Other</p>
         <div className='float-container'>
+
             <div className='float-child' >
-                <p>Build Your Own</p>
-                <Popup contentStyle={{width: "1200px"}} trigger=
-                    {<button className='MenuItemButton'> 
-                        <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Grating Cheese on Spaghetti' 
-                        style={{width: "98%", height: "98%"}}/> 
-                    </button>} 
-                    modal nested onClose={main_panel}>
-                    {
-                        <div >
-                        <p>{BYO_Panel}</p>
-                        </div>
-                    }
-                </Popup>
+            <p>Build Your Own</p>
+            <Popup contentStyle={{width: "1200px"}} trigger=
+                {<button className='MenuItemButton'> 
+                    <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Grating Cheese on Spaghetti' 
+                    style={{width: "98%", height: "98%"}}/> 
+                </button>} 
+                modal nested onClose={main_panel}>
+                {
+                    <div >
+                    <p>{BYO_Panel}</p>
+                    </div>
+                }
+            </Popup>
             </div>
             
             <div className='float-child'>
@@ -1348,8 +1350,9 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 </button>} 
                 modal nested>
                 {
-                    <div >
+                    <div style={{ overflowY: "auto", maxHeight: "800px" }}>
                         <h2> Kids Menu </h2>
+
                         <Popup trigger={<button className='BYOpanel-buttons'> <img src='https://images.mypiada.com/piada-one/product/627/185781.jpg' alt='Kids eating pasta'/> <span>Kids Pasta</span>  </button>} position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
                         <div >
                             <button className='BYOpanel-buttons' onClick={() => setKidsProtein("Grilled Chicken")} disabled={kidsProtein === 'Grilled Chicken' ? true : false}> 
