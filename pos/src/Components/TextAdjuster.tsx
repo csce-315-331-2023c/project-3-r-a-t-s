@@ -48,7 +48,7 @@
 
 import React, { useState, useContext } from 'react';
 import { ScaleContext } from './ScaleContext';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 
 const TextSizeAdjuster: React.FC = () => {
   const { scale, setScale } = useContext(ScaleContext);
@@ -67,17 +67,19 @@ const TextSizeAdjuster: React.FC = () => {
         margin: "2vh 0vw 0vh 5.5vw"
         }}>
       
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', width: '100%', fontSize: '35px'}}>
       <button onClick={decreaseSize} style={{
+        flex: 1,
         color: "white", 
-        backgroundColor: "rgb(35,31,32,255)", 
-        border: "3px solid white",
-        width: "2.5vw",
-        height: "4.5vh",
-        borderRadius: "20px",
-        marginRight: "1vw"
+        border: "none",
+        height: "4vh",
+        borderRadius: "40px", 
+        marginTop: "-1.5vw",
+        padding: "0vh 0vh",
+        background: "none",
+        
         }}>
-          <FaMinus />
+          <CiCircleMinus />
         </button>
 
         <b style={{
@@ -86,15 +88,16 @@ const TextSizeAdjuster: React.FC = () => {
         >Zoom</b> 
 
       <button onClick={increaseSize}style={{
+        flex: 1,
         color: "white", 
-        backgroundColor: "rgb(35,31,32,255)", 
-        border: "3px solid white",
-        width: "2.5vw",
-        height: "4.5vh",
-        borderRadius: "20px",
-        marginLeft: "1vw"
+        border: "none",
+        height: "4vh",
+        borderRadius: "40px", 
+        marginTop: "-1.5vw",
+        padding: "0vh 0vh",
+        background: "none",
         }}>
-        <FaPlus />
+        <CiCirclePlus />
       </button>
       </div>
     </div>
