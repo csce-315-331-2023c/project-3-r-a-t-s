@@ -1044,16 +1044,20 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         <h3 > <p className='CategoryText'>Other</p>
         <div className='float-container'>
-            <div className='float-child'>
-            <Popup contentStyle={{width: "1200px"}} trigger=
-                {<button className='MenuItemButton'> Build Your Own </button>} 
-                modal nested onClose={main_panel}>
-                {
-                    <div >
-                    <p>{BYO_Panel}</p>
-                    </div>
-                }
-            </Popup>
+            <div className='float-child' >
+                <p>Build Your Own</p>
+                <Popup contentStyle={{width: "1200px"}} trigger=
+                    {<button className='MenuItemButton'> 
+                        <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Grating Cheese on Spaghetti' 
+                        style={{width: "98%", height: "98%"}}/> 
+                    </button>} 
+                    modal nested onClose={main_panel}>
+                    {
+                        <div >
+                        <p>{BYO_Panel}</p>
+                        </div>
+                    }
+                </Popup>
             </div>
             
             <div className='float-child'>
