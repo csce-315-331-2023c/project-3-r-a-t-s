@@ -23,6 +23,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
     const [creatingBYO, setCreatingBYO] = useState(false);
     const handleVoiceCommand = () => {
+        console.log(recognizedText)
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
             navigate('/');
         }
@@ -53,8 +54,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         let size = "";
         let type = "";
-        let item = "";
-        if (recognizedText.toLowerCase().includes('add')) {
+        if (recognizedText.toLowerCase().includes('add') && !recognizedText.toLowerCase().includes("build your own") && !recognizedText.toLowerCase().includes("sauce") && !recognizedText.toLowerCase().includes("toppings") && !recognizedText.toLowerCase().includes("protein")) {
             if(recognizedText.toLowerCase().includes('small')) {
                 size = "SM"
             }
@@ -124,7 +124,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             else if (recognizedText.toLowerCase().includes('calamari') || recognizedText.toLowerCase().includes('hot') && recognizedText.toLowerCase().includes('peppers')){
                 addorderitem("Calamari & Hot Peppers")
             }
-            else if (recognizedText.toLowerCase().includes('meatballs')){
+            else if (recognizedText.toLowerCase().includes('meatballs') && !recognizedText.toLowerCase().includes("kid")){
                 addorderitem("Meatballs")
             }
             else if (recognizedText.toLowerCase().includes('cookie')){
@@ -179,17 +179,70 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                     addorderitem('Acqua Panna Spring Water');
                 }
             }
-            else if (recognizedText.toLowerCase().includes('')){
-                addorderitem("")
-            }
-            else if (recognizedText.toLowerCase().includes('')){
-                addorderitem("")
-            }
-            else if (recognizedText.toLowerCase().includes('')){
-                addorderitem("")
-            }
-    }
+        }
 
+        let kids: string = ""
+        let kids_protein: string = ""
+        let kids_type: string = ""
+        if (recognizedText.toLowerCase().includes('kids') && recognizedText.toLowerCase().includes('add')) {
+            if (recognizedText.toLowerCase().includes('pasta')) {
+                kids = "Kids Pasta"
+
+                if (recognizedText.toLowerCase().includes('chicken')) {
+                    if(recognizedText.toLowerCase().includes('grilled')) {
+                        kids_protein = "Grilled Chicken"
+                    }
+                    else {
+                        kids_protein = "Crispy Chicken"
+                    }
+                }
+                else {
+                    kids_protein = "Steak"
+                }
+
+                if(recognizedText.toLowerCase().includes('penne')) {
+                    kids_type ="Penne"
+                }
+                else {
+                    kids_type ="Spaghetti"
+                }
+
+                let order = kids + " " + kids_type;
+                setOrder(prevOrder => [...prevOrder, order + ", " + kids_protein]);
+                updatePrice(order);
+                console.log("Added new order item: ", order);
+            }
+            else if (recognizedText.toLowerCase().includes('meatballs')) {
+                kids = "Kids Meatballs"
+
+                if(recognizedText.toLowerCase().includes('penne')) {
+                    kids_type ="Penne"
+                }
+                else {
+                    kids_type ="Spaghetti"
+                }
+
+                let order = kids + " " + kids_type;
+                setOrder(prevOrder => [...prevOrder, order]);
+                updatePrice(order);
+                console.log("Added new order item: ", order);
+            }
+            else if (recognizedText.toLowerCase().includes('chicken fingers')) {
+                addorderitem("Kids Chicken Fingers")
+            }
+
+            if (recognizedText.toLowerCase().includes('milk')) {
+                if (recognizedText.toLowerCase().includes('chocolate')) {
+                    addorderitem("Kids Chocolate Milk")
+                }
+                else {
+                    addorderitem("Kids Low-Fat Milk")
+                }
+            }
+            if (recognizedText.toLowerCase().includes('juice')) {
+                addorderitem("Kids Apple Juice")
+            }
+        }
 
     if (recognizedText.toLowerCase().includes('delete') || recognizedText.toLowerCase().includes('remove')) {
         if (recognizedText.toLowerCase().includes('all')) {
@@ -202,19 +255,163 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     }
 
 
-    if (recognizedText.toLowerCase().includes("create byo")) {
-        setCreatingBYO(true);
+    if (recognizedText.toLowerCase().includes("create") && (recognizedText.toLowerCase().includes("build your own"))) {
+        setCreatingBYO(true)
+        if (recognizedText.toLowerCase().includes("pasta")) {
+            setBYO("Custom Pasta")
+            if (recognizedText.toLowerCase().includes("small")) {
+                setCustomSize("SM")
+            }
+            else {
+                setCustomSize("REG")
+            }
+            if (recognizedText.toLowerCase().includes("penne")) {
+                setCustomType("Penne")
+            }
+            else {
+                setCustomType("Spaghetti")
+            }
+        }
+        if (recognizedText.toLowerCase().includes("piada")) {
+            setBYO("Custom Piada")
+        }
+        if (recognizedText.toLowerCase().includes("salad")) {
+            setBYO("Custom Salad")
+            if (recognizedText.toLowerCase().includes("small")) {
+                setCustomSize("SM")
+            }
+            else {
+                setCustomSize("REG")
+            }
+        }
     }
 
-
-    if ((recognizedText.toLowerCase().includes("finished") || recognizedText.toLowerCase().includes("complete")) && recognizedText.toLowerCase().includes("byo")) {
-        setCreatingBYO(false);
+    if (recognizedText.toLowerCase().includes("protein") && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("sausage")) {
+            setProtein("Italian Sausage")
+        }
+        if (recognizedText.toLowerCase().includes("chicken")) {
+            if (recognizedText.toLowerCase().includes("grilled")) {
+                setProtein("Grilled Chicken")
+            }  
+            else if (recognizedText.toLowerCase().includes("fried")) {
+                setProtein("Hot Fried Chicken")
+            }  
+            else {
+                setProtein("Crispy Chicken")
+            }
+        }
+        if (recognizedText.toLowerCase().includes("meatballs")) {
+            setProtein("Meatballs")
+        }
+        if (recognizedText.toLowerCase().includes("calamari")) {
+            setProtein("Crispy Calamari")
+        }
+        if (recognizedText.toLowerCase().includes("salmon")) {
+            setProtein("Grilled Salmon")
+        }
     }
 
+    if (recognizedText.toLowerCase().includes("sauce") && byo !== "Custom Salad"  && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("marinara")) {
+            setSauce("Marinara Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("alfredo")) {
+            setSauce("Alfredo Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("diavolo")) {
+            setSauce("Diavolo Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("pesto")) {
+            setSauce("Basil Pesto Sauce")
+        }
+    }
+    if (recognizedText.toLowerCase().includes("sauce") && byo === "Custom Salad"  && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("parmesan")) {
+            setSauce("Creamy Parmesan Suace")
+        }
+        if (recognizedText.toLowerCase().includes("lemon")) {
+            setSauce("Lemon Basil Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("caesar")) {
+            setSauce("Classic Caesar Dressing")
+        }
+        if (recognizedText.toLowerCase().includes("vinegar")) {
+            setSauce("Oil & Vinegar Dressing")
+        }
+        if (recognizedText.toLowerCase().includes("ranch")) {
+            setSauce("Spicy Ranch Dressing")
+        }
+        if (recognizedText.toLowerCase().includes("harissa")) {
+            setSauce("Yogurt Harissa Dressing")
+        }
+    }
 
+    if (recognizedText.toLowerCase().includes("topping")  && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("cucumber")) {
+            handleIngredientSelection("Cucumbers")
+        }
+        if (recognizedText.toLowerCase().includes("tomatoes")) {
+            handleIngredientSelection("Bruschetta Tomatoes")
+        }
+        if (recognizedText.toLowerCase().includes("onions")) {
+            handleIngredientSelection("Pickled Red Onions")
+        }
+        if (recognizedText.toLowerCase().includes("arugula")) {
+            handleIngredientSelection("Arugula")
+        }
+        if (recognizedText.toLowerCase().includes("spinach")) {
+            handleIngredientSelection("Spinach")
+        }
+        if (recognizedText.toLowerCase().includes("greens")) {
+            handleIngredientSelection("Chopped Greens")
+        }
+        if (recognizedText.toLowerCase().includes("potatoe")) {
+            handleIngredientSelection("Sweet Potatoes")
+        }
+        if (recognizedText.toLowerCase().includes("hummus")) {
+            handleIngredientSelection("Hummus")
+        }
+        if (recognizedText.toLowerCase().includes("feta")) {
+            handleIngredientSelection("Feta")
+        }
+        if (recognizedText.toLowerCase().includes("mozzarella")) {
+            handleIngredientSelection("Mozzarella")
+        }
+        if (recognizedText.toLowerCase().includes("parmesan")) {
+            handleIngredientSelection("Parmesan")
+        }
+        if (recognizedText.toLowerCase().includes("peppers")) {
+            handleIngredientSelection("Sweet & Spicy Peppers")
+        }
+        if (recognizedText.toLowerCase().includes("strawberries")) {
+            handleIngredientSelection("Strawberries")
+        }
+        if (recognizedText.toLowerCase().includes("bacon") || recognizedText.toLowerCase().includes("pancetta")) {
+            handleIngredientSelection("Bacon")
+        }
+        if (recognizedText.toLowerCase().includes("broccoli")) {
+            handleIngredientSelection("Broccoli")
+        }
+        if (recognizedText.toLowerCase().includes("corn") ||recognizedText.toLowerCase().includes("tomato") ) {
+            handleIngredientSelection("Sweet Corn & Tomato")
+        }
+        if (recognizedText.toLowerCase().includes("avocado")) {
+            handleIngredientSelection("Avocado")
+        }
+    }
 
-    
+    if (recognizedText.toLowerCase().includes("clear") && recognizedText.toLowerCase().includes("build your own")) {
+        clearBYOSelections();
+    }
+
+    if (recognizedText.toLowerCase().includes("add") && recognizedText.toLowerCase().includes("build your own")) {
+        if (byo.length !== 0 && protein.length !== 0 && sauce.length !== 0 && selectedIngredients.length !== 0) {
+            addBYOToOrder(); 
+        }
+    }
     };
+
     useEffect(() => {
         handleVoiceCommand();
     }, [recognizedText]);
@@ -320,6 +517,20 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setSelectedIngredients([]); // Clear selected ingredients
         main_panel();   // exits to main BYO panel after adding BYO item to order
     }
+
+    useEffect(() => {
+        console.log(byo)
+        console.log(protein)
+        console.log(sauce)
+        console.log(selectedIngredients)
+        console.log(customType)
+        console.log(customSize)
+
+        if (byo.length !== 0 && protein.length !== 0 && sauce.length !== 0 && selectedIngredients.length !== 0 && creatingBYO) {
+            // addBYOToOrder(); 
+            setCreatingBYO(false);
+        }
+    }, [byo, protein, sauce, selectedIngredients, creatingBYO])
 
     /**
      * Effect hook to update custom item details for Kids BYO based on user selections.
