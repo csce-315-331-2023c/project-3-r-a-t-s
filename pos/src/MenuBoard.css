@@ -13,13 +13,12 @@
   }
 
   .menu-bottom-bar {
+    position: sticky;
     height: 5vh;
-    width: 100vw;
+    width: 100%;
     background-color: rgb(35,31,32,255);
     color: white;
     text-align: left;
-    position: fixed;
-    bottom: 0%;
   }
 
   .menu-basic-div {

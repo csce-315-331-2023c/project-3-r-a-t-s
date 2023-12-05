@@ -7,6 +7,7 @@ import { FaBagShopping } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import './MenuBoard.css'
 import { url } from 'inspector';
+import axios from 'axios';
 
 /**
  * Props for the MenuBoardGUI component.
@@ -69,6 +70,41 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
     }, [recognizedText]);
     ////Ends HERE
 
+    
+    const [newItems, setNewitems] = useState<string[]>([]);
+    const [ingredients, setIngredients] = useState<string[][]>([]);
+    const [prices, setPrices] = useState<string[]>([]);
+
+    useEffect(() => {
+        getNewItemIngredients();
+    }, [])
+
+    /*
+    *   Fetches New Menu items and their corresponding ingredients
+    */
+    const getNewItemIngredients = () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Client-Type': 'cashier'
+            },
+        };
+        axios
+        //   .post('http://127.0.0.1:5000/api/cashier/get_new_menu_items_ingredients', config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_new_menu_items_ingredients`, config)
+        .then((response) => {
+            console.log(response.data.data);
+            setNewitems(response.data.data);
+            console.log(response.data.ingredients);
+            setIngredients(response.data.ingredients);
+            console.log(response.data.prices);
+            setPrices(response.data.prices);
+        })
+        .catch((error) => {
+            console.error('Failed to get ingredients: ', error);
+        });
+    }
+
     return (
         <div className='menu-board'>
             <div className='menu-home-top-bar'>
@@ -83,14 +119,13 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             </div> 
 
             <div className='menu-bottom-bar'>
-                <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh"}}>
+                <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh",}}>
                 <IoMdCheckmarkCircleOutline/> Guest Favorite &nbsp;&nbsp;
                 <GiFireBowl/> Spicy &nbsp;&nbsp;
                 <LuVegan/> Vegan &nbsp;&nbsp;
                 <LuWheatOff/> Gluten Free
                 </h3>
             </div>
-            <br />
 
             {/* Piadas */}
             <h2 style={{fontSize: "5vh", color: "white"}}> <b><u>Hand-Rolled Piadas</u></b></h2>
@@ -503,9 +538,17 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             Buttermilk marinated crispy chicken tenders served with a side of ketchup
         </p>
         <br />
-
         </div>
-
+        </div>
+        
+        <div className='menu-basic-div' style={{width: "50vw"}}>
+            <h3><b><u>Seasonal & New Menu Items!</u></b></h3>
+            <img src="https://mypiada.com/assets/our-story-photo-a48b688db804609613306f4e349ac3d098498bd25670d64dfacaa27084b0686e.png" alt="A Piada chef sharpening his knives." 
+            style={{width: "30vw"}}/>
+            {newItems.map((item, index) => (
+                <div><h4>{item} ${prices.at(index)}
+                </h4> {ingredients.at(index)?.join(", ")} <br /></div>
+            ))}
         </div>
 
             <br /><br /><br /><br />

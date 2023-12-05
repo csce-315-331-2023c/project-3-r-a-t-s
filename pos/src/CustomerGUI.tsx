@@ -1048,7 +1048,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         
         <div>    
         <h3> <p className='CategoryText'>Pasta</p>
-        <p>
+        <div>
         <div className='float-container'>
             <div className='float-child'>
                 <p>Carbonara</p>
@@ -1139,7 +1139,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <p className='IngredientText'>Pasta, housemade tomato sauce, grated parmesan</p>
             </div>
         </div>
-        </p>
+        </div>
         </h3>
 
         <h3 > <p className='CategoryText'>Piadas</p>  
@@ -1190,7 +1190,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         </h3>
 
         <h3 > <p className='CategoryText'>Salad</p> 
-        <p>
+        <div>
         <div className='float-container'>
           <div className='float-child'>
           <p>Deluxe Caeser</p>
@@ -1263,7 +1263,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             roasted broccoli, cucumber salad, pickled red onions, yogurt harissa</p>
             </div>
         </div>
-        </p>
+        </div>
         </h3>
       
 
