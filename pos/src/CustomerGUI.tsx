@@ -701,17 +701,17 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <p> 
                     <button onClick={() => setSauce('Basil Pesto Sauce')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/375/fresh-basil-pesto-230_2x.jpg' alt='Basil Pesto Sauce'/> <span>Basil Pesto(Cold)</span> </button>
-                    <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/343/creamy-parmesan-230_2x.jpg' alt='Creamy parmesan'/> <span>Creamy Parmesan(Cold)</span> </button>
-                    <button onClick={() => setSauce('Lemon Basil Dressing')} className='custom-select-buttons'>
+                    <button onClick={() => setSauce('Lemon Basil Dressing')} className='BYOpanel-buttons'>
                         <img src='https://images.mypiada.com/piada-one/option/346/lemon-basil-dressing-230_2x.jpg' alt='Lemon Basil Dressing'/> <span>Lemon Basil Dressing(Cold)</span> </button>
-                    <button onClick={() => setSauce('Classic Caesar Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Classic Caesar Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/342/caesar-dressing-230_2x.jpg' alt='Caesar Dressing'/> <span>Caesar Dressing</span> </button>
-                    <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/347/oil-and-vinegar-230_2x.jpg' alt='Oil and Vinegar'/><span>Oil & Vinegar(Cold)</span> </button>
-                    <button onClick={() => setSauce('Spicy Ranch Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Spicy Ranch Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/348/spicy-ranch-230_2x.jpg' alt='Spicy Ranch'/> <span>Spicy Ranch</span> </button>
-                    <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/345/harissa-and-greek-yogurt-230_2x.jpg' alt='Harissa and Greek Yogurt'/> <span>Yogurt Harissa</span> </button>
                 </p>
             </h3>
