@@ -11,14 +11,6 @@
     height: 8vh;
 }
 
-.BackButton {
-
-}
-
-.CustomerTitle {
-
-}
-
 .PaymentRemoval {
     display: flex;
     flex-direction: row; 
@@ -34,11 +26,18 @@
     border: 3px solid #fff;
     padding-left: 3vw;
     padding-right: 3vw;
-    height: 60vh;
+    height: 70vh;
 }
 
 .float-child {
     width: 25%;
+    float: left;
+    padding: 20px;
+    /* border: 2px solid red; */
+}
+
+.float-child-other {
+    width: 20%;
     float: left;
     padding: 20px;
     /* border: 2px solid red; */
@@ -57,5 +56,13 @@
     color: black;
     font-style: italic;
     font-size: medium;
-    font-size: 3vh;
+    font-size: 2.5vh;
+}
+
+.selectedButton {
+    color:rgb(215, 97, 38);
+}
+
+.normalButton {
+    color:rgb(107, 117, 125);
 }
