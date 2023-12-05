@@ -14,6 +14,11 @@ DB_PARAMS = {
 
 @manager_BP.route('/get_order_history', methods=['POST'])
 def get_order_history():
+    """
+    Fetches order history data based on the specified date range.
+
+    :return: JSON response containing order history data.
+    """
     dates = request.get_json()
     start_date = dates['startDate']
     end_date = dates['endDate']
@@ -102,6 +107,11 @@ def get_order_history():
 
 @manager_BP.route('/get_inventory', methods=['GET'])
 def get_inventory():
+    """
+    Fetches the current inventory.
+
+    :return: JSON response containing the inventory data.
+    """
     try:
         client_type = request.headers.get('X-Client-Type')
         conn = psycopg2.connect(**DB_PARAMS)
@@ -133,6 +143,11 @@ def get_inventory():
 
 @manager_BP.route('/add_inventory', methods=['POST'])
 def add_inventory():
+    """
+    Adds an item to the inventory.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         conn = psycopg2.connect(**DB_PARAMS)
@@ -155,6 +170,11 @@ def add_inventory():
 
 @manager_BP.route('/remove_inventory', methods=['POST'])
 def remove_inventory():
+    """
+    Removes an item from the inventory.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         item_id = data['ingredient_id']
@@ -176,6 +196,11 @@ def remove_inventory():
 
 @manager_BP.route('/edit_inventory', methods=['POST'])
 def edit_inventory():
+    """
+    Edits the quantity of an item in the inventory.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         item_name = data['name']
@@ -201,6 +226,11 @@ def edit_inventory():
 
 @manager_BP.route('/update_inventory_item', methods=['POST'])
 def update_inventory_item():
+    """
+    Updates information for an inventory item.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         item_id = data['id']
@@ -233,6 +263,11 @@ def update_inventory_item():
 
 @manager_BP.route('/get_employee_list', methods=['POST'])
 def get_employee_list():
+    """
+    Fetches a list of employees.
+
+    :return: JSON response containing the employee list.
+    """
 
     employee_info_query = f"SELECT * FROM EMPLOYEE ORDER BY employee_id ASC;"
     # Execute the query and fetch the data
@@ -263,6 +298,11 @@ def get_employee_list():
     
 @manager_BP.route('/add_employee', methods=['POST'])
 def add_employee():
+    """
+    Adds an employee to the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     employee_data = request.get_json()
 
     last_name = employee_data['LastName']
@@ -316,6 +356,11 @@ def add_employee():
 
 @manager_BP.route('/remove_employee', methods=['POST'])
 def remove_employee():
+    """
+    Removes an employee from the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     employee_id = request.get_json()
 
     remove_employee_query = f"DELETE FROM EMPLOYEE where employee_id = %s;"
@@ -334,6 +379,11 @@ def remove_employee():
 
 @manager_BP.route('/update_employee', methods=['POST'])
 def update_employee():
+    """
+    Updates information for an employee in the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     employee_data = request.get_json()
     if not employee_data:
         return jsonify({'error': 'Invalid JSON format'}), 400
@@ -361,6 +411,11 @@ def update_employee():
 
 @manager_BP.route('/get_menu_items', methods=['GET'])
 def get_menu_items():
+    """
+    Fetches a list of menu items with their ingredients.
+
+    :return: JSON response containing the menu items and their ingredients.
+    """
     try:
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
@@ -425,6 +480,11 @@ def get_menu_items():
 
 @manager_BP.route('/add_menu_item', methods=['POST'])
 def add_menu_item():
+    """
+    Adds a menu item to the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         conn = psycopg2.connect(**DB_PARAMS)
@@ -462,6 +522,11 @@ def add_menu_item():
 
 @manager_BP.route('/delete_menu_item', methods=['POST'])
 def delete_menu_item():
+    """
+    Deletes a menu item from the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         id = data['id']
@@ -488,6 +553,11 @@ def delete_menu_item():
 
 @manager_BP.route('/change_menu_item', methods=['POST'])
 def change_menu_item():
+    """
+    Changes information for a menu item in the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     try:
         data = request.get_json()
         item_name = data['name']
@@ -528,6 +598,11 @@ def change_menu_item():
 
 @manager_BP.route('/get_manager_list', methods=['POST'])
 def get_manager_list():
+    """
+    Fetches a list of managers.
+
+    :return: JSON response containing the manager list.
+    """
 
     manager_info_query = f"SELECT * FROM MANAGER ORDER BY manager_id ASC;"
     # Execute the query and fetch the data
@@ -558,6 +633,11 @@ def get_manager_list():
 
 @manager_BP.route('/add_manager', methods=['POST'])
 def add_manager():
+    """
+    Adds a manager to the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     manager_data = request.get_json()
 
     last_name = manager_data['LastName']
@@ -592,6 +672,11 @@ def add_manager():
 
 @manager_BP.route('/remove_manager', methods=['POST'])
 def remove_manager():
+    """
+    Removes a manager from the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     manager_id = request.get_json()
 
     remove_manager_query = f"DELETE FROM MANAGER where manager_id = %s;"
@@ -610,6 +695,11 @@ def remove_manager():
     
 @manager_BP.route('/update_manager', methods=['POST'])
 def update_manager():
+    """
+    Updates information for a manager in the database.
+
+    :return: JSON response indicating the success or failure of the operation.
+    """
     manager_data = request.get_json()
     if not manager_data:
         return jsonify({'error': 'Invalid JSON format'}), 400
@@ -642,6 +732,11 @@ def update_manager():
 
 @manager_BP.route('/get_ingredients', methods=['POST'])
 def get_ingredients():
+    """
+    Fetches a list of ingredients.
+
+    :return: JSON response containing the ingredients list.
+    """
 
     manager_info_query = f"SELECT name FROM inventory ORDER BY name;"
     # Execute the query and fetch the data
@@ -666,6 +761,11 @@ def get_ingredients():
         
 @manager_BP.route('/check_if_admin', methods=['POST'])
 def check_if_admin():
+    """
+    Checks if a manager is an admin.
+
+    :return: JSON response indicating the admin status of the manager.
+    """
     request_data = request.get_json()
     manager_email = request_data.get('email')
 

@@ -17,7 +17,11 @@ DB_PARAMS = {
 
 @cashier_BP.route('/place_order', methods=['POST'])
 def place_order():
-    # Process the order data and update the database
+    """
+    Processes the order data and updates the database with the order details.
+
+    :return: JSON response indicating the success or error of the order placement.
+    """
     try:
         data = request.get_json()
         client_type = request.headers.get('X-Client-Type')
@@ -149,6 +153,12 @@ def place_order():
 
 @cashier_BP.route('/get_price', methods=['POST'])
 def get_price():
+    """
+    Retrieves the price of a menu item from the database.
+
+    :return: JSON response containing the price of the specified menu item.
+    """
+
     menu_item = request.get_json()
 
     query = "SELECT price FROM menu_items WHERE menu_item_name='" + menu_item + "';"
@@ -171,6 +181,11 @@ def get_price():
 
 @cashier_BP.route('/get_new_menu_items', methods=['POST'])
 def get_new_menu_items():
+    """
+    Retrieves a list of new menu items from the database.
+
+    :return: JSON response containing the names of new menu items.
+    """
 
     query = "SELECT menu_item_name FROM menu_items WHERE menu_item_id > 70;"
     
