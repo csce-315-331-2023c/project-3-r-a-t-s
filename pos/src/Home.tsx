@@ -25,7 +25,7 @@ import './App.css';
 import WeatherComponent from './Components/Weather';
 import WeatherCard from './Components/WeatherCard';
 import GoogleTranslate from "./Components/GoogleTranslate";
-
+import axios, {AxiosError} from 'axios';
 
 /**
  * Style for the Google Map container.
@@ -73,7 +73,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
     const [showCashierLogin, setCashierLogin] = useState(false);
     const googleLoginWindowRef = useRef<Window | null>(null);
     const {setManagerEmail} = useManagerEmail();
-
+    const [isEmployee, setIsEmployee] = useState<string>('');
     /**
      * Handles voice commands based on recognized text.
      * @function handleVoiceCommand
@@ -91,7 +91,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
 
         if (recognizedText.toLowerCase().includes('cashier') || recognizedText.toLowerCase() === 'cashier pos') {
-            setCashierLogin(true);
+            handleCashierGoogleLogin();
         }
 
         if (recognizedText.toLowerCase().includes('manager') || recognizedText.toLowerCase() === 'manager gui') {
@@ -118,6 +118,50 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         setCashierLogin(false);
     };
 
+    const handleCheckEmployee = async () => {
+        try {            
+            if (isEmployee.trim().toLowerCase() === 'yes') {
+                setCashierLogin(true);
+            } else if (isEmployee.trim().toLowerCase() === 'no') {
+                alert("Error: Employee Information Not Found!");
+            } 
+        } catch (error) {
+            console.error("Error checking if user is an employee:", error);
+        }
+    };
+    useEffect(() => {
+        // Trigger handleCheckEmployee when isEmployee changes
+        handleCheckEmployee();
+    }, [isEmployee]);
+
+    /**
+     * Checks if the logged-in user's email belongs to an employee.
+     *
+     * @async
+     * @function check_if_employee
+     * @memberof Home
+     * @returns {Promise<void>}
+     */  
+    const check_if_employee = async (email : string) => { 
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        //Send Post rquest to Flask API
+        await axios
+        //.post('http://127.0.0.1:5000/api/login_routes/check_if_employee', email, config)
+        .post('https://pos-backend-3c6o.onrender.com/api/login_routes/check_if_employee', email, config)
+
+        .then((response) => {
+            setIsEmployee(response.data.isEmployee);
+        })
+        .catch((error) => {
+            console.error('Error with Checking If User Is Employee:', error);
+        });
+    };
+
+
     /**
      * Callback function to handle the authentication response from Google login.
      * Redirects to ManagerGUI upon successful authentication.
@@ -142,6 +186,19 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
     };
 
+    const cashierGoogleAuthenticationCallback = (event: MessageEvent) => {
+        try {
+            console.log('Received message:', event);
+            if (event.data.event === 'google-auth-success') {
+                // Google authentication successful for cashier, show cashier login popup
+                console.log('Cashier Google authentication success');
+                check_if_employee(event.data.email);
+            }
+        } catch (error) {
+            console.error('Error handling Cashier Google authentication:', error);
+        }
+    };
+
     /**
      * Initiates the Google login process.
      * Opens a new window for Google authentication and attaches an event listener to handle the response.
@@ -155,11 +212,20 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         // Open a new window for Google authentication
         googleLoginWindowRef.current = window.open('https://pos-backend-3c6o.onrender.com/login', '_blank');
         //googleLoginWindowRef.current = window.open('http://127.0.0.1:5000/login', '_blank');
-        // Attempt to add the event listener
         try {
             //Listen for messages from the Google login window
             window.addEventListener('message', googleAuthenticationCallback);
             console.log('Event listener attached: true');
+        } catch (error) {
+            console.error('Error attaching event listener:', error);
+        }
+    };
+    const handleCashierGoogleLogin = async () => {
+        // Open a new window for Google authentication
+        googleLoginWindowRef.current = window.open('https://pos-backend-3c6o.onrender.com/login', '_blank');
+        try {
+            // Listen for messages from the Google login window
+            window.addEventListener('message', cashierGoogleAuthenticationCallback);
         } catch (error) {
             console.error('Error attaching event listener:', error);
         }
@@ -169,6 +235,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         // Cleanup event listener when the component unmounts
         const cleanup = () => {
           window.removeEventListener('message', googleAuthenticationCallback);
+          window.removeEventListener('message', cashierGoogleAuthenticationCallback);
         };
         return cleanup;
     }, []);
@@ -192,7 +259,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')} /> &nbsp;
                    <b><u>PIADA</u></b> ~ Italian Street Food ~
                 <button onClick={() => handleGoogleLogin()} className='navigate-buttons'> Manager GUI</button>
-                <button onClick={() => setCashierLogin(true)} className='navigate-buttons'> Cashier POS </button>
+                <button onClick={() =>  handleCashierGoogleLogin()} className='navigate-buttons'> Cashier POS </button>
                 {/* Login Popup */}
                 {showCashierLogin && (
                     <CashierLoginPopup
