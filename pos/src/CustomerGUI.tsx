@@ -1138,7 +1138,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         </div>
                         </Popup>
 
-                        <Popup trigger={<button className='BYOpanel-buttons'> <img src='https://images.mypiada.com/piada-one/product/632/185780-wide-sm.jpg' alt='Meatballs and Spaghetti'/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
+                        <Popup trigger={<button className='BYOpanel-buttons'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti'/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
                         <div >
                             <button className='BYOpanel-buttons' onClick={() => setKidsType("Spaghetti")} disabled={kidsType === 'Spaghetti' ? true : false}> 
                             <img src='https://images.mypiada.com/piada-one/option/305/spaghetti-230_2x.jpg' alt='Spaghetti'/> <span>Spaghetti</span> </button>
