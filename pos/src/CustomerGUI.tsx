@@ -715,17 +715,17 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <p> 
                     <button onClick={() => setSauce('Basil Pesto Sauce')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/375/fresh-basil-pesto-230_2x.jpg' alt='Basil Pesto Sauce'/> <span>Basil Pesto(Cold)</span> </button>
-                    <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/343/creamy-parmesan-230_2x.jpg' alt='Creamy parmesan'/> <span>Creamy Parmesan(Cold)</span> </button>
-                    <button onClick={() => setSauce('Lemon Basil Dressing')} className='custom-select-buttons'>
+                    <button onClick={() => setSauce('Lemon Basil Dressing')} className='BYOpanel-buttons'>
                         <img src='https://images.mypiada.com/piada-one/option/346/lemon-basil-dressing-230_2x.jpg' alt='Lemon Basil Dressing'/> <span>Lemon Basil Dressing(Cold)</span> </button>
-                    <button onClick={() => setSauce('Classic Caesar Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Classic Caesar Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/342/caesar-dressing-230_2x.jpg' alt='Caesar Dressing'/> <span>Caesar Dressing</span> </button>
-                    <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/347/oil-and-vinegar-230_2x.jpg' alt='Oil and Vinegar'/><span>Oil & Vinegar(Cold)</span> </button>
-                    <button onClick={() => setSauce('Spicy Ranch Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Spicy Ranch Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/348/spicy-ranch-230_2x.jpg' alt='Spicy Ranch'/> <span>Spicy Ranch</span> </button>
-                    <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='custom-select-buttons'> 
+                    <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='BYOpanel-buttons'> 
                         <img src='https://images.mypiada.com/piada-one/option/345/harissa-and-greek-yogurt-230_2x.jpg' alt='Harissa and Greek Yogurt'/> <span>Yogurt Harissa</span> </button>
                 </p>
             </h3>
@@ -1058,16 +1058,20 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         <h3 > <p className='CategoryText'>Other</p>
         <div className='float-container'>
-            <div className='float-child'>
-            <Popup contentStyle={{width: "1200px"}} trigger=
-                {<button className='MenuItemButton'> Build Your Own </button>} 
-                modal nested onClose={main_panel}>
-                {
-                    <div >
-                    <p>{BYO_Panel}</p>
-                    </div>
-                }
-            </Popup>
+            <div className='float-child' >
+                <p>Build Your Own</p>
+                <Popup contentStyle={{width: "1200px"}} trigger=
+                    {<button className='MenuItemButton'> 
+                        <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Grating Cheese on Spaghetti' 
+                        style={{width: "98%", height: "98%"}}/> 
+                    </button>} 
+                    modal nested onClose={main_panel}>
+                    {
+                        <div >
+                        <p>{BYO_Panel}</p>
+                        </div>
+                    }
+                </Popup>
             </div>
             
             <div className='float-child'>
@@ -1152,7 +1156,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         </div>
                         </Popup>
 
-                        <Popup trigger={<button className='BYOpanel-buttons'> <img src='https://images.mypiada.com/piada-one/product/632/185780-wide-sm.jpg' alt='Meatballs and Spaghetti'/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
+                        <Popup trigger={<button className='BYOpanel-buttons'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti'/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
                         <div >
                             <button className='BYOpanel-buttons' onClick={() => setKidsType("Spaghetti")} disabled={kidsType === 'Spaghetti' ? true : false}> 
                             <img src='https://images.mypiada.com/piada-one/option/305/spaghetti-230_2x.jpg' alt='Spaghetti'/> <span>Spaghetti</span> </button>
