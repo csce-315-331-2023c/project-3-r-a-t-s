@@ -11,6 +11,9 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 
+/**
+ * Represents the structure of weather data received from the OpenWeatherMap API.
+ */
 interface WeatherData {
   main: {
     temp: number;
@@ -35,10 +38,18 @@ interface WeatherData {
   };
 }
 
+/**
+ * Props for the WeatherCard component.
+ */
 interface WeatherCardProps {
   weatherData: WeatherData;
 }
 
+/**
+ * Functional component for displaying weather information in a card.
+ * @param {WeatherCardProps} props - The props containing weather data.
+ * @returns {JSX.Element} The WeatherCard component.
+ */
 const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
   const iconUrl = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`;
 

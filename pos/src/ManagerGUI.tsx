@@ -15,6 +15,12 @@ import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer';
 import { CiLogout } from "react-icons/ci";
 import GoogleTranslate from './Components/GoogleTranslate';
 
+/**
+ * React functional component for the Manager GUI.
+ *
+ * @component
+ * @returns {JSX.Element} JSX element representing the Manager GUI.
+ */
 const ManagerGUI: React.FC = () => {
   const {ManagerEmail} = useManagerEmail();
   const[isAdmin, setIsAdmin] = useState('');
@@ -31,6 +37,13 @@ const ManagerGUI: React.FC = () => {
 
   const navigate = useNavigate();
 
+   /**
+   * Navigates back to the previous page.
+   *
+   * @function goback
+   * @memberof ManagerGUI
+   * @returns {void}
+   */
   const goback = () => {
     navigate(-1);
   }
@@ -58,8 +71,15 @@ const ManagerGUI: React.FC = () => {
   const date_today = date.toISOString().slice(0, 10);
   date.setUTCDate(date.getUTCDate() - 7);
   const date_month_ago = date.toISOString().slice(0, 10);
-  
-  //Check if Email Belongs To Admin
+    
+  /**
+   * Checks if the logged-in user's email belongs to an admin.
+   *
+   * @async
+   * @function check_admin
+   * @memberof ManagerGUI
+   * @returns {Promise<void>}
+   */  
   const check_admin = async () => { 
     const config = {
         headers: {
@@ -88,9 +108,25 @@ const ManagerGUI: React.FC = () => {
   const report_ref1 = useRef(null);
   const report_ref2 = useRef(null);
 
+  /**
+   * Handles changes in the start date for reports.
+   *
+   * @function change_report_start_date
+   * @memberof ManagerGUI
+   * @param {object} e - Event object.
+   * @returns {void}
+   */
   const change_report_start_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     set_report_start_date(e.target.value);
   };
+  /**
+   * Handles changes in the end date for reports.
+   *
+   * @function change_report_end_date
+   * @memberof ManagerGUI
+   * @param {object} e - Event object.
+   * @returns {void}
+   */
   const change_report_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
     set_report_end_date(e.target.value);
   }; 
@@ -102,7 +138,16 @@ const ManagerGUI: React.FC = () => {
     menu_items: number;
   }
   const [productReport, setProductReport] = useState<ProductReportData[]>([]);
-    const generateProductReport = async() => {
+
+  /**
+   * Generates a product report based on the selected date range.
+   *
+   * @async
+   * @function generateProductReport
+   * @memberof ManagerGUI
+   * @returns {Promise<void>}
+   */
+  const generateProductReport = async() => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       // console.log("Invalid Dates selected");
       return;
@@ -150,7 +195,6 @@ const ManagerGUI: React.FC = () => {
   const generateSellsTogetherReport = async() => {
     // query for whatsellstogether report data
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
-      // console.log("Invalid Dates selected");
       return;
     }
     else {
@@ -238,12 +282,26 @@ const ManagerGUI: React.FC = () => {
     }
   };
 
+  /**
+   * Creates the table for the product report.
+   *
+   * @function createProductReportTable
+   * @memberof ManagerGUI
+   * @returns {void}
+   */
   const createProductReportTable = async() => {
     set_selected_report(1);
     generateProductReport();
     setTable([<div></div>]);
   }
-
+  /**
+   * Creates a table displaying pairs and their frequency for the "What Sells Together" report.
+   *
+   * @async
+   * @function createWhatSellsTogetherTable
+   * @memberof ManagerGUI
+   * @returns {Promise<void>}
+   */
   const createWhatSellsTogetherTable = async() => {
     set_selected_report(2);
     setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 
@@ -269,6 +327,14 @@ const ManagerGUI: React.FC = () => {
     </div>]);
   }
 
+  /**
+   * Creates a table displaying excess report data, including ingredient name, amount sold, and current quantity.
+   *
+   * @async
+   * @function createExcessTable
+   * @memberof ManagerGUI
+   * @returns {Promise<void>}
+   */
   const createExcessTable =async () => {
     set_selected_report(3);
     setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
@@ -296,6 +362,14 @@ const ManagerGUI: React.FC = () => {
             </div>]);
   }
 
+  /**
+   * Creates a table displaying restock report data, including item name, quantity, and threshold.
+   *
+   * @async
+   * @function createRestockTable
+   * @memberof ManagerGUI
+   * @returns {Promise<void>}
+   */
   const createRestockTable = async() => {
     set_selected_report(4);
     setTable([<div style={{overflow: "scroll", height: "60vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}> 

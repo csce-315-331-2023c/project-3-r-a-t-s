@@ -10,21 +10,33 @@ import { FiSave } from "react-icons/fi";
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import { Dispatch, SetStateAction} from 'react';
 
+/**
+ * Interface for Popup component props.
+ */
 interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
 }
 
+/**
+ * Interface for Admin component props.
+ */
 interface AdminProps {
     isAdmin: string;
     setIsAdmin: React.Dispatch<React.SetStateAction<string>>;
-  }
+}
 
+/**
+ * Interface for Employee component props.
+ */
 interface EmployeeProps {
     adminProps: AdminProps;
 }
   
+/**
+ * Popup component for displaying confirmation popups.
+ */
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
         <div className="EmployeeDeletePopup">
@@ -39,6 +51,9 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
+/**
+ * EmployeeComponent responsible for managing employees.
+ */
 const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
     console.log("Employe Admin State (Employee.tsx) : ", adminProps.isAdmin);
 
@@ -48,6 +63,9 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
 
     const [query, setQuery] = useState(''); 
 
+    /**
+     * Interface for storing employee data.
+     */
     interface EmployeeData {
         employee_id: number;
         first_name: string;
@@ -58,7 +76,10 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         username: string;
         password: string;
     }
-    
+
+    /**
+     * Interface for adding a new employee.
+     */
     interface AddEmployee {
         FirstName: string;
         LastName: string;
@@ -85,6 +106,11 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
     const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', ManagerID: '', Password: '',});
     const [errorManagerID, setErrorManagerID] = useState<string>('');
 
+    /**
+     * Handles input change for adding a new employee.
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+     * @param {keyof AddEmployee} fieldName - The field name being modified.
+     */
     const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddEmployee) => {
         const { value } = e.target;
         setNewEmployee((prevNewEmployee) => ({ ...prevNewEmployee, [fieldName]: value }));
@@ -93,16 +119,27 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
     const [employeeToDeleteId, setEmployeeToDeleteId] = useState<number>(0);
     const [showPopup, setShowPopup] = useState(false);
 
+    /**
+     * Handles the click event for deleting an employee.
+     * @param {number} employeeId - The ID of the employee to be deleted.
+     */
     const handleDeleteClick = (employeeId: number) => {
         setEmployeeToDeleteId(employeeId);
         setShowPopup(true);
     };
 
+    /**
+     * Handles the cancelation of the employee deletion.
+     */
     const handleCancelDelete = () => {
         setEmployeeToDeleteId(0);
         setShowPopup(false);
     };
 
+    
+    /**
+     * Handles the deletion of an employee by sending request to backend.
+     */
     const handleDeleteEmployee = async () => {
         if (employeeToDeleteId !== 0) {
             const employeeId = employeeToDeleteId;
@@ -121,7 +158,9 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         }
     };
 
-    // Function to Generate Employees' Information
+    /**
+     * Generates employee information by sending a request to the backend API.
+     */
     const generate_employee_info = async () => {
         const config = {
             headers: {
@@ -141,7 +180,9 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         })
     };  
 
-    //Function To Add Employee
+    /**
+     * Adds a new employee by sending a request to the backend API.
+     */    
     const add_employee = async () => { 
         const config = {
             headers: {
@@ -170,7 +211,10 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         });
     };
 
-    //Function to Remove Employee
+    /**
+     * Removes an employee by sending a request to the backend API.
+     * @param {number} employeeId - The ID of the employee to be removed.
+     */    
     const remove_employee = async (employeeId : number) => { 
         const config = {
             headers: {
@@ -188,7 +232,11 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
             console.error('Error with Removing Employee:', error);
         });
     };
-    //Function to Remove Employee
+
+    /**
+     * Updates an existing employee's information by sending a request to the backend API.
+     * @param {number} employeeId - The ID of the employee to be updated.
+     */
     const update_employee = async (employeeId : number) => { 
         const config = {
             headers: {
@@ -211,6 +259,11 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         });
     };
 
+    /**
+     * Handles the submission of a new employee by adding them to the backend API.
+     * Additionally, updates the employee list and resets input fields on successful submission.
+     * @param {AddEmployee} newEmployee - The new employee's data to be added.
+     */
     const handleSubmitNewEmployee = async (newEmployee: AddEmployee) => {
         try {
             await add_employee();
@@ -236,15 +289,25 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         }
     };
 
-    // Function to add a new row for employee
+    /**
+     * Displays input fields for adding a new employee when the "Add Employee" button is clicked.
+     * @param {React.MouseEvent<HTMLButtonElement>} e - The click event.
+     */    
     const handleAddRow = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowInputFields(true);
     };
-    // Function to delete the new row for new employee
+
+    /**
+     * Cancels the addition of a new employee and hides the input fields.
+     */    
     const handleCancelRow = () => {
         setShowInputFields(false);
     };
-    
+
+    /**
+     * Handles the click event for editing an employee.
+     * @param {number} employeeId - The ID of the employee to be edited.
+     */
     const handleEdit = (employeeId: number) => {
         setEditingEmployeeId(employeeId);
         const employeeToEdit = employeeList.find((employee) => employee.employee_id === employeeId);
@@ -259,6 +322,12 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
           });
         }
     };
+
+    /**
+     * Handles the save edit event for an edited employee.
+     * @param {number} employeeId - The ID of the employee being edited.
+     * @param {EditEmployee} editedData - The edited data for the employee.
+     */
     const handleSaveEdit = async (employeeId: number, editedData : EditEmployee) => {
         try {
             await update_employee(employeeId);
@@ -277,6 +346,10 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         }
     };
 
+    /**
+     * Handles the cancel edit event for an edited employee.
+     * @param {number} employeeId - The ID of the employee being edited.
+     */
     const handleCancelEdit = async (employeeId: number) => {
         try {
             await generate_employee_info();

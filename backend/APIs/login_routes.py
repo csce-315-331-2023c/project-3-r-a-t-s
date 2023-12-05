@@ -15,6 +15,12 @@ DB_PARAMS = {
 
 @login_BP.route('/check_cashier_login', methods=['POST'])
 def check_cashier_login():
+    """
+    Checks the login credentials for a cashier against the database.
+
+    :return: JSON response indicating the success or failure of the login attempt.
+    """
+    
     login_info = request.get_json()
 
     username = login_info['username']

@@ -50,12 +50,25 @@ import React, { useState, useContext } from 'react';
 import { ScaleContext } from './ScaleContext';
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 
+/**
+ * Adjusts the text size using the ScaleContext scale value.
+ * @returns {JSX.Element} The React component for text size adjustment.
+ */
 const TextSizeAdjuster: React.FC = () => {
   const { scale, setScale } = useContext(ScaleContext);
 
+  
+  /**
+   * Increases the text size by updating the scale.
+   */
   const increaseSize = () => setScale(scale + 0.1);
-  const decreaseSize = () => setScale(Math.max(1, scale - 0.1));
 
+  /**
+   * Decreases the text size by updating the scale.
+   */
+  const decreaseSize = () => setScale(Math.max(1, scale - 0.1));
+  
+  // Render the component with buttons for increasing and decreasing text size
   return (
     <div className='home' 
       style={{

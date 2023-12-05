@@ -16,6 +16,11 @@ DB_PARAMS = {
 
 @reports_BP.route('/WhatSellsTogether', methods = ['POST'])
 def WhatSellsTogether():
+    """
+    Generates a report of menu items that are frequently sold together based on orders within a specified date range.
+
+    :return: JSON response containing pairs of menu items and their frequency of being sold together.
+    """
     dates = request.get_json()
     start_date = dates['startDate']
     end_date = dates['endDate']
@@ -61,6 +66,11 @@ def WhatSellsTogether():
 
 @reports_BP.route('/get_product_report', methods = ['POST'])
 def get_product_report():
+    """
+    Generates a report of menu items and their sales count within a specified date range.
+
+    :return: JSON response containing the product sales report.
+    """
     data = request.get_json()
     start_date = data['startDate']
     end_date = data['endDate']
@@ -91,6 +101,11 @@ def get_product_report():
 
 @reports_BP.route('/get_restock_report', methods = ['POST'])
 def get_restock_report():
+    """
+    Generates a report of inventory items that need restocking.
+
+    :return: JSON response containing the restock report.
+    """
     # dates = request.get_json()
     # start_date = dates['startDate']
     # end_date = dates['endDate']
@@ -127,6 +142,11 @@ def get_restock_report():
 
 @reports_BP.route('/get_excess_report', methods = ['POST'])
 def get_excess_report():
+    """
+    Generates a report of ingredients with excess quantity compared to sales within a specified date range.
+
+    :return: JSON response containing the excess report.
+    """
     try:
         dates = request.get_json()
         start_date = dates['startDate']

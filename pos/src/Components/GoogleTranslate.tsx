@@ -1,10 +1,15 @@
-// GoogleTranslate.tsx
 import React, { useEffect } from 'react';
 
+/**
+ * GoogleTranslate component to render the Google Translate widget.
+ * @returns {JSX.Element} The React component.
+ */
 const GoogleTranslate: React.FC = () => {
   var duplicate_google_translate_cntr = 0;
   useEffect(() => {
-    // Function to initialize the Google Translate widget
+    /**
+     * Function to initialize the Google Translate widget.
+     */    
     const googleTranslateElementInit = () => {
       // if (duplicate_google_translate_cntr > 0) {
       //   return;
@@ -36,7 +41,9 @@ const GoogleTranslate: React.FC = () => {
     // Set up the callback function
     (window as any).googleTranslateElementInit = googleTranslateElementInit;
 
-    // Clean up function to remove the script when the component unmounts
+    /**
+     * Clean up function to remove the script when the component unmounts.
+     */    
     return () => {
       document.body.removeChild(script);
       console.log('Google Translate widget removed');

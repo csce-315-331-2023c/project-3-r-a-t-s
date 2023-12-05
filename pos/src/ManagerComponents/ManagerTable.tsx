@@ -9,20 +9,44 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
 import { Dispatch, SetStateAction} from 'react';
 
+/**
+ * Props for the Popup component.
+ * @interface
+ * @property {string} message - The message to be displayed in the popup.
+ * @property {() => void} onConfirm - Function to be called on confirm button click.
+ * @property {() => void} onCancel - Function to be called on cancel button click.
+ */
 interface PopupProps {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
 }
 
+/**
+ * Props for the Admin component.
+ * @interface
+ * @property {string} isAdmin - The admin status.
+ * @property {React.Dispatch<React.SetStateAction<string>>} setIsAdmin - Function to set the admin status.
+ */
 interface AdminProps {
     isAdmin: string;
     setIsAdmin: React.Dispatch<React.SetStateAction<string>>;
 }
 
+/**
+ * Props for the Manager component.
+ * @interface
+ * @property {AdminProps} adminProps - The admin props.
+ */
 interface ManagerProps {
     adminProps: AdminProps;
 }
+
+/**
+ * Popup component for confirming actions.
+ * @param {PopupProps} props - The props for the Popup component.
+ * @returns {JSX.Element} The rendered Popup component.
+ */
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
         <div className="EmployeeDeletePopup">
@@ -37,6 +61,11 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     );
 };
 
+/**
+ * ManagerTableComponent for displaying and managing manager information.
+ * @param {ManagerProps} props - The props for the ManagerTableComponent.
+ * @returns {JSX.Element} The rendered ManagerTableComponent.
+ */
 const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
     console.log("ManagerTable.tsx Admin Status", adminProps.isAdmin);
     const [query, setQuery] = useState(''); 
@@ -45,6 +74,17 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         generate_manager_info();
     }, []);
 
+    /**
+     * Data structure for Manager.
+     * @interface
+     * @property {number} manager_id - The manager's ID.
+     * @property {string} last_name - The manager's last name.
+     * @property {string} first_name - The manager's first name.
+     * @property {string} salary - The manager's salary.
+     * @property {string} hours_per_week - The manager's hours per week.
+     * @property {string} email - The manager's email.
+     * @property {string} admin - The manager's admin status.
+     */
     interface ManagerData {
         manager_id: number;
         last_name: string;
@@ -55,6 +95,16 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         admin: string;
     }
 
+     /**
+     * Data structure for adding a new manager.
+     * @interface
+     * @property {string} FirstName - The manager's first name.
+     * @property {string} LastName - The manager's last name.
+     * @property {string} Salary - The manager's salary.
+     * @property {string} Hours - The manager's hours per week.
+     * @property {string} Email - The manager's email.
+     * @property {string} Admin - The manager's admin status.
+     */
     interface AddManager {
         FirstName: string;
         LastName: string;
@@ -64,6 +114,16 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         Admin: string;
     }
 
+    /**
+     * Data structure for editing an existing manager.
+     * @interface
+     * @property {string} FirstName - The manager's first name.
+     * @property {string} LastName - The manager's last name.
+     * @property {string} Salary - The manager's salary.
+     * @property {string} Hours - The manager's hours per week.
+     * @property {string} Email - The manager's email.
+     * @property {string} Admin - The manager's admin status.
+     */
     interface EditManager {
         FirstName: string;
         LastName: string;
@@ -79,6 +139,11 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
     const [editingManagerId, setEditingManagerId] = useState<number | null>(null);
     const [editedData, setEditedData] = useState({FirstName: '', LastName: '', Salary: '', Hours: '', Email: '', Admin: '',});
 
+    /**
+     * Handles input change for adding a new manager.
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+     * @param {keyof AddManager} fieldName - The field name to update in the new manager data.
+     */
     const handleAddInputChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof AddManager) => {
         const { value } = e.target;
         setNewManager((prevNewManager) => ({ ...prevNewManager, [fieldName]: value }));
@@ -87,16 +152,26 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
     const [ManagerToDeleteId, setManagerToDeleteId] = useState<number>(0);
     const [showPopup, setShowPopup] = useState(false);
     
+    /**
+     * Handles the click event to delete a manager.
+     * @param {number} managerId - The ID of the manager to be deleted.
+     */
     const handleDeleteClick = (managerId: number) => {
         setManagerToDeleteId(managerId);
         setShowPopup(true);
     };
 
+    /**
+     * Handles the cancel event for deleting a manager.
+     */
     const handleCancelDelete = () => {
         setManagerToDeleteId(0);
         setShowPopup(false);
     };
 
+     /**
+     * Handles the deletion of a manager.
+     */
     const handleDeleteManager = async () => {
         if (ManagerToDeleteId !== 0) {
             const managerID = ManagerToDeleteId;
@@ -114,6 +189,9 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         }
     };
 
+    /**
+     * Fetches manager information from the server and updates the state.
+     */
     const generate_manager_info = async () => {
         const config = {
             headers: {
@@ -133,7 +211,9 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         })
     };
 
-    //Function To Add Manager
+    /**
+     * Adds a new manager by making a POST request to the server.
+     */    
     const add_manager = async () => { 
         const config = {
             headers: {
@@ -152,7 +232,10 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         });
     };
 
-    //Function to Remove Manager
+    /**
+     * Removes a manager by making a POST request to the server.
+     * @param {number} managerID - The ID of the manager to be removed.
+     */    
     const remove_manager = async (managerID : number) => { 
         const config = {
             headers: {
@@ -171,6 +254,10 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         });
     };
 
+    /**
+     * Updates manager information by making a POST request to the server.
+     * @param {number} managerID - The ID of the manager to be updated.
+     */
     const update_manager = async (managerID : number) => { 
         const config = {
             headers: {
@@ -195,6 +282,10 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         });
     };
 
+    /**
+     * Handles the submission of new manager data.
+     * @param {AddManager} newManager - The data of the new manager to be added.
+     */
     const handleSubmitNewManager = async (newManager: AddManager) => {
         try {
             await add_manager();
@@ -217,15 +308,25 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         }
     };
 
-    // Function to add a new row for Manager
+    /**
+     * Displays input fields to add a new manager row.
+     * @param {React.MouseEvent<HTMLButtonElement>} e - The click event.
+     */
     const handleAddRow = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowInputFields(true);
     };
-    // Function to delete the new row for new Manager
+
+    /**
+     * Cancels adding a new manager row.
+     */
     const handleCancelRow = () => {
         setShowInputFields(false);
     };
     
+    /**
+     * Sets up the editing state for a manager.
+     * @param {number} managerID - The ID of the manager to be edited.
+     */
     const handleEdit = (managerID: number) => {
         setEditingManagerId(managerID);
         const managerToEdit = managerList.find((manager) => manager.manager_id === managerID);
@@ -240,6 +341,12 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
           });
         }
     };
+
+    /**
+     * Saves the edited data for a manager.
+     * @param {number} managerID - The ID of the manager being edited.
+     * @param {EditManager} editedData - The edited data for the manager.
+     */
     const handleSaveEdit = async (managerID: number, editedData : EditManager) => {
 
         try {
@@ -259,6 +366,10 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         }
     };
 
+    /**
+     * Cancels the editing state for a manager.
+     * @param {number} managerID - The ID of the manager being edited.
+     */
     const handleCancelEdit = async (managerId: number) => {
         try {
             await generate_manager_info();

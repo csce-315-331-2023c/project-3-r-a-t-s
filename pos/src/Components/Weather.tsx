@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import WeatherCard from "./WeatherCard";
 
+/**
+ * Represents the structure of weather data received from the OpenWeatherMap API.
+ */
 interface WeatherData {
   main: {
     temp: number;
@@ -26,10 +29,20 @@ interface WeatherData {
   };
 }
 
+/**
+ * Functional component for displaying weather information.
+ */
 const WeatherComponent = () => {
+  /**
+   * State variable to store the weather data.
+   * @type {WeatherData | null}
+   */
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
   useEffect(() => {
+    /**
+     * Fetches weather data from the OpenWeatherMap API.
+     */
     const fetchWeather = async () => {
       const apiKey = "72bd4125242c0475a4f897487a204584";
       const url = `https://api.openweathermap.org/data/2.5/weather?q=College%20Station,TX,USA&appid=${apiKey}&units=imperial`;
@@ -46,8 +59,10 @@ const WeatherComponent = () => {
     fetchWeather();
   }, []);
 
+  // If weather data is not available, display a loading message
   if (!weather) return <div>Loading weather...</div>;
-
+  
+  // Render WeatherCard component with weather data
   return <WeatherCard weatherData={weather} />;
 
   // return (

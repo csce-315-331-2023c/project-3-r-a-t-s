@@ -8,14 +8,34 @@ import { FaHome } from "react-icons/fa";
 import './MenuBoard.css'
 import { url } from 'inspector';
 
+/**
+ * Props for the MenuBoardGUI component.
+ *
+ * @interface MenuProps
+ */
 interface MenuProps {
     startListening: () => void;
     stopListening: () => void;
     recognizedText: string;
 }
 
+/**
+ * Functional component for the Menu Board GUI.
+ *
+ * @component
+ * @param {MenuProps} props - Props for the component.
+ * @returns {JSX.Element}
+ */
 const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
+
+    /**
+     * Handles voice commands based on recognized text.
+     *
+     * @function handleVoiceCommand
+     * @memberof MenuBoardGUI
+     * @returns {void}
+     */
     const handleVoiceCommand = () => {
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
             navigate('/');
