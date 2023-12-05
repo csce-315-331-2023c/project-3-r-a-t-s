@@ -21,7 +21,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             navigate('/');
         }
 
-        if (recognizedText.toLowerCase().includes('menu') || recognizedText.toLowerCase() === 'order online') {
+        if (recognizedText.toLowerCase().includes('menu')) {
             stopListening();
             navigate('/MenuBoardGUI');
         }
