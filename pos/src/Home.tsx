@@ -124,7 +124,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
             <div className='home-top-bar'>
                 <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')} /> &nbsp;
-                   <b>PIADA</b> ~ Italian Street Food ~
+                   <b><u>PIADA</u></b> ~ Italian Street Food ~
                 <button onClick={() => handleGoogleLogin()} className='navigate-buttons'> Manager GUI</button>
                 <button onClick={() => setCashierLogin(true)} className='navigate-buttons'> Cashier POS </button>
                 {/* Login Popup */}
