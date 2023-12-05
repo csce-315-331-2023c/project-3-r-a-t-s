@@ -1,0 +1,40 @@
+.BYOpanel-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.BYOpanel-buttons {
+    position: relative; /* Keep text in the middle */
+    font-size: 30px; /* Adjust the font size */
+    color: black; /* Adjust the text color */
+}
+.BYOpanel-buttons:hover {
+    color: white; /* Change the text color to white on hover */
+}
+
+.BYOpanel-buttons img {
+    width: 20vw; /*Increase Image Size*/
+}
+
+.BYOpanel-buttons::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2); /* Adjust the background color and opacity*/
+}
+
+.BYOpanel-buttons:hover::after {
+    background: rgba(255, 255, 255, 0);
+}
+
+.BYOpanel-buttons span {
+    position: absolute;
+    top: 50%; /* Center the text vertically */
+    left: 50%; /* Center the text horizontally */
+    transform: translate(-50%, -50%); /* Center the text with images */
+}
