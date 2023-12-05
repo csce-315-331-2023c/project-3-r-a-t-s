@@ -20,8 +20,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
             navigate('/');
         }
-
-        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase() === 'customer self service') {
+        if (recognizedText.toLowerCase().includes('order') || recognizedText.toLowerCase().includes('order online') || recognizedText.toLowerCase().includes('customer')) {
             navigate('/CustomerGUI');
         }
         if (recognizedText.toLowerCase().includes('scroll up') ) {

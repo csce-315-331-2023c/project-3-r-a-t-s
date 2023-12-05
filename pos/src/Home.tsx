@@ -46,7 +46,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
             navigate('MenuBoardGUI');
         }
 
-        if (recognizedText.toLowerCase().includes('customer') || recognizedText.toLowerCase() === 'customer self service') {
+        if (recognizedText.toLowerCase().includes('customer')) {
             navigate('CustomerGUI');
         }
 
