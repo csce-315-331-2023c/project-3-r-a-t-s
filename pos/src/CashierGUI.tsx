@@ -16,7 +16,6 @@ import { CiLogout } from "react-icons/ci";
 const CashierGUI = () => {
     const location = useLocation();
     const LoginUsername = location.state && location.state.LoginUsername;
-    console.log("CashierGUI Username", LoginUsername);
 
     /**
      * Effect hook to fetch new menu items when the component mounts.

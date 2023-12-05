@@ -65,6 +65,14 @@ const InventoryComponent = () => {
     fetchInventory();
   }, []);
 
+  // useEffect to load inventory data from local storage on component mount
+  useEffect(() => {
+    const storedInventory = localStorage.getItem('inventoryData');
+    if (storedInventory) {
+      setInventoryData(JSON.parse(storedInventory));
+    }
+  }, []);
+
   // State variables for managing component state
   const [showPopup, setShowPopup] = useState(false);
   const [query, setQuery] = useState("");
@@ -222,6 +230,9 @@ const InventoryComponent = () => {
           // console.log(response.data);
           setInventoryData(response.data.items);
           console.log("Successfuly fetched Inventory");
+          
+          // Save the inventory data to local storage
+          localStorage.setItem('inventoryData', JSON.stringify(response.data.items));
         });
     } catch (error) {
       console.error("Failed to fetch inventory:", error);
