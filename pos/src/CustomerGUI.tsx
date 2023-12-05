@@ -6,6 +6,7 @@ import './Customer.css';
 import axios, {AxiosError} from 'axios';
 import './App.css';
 import TextSizeAdjuster from "./Components/TextAdjuster";
+import { BsFillTrashFill } from 'react-icons/bs';
 
 interface CustomerProps {
     startListening: () => void;
@@ -44,6 +45,159 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             window.scrollTo(0, document.body.scrollHeight);
             startListening();
         }  
+
+        let size = "";
+        let type = "";
+        let item = "";
+        if (recognizedText.toLowerCase().includes('add')) {
+            if(recognizedText.toLowerCase().includes('small')) {
+                size = "SM"
+            }
+            else if  (recognizedText.toLowerCase().includes('regular')){
+                size = "REG"
+            }
+
+            if (recognizedText.toLowerCase().includes('spaghetti')) {
+                type = "Spaghetti"
+            }
+            else if (recognizedText.toLowerCase().includes('penne')) {
+                type = "Penne"
+            }
+
+            if (recognizedText.toLowerCase().includes('carbonara')) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Carbonara " + (type.length === 0 ? "Spaghetti" : type))
+            }
+            else if (recognizedText.toLowerCase().includes('diavolo')) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Diavolo " + (type.length === 0 ? "Spaghetti" : type))
+            }
+            else if (recognizedText.toLowerCase().includes('basil') || recognizedText.toLowerCase().includes('pesto')) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Basil Pesto " + (type.length === 0 ? "Spaghetti" : type))
+            }
+            else if (recognizedText.toLowerCase().includes('marinara')) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Marinara " + (type.length === 0 ? "Spaghetti" : type))
+            }
+            else if (recognizedText.toLowerCase().includes('avocado') && recognizedText.toLowerCase().includes('piada')) {
+                addorderitem("Avocado Piada")
+            }
+            else if (recognizedText.toLowerCase().includes('blt')) {
+                addorderitem("BLT Piada")
+            }
+            else if (recognizedText.toLowerCase().includes("chef's") || recognizedText.toLowerCase().includes("favorite")) {
+                addorderitem("Chefs Favorite Piada")
+            }
+            else if (recognizedText.toLowerCase().includes('mediterranean')) {
+                addorderitem("Mediterranean Piada")
+            }
+            else if (recognizedText.toLowerCase().includes('avocado') && (recognizedText.toLowerCase().includes('chop') || recognizedText.toLowerCase().includes('salad'))) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Avocado Chop Salad")
+            }
+            else if (recognizedText.toLowerCase().includes('farmers') || recognizedText.toLowerCase().includes('market')) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Farmers Market Salad")
+            }
+            else if (recognizedText.toLowerCase().includes("deluxe") || recognizedText.toLowerCase().includes("caesar")) {
+                addorderitem((size.length === 0 ? "REG" : size) + " Deluxe Caesar Salad")
+            }
+            else if (recognizedText.toLowerCase().includes('power') || recognizedText.toLowerCase().includes('bowl')) {
+                addorderitem("Power Bowl")
+            }
+        
+            else if (recognizedText.toLowerCase().includes('sweet corn') || recognizedText.toLowerCase().includes('salad')) {
+                addorderitem("Sweet Corn Salad")
+            }
+            else if (recognizedText.toLowerCase().includes('pepperoni piada stick')){
+                addorderitem("Pepperoni Piada Stick")
+            }
+            else if (recognizedText.toLowerCase().includes('parmesan piada stick')){
+                addorderitem("Parmesan Piada Stick")
+            }
+            else if (recognizedText.toLowerCase().includes('garlic dough')){
+                addorderitem("Garlic Dough")
+            }
+            else if (recognizedText.toLowerCase().includes('lobster bisque')){
+                addorderitem("Cup of Lobster Bisque")
+            }
+            else if (recognizedText.toLowerCase().includes('calamari') || recognizedText.toLowerCase().includes('hot') && recognizedText.toLowerCase().includes('peppers')){
+                addorderitem("Calamari & Hot Peppers")
+            }
+            else if (recognizedText.toLowerCase().includes('meatballs')){
+                addorderitem("Meatballs")
+            }
+            else if (recognizedText.toLowerCase().includes('cookie')){
+                if (recognizedText.toLowerCase().includes('chocolate')) {
+                    addorderitem("Chocolate Chunk Cookie")
+                }
+                else if (recognizedText.toLowerCase().includes('caramel')) {
+                    addorderitem("Salted Caramel Cookie")
+                }
+                else {
+                    addorderitem("Chocolate Chunk Cookie")
+                }
+            }
+            else if (recognizedText.toLowerCase().includes('brownie')){
+                addorderitem("Chocolate Brownie")
+            }
+            else if ((recognizedText.toLowerCase().includes('blackberry') || recognizedText.toLowerCase().includes('hibiscus')) && recognizedText.toLowerCase().includes('lemonade')){
+                addorderitem("Blackberry Hibiscus Lemonade")
+            }
+            else if (recognizedText.toLowerCase().includes('soda')){
+                if (recognizedText.toLowerCase().includes('orange')) {
+                    addorderitem('Orange Soda');
+                }
+                else if (recognizedText.toLowerCase().includes('berry')){
+                    addorderitem('Berry Soda');
+                }
+                else {
+                    addorderitem('REG Soft Drink')
+                }
+            }
+            else if (recognizedText.toLowerCase().includes('tea')){
+                if (recognizedText.toLowerCase().includes('peach')) {
+                    addorderitem('Peach Tea');
+                }
+                else {
+                    addorderitem('Lemon Tea');
+                }
+            }
+            else if (recognizedText.toLowerCase().includes('soft') || recognizedText.toLowerCase().includes('drink') || recognizedText.toLowerCase().includes('soda')){
+                if (recognizedText.toLowerCase().includes('regular')) {
+                    addorderitem('REG Soft Drink');
+                }
+                else {
+                    addorderitem('LG Soft Drink');
+                }
+            }
+            else if (recognizedText.toLowerCase().includes('water')){
+                if (recognizedText.toLowerCase().includes('sparkling')) {
+                    addorderitem('San Pellegrino Sparkling Water');
+                }
+                else {
+                    addorderitem('Acqua Panna Spring Water');
+                }
+            }
+            else if (recognizedText.toLowerCase().includes('')){
+                addorderitem("")
+            }
+            else if (recognizedText.toLowerCase().includes('')){
+                addorderitem("")
+            }
+            else if (recognizedText.toLowerCase().includes('')){
+                addorderitem("")
+            }
+    }
+
+
+    if (recognizedText.toLowerCase().includes('delete') || recognizedText.toLowerCase().includes('remove')) {
+        if (recognizedText.toLowerCase().includes('all')) {
+            removeAll();
+        }
+        else {
+            // delete specific item in order
+        }
+    }
+
+    if (recognizedText.toLowerCase().includes('pay') || recognizedText.toLowerCase().includes('complete') || recognizedText.toLowerCase().includes('finished')) {
+        addorder();
+    }
     };
     useEffect(() => {
         handleVoiceCommand();
@@ -82,6 +236,9 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             console.log("Added new order item:", curr_size + " " + curr_item + " " + curr_type);
         }
         else {
+            if (item.length===0) {
+                return;
+            }
             setOrder(order.concat(item)); 
             updatePrice(item);
             console.log("Added new order item:", item);
@@ -113,11 +270,17 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setSelectedIngredients((prevIngredients) => [...prevIngredients, ingredient]);
         console.log("Added new selected ingredient", ingredient);
     }
+    
+    const [showSuccessPanel, setShowSuccessPanel] = useState(false);
+
 
     // Add Order Array to Database
     const addorder = () => {
         console.log("Paying for Order");
-        console.table(order);
+        if (order.length === 0) {
+            return;
+        }
+        // console.table(order);
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
@@ -200,6 +363,15 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     useEffect(() => {
         main_panel();
     }, [])
+
+    const handleDeleteClick = (index : number) => {
+        const temp = [...order]; 
+        temp.splice(index, 1);
+        setOrder(temp);
+        const temp2 = [...prices];
+        temp2.splice(index, 1);
+        setPrices(temp2);
+    }
 
     const pasta_panel = () => {
         Set_BYO_Panel([
@@ -422,13 +594,15 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             </h1>            
         </div> 
 
-        <div>
-            <table className="table table-dark" style={{width:"300px"}}>
+        <h2 style={{width: "50vw"}}>
+        <div >
+            <table className="table table-dark">
             <thead>
                   <tr>
                     <th> # </th>
                     <th> Name </th>
                     <th> Price($) </th>
+                    <th><BsFillTrashFill onClick={removeAll}/></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -437,14 +611,22 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                       <td>{index + 1}</td>
                       <td>{order}</td>
                       <td>{prices.at(index)}</td>
+                      <td>
+                      <BsFillTrashFill onClick={() => handleDeleteClick(index)}/>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-                <button onClick={addorder} > <u>Pay</u>: 
-                ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
-                <button onClick={removeAll}> Remove Items </button> 
-        </div>
+              </div>
+            <button className='pay-button' onClick={addorder}> <u>Pay</u>: 
+            ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
+            {showSuccessPanel && 
+                <div className='payment-confirmation'>
+                    <h3>Successfuly Placed Order!</h3>
+                </div>
+            }
+        </h2> 
                  
         
         
