@@ -67,11 +67,18 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
  * @returns {JSX.Element} The rendered ManagerTableComponent.
  */
 const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
-    console.log("ManagerTable.tsx Admin Status", adminProps.isAdmin);
     const [query, setQuery] = useState(''); 
 
     useEffect(() => {
         generate_manager_info();
+    }, []);
+
+    // useEffect to load employee data from local storage on component mount
+    useEffect(() => {
+        const storedManagerList = localStorage.getItem('managerList');
+        if (storedManagerList) {
+        setManagerList(JSON.parse(storedManagerList));
+        }
     }, []);
 
     /**
@@ -180,7 +187,6 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                 setManagerList((prevMaanagerList) =>
                     prevMaanagerList.filter((manager) => manager.manager_id !== managerID)
                 );
-                console.log(`Manager with ID ${managerID} deleted`);
             } catch (error) {
                 console.error(`Error deleting Manager with ID ${managerID}:`, error);
             }
@@ -204,7 +210,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_manager_list`, config)
         .then((response) => {
             setManagerList(response.data);
-            console.log("Successfully generated Manager Information");
+            // Save the manager data to local storage
+            localStorage.setItem('managerList', JSON.stringify(response.data));
         })
         .catch((error) => {
             console.error('Error with Generating Manager Information:', error);
@@ -225,7 +232,6 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         // .post('http://127.0.0.1:5000/api/manager/add_manager', newManager, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/add_manager`, newManager, config)
         .then((response) => {
-            console.log(response.data.message); 
         })
         .catch((error) => {
             console.error('Error with Adding Manager:', error);
@@ -247,7 +253,6 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         // .post('http://127.0.0.1:5000/api/manager/remove_manager', managerID, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_manager`, managerID, config)
         .then((response) => {
-            console.log(response.data.message); 
         })
         .catch((error) => {
             console.error('Error with Removing Manager:', error);
@@ -273,8 +278,6 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         // .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
-            console.log("Updated Manager Successfully"); 
-            console.log("ManagerAdmin Status:", response.data.isAdmin);
             adminProps.setIsAdmin(response.data.isAdmin);
         })
         .catch((error) => {
@@ -291,7 +294,6 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
             await add_manager();
 
             await generate_manager_info();
-            console.log("Submit List", managerList);
 
             setNewManager({
                 FirstName: '',

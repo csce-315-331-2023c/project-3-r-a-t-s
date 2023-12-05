@@ -55,10 +55,17 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
  * EmployeeComponent responsible for managing employees.
  */
 const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
-    console.log("Employe Admin State (Employee.tsx) : ", adminProps.isAdmin);
 
     useEffect(() => {
         generate_employee_info();
+    }, []);
+
+    // useEffect to load employee data from local storage on component mount
+    useEffect(() => {
+        const storedEmployeeList = localStorage.getItem('employeeList');
+        if (storedEmployeeList) {
+        setEmployeeList(JSON.parse(storedEmployeeList));
+        }
     }, []);
 
     const [query, setQuery] = useState(''); 
@@ -149,7 +156,6 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
                 setEmployeeList((prevEmployeeList) =>
                     prevEmployeeList.filter((employee) => employee.employee_id !== employeeId)
                 );
-                console.log(`Employee with ID ${employeeId} deleted`);
             } catch (error) {
                 console.error(`Error deleting employee with ID ${employeeId}:`, error);
             }
@@ -173,7 +179,9 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
-            console.log(response.data);
+
+            // Save the employee data to local storage
+            localStorage.setItem('employeeList', JSON.stringify(response.data));
         })
         .catch((error) => {
             console.error('Error with Generating Employee Information:', error);
@@ -194,7 +202,6 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         // .post('http://127.0.0.1:5000/api/manager/add_employee', newEmployee, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/add_employee`, newEmployee, config)
         .then((response) => {
-            console.log(response.data.message); 
             // Check for available_manager_ids in the response
             const ids = response.data.available_manager_ids;
             if (ids) {
@@ -226,7 +233,6 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         // .post('http://127.0.0.1:5000/api/manager/remove_employee', employeeId, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/remove_employee`, employeeId, config)
         .then((response) => {
-            console.log(response.data.message); 
         })
         .catch((error) => {
             console.error('Error with Removing Employee:', error);
@@ -252,7 +258,6 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         // .post('http://127.0.0.1:5000/api/manager/update_employee', requestData, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/update_employee`, requestData, config)
         .then((response) => {
-            console.log(response.data.message); 
         })
         .catch((error) => {
             console.error('Error with Updating Employee Information:', error);
@@ -270,7 +275,6 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
 
             if (availableManagerIds.length === 0) {
                 await generate_employee_info();
-                console.log("Submit List", employeeList);
 
                 setNewEmployee({
                 FirstName: '',
