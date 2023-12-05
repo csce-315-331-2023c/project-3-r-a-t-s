@@ -48,14 +48,27 @@
 
 import React, { useState, useContext } from 'react';
 import { ScaleContext } from './ScaleContext';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 
+/**
+ * Adjusts the text size using the ScaleContext scale value.
+ * @returns {JSX.Element} The React component for text size adjustment.
+ */
 const TextSizeAdjuster: React.FC = () => {
   const { scale, setScale } = useContext(ScaleContext);
 
+  
+  /**
+   * Increases the text size by updating the scale.
+   */
   const increaseSize = () => setScale(scale + 0.1);
-  const decreaseSize = () => setScale(Math.max(1, scale - 0.1));
 
+  /**
+   * Decreases the text size by updating the scale.
+   */
+  const decreaseSize = () => setScale(Math.max(1, scale - 0.1));
+  
+  // Render the component with buttons for increasing and decreasing text size
   return (
     <div className='home' 
       style={{
@@ -67,17 +80,19 @@ const TextSizeAdjuster: React.FC = () => {
         margin: "2vh 0vw 0vh 5.5vw"
         }}>
       
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', width: '100%', fontSize: '35px'}}>
       <button onClick={decreaseSize} style={{
+        flex: 1,
         color: "white", 
-        backgroundColor: "rgb(35,31,32,255)", 
-        border: "3px solid white",
-        width: "2.5vw",
-        height: "4.5vh",
-        borderRadius: "20px",
-        marginRight: "1vw"
+        border: "none",
+        height: "4vh",
+        borderRadius: "40px", 
+        marginTop: "-1.5vw",
+        padding: "0vh 0vh",
+        background: "none",
+        
         }}>
-          <FaMinus />
+          <CiCircleMinus />
         </button>
 
         <b style={{
@@ -86,15 +101,16 @@ const TextSizeAdjuster: React.FC = () => {
         >Zoom</b> 
 
       <button onClick={increaseSize}style={{
+        flex: 1,
         color: "white", 
-        backgroundColor: "rgb(35,31,32,255)", 
-        border: "3px solid white",
-        width: "2.5vw",
-        height: "4.5vh",
-        borderRadius: "20px",
-        marginLeft: "1vw"
+        border: "none",
+        height: "4vh",
+        borderRadius: "40px", 
+        marginTop: "-1.5vw",
+        padding: "0vh 0vh",
+        background: "none",
         }}>
-        <FaPlus />
+        <CiCirclePlus />
       </button>
       </div>
     </div>

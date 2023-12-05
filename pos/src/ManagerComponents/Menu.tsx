@@ -6,6 +6,9 @@ import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 
 import Select, { MultiValue } from 'react-select'
 
+/**
+ * Represents the structure of a menu item.
+ */
 interface MenuItem {
   menu_item_id: number;
   name: string;
@@ -13,12 +16,20 @@ interface MenuItem {
   ingredients: string[]; // New field for ingredients
 }
 
+/**
+ * Represents the properties for the Popup component.
+ */
 interface PopupProps {
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
+/**
+ * Represents a popup for confirming actions.
+ * @param {PopupProps} props - The properties for the Popup component.
+ * @returns {JSX.Element} React component.
+ */
 const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
   return (
       <div className="EmployeeDeletePopup">
@@ -33,6 +44,10 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
   );
 };
 
+/**
+ * Represents the MenuComponent.
+ * @returns {JSX.Element} Returns Rendered Menu Items component.
+ */
 const MenuComponent = () => {
 
   useEffect(() => {
@@ -65,22 +80,35 @@ const MenuComponent = () => {
     },
   };
 
+  /**
+   * Handles the click event for deleting a menu item.
+   * @param {number} id - The ID of the menu item to be deleted.
+   */
   const handleDeleteClick = (id : number) => {
     setDeleteMenuItemID(id);
     fetchMenuItems();
     setShowPopup(true);
   }
 
+  /**
+   * Handles the delete action for a menu item.
+   */
   const handleDelete = () => {
     deleteMenuItem();
     setShowPopup(false);
   }
 
+  
+  /**
+   * Handles the cancel action for a menu item deletion.
+   */
   const handleCancel = () => {
     setShowPopup(false);
   }
 
-  //https://pos-backend-3c6o.onrender.com/api/
+  /**
+   * Fetches the menu items from the server.
+   */  
   const fetchMenuItems = async () => {
     setIsLoading(true);
     try {
@@ -99,7 +127,7 @@ const MenuComponent = () => {
     }
   };
 
-  const handleEdit = (id: number) => {
+const handleEdit = (id: number) => {
     setEditingMenuID(id);
     const menuToEdit = menuData.find((item) => item.menu_item_id === id);
     if (menuToEdit) {
@@ -132,6 +160,9 @@ const handleCancelEdit = async () => {
 
 const [ingredients, setIngredients] = useState([{value: '', label: '' }])
 
+/**
+ * Fetches the inventory (ingredients) from the database.
+ */
 const fetchInventory = async () => {
   try {
     const response = await axios.post(
@@ -148,6 +179,9 @@ const fetchInventory = async () => {
   }
 };
 
+  /**
+   * Adds a new menu item.
+   */
   const addMenuItem = async () => {
     try {
       const response = await axios.post(
@@ -171,6 +205,9 @@ const fetchInventory = async () => {
     }
   };
 
+   /**
+   * Deletes a menu item.
+   */
   const deleteMenuItem = async () => {
     try {
       const response = await axios.post(
@@ -190,6 +227,9 @@ const fetchInventory = async () => {
     setShowPopup(false);
   };
 
+  /**
+   * Updates a menu item.
+   */
   const changeMenuItem = async () => {
     try {
       const response = await axios.post(
@@ -211,6 +251,10 @@ const fetchInventory = async () => {
     }
   };
 
+  /**
+   * Handles the change event for the Select component.
+   * @param {any[] | MultiValue<{ value: string; label: string; }>} e - The selected ingredients.
+   */
   const handleChange = async(e: any[] | MultiValue<{ value: string; label: string; }>) => {
     setSelectedIngredients(e.map((x: { value: any; }) => x.value));
   }

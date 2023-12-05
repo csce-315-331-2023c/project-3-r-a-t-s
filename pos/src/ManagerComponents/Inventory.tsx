@@ -6,6 +6,15 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 
+/**
+ * Represents the structure of an inventory item.
+ * @typedef {Object} Item
+ * @property {number} ingredient_id - The ID of the ingredient.
+ * @property {string} name - The name of the item.
+ * @property {number} quantity - The quantity of the item.
+ * @property {number} price - The price of the item.
+ * @property {string} unit - The unit of measurement for the item.
+ */
 interface Item {
   ingredient_id: number;
   name: string;
@@ -14,14 +23,25 @@ interface Item {
   unit: string;
 }
 
-
+/**
+ * Represents the properties for the Popup component.
+ * @typedef {Object} PopupProps
+ * @property {string} message - The message to display in the popup.
+ * @property {() => void} onConfirm - The callback function when confirming an action.
+ * @property {() => void} onCancel - The callback function when canceling an action.
+ */
 interface PopupProps {
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-  const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
+/**
+ * Popup component for confirming actions.
+ * @param {PopupProps} props - The properties for the Popup component.
+ * @returns {JSX.Element} The rendered Popup component.
+ */
+const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
     return (
         <div className="EmployeeDeletePopup">
                 <div>{message}</div>
@@ -35,16 +55,19 @@ interface PopupProps {
     );
 };
 
-
+/**
+ * InventoryComponent responsible for managing the inventory.
+ * @returns {JSX.Element} The rendered InventoryComponent.
+ */
 const InventoryComponent = () => {
+  // useEffect to fetch inventory data on component mount
   useEffect(() => {
     fetchInventory();
   }, []);
 
+  // State variables for managing component state
   const [showPopup, setShowPopup] = useState(false);
-
   const [query, setQuery] = useState("");
-
   const starterInventory: Item[] = [
     { ingredient_id: 1, name: "Item A", price: 10, quantity: 10, unit: "kg" },
     {
@@ -94,11 +117,18 @@ const InventoryComponent = () => {
 
   const [deleteID, setDeleteID] = useState(-1);
 
+  /**
+   * Function to handle form changes.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered by form changes.
+   */  
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
+  /**
+   * Function to submit form data for adding a new item to the inventory.
+   */  
   const submitForm = async () => {
     try {
       // const response = await axios.post(
@@ -119,11 +149,18 @@ const InventoryComponent = () => {
     }
   };
 
+   /**
+   * Function to handle form changes for removing an item.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered by form changes.
+   */
   const handleRemoveFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setRemoveFormData({ name: value });
   };
 
+  /**
+   * Function to submit form data for removing an item from the inventory.
+   */
   const submitRemoveForm = async () => {
     try {
       // const response = await axios.post(
@@ -140,6 +177,10 @@ const InventoryComponent = () => {
     setShowRemoveForm(false); // Hide the form after submission
   };
 
+  /**
+   * Function to handle form changes for editing an item.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered by form changes.
+   */
   const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditFormData((prevEditFormData) => ({
@@ -148,6 +189,9 @@ const InventoryComponent = () => {
     }));
   };
 
+  /**
+   * Function to submit form data for editing an item in the inventory.
+   */
   const submitEditForm = async () => {
     try {
       // const response = await axios.post(
@@ -164,7 +208,9 @@ const InventoryComponent = () => {
     setShowEditForm(false);
   };
 
-  //hosted backend: https://pos-backend-3c6o.onrender.com/api/cashier/place_order
+  /**
+   * Function to fetch inventory data from the backend.
+   */
   const fetchInventory = async () => {
     setIsLoading(true);
     try {
@@ -183,8 +229,17 @@ const InventoryComponent = () => {
     setIsLoading(false);
   };
 
-  // JavaScript function
-
+  /**
+   * Asynchronously updates the inventory item data.
+   * @param {Object} editedItemData - The edited item data to be updated.
+   * @param {number} editedItemData.id - The ID of the item to be updated.
+   * @param {string} editedItemData.name - The name of the item.
+   * @param {number} editedItemData.quantity - The quantity of the item.
+   * @param {string} editedItemData.unit - The unit of measurement for the item.
+   * @param {number} editedItemData.price - The price of the item.
+   * @param {string} editedItemData.threshold - The threshold for the item.
+   * @returns {Promise<void>} A Promise representing the completion of the update.
+   */
   const update_inventory = async (editedItemData: any) => {
     const config = {
       headers: {
@@ -206,13 +261,9 @@ const InventoryComponent = () => {
     }
   };
 
-  // const handleCancelEdit = () => {
-  //   // if (originalItemData) {
-  //   //   setEditedItemData(originalItemData); // Revert to the original data
-  //   //   setOriginalItemData(null); // Reset originalItemData
-  //   // }
-  //   window.location.reload();
-  // };
+  /**
+   * Cancels the edit operation and reverts to the original data.
+    */
   const handleCancelEdit = () => {
     // Check if there is original data stored
     if (originalItemData) {
@@ -229,6 +280,10 @@ const InventoryComponent = () => {
     }
   };
 
+  /**
+   * Saves the edited data for an item and refreshes the inventory list.
+   * @param {number} itemId - The ID of the item being edited.
+   */
   const handleSaveEdit = async (itemId: number) => {
     try {
       await update_inventory({ id: itemId, ...editedItemData });
@@ -248,7 +303,10 @@ const InventoryComponent = () => {
     }
   };
   
-
+  /**
+   * Initiates the editing of an inventory item.
+   * @param {number} ingredientId - The ID of the ingredient to be edited.
+   */
   const handleEdit = (ingredientId: number) => {
     setEditingItemId(ingredientId);
     // Initialize editedItemData with item's current data
@@ -267,15 +325,25 @@ const InventoryComponent = () => {
     }
   };
 
+  /**
+   * Handles the click event for deleting an inventory item.
+   * @param {number} i - The ID of the item to be deleted.
+   */
   const handleDeleteClick = (i: number) => {
     setDeleteID(i);
     setShowPopup(true);
-};
+  };
 
-const handleCancelDelete = () => {
-  setShowPopup(false);
-};
+  /**
+   * Cancels the deletion operation.
+   */
+  const handleCancelDelete = () => {
+    setShowPopup(false);
+  };
 
+  /**
+   * Deletes an inventory item and refreshes the inventory list.
+   */
   const handleDelete = async () => {
     setShowPopup(true);
     const config = {
@@ -304,6 +372,10 @@ const handleCancelDelete = () => {
 
   };
 
+  /**
+   * Renders the InventoryComponent.
+   * @returns {JSX.Element} The rendered InventoryComponent.
+   */
   return (
     <div>
       <div>

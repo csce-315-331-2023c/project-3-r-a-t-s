@@ -5,12 +5,20 @@ import './Login.css' ;
 import NumericKeypad from './Keypad';
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
+/**
+ * Interface representing the props for the CashierLoginPopup component.
+ */
 interface LoginPopupProps {
     message: string;
     onClose: () => void;
     onLogin: (username: string) => void;
 }
 
+/**
+ * Component for displaying a login popup for cashiers.
+ * @param {LoginPopupProps} props - The properties for the component.
+ * @returns {JSX.Element} The React component.
+ */
 const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogin }) => {
     const [Username, setUsername] = useState('');
     const [Password, setPassword] = useState('');
@@ -20,10 +28,16 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
     const passwordInputRef = useRef<HTMLInputElement>(null); 
     const [currentInput, setCurrentInput] = useState('username');
 
+    /**
+     * Resets login state when username or password changes.
+     */
     useEffect(() => {
         setLoginState('');
     }, [Username, Password]);
 
+    /**
+     * Handles the login process.
+     */
     const handleLogin = () => {
         const requestData = {
             username: Username,
@@ -58,6 +72,10 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
         });
     };
 
+    /**
+     * Handles numeric keypad click events.
+     * @param {number} number - The clicked number.
+     */
     const handleNumericKeypadClick = async (number: number) => {
         if (currentInput === 'username') {
             setUsername((prevValue) => prevValue + number.toString());
@@ -66,6 +84,10 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
         }
     };
 
+    /**
+     * Handles the enter button click event.
+     * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e - The click event.
+     */
     const handleEnterClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         if (currentInput === 'username') {
@@ -78,6 +100,10 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
         }
     };
 
+    /**
+     * Handles the clear button click event.
+     * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e - The click event.
+     */
     const handleClearClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         if (currentInput === 'username' ) {
@@ -87,6 +113,9 @@ const CashierLoginPopup: React.FC<LoginPopupProps> = ({ message, onClose, onLogi
         }
     };
     
+     /**
+     * Renders the CashierLoginPopup component.
+     */
     return (
         <div style={{height: "100vh", width: "100vw", position: "absolute", backgroundColor: "rgba(0, 0, 0, .9)", zIndex: 1000}}>
             <div className="CashierLoginPopup">

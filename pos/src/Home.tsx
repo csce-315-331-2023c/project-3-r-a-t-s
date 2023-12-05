@@ -1,3 +1,13 @@
+/**
+ * React component representing the home page.
+ * @module Home
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.startListening - Function to start voice recognition.
+ * @param {Function} props.stopListening - Function to stop voice recognition.
+ * @param {string} props.recognizedText - Recognized text from voice input.
+ * @returns {JSX.Element} The Home component.
+ */
 import React, {useState, useEffect, useRef} from 'react';
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
@@ -14,33 +24,63 @@ import { useManagerEmail } from './ManagerComponents/ManagerEmailTransfer';
 import './App.css';
 import WeatherComponent from './Components/Weather';
 import WeatherCard from './Components/WeatherCard';
-
 import GoogleTranslate from "./Components/GoogleTranslate";
 
 
+/**
+ * Style for the Google Map container.
+ * @constant
+ * @type {Object}
+ */
 const mapContainerStyle = {
     width: '40vw',
     height: '45vh',
     display: 'table-cell'
 };
 
+/**
+ * Default center location for the map.
+ * @constant
+ * @type {Object}
+ */
 const center = {
     lat: 30.6242291,
     lng: -96.3397041449957, 
 };
 
+
+/**
+ * Props for the Home component.
+ * @typedef {Object} HomeProps
+ * @property {Function} startListening - Function to start voice recognition.
+ * @property {Function} stopListening - Function to stop voice recognition.
+ * @property {string} recognizedText - Recognized text from voice input.
+ */
 interface HomeProps {
     startListening: () => void;
     stopListening: () => void;
     recognizedText: string;
 }
 
+/**
+ * React functional component representing the home page.
+ * @function Home
+ * @param {HomeProps} props - The component props.
+ * @returns {JSX.Element} The Home component.
+ */
 const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
     const [showCashierLogin, setCashierLogin] = useState(false);
     const googleLoginWindowRef = useRef<Window | null>(null);
     const {setManagerEmail} = useManagerEmail();
 
+    /**
+     * Handles voice commands based on recognized text.
+     * @function handleVoiceCommand
+     * @memberof Home
+     * @inner
+     * @returns {void}
+     */
     const handleVoiceCommand = () => {
         if (recognizedText.toLowerCase().includes('menu') || recognizedText.toLowerCase() === 'click menu' ) {
             navigate('MenuBoardGUI');
@@ -64,12 +104,29 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
     }, [recognizedText]);
     ////Ends HERE
 
+    /**
+     * Handles the successful login of the cashier.
+     * Navigates to the CashierGUI and sets the login username.
+     *
+     * @function handleLoginSuccessCashier
+     * @memberof Home
+     * @param {string} username - The username of the logged-in cashier.
+     * @returns {void}
+     */
     const handleLoginSuccessCashier = (username: string) => {
         navigate('CashierGUI', {state : {LoginUsername : username}});
         setCashierLogin(false);
     };
 
-    // Set up a callback function to handle the authentication response
+    /**
+     * Callback function to handle the authentication response from Google login.
+     * Redirects to ManagerGUI upon successful authentication.
+     *
+     * @function googleAuthenticationCallback
+     * @memberof Home
+     * @param {MessageEvent} event - The message event containing authentication information.
+     * @returns {void}
+     */
     const googleAuthenticationCallback = (event : MessageEvent) => {
         try {
             console.log('Received message:', event);
@@ -85,6 +142,15 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
     };
 
+    /**
+     * Initiates the Google login process.
+     * Opens a new window for Google authentication and attaches an event listener to handle the response.
+     *
+     * @async
+     * @function handleGoogleLogin
+     * @memberof Home
+     * @returns {Promise<void>}
+     */
     const handleGoogleLogin = async () => {
         // Open a new window for Google authentication
         googleLoginWindowRef.current = window.open('https://pos-backend-3c6o.onrender.com/login', '_blank');

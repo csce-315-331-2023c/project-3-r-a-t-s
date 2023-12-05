@@ -1,30 +1,53 @@
 import React, { useState, useRef } from 'react';
 import './Login.css';
 
+/**
+ * Interface representing the props for the NumericKeypad component.
+ */
 interface NumericKeypadProps {
   onNumberClick: (number: number) => void;
   onEnterClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onClearClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+/**
+ * Component for displaying a numeric keypad.
+ * @param {NumericKeypadProps} props - The properties for the component.
+ * @returns {JSX.Element} The React component.
+ */
 const NumericKeypad: React.FC<NumericKeypadProps> = ({ onNumberClick, onEnterClick, onClearClick }) => {
   const [value, setValue] = useState('');
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
+  /**
+   * Handles a numeric button click.
+   * @param {number} number - The clicked number.
+   */
   const handleNumberClick = (number: number) => {
     setValue((prevValue) => prevValue + number.toString());
     onNumberClick(number);
   };
 
+  /**
+   * Handles the clear button click.
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e - The click event.
+   */
   const handleClear = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setValue('');
     onClearClick(e);
   };
 
+  /**
+   * Handles the enter button click.
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e - The click event.
+   */
   const handleConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     onEnterClick(e);
   };
 
+   /**
+     * Renders the NumericKeypad component.
+     */
   return (
     <div className="NumericKeypad">
       <div className="NumericKeypad-row">

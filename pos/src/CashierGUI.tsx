@@ -10,11 +10,17 @@ import { BsFillTrashFill, BsFillPencilFill} from 'react-icons/bs';
 import { CiLogout } from "react-icons/ci";
 
 
+/**
+ * Functional component representing the Cashier GUI.
+ */
 const CashierGUI = () => {
     const location = useLocation();
     const LoginUsername = location.state && location.state.LoginUsername;
     console.log("CashierGUI Username", LoginUsername);
 
+    /**
+     * Effect hook to fetch new menu items when the component mounts.
+     */
     useEffect(() => {
         getNewMenuItems();
     }, [])
@@ -30,6 +36,11 @@ const CashierGUI = () => {
     const [order, setOrder] = useState<string[]>([]);
     const [prices, setPrices] = useState<number[]>([]);
 
+    /**
+     * Function to handle selection of various attributes of an item in the order.
+     * @param {number} temp - The attribute type (0: item, 1: size, 2: type, 3: protein).
+     * @param {string} i - The selected attribute value.
+     */
     const makeorderitem = (temp : number, i : string) => {
         if (temp === 0) {
             console.log("Choosing current item: ", i);
@@ -51,7 +62,11 @@ const CashierGUI = () => {
         }
     }
 
-    //Add Order Item Selected to Order Array
+
+    /**
+     * Function to add the selected order item to the order array.
+     * @param {string} i - The selected order item.
+     */    
     const addorderitem = (i : string) => {
         setLoading(true);
         if (i === "") {
@@ -75,13 +90,18 @@ const CashierGUI = () => {
 
     const [showSuccessPanel, setShowSuccessPanel] = useState(false);
 
+     /**
+     * Effect hook to automatically hide the success panel after 3 seconds.
+     */
     useEffect(() => {
         setTimeout(() => {
           setShowSuccessPanel(false);
         }, 3000);
       }, []); 
 
-    // Add Order Array to Database
+    /**
+     * Function to add the order to the database.
+     */    
     const addorder = () => {
         if (order.length === 0) {
             return;
@@ -120,7 +140,10 @@ const CashierGUI = () => {
         setPrices([]);
     }
 
-    // Call to add price of a new Menu Item added to the order to the total order amount
+    /**
+     * Function to update the total order amount with the price of a new menu item.
+     * @param {string} i - The selected menu item.
+     */    
     const updatePrice = (i : string) => {
         console.log(i)
 ;        setLoading(true);
@@ -144,6 +167,9 @@ const CashierGUI = () => {
           });
       };    
 
+    /**
+     * Function to remove all items from the order.
+     */
     const removeAll = () => {
         for (var i = 0; i < order.length; i++) {
             order.pop();
@@ -153,6 +179,10 @@ const CashierGUI = () => {
         console.log("Removed All Order Items.");
     }
 
+    /**
+     * Function to handle the click event for deleting an item from the order.
+     * @param {number} index - The index of the item to be deleted.
+     */
     const handleDeleteClick = (index : number) => {
         const temp = [...order]; 
         temp.splice(index, 1);
@@ -168,6 +198,9 @@ const CashierGUI = () => {
 
     const [newItems, setNewitems] = useState<string[]>([]);
 
+    /**
+     * Function to fetch new menu items from the backend.
+     */
     const getNewMenuItems = () => {
         const config = {
             headers: {
@@ -219,6 +252,9 @@ const CashierGUI = () => {
     const [kidsProtein, setKidsProtein] = useState<string>("");
     const [kidsType, setKidsType] = useState<string>("");
 
+    /**
+     * Effect hook to update custom item details based on user selections.
+     */
     useEffect(() => {
         if (byo === "Custom Pasta") {
             BYO_pasta();
@@ -234,6 +270,9 @@ const CashierGUI = () => {
         }
     }, [byo, customSize, protein, sauce, customType, selectedIngredients])
 
+    /**
+     * Function to clear selections for Build Your Own (BYO) items.
+     */
     const clearBYOSelections = () => {
         setSelectedIngredients([]);
         setBYO("");
@@ -244,6 +283,9 @@ const CashierGUI = () => {
         setCustomName("");
     }
 
+    /**
+     * Effect hook to update custom item details for Kids BYO based on user selections.
+     */
     useEffect(() => {    
         if (kidsBYO === 'Kids Pasta') {
             setCustomName(kidsBYO + " " + kidsType);
@@ -257,6 +299,9 @@ const CashierGUI = () => {
         }
     }, [kidsBYO, kidsType])
 
+    /**
+     * Function to add Kids BYO items to the order.
+     */
     const addKidsBYOToOrder = () => {
         if (kidsBYO === 'Kids Pasta') {
             const newOrderItem = `${customName}, ${kidsProtein}`; //Dont Change (I cant add \n\tProtein: to database)
@@ -272,7 +317,9 @@ const CashierGUI = () => {
         setKidsType("");
     }
 
-    // Adds Completed Custom item to Order
+    /**
+     * Function to add completed Build Your Own (BYO) items to the order.
+     */    
     const addBYOToOrder = () => {
         const newOrderItem = `${customName}, ${protein}, ${sauce}, ${selectedIngredients.join(", ")}`;
         setOrder(prevOrder => [...prevOrder, newOrderItem]);
@@ -287,16 +334,27 @@ const CashierGUI = () => {
         main_panel();   // exits to main BYO panel after adding BYO item to order
     }
 
+    /**
+     * Function to handle the selection of ingredients for BYO items.
+     * @param {string} ingredient - The selected ingredient.
+     */
     const handleIngredientSelection = (ingredient : string) => {
         setSelectedIngredients([...selectedIngredients, ingredient]);
     }
 
+    /**
+     * Function to delete an ingredient from the selected ingredients list.
+     * @param {number} i - The index of the ingredient to be deleted.
+     */
     const deleteIngredient = (i : number) => {
         const temp = [...selectedIngredients]; 
         temp.splice(i, 1);
         setSelectedIngredients(temp);
     }
 
+    /**
+     * Function to display the main BYO panel.
+     */
     const main_panel = () => {
         clearBYOSelections();
 
@@ -323,10 +381,16 @@ const CashierGUI = () => {
         ]);
     }
 
+    /**
+     * Effect hook to display the main BYO panel when the component mounts.
+     */
     useEffect(() => {
         main_panel();
     }, [])
 
+    /**
+     * Function to display the BYO Pasta customization panel.
+     */
     const BYO_pasta = () => {
         Set_BYO_Panel([
             <div style={{border: "5px solid black", }}>
@@ -438,6 +502,9 @@ const CashierGUI = () => {
         BYO_pasta();
     }
 
+    /**
+     * Function to display the BYO Piada customization panel.
+     */
     const BYO_piada = () => {
         Set_BYO_Panel([
             <div style={{border: "5px solid black", }}>
@@ -540,6 +607,9 @@ const CashierGUI = () => {
         BYO_piada();
     }
 
+    /**
+     * Function to display the BYO Salad customization panel.
+     */
     const BYO_salad = () => {
         Set_BYO_Panel([
             <div style={{border: "5px solid black", }}>

@@ -2,6 +2,10 @@ import React, {useRef, useEffect, useState} from 'react';
 import axios from 'axios';
 import './OrderHistory.css';
 
+/**
+ * Represents the Order History Component.
+ * @returns {JSX.Element} React component.
+ */
 const OrderHistoryComponent: React.FC = () => {
     
     const [query, setQuery] = useState(''); 
@@ -18,13 +22,25 @@ const OrderHistoryComponent: React.FC = () => {
     const order_ref1 = useRef(null);
     const order_ref2 = useRef(null);
 
+    /**
+     * Handles the change event for the start date.
+     * @param {Object} e - The event object.
+     */
     const change_order_start_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         set_order_start_date(e.target.value);
     };
-      const change_order_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+
+    /**
+     * Handles the change event for the end date.
+     * @param {Object} e - The event object.
+     */
+    const change_order_end_date = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         set_order_end_date(e.target.value);
     };
 
+    /**
+     * Represents the structure of an order.
+     */
     interface OrderData {
         order_id: number;
         employee_id: number;
@@ -35,6 +51,9 @@ const OrderHistoryComponent: React.FC = () => {
     
     const [orderHistory, setOrderHistory] = useState<OrderData[]>([]);
 
+    /**
+     * Fetches order history data based on the selected date range.
+     */
     const generate_order_history = async () => {
       // query for order history data based on startDate and endDate
       const requestDates = {
@@ -60,6 +79,9 @@ const OrderHistoryComponent: React.FC = () => {
         });
     };  
 
+    /**
+     * Fetches order history data when the component mounts and when the date range changes.
+     */
     useEffect(() => {
       generate_order_history();
     }, [])
@@ -68,6 +90,9 @@ const OrderHistoryComponent: React.FC = () => {
         generate_order_history();
     }, [order_end_date, order_start_date])
    
+     /**
+     * Renders the OrderHistoryComponent.
+     */
     return (
         <div>  
           <br />  
