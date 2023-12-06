@@ -84,14 +84,14 @@
 
 .selectedButton {
     background-color:rgb(215, 97, 38);
-    width: 7.5vw;
+    width: 6vw;
 }
 
 .normalButton {
     background-color:rgb(107, 117, 125);
-    width: 7.5vw;
+    width: 6vw;
 }
 
 .addToOrderButton {
-    width: 15vw;
+    width: 12vw;
 }
