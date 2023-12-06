@@ -1387,7 +1387,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <p>Build Your Own</p>
             <Popup contentStyle={{width: "1200px"}} trigger=
                 {<button className='MenuItemButton'> 
-                    <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Crushing Garlic with Knife' title='Person Grating Cheese on Spaghetti' 
+                    <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Crushing Garlic with Knife' title='Person Crushing Garlic with Knife' 
                     style={{width: "98%", height: "98%"}}/> 
                 </button>} 
                 modal nested onClose={main_panel}>
