@@ -701,7 +701,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         Set_BYO_Panel([
             <div className='popupMenu' style={{ overflowY: "auto", maxHeight: "600px" }}>
                 <h2><button onClick={main_panel} style={{
-                    justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
+                    justifyContent: "flex-end", display: "flex", fontSize: "25px", marginLeft: "10px", marginTop: "10px",
                     }}> 
                 Back </button></h2>
                 <h2 style={{textAlign: 'center'}} className='popupMenu'> 
@@ -826,7 +826,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         Set_BYO_Panel([
             <div className='popupMenu' style={{ overflowY: "auto", maxHeight: "600px" }}>
                 <h2><button onClick={main_panel} style={{
-                    justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
+                    justifyContent: "flex-end", display: "flex", fontSize: "25px", marginLeft: "10px", marginTop: "10px",
                     }}> 
                 Back </button></h2>
                 <h2 style={{textAlign: 'center'}} className='popupMenu'> <u> Custom Piada </u></h2>
@@ -917,7 +917,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         Set_BYO_Panel([
         <div className='popupMenu' style={{ overflowY: "auto", maxHeight: "600px" }}>
             <h2><button onClick={main_panel} style={{
-                    justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
+                    justifyContent: "flex-end", display: "flex", fontSize: "25px", marginLeft: "10px", marginTop: "10px",
                     }}> Back </button></h2>
             <h2 style={{textAlign: 'center'}} className='popupMenu'> <u>Custom Salad</u> </h2>
             <h3>
