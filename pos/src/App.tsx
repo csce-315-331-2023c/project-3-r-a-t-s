@@ -18,19 +18,35 @@ import { FontSizeProvider } from "./Components/FontSizeContext";
 import { FaAngleDown } from "react-icons/fa";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
+/**
+ * Main App component containing the entire application.
+ * @returns {JSX.Element} The rendered JSX element.
+ */
 const App = () => {
   //Speech API
   const [listening, setListening] = useState(false);
   const [recognizedText, setRecognizedText] = useState("");
   const recognition = new (window as any).webkitSpeechRecognition();
   recognition.lang = "en-US";
+  /**
+   * Handles speech recognition result.
+   * @param {SpeechRecognitionEvent} event - The speech recognition event.
+   */
   recognition.onresult = (event: any) => {
     const transcript = event.results[0][0].transcript;
     setRecognizedText(transcript);
   };
+  
+  /**
+   * Handles the end of speech recognition.
+   */
   recognition.onend = () => {
     setListening(false);
   };
+  
+   /**
+   * Starts speech recognition.
+   */
   const startListening = () => {
     recognition.start();
     setListening(true);

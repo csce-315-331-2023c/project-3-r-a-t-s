@@ -287,7 +287,7 @@ const fetchInventory = async () => {
           onChange={(e) => setAddMenuItemName(e.target.value)}
         />
         <input
-          type="price"
+          type="number"
           placeholder="Price"
           className="input-forms"
           value={addMenuItemPrice}

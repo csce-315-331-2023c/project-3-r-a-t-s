@@ -25,12 +25,31 @@ const ManagerGUI: React.FC = () => {
   const {ManagerEmail} = useManagerEmail();
   const[isAdmin, setIsAdmin] = useState('');
 
+  /**
+   * Executes various functions on component mount.
+   * - Checks admin status.
+   * - Generates product report.
+   * - Creates product report table.
+   *
+   * @function
+   * @memberof ManagerGUI
+   * @inner
+   * @returns {void}
+   */
   useEffect(() => {
     check_admin();
     generateProductReport();
     createProductReportTable();
   }, []); 
 
+  /**
+   * Executes on change of ManagerEmail.
+   *
+   * @function
+   * @memberof ManagerGUI
+   * @inner
+   * @returns {void}
+   */
   useEffect(() => {
   }, [ManagerEmail]);
 
@@ -51,6 +70,17 @@ const ManagerGUI: React.FC = () => {
 
   const [query, setQuery] = useState('');
 
+  
+  /**
+   * Executes on change of query.
+   * Determines which report to create based on the selected_report state.
+   *
+   * @function
+   * @memberof ManagerGUI
+   * @inner
+   * @param {string} query - The search query.
+   * @returns {void}
+   */
   useEffect(() => {
     if (selected_report === 1) {
       createProductReportTable();
@@ -174,6 +204,19 @@ const ManagerGUI: React.FC = () => {
 
   const[table, setTable]= useState([<div></div>]);
 
+  /**
+ * Executes various functions on dependency changes.
+ * - Generates product report.
+ * - Generates excess report.
+ * - Generates restock report.
+ * - Generates sells together report.
+ *
+ * @function
+ * @inner
+ * @memberof ManagerComponent
+ * @param {Array} dependencies
+ * @returns {void}
+ */
   useEffect(() => {
     generateProductReport();
     generateExcessReport();
@@ -186,6 +229,16 @@ const ManagerGUI: React.FC = () => {
     count: number;
   }
   const [pairs, setPairs] = useState<PairData[]>([]);
+  
+  /**
+ * Generates sells together report data.
+ *
+ * @function
+ * @inner
+ * @memberof ManagerComponent
+ * @async
+ * @returns {void}
+ */
   const generateSellsTogetherReport = async() => {
     // query for whatsellstogether report data
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
@@ -229,6 +282,16 @@ const ManagerGUI: React.FC = () => {
     current_quantity: number;
   }
   const [excessReport, setExcessReport] = useState<ExcessReportData[]>([]);
+  
+  /**
+ * Generates excess report data.
+ *
+ * @function
+ * @inner
+ * @memberof ManagerComponent
+ * @async
+ * @returns {void}
+ */
   const generateExcessReport = async () => {
     // query for excess report data
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
@@ -256,6 +319,15 @@ const ManagerGUI: React.FC = () => {
   }
   const [restockReport, setRestockReport] = useState<RestockReportData[]>([]);
  
+  /**
+   * Generates restock report data.
+   *
+   * @function
+   * @inner
+   * @memberof ManagerComponent
+   * @async
+   * @returns {void}
+   */
   const generateRestockReport = async () => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
       return;

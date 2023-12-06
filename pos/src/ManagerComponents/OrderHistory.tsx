@@ -38,6 +38,11 @@ const OrderHistoryComponent: React.FC = () => {
         set_order_end_date(e.target.value);
     };
 
+    useEffect(() => {
+      generate_order_history();
+    }, [order_start_date, order_end_date]);
+
+
     /**
      * Represents the structure of an order.
      */
@@ -71,6 +76,7 @@ const OrderHistoryComponent: React.FC = () => {
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_order_history`, requestDates, config)
         .then((response) => {
           setOrderHistory(response.data);
+          // console.log(response.data); 
           console.log("Successfully generated Order Data");
         })
         .catch((error) => {
@@ -81,13 +87,12 @@ const OrderHistoryComponent: React.FC = () => {
     /**
      * Fetches order history data when the component mounts and when the date range changes.
      */
-    // useEffect(() => {
-    //   generate_order_history();
-    // }, [])
+    useEffect(() => {
+      generate_order_history();
+    }, [])
 
     useEffect(() => {
         generate_order_history();
-        console.log("Fetching Order History");
     }, [order_end_date, order_start_date])
    
      /**

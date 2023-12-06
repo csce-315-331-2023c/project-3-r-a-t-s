@@ -52,7 +52,12 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
 };
 
 /**
- * EmployeeComponent responsible for managing employees.
+ * Component responsible for managing employees.
+ *
+ * @component
+ * @example
+ * // Usage within another component or JSX
+ * <EmployeeComponent adminProps={adminProps} />
  */
 const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
 
@@ -179,7 +184,6 @@ const EmployeeComponent: React.FC<EmployeeProps> = ({ adminProps }) => {
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/get_employee_list`, config)
         .then((response) => {
             setEmployeeList(response.data);
-
             // Save the employee data to local storage
             localStorage.setItem('employeeList', JSON.stringify(response.data));
         })

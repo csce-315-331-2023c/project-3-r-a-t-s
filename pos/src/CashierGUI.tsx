@@ -11,7 +11,12 @@ import { CiLogout } from "react-icons/ci";
 
 
 /**
- * Functional component representing the Cashier GUI.
+ * Functional component representing the CashierGUI.
+ *
+ * @component
+ * @example
+ * // Usage within another component or JSX
+ * <CashierGUI />
  */
 const CashierGUI = () => {
     const location = useLocation();

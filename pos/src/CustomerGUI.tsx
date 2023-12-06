@@ -11,17 +11,43 @@ import TextSizeAdjuster from "./Components/TextAdjuster";
 import { FaHome } from 'react-icons/fa';
 import { BsAlignCenter, BsFillTrashFill } from 'react-icons/bs';
 
+/**
+ * Props for the CustomerGUI component.
+ *
+ * @interface
+ * @name CustomerProps
+ * @property {Function} startListening - Function to start voice recognition.
+ * @property {Function} stopListening - Function to stop voice recognition.
+ * @property {string} recognizedText - Recognized text from voice input.
+ */
 interface CustomerProps {
     startListening: () => void;
     stopListening: () => void;
     recognizedText: string;
 }
 
+/**
+ * Functional component representing the CustomerGUI.
+ *
+ * @component
+ * @example
+ * // Usage within another component or JSX
+ * <CustomerGUI startListening={startListening} stopListening={stopListening} recognizedText={recognizedText} />
+ */
 const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
     //Speech API Starts Here
 
     const [creatingBYO, setCreatingBYO] = useState(false);
+
+     /**
+     * Handles voice commands and performs actions based on recognized text.
+     *
+     * @function
+     * @inner
+     * @memberof CustomerGUI
+     * @returns {void}
+     */
     const handleVoiceCommand = () => {
         console.log(recognizedText)
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
@@ -571,8 +597,14 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     
     const [showSuccessPanel, setShowSuccessPanel] = useState(false);
 
-
-    // Add Order Array to Database
+    /**
+     * Add order array to the database.
+     *
+     * @function
+     * @inner
+     * @memberof CustomerGUI
+     * @returns {void}
+     */
     const addorder = () => {
         console.log("Paying for Order");
         if (order.length === 0) {
@@ -612,7 +644,15 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setPrices([]);
     }
 
-    // Call to add price of a new Menu Item added to the order to the total order amount
+    /**
+     * Call to add price of a new Menu Item added to the order to the total order amount.
+     *
+     * @function
+     * @inner
+     * @memberof CustomerGUI
+     * @param {string} item - The menu item for which the price needs to be updated.
+     * @returns {void}
+     */
     const updatePrice = (item : string) => {
         const config = {
             headers: {
@@ -632,6 +672,14 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
           });
       };    
 
+    /**
+     * Remove all items from the order.
+     *
+     * @function
+     * @inner
+     * @memberof CustomerGUI
+     * @returns {void}
+     */
     const removeAll = () => {
         for (var i = 0; i < order.length; i++) {
             order.pop();
@@ -641,13 +689,26 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         console.log("Removed All Order Items.");
     }
 
-    // TODO: Add customization back-end
-
+    /**
+     * Navigates back to the previous page.
+     *
+     * @function
+     * @inner
+     * @memberof CustomerGUI
+     * @returns {void}
+     */
     const goback = () => {
         navigate(-1);
     }
 
-
+    /**
+     * Render the main panel for Build Your Own (BYO) customization.
+     *
+     * @function
+     * @inner
+     * @memberof CustomerGUI
+     * @returns {void}
+     */
     const main_panel = () => {
         clearBYOSelections();
 

@@ -8,6 +8,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FiSave } from "react-icons/fi";
 import { Dispatch, SetStateAction} from 'react';
+import { useManagerEmail } from './ManagerEmailTransfer';
 
 /**
  * Props for the Popup component.
@@ -67,6 +68,8 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
  * @returns {JSX.Element} The rendered ManagerTableComponent.
  */
 const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
+    const {ManagerEmail} = useManagerEmail();
+
     const [query, setQuery] = useState(''); 
 
     useEffect(() => {
@@ -263,7 +266,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
      * Updates manager information by making a POST request to the server.
      * @param {number} managerID - The ID of the manager to be updated.
      */
-    const update_manager = async (managerID : number) => { 
+    const update_manager = async (managerID : number, currEmail : string) => { //ADDED LINE
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -278,7 +281,9 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
         // .post('http://127.0.0.1:5000/api/manager/update_manager', requestData, config)
         .post(`https://pos-backend-3c6o.onrender.com/api/manager/update_manager`, requestData, config)
         .then((response) => {
-            adminProps.setIsAdmin(response.data.isAdmin);
+            if (ManagerEmail === currEmail) { //ADDED LINES BELOW
+                adminProps.setIsAdmin(response.data.isAdmin);
+            }
         })
         .catch((error) => {
             console.error('Error with Updating Manager Information:', error);
@@ -349,10 +354,10 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
      * @param {number} managerID - The ID of the manager being edited.
      * @param {EditManager} editedData - The edited data for the manager.
      */
-    const handleSaveEdit = async (managerID: number, editedData : EditManager) => {
+    const handleSaveEdit = async (managerID: number, editedData : EditManager, currEmail: string) => { //ADDED LINE
 
         try {
-            await update_manager(managerID);
+            await update_manager(managerID, currEmail);
             await generate_manager_info();
             setEditedData({
                 FirstName: '',
@@ -441,7 +446,8 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                                 {editingManagerId === manager.manager_id ? (
                                     <span>
                                         <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(manager.manager_id)}/>
-                                        <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData)} />
+                                        {/* ADDED LINE BELOW */}
+                                        <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData, manager.email)} />
                                     </span>
                                 ) : (
                                     <span>

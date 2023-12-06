@@ -232,6 +232,11 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
     //     }
     // };
 
+    /**
+     * React effect hook for setting up and cleaning up event listeners.
+     * Cleans up the 'message' event listener when the component unmounts.
+     * @return {function} The cleanup function.
+     */
     useEffect(() => {
         // Cleanup event listener when the component unmounts
         const cleanup = () => {
@@ -241,15 +246,30 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         return cleanup;
     }, []);
 
+    /**
+     * Custom hook for loading the Google Maps script.
+     * @typedef {Object} LoadScriptResult
+     * @property {boolean} isLoaded - Indicates whether the Google Maps script is loaded.
+     * @property {string|null} loadError - Error message if there's an issue loading the script.
+     * @returns {LoadScriptResult} The result of the script loading.
+     */
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCXTwo6bsK6GtUP8sIAVSEnYuV44AeRFAg',
       });
     
       if (loadError) {
+        /**
+         * Rendered component when there is an error loading maps.
+         * @returns {JSX.Element} The error message.
+         */
         return <div>Error loading maps</div>;
       }
     
       if (!isLoaded) {
+         /**
+         * Rendered component while maps are being loaded.
+         * @returns {JSX.Element} The loading message.
+         */
         return <div>Loading maps</div>;
       }
 

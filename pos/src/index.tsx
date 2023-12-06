@@ -7,6 +7,11 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+/**
+ * Render the 'App' component inside a root with StrictMode.
+ * StrictMode is used for additional checks and warnings during development.
+ */
 root.render(
   <React.StrictMode> 
     <App />
