@@ -126,6 +126,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                 <LuWheatOff/> Gluten Free
                 </h3>
             </div>
+            <br /><br />
 
             {/* Piadas */}
             <h2 style={{fontSize: "5vh", color: "white"}}> <b><u>Hand-Rolled Piadas</u></b></h2>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ManagerEmailProvider } from "./ManagerComponents/ManagerEmailTransfer"; // Adjust the path based on your project structure
 import "./App.css";
@@ -21,23 +21,23 @@ import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 const App = () => {
   //Speech API
   const [listening, setListening] = useState(false);
-  const [recognizedText, setRecognizedText] = useState("");
+  const [recognizedText, setRecognizedText] = useState('');
   const recognition = new (window as any).webkitSpeechRecognition();
-  recognition.lang = "en-US";
+  recognition.lang = 'en-US';
   recognition.onresult = (event: any) => {
-    const transcript = event.results[0][0].transcript;
-    setRecognizedText(transcript);
+      const transcript = event.results[0][0].transcript;
+      setRecognizedText(transcript);
   };
   recognition.onend = () => {
     setListening(false);
   };
   const startListening = () => {
-    recognition.start();
-    setListening(true);
+      recognition.start();
+      setListening(true);
   };
   const stopListening = () => {
-    recognition.stop();
-    setListening(false);
+      recognition.stop();
+      setListening(false);
   };
   const [open, setOpen] = useState(false);
   return (

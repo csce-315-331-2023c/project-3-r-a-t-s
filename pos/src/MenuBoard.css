@@ -13,7 +13,7 @@
   }
 
   .menu-bottom-bar {
-    position: sticky;
+    position: fixed;
     height: 5vh;
     width: 100%;
     background-color: rgb(35,31,32,255);
