@@ -9,7 +9,7 @@ import axios, {AxiosError} from 'axios';
 import './App.css';
 import TextSizeAdjuster from "./Components/TextAdjuster";
 import { Offcanvas } from 'react-bootstrap';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaShoppingCart } from 'react-icons/fa';
 import { BsAlignCenter, BsFillTrashFill } from 'react-icons/bs';
 import { CiTextAlignLeft } from 'react-icons/ci';
 import { GiFireBowl } from "react-icons/gi";
@@ -1066,9 +1066,9 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                 <b><u>PIADA</u></b>  ~ Customer Self-Service ~ 
-                <button className='navigate-buttons' onClick={handleShow}> Cart </button>
+                <button className='shoppingCart' onClick={handleShow}> &nbsp;&nbsp;<FaShoppingCart/> &nbsp;&nbsp; Cart &nbsp;&nbsp;  &nbsp;&nbsp;</button>
                 <Offcanvas show={show} onHide={handleClose} placement='end' backdrop={false} scroll={true}
-                style={{ width: '55%', backgroundColor: '#736a60' }}>
+                style={{ width: '55%', backgroundColor: '#ffffff' }}>
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title></Offcanvas.Title>
                     </Offcanvas.Header>
@@ -1132,35 +1132,35 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         <div className='float-container'>
             <div className='float-child'>
                 <p>Carbonara</p>
-                <Popup trigger=
+                <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
                 {<button className='MenuItemButton'>
                     <img src='https://images.mypiada.com/piada-one/product/423/197051.jpg' alt='Carbonara' title='Carbonara Pasta Bowl'
                     style={{width: "13.5vw"}}/>
                 </button>}
-                    position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
-                    <p >
+                    position="bottom center" onOpen={() => makeorderitem(0, "Carbonara")}>
+                    <p > &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {setSelectedSize('SM');
                                             makeorderitem(1, "SM"); }}>
                             Small
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {setSelectedSize('REG');
                                             makeorderitem(1, "REG"); }}>
                             Regular
                         </button>
-                        <br />
+                        <br /><br/> &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {setSelectedPasta('Penne');
                                             makeorderitem(2, "Penne"); }}>
                             Penne
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {setSelectedPasta('Spaghetti');
                                             makeorderitem(2, "Spaghetti"); }}>
                             Spaghetti
                         </button>
-                        <br /> 
+                        <br /><br/>
                         <button className='addToOrderButton'
                             onClick={() => {addorderitem(""); setSelectedPasta(''); setSelectedSize('')}}> Add to order </button>
                     </p>
@@ -1173,35 +1173,35 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
             <div className='float-child'>
                 <p>Diavolo</p>
-                <Popup trigger=
+                <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
                     {<button className='MenuItemButton'>
                         <img src='https://images.mypiada.com/piada-one/product/459/123678.jpg' alt='Diavolo' title='Diavolo Pasta Bowl'
                         style={{width: "13.5vw"}}/>
                     </button>}
-                    position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
-                    <p >
+                    position="bottom center" onOpen={() => makeorderitem(0, "Diavolo")}>
+                    <p > &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(1, "SM");
                                             setSelectedSize('SM'); }}>
                             Small
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(1, "REG");
                                             setSelectedSize('REG'); }}>
                             Regular
                         </button>
-                        <br />
+                        <br /><br/> &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(2, "Penne");
                                             setSelectedPasta('Penne'); }}>
                             Penne
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(2, "Spaghetti");
                                             setSelectedPasta('Spaghetti'); }}>
                             Spaghetti
                         </button>
-                        <br /> 
+                        <br /> <br/>
                         <button className='addToOrderButton'
                             onClick={() => {addorderitem(""); setSelectedPasta(''); setSelectedSize('')}}> Add to order </button>
                     </p>
@@ -1213,35 +1213,35 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         
             <div className='float-child'>
                 <p>Basil Pesto</p>
-                <Popup trigger=
+                <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
                     {<button className='MenuItemButton'>
                         <img src='https://images.mypiada.com/piada-one/product/322/197053.jpg' alt='Basil Pesto' title='Basil Pesto Pasta Bowl'
                         style={{width: "13.5vw"}}/>
                     </button>}
-                    position="left center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
-                    <p >
+                    position="bottom center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
+                    <p > &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(1, "SM");
                                             setSelectedSize('SM'); }}>
                             Small
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(1, "REG");
                                             setSelectedSize('REG'); }}>
                             Regular
                         </button>
-                        <br />
+                        <br /><br/> &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(2, "Penne");
                                             setSelectedPasta('Penne'); }}>
                             Penne
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(2, "Spaghetti");
                                             setSelectedPasta('Spaghetti'); }}>
                             Spaghetti
                         </button>
-                        <br /> 
+                        <br /> <br/>
                         <button className='addToOrderButton'
                             onClick={() => {addorderitem(""); setSelectedPasta(''); setSelectedSize('')}}> Add to order </button>
                     </p>
@@ -1252,35 +1252,35 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             
             <div className='float-child'>
                 <p>Marinara</p>
-                <Popup trigger=
+                <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
                     {<button className='MenuItemButton'>
                         <img src='https://images.mypiada.com/piada-one/product/565/325680.jpg' alt='Marinara' title='Marinara Pasta Bowl'
                         style={{width: "13.5vw"}}/>
                     </button>}
-                    position="left center" onOpen={() => makeorderitem(0, "Marinara")}>
-                    <p >
+                    position="bottom center" onOpen={() => makeorderitem(0, "Marinara")}>
+                    <p >&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(1, "SM");
                                             setSelectedSize('SM'); }}>
                             Small
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(1, "REG");
                                             setSelectedSize('REG'); }}>
                             Regular
                         </button>
-                        <br />
+                        <br /><br /> &nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(2, "Penne");
                                             setSelectedPasta('Penne'); }}>
                             Penne
-                        </button>
+                        </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
                             onClick={() =>  {makeorderitem(2, "Spaghetti");
                                             setSelectedPasta('Spaghetti'); }}>
                             Spaghetti
                         </button>
-                        <br /> 
+                        <br /><br />
                         <button className='addToOrderButton'
                             onClick={() => {addorderitem(""); setSelectedPasta(''); setSelectedSize('')}}> Add to order </button>
                     </p>
@@ -1347,24 +1347,24 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         <div className='float-container'>
           <div className='float-child'>
           <p>Deluxe Ceaser</p>
-          <Popup trigger=
+          <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
             {<button className='MenuItemButton'>
                 <img src='https://images.mypiada.com/piada-one/product/456/196981.jpg' alt='Deluxe Caeser Salad' title='Deluxe Caeser Salad'
                 style={{width: "13.5vw"}}/>
             </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
-            <p >
+            position="bottom center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
+            <p > &nbsp;&nbsp;&nbsp;&nbsp;
                 <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                     onClick={() =>  {makeorderitem(1, "SM");
                                     setSelectedSize('SM'); }}>
                     Small
-                </button>
+                </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                     onClick={() =>  {makeorderitem(1, "REG");
                                     setSelectedSize('REG'); }}>
                     Regular
                 </button>
-                <br />
+                <br /><br/>
                 <button className='addToOrderButton' onClick={() => {addorderitem(""); setSelectedSize('')}}> Add to order </button>
             </p>
           </Popup>
@@ -1376,24 +1376,24 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
           <div className='float-child'>
           <p>Farmer's Market</p>
-          <Popup trigger=
+          <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
             {<button className='MenuItemButton'>
                 <img src='https://images.mypiada.com/piada-one/product/467/product_web_category.png' alt="Farmer's Market" title="Farmer's Market Salad"
                 style={{width: "13.5vw"}}/>
             </button>}
-            position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
-            <p >
+            position="bottom center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
+            <p > &nbsp;&nbsp;&nbsp;&nbsp;
                 <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                     onClick={() =>  {makeorderitem(1, "SM");
                                     setSelectedSize('SM'); }}>
                     Small
-                </button>
+                </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                     onClick={() =>  {makeorderitem(1, "REG");
                                     setSelectedSize('REG'); }}>
                     Regular
                 </button>
-                <br />
+                <br /><br/>
                 <button className='addToOrderButton' onClick={() => {addorderitem(""); setSelectedSize('')}}> Add to order </button>
             </p>
           </Popup>
@@ -1404,24 +1404,24 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
           
           <div className='float-child'>
           <p>Avocado Chop</p>
-          <Popup trigger=
+          <Popup contentStyle={{width: '25vw', background: '#8ba892'}} trigger=
             {<button className='MenuItemButton'>
                 <img src='https://images.mypiada.com/piada-one/product/782/product_web_category.png' alt= 'Avocado Chop' title= 'Avocado Chop Salad'
                 style={{width: "13.5vw"}}/>
             </button>}
-            position="left center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
-            <p >
+            position="bottom center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
+            <p > &nbsp;&nbsp;&nbsp;&nbsp;
                 <button className={selectedSize === 'SM' ? 'selectedButton' : 'normalButton'}
                     onClick={() =>  {makeorderitem(1, "SM");
                                     setSelectedSize('SM'); }}>
                     Small
-                </button>
+                </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button className={selectedSize === 'REG' ? 'selectedButton' : 'normalButton'}
                     onClick={() =>  {makeorderitem(1, "REG");
                                     setSelectedSize('REG'); }}>
                     Regular
                 </button>
-                <br />
+                <br /> <br/>
                 <button className='addToOrderButton' onClick={() => {addorderitem(""); setSelectedSize('')}}> Add to order </button>
             </p>
           </Popup>
@@ -1633,49 +1633,50 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 </button>} 
                 modal nested>
                 {
-                    <div className='popupMenu' style={{ overflowY: "auto", maxHeight: "600px" }}>
-                        <h2 className='popupHeader'> Kids Menu </h2>
+                    <div style={{ overflowY: "auto", maxHeight: "600px" }}>
+                        <h2 className='popupMenuHeader'> Kids Menu </h2>
                         <div className='float-container3'>
                             <div className='float-child3'>
-                            <Popup trigger={<button className='BYOpanel-buttons' title='Kids Eating pasta'> <img src='https://images.mypiada.com/piada-one/product/627/185781.jpg' alt='Kids eating pasta' title='Kids eating pasta' style={{width: "12vw"}}/> <span>Kids Pasta</span>  </button>} position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
-                            <div >
+                            <Popup contentStyle={{width:'35vw', background:'#8ba892'}} trigger={<button className='BYOpanel-buttons' title='Kids Eating pasta'> <img src='https://images.mypiada.com/piada-one/product/627/185781.jpg' alt='Kids eating pasta' title='Kids eating pasta' style={{width: "12vw"}}/> <span>Kids Pasta</span>  </button>} position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
+                            <div > &nbsp;&nbsp;&nbsp;
                                 <button className={selectedSize === 'Grilled Chicken' ? 'selectedButton' : 'normalButton'} title='Grilled Chicken'
                                         onClick={() => {setKidsProtein("Grilled Chicken");
                                                         setSelectedSize('Grilled Chicken')}}
-                                        disabled={kidsProtein === 'Grilled Chicken' ? true : false}> Grilled Chicken </button>
+                                        disabled={kidsProtein === 'Grilled Chicken' ? true : false}> Grilled Chicken </button> &nbsp;&nbsp;&nbsp;
                                 <button className={selectedSize === 'Crispy Chicken' ? 'selectedButton' : 'normalButton'}
                                         onClick={() => {setKidsProtein("Crispy Chicken");
                                                         setSelectedSize('Crispy Chicken')}}
-                                        disabled={kidsProtein === 'Crispy Chicken' ? true : false}> Crispy Chicken </button>
+                                        disabled={kidsProtein === 'Crispy Chicken' ? true : false}> Crispy Chicken </button> &nbsp;&nbsp;&nbsp;
                                 <button className={selectedSize === 'Steak' ? 'selectedButton' : 'normalButton'}
                                         onClick={() => {setKidsProtein("Steak");
                                                         setSelectedSize('Steak')}}
                                         disabled={kidsProtein === 'Steak' ? true : false}> Grilled Steak </button>
-                                <br />
+                                <br /><br/> &nbsp;&nbsp;&nbsp;
                                 <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
                                         onClick={() => {setKidsType("Spaghetti");
                                                         setSelectedPasta('Spaghetti')}}
-                                        disabled={kidsType === 'Spaghetti' ? true : false}>Spaghetti</button>
+                                        disabled={kidsType === 'Spaghetti' ? true : false}>Spaghetti</button> &nbsp;&nbsp;&nbsp;
                                 <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
                                         onClick={() => {setKidsType("Penne");
                                                         setSelectedPasta('Penne')}}
-                                        disabled={kidsType === 'Penne' ? true : false}>Penne</button>
+                                        disabled={kidsType === 'Penne' ? true : false}>Penne</button> &nbsp;&nbsp;
                                 <button onClick={() => {addKidsBYOToOrder(); setSelectedPasta(''); setSelectedSize('')}} className='add-to-order'> Add to Order </button>
                             </div>
                             </Popup>
                             </div>
 
                             <div className='float-child3'>
-                            <Popup trigger={<button className='BYOpanel-buttons' title='Meatballs and Spaghetti Bowl'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti' title='Meatballs and Spaghetti' style={{width: "12vw"}}/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
+                            <Popup  contentStyle={{width:'22vw', background:'#8ba892'}} trigger={<button className='BYOpanel-buttons' title='Meatballs and Spaghetti Bowl'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti' title='Meatballs and Spaghetti' style={{width: "12vw"}}/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
                             <div >
                                 <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'} 
                                         onClick={() => {setKidsType("Spaghetti");
                                                         setSelectedPasta('Spaghetti')}}
-                                        disabled={kidsType === 'Spaghetti' ? true : false}> Spaghetti</button>
+                                        disabled={kidsType === 'Spaghetti' ? true : false}> Spaghetti</button> &nbsp;&nbsp;
                                 <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
                                         onClick={() => {setKidsType("Penne");
                                                         setSelectedPasta('Penne')}}
                                         disabled={kidsType === 'Penne' ? true : false}> Penne</button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button onClick={() => {addKidsBYOToOrder();
                                                         setSelectedPasta('')}}
                                         className='add-to-order'> Add to Order </button>
@@ -1689,7 +1690,6 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                             </div>
                         </div>
                         <div className='float-container3'>
-                            <br /><br />
                             <h3 className='popupHeader'> Drinks </h3>
                             <div className='float-child3'>
                             <button className='BYOpanel-buttons' title='Horizon LowFat Milk' onClick={() => addorderitem("Kids Low-Fat Milk")} > 
