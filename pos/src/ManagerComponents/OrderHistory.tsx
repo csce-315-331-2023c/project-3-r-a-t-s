@@ -100,8 +100,7 @@ const OrderHistoryComponent: React.FC = () => {
      */
     return (
         <div>  
-          <br />  
-            <p>
+            <p style={{marginTop: "1vh"}}>
             <b>Start Date:</b> <input type="date" onChange={change_order_start_date} ref={order_ref1} value={order_start_date} /> &nbsp;
             <b>End Date:</b> <input type="date" onChange={change_order_end_date} ref={order_ref2} value={order_end_date}/>
             </p>
@@ -109,7 +108,7 @@ const OrderHistoryComponent: React.FC = () => {
             <div className='Search-Container'>
               <form> <input className='searchForm'  type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
               placeholder=' Search by Date (YYYY-MM-DD)...'/> </form>
-            </div><br />
+            </div>
 
           <div style={{overflow: "scroll", height: "65vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
             {!!orderHistory.length && (

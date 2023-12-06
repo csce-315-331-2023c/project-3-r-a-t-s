@@ -277,7 +277,6 @@ const fetchInventory = async () => {
           <form> <input className='searchForm' type="search" value={query} onChange={(e) => setQuery(e.target.value)} 
             placeholder='Search by Menu Item Name...'/> </form>
         </div>
-        <br />
         <input
           type="text"
           placeholder="New Item Name"
@@ -305,9 +304,8 @@ const fetchInventory = async () => {
         </div>
 
         <button onClick={addMenuItem} className="btn btn-success" style={{marginTop: "-1vh"}}>Add New Menu Item</button>
-
-      <br /><br />
-      <div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+    
+        <div style={{overflow: "scroll", height: "55vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black", marginTop: "1vh"}}>
         {menuData.length > 0 && (
           <div>
             <table className="table table-striped w-100">

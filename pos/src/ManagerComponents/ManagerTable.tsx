@@ -69,7 +69,6 @@ const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
  */
 const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
     const {ManagerEmail} = useManagerEmail();
-
     const [query, setQuery] = useState(''); 
 
     useEffect(() => {
@@ -266,7 +265,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
      * Updates manager information by making a POST request to the server.
      * @param {number} managerID - The ID of the manager to be updated.
      */
-    const update_manager = async (managerID : number, currEmail : string) => { //ADDED LINE
+    const update_manager = async (managerID : number, currEmail : string) => { 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -414,7 +413,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                 }
             </div> <br/> <br/>
 
-            <div style={{overflow: "scroll", height: "50vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+            <div style={{overflow: "scroll", height: "fit-content", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
                 {!!managerList.length && (
                     <table className='table table-striped w-100'>
                         <thead>
@@ -446,7 +445,6 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                                 {editingManagerId === manager.manager_id ? (
                                     <span>
                                         <MdCancel className="cancel-icon" onClick={() => handleCancelEdit(manager.manager_id)}/>
-                                        {/* ADDED LINE BELOW */}
                                         <FiSave className="save-icon" onClick={() => handleSaveEdit(manager.manager_id, editedData, manager.email)} />
                                     </span>
                                 ) : (

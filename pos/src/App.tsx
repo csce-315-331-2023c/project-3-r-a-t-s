@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ManagerEmailProvider } from "./ManagerComponents/ManagerEmailTransfer"; // Adjust the path based on your project structure
 import "./App.css";
@@ -15,7 +15,7 @@ import { ScaleProvider } from "./Components/ScaleContext";
 import ScaleWrapper from "./Components/ScaleWrapper";
 import FontSizeAdjuster from "./Components/FontSizeAdjuster";
 import { FontSizeProvider } from "./Components/FontSizeContext";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaRegQuestionCircle } from "react-icons/fa";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
 /**
@@ -25,7 +25,7 @@ import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 const App = () => {
   //Speech API
   const [listening, setListening] = useState(false);
-  const [recognizedText, setRecognizedText] = useState("");
+  const [recognizedText, setRecognizedText] = useState('');
   const recognition = new (window as any).webkitSpeechRecognition();
   recognition.lang = "en-US";
   /**
@@ -33,8 +33,8 @@ const App = () => {
    * @param {SpeechRecognitionEvent} event - The speech recognition event.
    */
   recognition.onresult = (event: any) => {
-    const transcript = event.results[0][0].transcript;
-    setRecognizedText(transcript);
+      const transcript = event.results[0][0].transcript;
+      setRecognizedText(transcript);
   };
   
   /**
@@ -48,14 +48,25 @@ const App = () => {
    * Starts speech recognition.
    */
   const startListening = () => {
-    recognition.start();
-    setListening(true);
+      recognition.start();
+      setListening(true);
   };
   const stopListening = () => {
-    recognition.stop();
-    setListening(false);
+      recognition.stop();
+      setListening(false);
   };
   const [open, setOpen] = useState(false);
+
+  const [hover, setHover] = useState(false);
+  const onHover = () => {
+    setHover(true);
+  };
+
+  const onLeave = () => {
+    setHover(false);
+  };
+
+
   return (
     <div>
       <ScaleProvider>
@@ -67,11 +78,25 @@ const App = () => {
               type="text/css"
             />
           </header>
-          {open ? (
+          {open ? ( 
+            <div><button
+            onClick={() => setOpen(false)}
+            style={{ top: "8vh", // Distance from the top
+            left: "2vw",
+            position: "absolute",
+            zIndex: "1000",
+            width: "15vw",
+            border: "5px solid black",
+            fontSize: "3vh",}}
+          >
+            <b>
+              <AiFillCaretUp /> Close
+            </b>
+          </button>
             <div
               style={{
                 // margin: "8vh 0vw 0vh 72vw",
-                top: "8vh", // Distance from the top
+                top: "13.5vh", // Distance from the top
                 left: "2vw",
                 position: "absolute",
                 zIndex: "1000",
@@ -102,7 +127,23 @@ const App = () => {
                   Stop Voice Command
                 </button>
                 {/* <p>Recognized Text: {recognizedText}</p> */}
-              </div>
+              </div><br />
+              <div
+              onMouseEnter={onHover}
+              onMouseLeave={onLeave}
+              role="button"
+              style={{ color: "white"}}
+            >
+              {hover ? <p style={{color: "white", fontSize: "3vh"}}>
+                  "Add [menu item name]" <br />
+                  "Create BYO [pasta/piada/salad]" <br />
+                  "Add [protein/sauce/topping] [BYO options]"   <br />
+                  "Add Kids [kids menu item]"<br />
+                  "Remove All" to clear cart <br />
+                </p>
+              : <div><FaRegQuestionCircle style={{marginLeft: "1vw", marginTop: "1vh"}} size={"3vw"}/> Hover for Voice Commands</div>}
+            </div>
+            <br />
               {listening ? (
                 <div style={{ color: "white", marginLeft: "8vw" }}>
                   Recording...
@@ -111,14 +152,7 @@ const App = () => {
                 <div></div>
               )}
 
-              <button
-                onClick={() => setOpen(false)}
-                style={{ width: "20vw", margin: "2vh 0vw 0vh 2.5vw" }}
-              >
-                <b>
-                  <AiFillCaretUp /> Close
-                </b>
-              </button>
+          </div>
             </div>
           ) : (
             <button

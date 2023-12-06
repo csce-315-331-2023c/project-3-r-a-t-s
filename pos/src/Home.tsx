@@ -11,7 +11,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import {MarkerF} from '@react-google-maps/api'
+import {MarkerF}  from '@react-google-maps/api'
 
 import { BsFillTelephoneFill, BsFillMapFill } from "react-icons/bs";
 import { AiFillShop } from "react-icons/ai";
@@ -91,7 +91,6 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
 
         if (recognizedText.toLowerCase().includes('cashier') || recognizedText.toLowerCase() === 'cashier pos') {
-            // handleCashierGoogleLogin();
             setCashierLogin(true);
         }
 
@@ -135,6 +134,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
     //     handleCheckEmployee();
     // }, [isEmployee]);
 
+
     /**
      * Checks if the logged-in user's email belongs to an employee.
      *
@@ -143,7 +143,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
      * @memberof Home
      * @returns {Promise<void>}
      */  
-    // const check_if_employee = async (email : string) => { 
+     // const check_if_employee = async (email : string) => { 
     //     const config = {
     //         headers: {
     //             'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         }
     };
 
-    // const cashierGoogleAuthenticationCallback = (event: MessageEvent) => {
+   // const cashierGoogleAuthenticationCallback = (event: MessageEvent) => {
     //     try {
     //         console.log('Received message:', event);
     //         if (event.data.event === 'google-auth-success') {
@@ -199,7 +199,6 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
     //         console.error('Error handling Cashier Google authentication:', error);
     //     }
     // };
-
     /**
      * Initiates the Google login process.
      * Opens a new window for Google authentication and attaches an event listener to handle the response.
@@ -241,7 +240,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
         // Cleanup event listener when the component unmounts
         const cleanup = () => {
           window.removeEventListener('message', googleAuthenticationCallback);
-        //   window.removeEventListener('message', cashierGoogleAuthenticationCallback);
+          //window.removeEventListener('message', cashierGoogleAuthenticationCallback);
         };
         return cleanup;
     }, []);
@@ -280,7 +279,7 @@ const Home : React.FC<HomeProps> = ( {startListening, stopListening, recognizedT
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')} /> &nbsp;
                    <b><u>PIADA</u></b> ~ Italian Street Food ~
                 <button onClick={() => handleGoogleLogin()} className='navigate-buttons'> Manager GUI</button>
-                <button onClick={() =>  setCashierLogin(true)} className='navigate-buttons'> Cashier POS </button>
+                <button onClick={() => setCashierLogin(true)} className='navigate-buttons'> Cashier POS </button>
                 {/* Login Popup */}
                 {showCashierLogin && (
                     <CashierLoginPopup
