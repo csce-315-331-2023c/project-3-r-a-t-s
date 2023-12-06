@@ -1026,11 +1026,14 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     const [selectedPasta, setSelectedPasta] = useState('');
     
     const [newItems, setNewitems] = useState<string[]>([]);
+    const [newIngredients, setNewIngredients] = useState<string[][]>([]);
+    const [newPrices, setNewPrices] = useState<string[]>([]);
+
 
     /**
      * Function to fetch new menu items from the backend.
      */
-    const getNewMenuItems = () => {
+    const getNewItemIngredients = () => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -1038,32 +1041,24 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             },
         };
         axios
-        //   .post('http://127.0.0.1:5000/api/cashier/get_new_menu_items', i, config)
-          .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_new_menu_items`, config)
-          .then((response) => {
+        //   .post('http://127.0.0.1:5000/api/cashier/get_new_menu_items_ingredients', config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_new_menu_items_ingredients`, config)
+        .then((response) => {
             console.log(response.data.data);
             setNewitems(response.data.data);
-            Set_BYO_Panel([
-                <div style={{border: "5px solid black", padding: "2vh 0vw 2vh 0vw"}}>
-                    <h2> <u>Build Your Own </u></h2>
-                    <button className='other-buttons' onClick={pasta_panel}> Pasta </button>
-                    <button className='other-buttons' onClick={piada_panel}> Piada </button>
-                    <button className='other-buttons' onClick={salad_panel}> Salad </button> 
-                    <br /><br />
-                    <div>
-                    <h2> <u>Seasonal Items </u></h2>
-                        {newItems.map((item) => (
-                            <button className='other-buttons' onClick={() => addorderitem(item)}> {item} </button>
-                        ))}
-                    </div>
-                    
-                </div>
-                ]);
-          })
-          .catch((error) => {
-            console.error('Failed to get any new menu items: ', error);
-          });
-      };
+            console.log(response.data.ingredients);
+            setNewIngredients(response.data.ingredients);
+            console.log(response.data.prices);
+            setNewPrices(response.data.prices);
+        })
+        .catch((error) => {
+            console.error('Failed to get ingredients: ', error);
+        });
+    }
+
+    useEffect(() => {
+        getNewItemIngredients();
+    }, [])
 
     return (
     <div className='Customer'>
@@ -1704,8 +1699,10 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         <h3 > <p className='CategoryText'>Seasonal Items</p>
         <div className='float-container'>
-            {newItems.map((item) => (
-                <div className='float-child'><button className='other-buttons' onClick={() => addorderitem(item)}> {item} </button></div>
+            {newItems.map((item, index) => (
+                <div className='float-child'>
+                    <button className='other-buttons' onClick={() => addorderitem(item)}><div><h4><b>{item}</b> ${newPrices.at(index)}
+                </h4> {newIngredients.at(index)?.join(", ")} <br /></div> </button></div>
             ))}
 
         </div>

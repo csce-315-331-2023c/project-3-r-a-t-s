@@ -351,12 +351,6 @@ const CashierGUI = () => {
      */
     const main_panel = () => {
         clearBYOSelections();
-
-        const temp = [<div></div>];
-        if (newItems.length !== 0) {    // new items exist 
-            
-        }
-
         Set_BYO_Panel([
         <div style={{border: "5px solid black", padding: "2vh 0vw 2vh 0vw"}}>
             <h2> <u>Build Your Own </u></h2>

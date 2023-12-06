@@ -101,7 +101,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             setPrices(response.data.prices);
         })
         .catch((error) => {
-            console.error('Failed to get ingredients: ', error);
+            console.error('Failed to get new Menu Items: ', error);
         });
     }
 
