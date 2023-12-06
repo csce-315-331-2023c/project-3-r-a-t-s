@@ -2,7 +2,7 @@ import React, { createContext, useContext, ReactNode } from 'react';
 
 /**
  * Props for the ManagerEmailProvider component.
- * @interface
+ * @interface ManagerEmailContextProps
  * @property {ReactNode} children - The children components to be wrapped by the provider.
  */
 interface ManagerEmailContextProps {
@@ -11,8 +11,8 @@ interface ManagerEmailContextProps {
 
 /**
  * Data structure for the ManagerEmailContext.
- * @interface
- * @property {string} ManagerEmail - The manager's email address.
+ * @interface ManagerEmailContextData
+ * @property {string} managerEmail - The manager's email address.
  * @property {React.Dispatch<React.SetStateAction<string>>} setManagerEmail - Function to set the manager's email address.
  */
 interface ManagerEmailContextData {

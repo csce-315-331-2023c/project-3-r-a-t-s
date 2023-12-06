@@ -13,6 +13,25 @@ import {
 
 /**
  * Represents the structure of weather data received from the OpenWeatherMap API.
+ * @typedef {Object} WeatherData
+ * @property {Object} main - Main weather information.
+ * @property {number} main.temp - Temperature.
+ * @property {number} main.feels_like - Feels like temperature.
+ * @property {number} main.temp_min - Minimum temperature.
+ * @property {number} main.temp_max - Maximum temperature.
+ * @property {number} main.pressure - Atmospheric pressure.
+ * @property {number} main.humidity - Humidity percentage.
+ * @property {number} main.sea_level - Sea level pressure.
+ * @property {number} main.grnd_level - Ground level pressure.
+ * @property {Object[]} weather - Weather information array.
+ * @property {number} weather[].id - Weather condition ID.
+ * @property {string} weather[].main - Main weather condition.
+ * @property {string} weather[].description - Weather condition description.
+ * @property {string} weather[].icon - Weather condition icon ID.
+ * @property {Object} wind - Wind information.
+ * @property {number} wind.speed - Wind speed.
+ * @property {number} wind.deg - Wind direction in degrees.
+ * @property {number} wind.gust - Wind gust speed.
  */
 interface WeatherData {
   main: {
@@ -40,6 +59,8 @@ interface WeatherData {
 
 /**
  * Props for the WeatherCard component.
+ * @typedef {Object} WeatherCardProps
+ * @property {WeatherData} weatherData - Weather data to be displayed.
  */
 interface WeatherCardProps {
   weatherData: WeatherData;

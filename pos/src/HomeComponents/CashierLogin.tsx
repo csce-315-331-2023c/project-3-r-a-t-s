@@ -7,6 +7,10 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 
 /**
  * Interface representing the props for the CashierLoginPopup component.
+ * @typedef {Object} LoginPopupProps
+ * @property {string} message - The message to display.
+ * @property {() => void} onClose - Function to close the popup.
+ * @property {(username: string) => void} onLogin - Function to handle login.
  */
 interface LoginPopupProps {
     message: string;

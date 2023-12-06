@@ -3,7 +3,7 @@ import React, { useState, createContext, ReactNode } from 'react';
 /**
  * Type definition for the context value of the ScaleContext.
  */
-type ScaleContextType = {
+export type ScaleContextType = {
   scale: number;
   setScale: (scale: number) => void;
 };

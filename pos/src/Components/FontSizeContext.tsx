@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 /**
  * Type definition for the FontSizeContext.
  */
-type FontSizeContextType = {
+export type FontSizeContextType = {
   fontSize: number;
   setFontSize: (size: number) => void;
 };

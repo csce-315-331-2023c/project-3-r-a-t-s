@@ -20,7 +20,6 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
-    "react-elastic-carousel": "^0.11.5",
     "react-icons": "^4.12.0",
     "react-multi-select-component": "^4.3.4",
     "react-router-dom": "^6.17.0",

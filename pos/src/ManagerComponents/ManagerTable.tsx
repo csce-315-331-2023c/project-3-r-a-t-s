@@ -36,8 +36,8 @@ interface AdminProps {
 
 /**
  * Props for the Manager component.
- * @interface
- * @property {AdminProps} adminProps - The admin props.
+ * @interface ManagerProps
+ * @property {AdminProps} adminProps - Props related to the admin status.
  */
 interface ManagerProps {
     adminProps: AdminProps;
@@ -458,15 +458,11 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                                     </span>
                                 )}
                             </td>
-                            :
-                            <td> ---</td>
-                        }
-                        {(adminProps.isAdmin === 'No') && 
+                            : (
                             <td>
                             Disabled
                             </td>
-                        }
-                        
+                            )}
                         </tr>
                         ))}
                     {showPopup && (

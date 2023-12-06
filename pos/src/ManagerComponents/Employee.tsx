@@ -12,6 +12,10 @@ import { Dispatch, SetStateAction} from 'react';
 
 /**
  * Interface for Popup component props.
+ * @typedef {Object} PopupProps
+ * @property {string} message - The message to display in the popup.
+ * @property {() => void} onConfirm - Callback function triggered when the user confirms the action.
+ * @property {() => void} onCancel - Callback function triggered when the user cancels the action.
  */
 interface PopupProps {
     message: string;
@@ -21,6 +25,9 @@ interface PopupProps {
 
 /**
  * Interface for Admin component props.
+ * @typedef {Object} AdminProps
+ * @property {string} isAdmin - A string indicating the admin status.
+ * @property {React.Dispatch<React.SetStateAction<string>>} setIsAdmin - Function to set the admin status.
  */
 interface AdminProps {
     isAdmin: string;
@@ -29,6 +36,8 @@ interface AdminProps {
 
 /**
  * Interface for Employee component props.
+ * @typedef {Object} EmployeeProps
+ * @property {AdminProps} adminProps - Props related to the admin status.
  */
 interface EmployeeProps {
     adminProps: AdminProps;

@@ -721,7 +721,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         Set_BYO_Panel([
         <div style={{border: "5px solid black", padding: "2vh 0vw 2vh 0vw"}}>
-            <h2 style={{textAlign: 'center'}}> <u>Build Your Own </u></h2>
+            <h2 style={{textAlign: 'center'}} className='popupMenu'> <u>Build Your Own </u></h2>
             <div className='BYOpanel-container'>
                 <button className='BYOpanel-buttons' title='A person cooking pasta in a pan on the stove'onClick={pasta_panel}>
                     <img src='https://images.mypiada.com/piada-one/product/444/185779.jpg' alt='A person cooking pasta in a pan on the stove'/><span>Pasta</span></button>
@@ -757,13 +757,15 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     const BYO_pasta = () => {
         Set_BYO_Panel([
             <div style={{ overflowY: "auto", maxHeight: "800px" }}>
+                <h2 style={{textAlign: 'center'}} className='popupMenu'> 
+                    <u >Custom Pasta</u>
                 <button onClick={main_panel} style={{
-                    justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
+                     fontSize: "25px", 
                     }}> 
                 Back </button> 
-                <h2> 
-                    <u >Custom Pasta</u>
                 </h2>
+
+                
                 <br />
                 <div>
                 <h3>
@@ -771,11 +773,15 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         <button onClick={() => setCustomSize("SM")} className='custom-select-buttons'> Small </button>
                         <button onClick={() => setCustomSize("REG")} className='custom-select-buttons'> Regular </button> 
                         &nbsp;&nbsp; 
-                    Pasta: &nbsp;
+                </h3>
+                <h3>
+                    Pasta:
+                    <p>
                         <button onClick={() => setCustomType("Spaghetti")} className='BYOpanel-buttons'> 
                             <img src='https://images.mypiada.com/piada-one/option/305/spaghetti-230_2x.jpg' alt='Spaghetti'/> <span>Spaghetti</span></button> 
                         <button onClick={() => setCustomType("Penne")} className='BYOpanel-buttons'> 
                             <img src='https://images.mypiada.com/piada-one/option/363/penne-230_2x.jpg' alt='Penne'/> <span>Penne</span> </button>
+                    </p>
                 </h3>
                 </div>
                  
@@ -852,7 +858,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                     </p>
                 </h3>
                 <br />
-                <button onClick={() => addBYOToOrder()}> Add to order </button>
+                <button style={{fontSize: '30px'}} onClick={() => addBYOToOrder()}> Add to order </button>
                 <br />
             </div>
         ]);
@@ -870,7 +876,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                     justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
                     }}> 
                 Back </button> 
-                <h2> <u> Custom Piada </u></h2>
+                <h2 style={{textAlign: 'center'}} className='popupMenu'> <u> Custom Piada </u></h2>
                 <h3> 
                     Protein: 
                     <p >
@@ -962,7 +968,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <button onClick={main_panel} style={{
                     justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
                     }}> Back </button>
-            <h2> <u>Custom Salad</u> </h2>
+            <h2  style={{textAlign: 'center'}} className='popupMenu'> <u>Custom Salad</u> </h2>
             <h3>
                 Size:
                 <p>

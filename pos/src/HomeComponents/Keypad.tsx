@@ -3,6 +3,10 @@ import './Login.css';
 
 /**
  * Interface representing the props for the NumericKeypad component.
+ * @typedef {Object} NumericKeypadProps
+ * @property {(number: number) => void} onNumberClick - Function called when a number is clicked.
+ * @property {(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} onEnterClick - Function called when the "Enter" button is clicked.
+ * @property {(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} onClearClick - Function called when the "Clear" button is clicked.
  */
 interface NumericKeypadProps {
   onNumberClick: (number: number) => void;
