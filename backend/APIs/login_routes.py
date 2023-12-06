@@ -53,3 +53,42 @@ def check_cashier_login():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to Verify User Login'}), 500
+
+
+@login_BP.route('/check_if_employee', methods=['POST'])
+def check_if_employee():
+    """
+    Checks if user is an employee.
+
+    :return: JSON response indicating if user is employee.
+    """
+    email_data = request.get_json()
+    print("Email: ", email_data)
+
+    verify_query = f"SELECT employee_id FROM EMPLOYEE where email = %s;"
+    # Execute the query
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        cursor.execute(verify_query, (email_data,))
+        verify_result = cursor.fetchone()
+        employee_id = verify_result[0]  # Extract the employee_id from the result
+
+        if (employee_id):
+            verify_status = 'Yes'
+        else:
+            verify_status = 'No'
+
+        conn.commit()
+        conn.close()
+        print("Verify Status", verify_status)
+
+        response_data = {
+            'message': 'Verification Completed (From Backend)',
+            'isEmployee': verify_status
+        }
+        return jsonify(response_data)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to Check If Employee Found'}), 500

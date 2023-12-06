@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 import './Customer.css';
 import './Cashier.css';
+import './BYO_Images.css';
 import axios, {AxiosError} from 'axios';
 import './App.css';
 import TextSizeAdjuster from "./Components/TextAdjuster";
-import { BsFillTrashFill } from 'react-icons/bs';
 import { Offcanvas } from 'react-bootstrap';
+import { FaHome } from 'react-icons/fa';
+import { BsAlignCenter, BsFillTrashFill } from 'react-icons/bs';
 
 interface CustomerProps {
     startListening: () => void;
@@ -19,7 +21,10 @@ interface CustomerProps {
 const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
     //Speech API Starts Here
+
+    const [creatingBYO, setCreatingBYO] = useState(false);
     const handleVoiceCommand = () => {
+        console.log(recognizedText)
         if (recognizedText.toLowerCase().includes('home') || recognizedText.toLowerCase() === 'click home' ) {
             navigate('/');
         }
@@ -50,8 +55,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
         let size = "";
         let type = "";
-        let item = "";
-        if (recognizedText.toLowerCase().includes('add')) {
+        if (recognizedText.toLowerCase().includes('add') && !recognizedText.toLowerCase().includes("build your own") && !recognizedText.toLowerCase().includes("sauce") && !recognizedText.toLowerCase().includes("toppings") && !recognizedText.toLowerCase().includes("protein")) {
             if(recognizedText.toLowerCase().includes('small')) {
                 size = "SM"
             }
@@ -121,7 +125,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             else if (recognizedText.toLowerCase().includes('calamari') || recognizedText.toLowerCase().includes('hot') && recognizedText.toLowerCase().includes('peppers')){
                 addorderitem("Calamari & Hot Peppers")
             }
-            else if (recognizedText.toLowerCase().includes('meatballs')){
+            else if (recognizedText.toLowerCase().includes('meatballs') && !recognizedText.toLowerCase().includes("kid")){
                 addorderitem("Meatballs")
             }
             else if (recognizedText.toLowerCase().includes('cookie')){
@@ -176,36 +180,272 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                     addorderitem('Acqua Panna Spring Water');
                 }
             }
-            else if (recognizedText.toLowerCase().includes('')){
-                addorderitem("")
-            }
-            else if (recognizedText.toLowerCase().includes('')){
-                addorderitem("")
-            }
-            else if (recognizedText.toLowerCase().includes('')){
-                addorderitem("")
-            }
-    }
+        }
 
+        let kids: string = ""
+        let kids_protein: string = ""
+        let kids_type: string = ""
+        if (recognizedText.toLowerCase().includes('kids') && recognizedText.toLowerCase().includes('add')) {
+            if (recognizedText.toLowerCase().includes('pasta')) {
+                kids = "Kids Pasta"
+
+                if (recognizedText.toLowerCase().includes('chicken')) {
+                    if(recognizedText.toLowerCase().includes('grilled')) {
+                        kids_protein = "Grilled Chicken"
+                    }
+                    else {
+                        kids_protein = "Crispy Chicken"
+                    }
+                }
+                else {
+                    kids_protein = "Steak"
+                }
+
+                if(recognizedText.toLowerCase().includes('penne')) {
+                    kids_type ="Penne"
+                }
+                else {
+                    kids_type ="Spaghetti"
+                }
+
+                let order = kids + " " + kids_type;
+                setOrder(prevOrder => [...prevOrder, order + ", " + kids_protein]);
+                updatePrice(order);
+                console.log("Added new order item: ", order);
+            }
+            else if (recognizedText.toLowerCase().includes('meatballs')) {
+                kids = "Kids Meatballs"
+
+                if(recognizedText.toLowerCase().includes('penne')) {
+                    kids_type ="Penne"
+                }
+                else {
+                    kids_type ="Spaghetti"
+                }
+
+                let order = kids + " " + kids_type;
+                setOrder(prevOrder => [...prevOrder, order]);
+                updatePrice(order);
+                console.log("Added new order item: ", order);
+            }
+            else if (recognizedText.toLowerCase().includes('chicken fingers')) {
+                addorderitem("Kids Chicken Fingers")
+            }
+
+            if (recognizedText.toLowerCase().includes('milk')) {
+                if (recognizedText.toLowerCase().includes('chocolate')) {
+                    addorderitem("Kids Chocolate Milk")
+                }
+                else {
+                    addorderitem("Kids Low-Fat Milk")
+                }
+            }
+            if (recognizedText.toLowerCase().includes('juice')) {
+                addorderitem("Kids Apple Juice")
+            }
+        }
 
     if (recognizedText.toLowerCase().includes('delete') || recognizedText.toLowerCase().includes('remove')) {
         if (recognizedText.toLowerCase().includes('all')) {
             removeAll();
-        }
-        else {
-            // delete specific item in order
         }
     }
 
     if (recognizedText.toLowerCase().includes('pay') || recognizedText.toLowerCase().includes('complete') || recognizedText.toLowerCase().includes('finished')) {
         addorder();
     }
+
+
+    if (recognizedText.toLowerCase().includes("create") && (recognizedText.toLowerCase().includes("build your own"))) {
+        setCreatingBYO(true)
+        if (recognizedText.toLowerCase().includes("pasta")) {
+            setBYO("Custom Pasta")
+            if (recognizedText.toLowerCase().includes("small")) {
+                setCustomSize("SM")
+            }
+            else {
+                setCustomSize("REG")
+            }
+            if (recognizedText.toLowerCase().includes("penne")) {
+                setCustomType("Penne")
+            }
+            else {
+                setCustomType("Spaghetti")
+            }
+        }
+        if (recognizedText.toLowerCase().includes("piada")) {
+            setBYO("Custom Piada")
+        }
+        if (recognizedText.toLowerCase().includes("salad")) {
+            setBYO("Custom Salad")
+            if (recognizedText.toLowerCase().includes("small")) {
+                setCustomSize("SM")
+            }
+            else {
+                setCustomSize("REG")
+            }
+        }
+    }
+
+    if (recognizedText.toLowerCase().includes("protein") && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("sausage")) {
+            setProtein("Italian Sausage")
+        }
+        if (recognizedText.toLowerCase().includes("chicken")) {
+            if (recognizedText.toLowerCase().includes("grilled")) {
+                setProtein("Grilled Chicken")
+            }  
+            else if (recognizedText.toLowerCase().includes("fried")) {
+                setProtein("Hot Fried Chicken")
+            }  
+            else {
+                setProtein("Crispy Chicken")
+            }
+        }
+        if (recognizedText.toLowerCase().includes("meatballs")) {
+            setProtein("Meatballs")
+        }
+        if (recognizedText.toLowerCase().includes("calamari")) {
+            setProtein("Crispy Calamari")
+        }
+        if (recognizedText.toLowerCase().includes("salmon")) {
+            setProtein("Grilled Salmon")
+        }
+    }
+
+    if (recognizedText.toLowerCase().includes("sauce") && byo !== "Custom Salad"  && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("marinara")) {
+            setSauce("Marinara Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("alfredo")) {
+            setSauce("Alfredo Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("diavolo")) {
+            setSauce("Diavolo Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("pesto")) {
+            setSauce("Basil Pesto Sauce")
+        }
+    }
+    if (recognizedText.toLowerCase().includes("sauce") && byo === "Custom Salad"  && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("parmesan")) {
+            setSauce("Creamy Parmesan Suace")
+        }
+        if (recognizedText.toLowerCase().includes("lemon")) {
+            setSauce("Lemon Basil Sauce")
+        }
+        if (recognizedText.toLowerCase().includes("caesar")) {
+            setSauce("Classic Caesar Dressing")
+        }
+        if (recognizedText.toLowerCase().includes("vinegar")) {
+            setSauce("Oil & Vinegar Dressing")
+        }
+        if (recognizedText.toLowerCase().includes("ranch")) {
+            setSauce("Spicy Ranch Dressing")
+        }
+        if (recognizedText.toLowerCase().includes("harissa")) {
+            setSauce("Yogurt Harissa Dressing")
+        }
+    }
+
+    if (recognizedText.toLowerCase().includes("topping")  && recognizedText.toLowerCase().includes("add")) {
+        if (recognizedText.toLowerCase().includes("cucumber")) {
+            handleIngredientSelection("Cucumbers")
+        }
+        if (recognizedText.toLowerCase().includes("tomatoes")) {
+            handleIngredientSelection("Bruschetta Tomatoes")
+        }
+        if (recognizedText.toLowerCase().includes("onions")) {
+            handleIngredientSelection("Pickled Red Onions")
+        }
+        if (recognizedText.toLowerCase().includes("arugula")) {
+            handleIngredientSelection("Arugula")
+        }
+        if (recognizedText.toLowerCase().includes("spinach")) {
+            handleIngredientSelection("Spinach")
+        }
+        if (recognizedText.toLowerCase().includes("greens")) {
+            handleIngredientSelection("Chopped Greens")
+        }
+        if (recognizedText.toLowerCase().includes("potatoe")) {
+            handleIngredientSelection("Sweet Potatoes")
+        }
+        if (recognizedText.toLowerCase().includes("hummus")) {
+            handleIngredientSelection("Hummus")
+        }
+        if (recognizedText.toLowerCase().includes("feta")) {
+            handleIngredientSelection("Feta")
+        }
+        if (recognizedText.toLowerCase().includes("mozzarella")) {
+            handleIngredientSelection("Mozzarella")
+        }
+        if (recognizedText.toLowerCase().includes("parmesan")) {
+            handleIngredientSelection("Parmesan")
+        }
+        if (recognizedText.toLowerCase().includes("peppers")) {
+            handleIngredientSelection("Sweet & Spicy Peppers")
+        }
+        if (recognizedText.toLowerCase().includes("strawberries")) {
+            handleIngredientSelection("Strawberries")
+        }
+        if (recognizedText.toLowerCase().includes("bacon") || recognizedText.toLowerCase().includes("pancetta")) {
+            handleIngredientSelection("Bacon")
+        }
+        if (recognizedText.toLowerCase().includes("broccoli")) {
+            handleIngredientSelection("Broccoli")
+        }
+        if (recognizedText.toLowerCase().includes("corn") ||recognizedText.toLowerCase().includes("tomato") ) {
+            handleIngredientSelection("Sweet Corn & Tomato")
+        }
+        if (recognizedText.toLowerCase().includes("avocado")) {
+            handleIngredientSelection("Avocado")
+        }
+    }
+
+    if (recognizedText.toLowerCase().includes("clear") && recognizedText.toLowerCase().includes("build your own")) {
+        clearBYOSelections();
+    }
+
+    if (recognizedText.toLowerCase().includes("add") && recognizedText.toLowerCase().includes("build your own")) {
+        if (byo.length !== 0 && protein.length !== 0 && sauce.length !== 0 && selectedIngredients.length !== 0) {
+            addBYOToOrder(); 
+        }
+    }
     };
+
     useEffect(() => {
         handleVoiceCommand();
     }, [recognizedText]);
 
     const [BYO_Panel, Set_BYO_Panel] = useState([<div> </div>]);    // used to set what displays in BYO panel
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);   // stores selected toppings
+    const [byo, setBYO] = useState(""); // stores if Custom Salad, Piada or Pasta
+    const [customSize, setCustomSize] = useState("");   // stores size
+    const [customType, setCustomType] = useState("");   // stores type of pasta
+    const [protein, setProtein] = useState(""); // stores selected protein, can only have one per custom order
+    const [sauce, setSauce] = useState(""); // stores selected sauce, can only have one
+    const [customName, setCustomName] = useState<string>(""); //store the custom menu item name (For backend)
+    const [kidsBYO, setKidsBYO] = useState("");
+    const [kidsProtein, setKidsProtein] = useState<string>("");
+    const [kidsType, setKidsType] = useState<string>("");
+
+    /**
+     * Effect hook to update custom item details based on user selections.
+     */
+    useEffect(() => {
+        if (byo === "Custom Pasta") {
+            BYO_pasta();
+            setCustomName(customSize + " " + byo + " " + customType);
+        }
+        else if (byo === "Custom Piada") {
+            BYO_piada();
+            setCustomName(byo);
+        }
+        else if (byo === "Custom Salad") {
+            BYO_salad();
+            setCustomName(customSize + " " + byo);
+        }
+    }, [byo, customSize, protein, sauce, customType, selectedIngredients])
 
     // let curr_item = "";
     // let curr_size = "";
@@ -215,7 +455,6 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     const [curr_type, setType] = useState('');
 
     const [order, setOrder] = useState<string[]>([]);
-    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     const [prices, setPrices] = useState<number[]>([]);
 
     const makeorderitem = (temp : number, item : string) => {
@@ -255,28 +494,86 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setSize('');
         setType('');
     }
-    // Add Custom Item to Order Array
-    const addBYOToOrder = (item : string) => {  
-        if (item === "") {
-            setOrder(order.concat(curr_size + " " + curr_item + " " + curr_type)); 
-            console.log("Added new order item:", item);
-        }
-        else {
-            setOrder(order.concat(item)); 
-            console.log("Added new order item:", item);
-        }
-        let ingredients = "";
-        if (selectedIngredients.length > 0) {
-            ingredients += `${selectedIngredients.join(', ')}`;
-            console.log("Added BYO Ingredients:", ingredients);
-            setSelectedIngredients([]); // Clear selected ingredients
-        }  
+
+    /**
+     * Function to clear selections for Build Your Own (BYO) items.
+     */
+    const clearBYOSelections = () => {
+        setSelectedIngredients([]);
+        setBYO("");
+        setCustomSize("");
+        setProtein("");
+        setSauce("");
+        setCustomType("");
+        setCustomName("");
+    }
+
+    /**
+     * Function to add completed Build Your Own (BYO) items to the order.
+     */    
+    const addBYOToOrder = () => {
+        const newOrderItem = `${customName}, ${protein}, ${sauce}, ${selectedIngredients.join(", ")}`;
+        setOrder(prevOrder => [...prevOrder, newOrderItem]);
+
+        updatePrice(customName);
+        console.log("Added new order item: ", customName);
+
+        setCustomName(""); //Clear the selected custom item name
+        setKidsProtein("");
+        setKidsType("");
+        setSelectedIngredients([]); // Clear selected ingredients
         main_panel();   // exits to main BYO panel after adding BYO item to order
     }
 
+    useEffect(() => {
+        console.log(byo)
+        console.log(protein)
+        console.log(sauce)
+        console.log(selectedIngredients)
+        console.log(customType)
+        console.log(customSize)
+
+        if (byo.length !== 0 && protein.length !== 0 && sauce.length !== 0 && selectedIngredients.length !== 0 && creatingBYO) {
+            // addBYOToOrder(); 
+            setCreatingBYO(false);
+        }
+    }, [byo, protein, sauce, selectedIngredients, creatingBYO])
+
+    /**
+     * Effect hook to update custom item details for Kids BYO based on user selections.
+     */
+    useEffect(() => {    
+        if (kidsBYO === 'Kids Pasta') {
+            setCustomName(kidsBYO + " " + kidsType);
+        } else if (kidsBYO === 'Kids Meatballs'){
+            setCustomName(kidsBYO + " " + kidsType);
+        }
+    }, [kidsBYO, kidsType])
+    
+    /**
+     * Function to add Kids BYO items to the order.
+     */
+    const addKidsBYOToOrder = () => {
+        if (kidsBYO === 'Kids Pasta') {
+            const newOrderItem = `${customName}, ${kidsProtein}`; //Dont Change (I cant add \n\tProtein: to database)
+            setOrder(prevOrder => [...prevOrder, newOrderItem]);
+        } else if (kidsBYO === 'Kids Meatballs') {
+            const newOrderItem = `${customName}`; 
+            setOrder(prevOrder => [...prevOrder, newOrderItem]);
+        }
+        updatePrice(customName);
+        console.log("Added new order item: ", customName);
+        setCustomName(""); //Clear the selected custom item name
+        setKidsProtein("");
+        setKidsType("");
+    }
+
+    /**
+     * Function to handle the selection of ingredients for BYO items.
+     * @param {string} ingredient - The selected ingredient.
+     */
     const handleIngredientSelection = (ingredient : string) => {
-        setSelectedIngredients((prevIngredients) => [...prevIngredients, ingredient]);
-        console.log("Added new selected ingredient", ingredient);
+        setSelectedIngredients([...selectedIngredients, ingredient]);
     }
     
     const [showSuccessPanel, setShowSuccessPanel] = useState(false);
@@ -292,6 +589,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         // Create an object with order data to send to the Flask API
         const orderData = {
             items : order, 
+            username : '0005',
         };
 
         // Set the Content-Type header to application/json
@@ -358,16 +656,27 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
 
     const main_panel = () => {
+        clearBYOSelections();
+
         Set_BYO_Panel([
-        <div>
-        <h2> <u>Build Your Own </u></h2>
-        <button onClick={pasta_panel}> Pasta </button>
-        <button  onClick={piada_panel}> Piada </button>
-        <button  onClick={salad_panel}> Salad </button> 
+        <div style={{border: "5px solid black", padding: "2vh 0vw 2vh 0vw"}}>
+            <h2 style={{textAlign: 'center'}}> <u>Build Your Own </u></h2>
+            <div className='BYOpanel-container'>
+                <button className='BYOpanel-buttons' title='A person cooking pasta in a pan on the stove'onClick={pasta_panel}>
+                    <img src='https://images.mypiada.com/piada-one/product/444/185779.jpg' alt='A person cooking pasta in a pan on the stove'/><span>Pasta</span></button>
+                <button className='BYOpanel-buttons' title='A chef preparing a tortilla' onClick={piada_panel}>
+                    <img src='https://images.mypiada.com/piada-one/product/447/196613.jpg' alt='A chef preparing a tortilla'/><span>Piada</span></button>
+                <button className='BYOpanel-buttons' title='A chef washing lettuce' onClick={salad_panel}>
+                    <img src='https://images.mypiada.com/piada-one/product/450/197050.jpg' alt='A chef washing lettuce'/> <span>Salad</span></button> 
+                <br /><br />
+            </div>
         </div>
         ]);
     }
 
+    /**
+     * Effect hook to display the main BYO panel when the component mounts.
+     */
     useEffect(() => {
         main_panel();
     }, [])
@@ -381,43 +690,12 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setPrices(temp2);
     }
 
-    const pasta_panel = () => {
-        // const [selectedSize, setSelectedSize] = useState(null);
-        // const [selectedPastaType, setSelectedPastaType] = useState(null);
-        // const [selectedProtein, setSelectedProtein] = useState(null);
-        // const [selectedSauce, setSelectedSauce] = useState(null);
-        // const [selectedToppings, setSelectedToppings] = useState([]);
-
-        // const handleSizeSelection = (size) => {
-        //     setSelectedSize(size);
-        // };
-
-        // const handlePastaTypeSelection = (pastaType) => {
-        //     setSelectedPastaType(pastaType);
-        // };
-
-        // const handleProteinSelection = (protein) => {
-        //     setSelectedProtein(protein);
-        // };
-
-        // const handleSauceSelection = (sauce) => {
-        //     setSelectedSauce(sauce);
-        // };
-
-        // const handleToppingSelection = (topping) => {
-        //     // Toggle the topping in the selectedToppings array
-        //     setSelectedToppings((prevToppings) => {
-        //     const index = prevToppings.indexOf(topping);
-        //     if (index !== -1) {
-        //         return prevToppings.filter((item) => item !== topping);
-        //     } else {
-        //         return [...prevToppings, topping];
-        //     }
-        //     });
-        // };
-
+    /**
+     * Function to display the BYO Pasta customization panel.
+     */
+    const BYO_pasta = () => {
         Set_BYO_Panel([
-            <div>
+            <div style={{ overflowY: "auto", maxHeight: "800px" }}>
                 <button onClick={main_panel} style={{
                     justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
                     }}> 
@@ -429,76 +707,104 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <div>
                 <h3>
                     Size: &nbsp;
-                        <button onClick={() => makeorderitem(1, "SM Custom Pasta")}> Small </button>
-                        {/* className={selectedSize === 'Small' ? 'selectedButton' : 'normalButton'}> Small </button> &nbsp; */}
-                        <button onClick={() => makeorderitem(1, "REG Custom Pasta")}> Regular </button>
-                        {/* className={selectedSize === 'Regular' ? 'selectedButton' : 'normalButton'}> Regular </button>  */}
+                        <button onClick={() => setCustomSize("SM")} className='custom-select-buttons'> Small </button>
+                        <button onClick={() => setCustomSize("REG")} className='custom-select-buttons'> Regular </button> 
                         &nbsp;&nbsp; 
                     Pasta: &nbsp;
-                        <button onClick={() => makeorderitem(2, "Spaghetti")}> Spaghetti </button> &nbsp;
-                        {/* className={selectedSize === 'Spaghetti' ? 'selectedButton' : 'normalButton'}> Spaghetti </button> &nbsp; */}
-                        <button onClick={() => makeorderitem(2, "Penne")}> Penne </button>
-                        {/* className={selectedSize === 'Penne' ? 'selectedButton' : 'normalButton'}> Penne </button> */}
+                        <button onClick={() => setCustomType("Spaghetti")} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/305/spaghetti-230_2x.jpg' alt='Spaghetti'/> <span>Spaghetti</span></button> 
+                        <button onClick={() => setCustomType("Penne")} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/363/penne-230_2x.jpg' alt='Penne'/> <span>Penne</span> </button>
                 </h3>
                 </div>
-                
+                 
                 <h3> Protein: 
                     <p>
-                        <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
-                        <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
-                        <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
+                    <button onClick={() => setProtein('Italian Sausage')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/369/sausage-230_2x.jpg' alt='Italian Sausage' title='Italian Sausage'/> <span>Italian Sausage</span></button>
+                    <button onClick={() => setProtein('Grilled Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/366/chicken-230_2x.jpg' alt='Grilled Chicken' title='Grilled Chicken'/> <span>Grilled Chicken</span> </button>
+                    <button onClick={() => setProtein('Crispy Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/365/chicken-fritte-230_2x.jpg' alt='Crispy Chicken Fritte' title='Crispy Chicken Fritte'/> <span>Crispy Chicken</span> </button>
+                    <button onClick={() => setProtein('Hot Friend Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/368/hot-fried-chicken-230_2x.jpg' alt='Hot Fried Chicken' title='Hot Fried Chicken'/> <span>Hot Fried Chicken</span> </button>
+                    <button onClick={() => setProtein('Grilled Steak')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/367/steak-230_2x.jpg' alt='Grilled Steak' title='Grilled Steak'/> <span>Grilled Steak</span> </button>
+                    <button onClick={() => setProtein('Meatballs')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/370/grass-fed-meatballs-230_2x.jpg' alt='Meatballs' title='Meatballs'/> <span>Grass-Fed Meatballs</span> </button>
+                    <button onClick={() => setProtein('Crispy Calamari')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/364/calamari-230_2x.jpg' alt='Crispy Calamari' title='Crispy Calamari'/> <span>Crispy Calamari</span></button>
+                    <button onClick={() => setProtein('Grilled Salmon')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/371/salmon-230_2x.jpg' alt='Grilled Salmon' title='Grilled Salmon'/> <span>Grilled Salmon</span> </button>
                     </p>
                 </h3>
                 <h3>
                     Pasta Sauces:
                     <p>
-                        <button onClick={() => handleIngredientSelection('Tomato Sauce')}> Marinara </button>
-                        <button onClick={() => handleIngredientSelection('Alfredo Sauce')}> Alfredo </button>
-                        <button onClick={() => handleIngredientSelection('Diavolo Sauce')}> Diavolo </button>
-                        <button onClick={() => handleIngredientSelection('Basil Pesto Sauce')}> Basil Pesto </button>
+                        <button onClick={() => setSauce('Tomato Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/394/pomodoro-230_2x.jpg' alt='Marinara Sauce' title='Marinara Sauce'/> <span>Marinara(Hot)</span> </button>
+                        <button onClick={() => setSauce('Alfredo Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/393/parmesan-alfredo-230_2x.jpg' alt='Parmesan Sauce' title='Parmesan Sauce'/> <span>Alfredo(Hot)</span> </button>
+                        <button onClick={() => setSauce('Spicy Diavolo Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/392/diavolo-230_2x.jpg' alt='Diavolo Sauce' title='Diavolo Sauce'/> <span>Diavolo(Hot)</span> </button>
+                        <button onClick={() => setSauce('Basil Pesto Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/375/fresh-basil-pesto-230_2x.jpg' alt='Basil Pesto Sauce' title='Basil Pesto Sauce'/> <span>Basil Pesto(Cold)</span> </button>
                     </p>
                 </h3>
                 <h3> 
                     Toppings:
                     <p>
-                        <button onClick={() => handleIngredientSelection('Cucumbers')}> Cucumbers </button>
-                        <button onClick={() => handleIngredientSelection('Cucumber Salad')}> Cucumber Salad </button>
-                        <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')}> Bruschetta Tomatoes </button>
-                        <button onClick={() => handleIngredientSelection('Pickled Red Onions')}> Pickled Red Onions </button>
-                        <button onClick={() => handleIngredientSelection('Romaine')}> Romaine </button>
-                        <button onClick={() => handleIngredientSelection('Arugula')}> Arugula </button>
-                        <button onClick={() => handleIngredientSelection('Spinach')}> Spinach </button>
-                        <button onClick={() => handleIngredientSelection('Chopped Greens')}> Chopped Greens </button>
-                        <button onClick={() => handleIngredientSelection('Sweet Potatoes')}> Roasted Sweet Potato </button>
-                        <button onClick={() => handleIngredientSelection('Hummus')}> Hummus </button>
-                        <button onClick={() => handleIngredientSelection('Feta')}> Feta </button>
-                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
-                        <button onClick={() => handleIngredientSelection('Parmesan')}> Parmesan </button>
-                        <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')}> Sweet & Spicy Peppers</button>
-                        <button onClick={() => handleIngredientSelection('Strawberries')}> Strawberries </button>
-                        <button onClick={() => handleIngredientSelection('Glazed Pecans')}> Glazed Pecans </button>
-                        <button onClick={() => handleIngredientSelection('Bacon')}> Pancetta(Bacon)</button>
-                        <button onClick={() => handleIngredientSelection('Broccoli')}> Roasted Broccoli </button>
-                        <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')}> Sweet Corn & Tomato</button>
-                        <button onClick={() => handleIngredientSelection('Avocado')}> Avocado </button>
+                    <button onClick={() => handleIngredientSelection('Cucumbers')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/384/cucumber-230_2x.jpg' alt='Cucumbers' title='Cucumbers'/> <span>Cucumbers</span> </button>
+                    <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/409/bruschetta-tomatoes-230_2x.jpg' alt='Tomatoes' title='Tomatoes'/> <span>Bruschetta Tomatoes</span> </button>
+                    <button onClick={() => handleIngredientSelection('Pickled Red Onions')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/399/option_web_list.jpg' alt='Pickled Red Onion' title='Pickled Red Onion'/> <span>Pickled Red Onions</span> </button>
+                    <button onClick={() => handleIngredientSelection('Arugula')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/379/arugula-230_2x.jpg' alt='Arugula' title='Arugula'/> <span>Arugula</span> </button>
+                    <button onClick={() => handleIngredientSelection('Spinach')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/406/spinach-230_2x.jpg' alt='Spinach' title='Spinach'/> <span>Spinach</span> </button>
+                    <button onClick={() => handleIngredientSelection('Chopped Greens')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/387/mixed-greens-230_2x.jpg' alt='Chopped Greens' title='Chopped Greens'/> <span>Chopped Greens</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/377/roasted-sweet-potatoes-230_2x.jpg' alt='Roasted Sweet Potatoes' title='Roasted Sweet Potatoes'/> <span>Roasted Sweet Potato</span> </button>
+                    <button onClick={() => handleIngredientSelection('Hummus')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/350/hummus-230_2x.jpg' alt='Spread of Hummus' title='Spread of Hummus'/> <span>Hummus</span> </button>
+                    <button onClick={() => handleIngredientSelection('Feta')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/385/feta-230_2x.jpg' alt='Feta' title='Feta'/> <span>Feta</span> </button>
+                    <button onClick={() => handleIngredientSelection('Mozzarella')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/388/mozzarella-230_2x.jpg' alt='Mozzarella' title='Mozzarella'/> <span>Mozzarella</span> </button>
+                    <button onClick={() => handleIngredientSelection('Parmesan')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/397/parmesan-reggiano-230_2x.jpg' alt='Parmesan' title='Parmesan'/> <span>Parmesan</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/608/sweet-and-spicy-peppers-230_2x.jpg' alt='Sweet and Spicy Peppers' title='Sweet and Spicy Peppers'/> <span>Sweet & Spicy Peppers</span></button>
+                    <button onClick={() => handleIngredientSelection('Strawberries')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/407/strawberries-230_2x.jpg' alt='Strawberries' title='Strawberries'/><span>Strawberries</span> </button>
+                    <button onClick={() => handleIngredientSelection('Bacon')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/362/pancetta-230_2x.jpg' alt='Bacon' title='Bacon'/> <span>Pancetta(Bacon)</span></button>
+                    <button onClick={() => handleIngredientSelection('Broccoli')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/402/roasted-broccoli-230_2x.jpg' alt='Roasted Broccoli' title='Roasted Broccoli'/> <span>Roasted Broccoli</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/408/sweet-corn-and-tomato-230_2x.jpg' alt='Sweet Corn and Tomatoe' title='Sweet Corn and Tomatoe'/> <span>Sweet Corn & Tomato</span></button>
+                    <button onClick={() => handleIngredientSelection('Avocado')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/381/avocado-230_2x.jpg' alt='Sliced Avocado' title='Sliced Avocado'/><span>Avocado</span> </button>
                     </p>
                 </h3>
                 <br />
-                <p>Display Selected Items here: </p>
-                <button onClick={() => addBYOToOrder("")} > Add to order </button>
+                <button onClick={() => addBYOToOrder()}> Add to order </button>
                 <br />
             </div>
         ]);
     }
+    const pasta_panel = () => {
+        clearBYOSelections();
+        setBYO("Custom Pasta");
+        BYO_pasta();
+    }
 
-    const piada_panel = () => {
+    const BYO_piada = () => {
         Set_BYO_Panel([
-            <div>
+            <div style={{ overflowY: "auto", maxHeight: "800px" }}>
                 <button onClick={main_panel} style={{
                     justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
                     }}> 
@@ -507,61 +813,91 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <h3> 
                     Protein: 
                     <p >
-                        <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                        <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
-                        <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
-                        <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
+                    <button onClick={() => setProtein('Italian Sausage')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/369/sausage-230_2x.jpg' alt='Italian Sausage' title='Italian Sausage'/> <span>Italian Sausage</span></button>
+                    <button onClick={() => setProtein('Grilled Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/366/chicken-230_2x.jpg' alt='Grilled Chicken' title='Grilled Chicken'/> <span>Grilled Chicken</span> </button>
+                    <button onClick={() => setProtein('Crispy Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/365/chicken-fritte-230_2x.jpg' alt='Crispy Chicken Fritte' title='Crispy Chicken Fritte'/> <span>Crispy Chicken</span> </button>
+                    <button onClick={() => setProtein('Hot Friend Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/368/hot-fried-chicken-230_2x.jpg' alt='Hot Fried Chicken' title='Hot Fried Chicken'/> <span>Hot Fried Chicken</span> </button>
+                    <button onClick={() => setProtein('Grilled Steak')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/367/steak-230_2x.jpg' alt='Grilled Steak' title='Grilled Steak'/> <span>Grilled Steak</span> </button>
+                    <button onClick={() => setProtein('Meatballs')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/370/grass-fed-meatballs-230_2x.jpg' alt='Meatballs' title='Meatballs'/> <span>Grass-Fed Meatballs</span> </button>
+                    <button onClick={() => setProtein('Crispy Calamari')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/364/calamari-230_2x.jpg' alt='Crispy Calamari' title='Crispy Calamari'/> <span>Crispy Calamari</span></button>
+                    <button onClick={() => setProtein('Grilled Salmon')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/371/salmon-230_2x.jpg' alt='Grilled Salmon' title='Grilled Salmon'/> <span>Grilled Salmon</span> </button>
                     </p>
                 </h3>
                 <h3>
                     Pasta Sauces:
                     <p>
-                        <button onClick={() => handleIngredientSelection('Tomato Sauce')}> Marinara </button>
-                        <button onClick={() => handleIngredientSelection('Alfredo Sauce')}> Alfredo </button>
-                        <button onClick={() => handleIngredientSelection('Diavolo Sauce')}> Diavolo </button>
-                        <button onClick={() => handleIngredientSelection('Basil Pesto Sauce')}> Basil Pesto </button>
+                        <button onClick={() => setSauce('Tomato Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/394/pomodoro-230_2x.jpg' alt='Marinara Sauce' title='Marinara Sauce'/> <span>Marinara(Hot)</span> </button>
+                        <button onClick={() => setSauce('Alfredo Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/393/parmesan-alfredo-230_2x.jpg' alt='Parmesan Sauce' title='Parmesan Sauce'/> <span>Alfredo(Hot)</span> </button>
+                        <button onClick={() => setSauce('Spicy Diavolo Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/392/diavolo-230_2x.jpg' alt='Diavolo Sauce' title='Diavolo Sauce'/> <span>Diavolo(Hot)</span> </button>
+                        <button onClick={() => setSauce('Basil Pesto Sauce')} className='BYOpanel-buttons'> 
+                            <img src='https://images.mypiada.com/piada-one/option/375/fresh-basil-pesto-230_2x.jpg' alt='Basil Pesto Sauce' title='Basil Pesto Sauce'/> <span>Basil Pesto(Cold)</span> </button>
                     </p>
                 </h3>
                 <h3> 
                     Toppings:
                     <p>
-                        <button onClick={() => handleIngredientSelection('Cucumbers')}> Cucumbers </button>
-                        <button onClick={() => handleIngredientSelection('Cucumber Salad')}> Cucumber Salad </button>
-                        <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')}> Bruschetta Tomatoes </button>
-                        <button onClick={() => handleIngredientSelection('Pickled Red Onions')}> Pickled Red Onions </button>
-                        <button onClick={() => handleIngredientSelection('Romaine')}> Romaine </button>
-                        <button onClick={() => handleIngredientSelection('Arugula')}> Arugula </button>
-                        <button onClick={() => handleIngredientSelection('Spinach')}> Spinach </button>
-                        <button onClick={() => handleIngredientSelection('Chopped Greens')}> Chopped Greens </button>
-                        <button onClick={() => handleIngredientSelection('Sweet Potatoes')}> Roasted Sweet Potato </button>
-                        <button onClick={() => handleIngredientSelection('Hummus')}> Hummus </button>
-                        <button onClick={() => handleIngredientSelection('Feta')}> Feta </button>
-                        <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
-                        <button onClick={() => handleIngredientSelection('Parmesan')}> Parmesan </button>
-                        <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')}> Sweet & Spicy Peppers</button>
-                        <button onClick={() => handleIngredientSelection('Strawberries')}> Strawberries </button>
-                        <button onClick={() => handleIngredientSelection('Glazed Pecans')}> Glazed Pecans </button>
-                        <button onClick={() => handleIngredientSelection('Bacon')}> Pancetta(Bacon)</button>
-                        <button onClick={() => handleIngredientSelection('Broccoli')}> Roasted Broccoli </button>
-                        <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')}> Sweet Corn & Tomato</button>
-                        <button onClick={() => handleIngredientSelection('Avocado')}> Avocado </button>
+                    <button onClick={() => handleIngredientSelection('Cucumbers')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/384/cucumber-230_2x.jpg' alt='Cucumbers' title='Cucumbers'/> <span>Cucumbers</span> </button>
+                    <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/409/bruschetta-tomatoes-230_2x.jpg' alt='Tomatoes' title='Tomatoes'/> <span>Bruschetta Tomatoes</span> </button>
+                    <button onClick={() => handleIngredientSelection('Pickled Red Onions')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/399/option_web_list.jpg' alt='Pickled Red Onion' title='Pickled Red Onion'/> <span>Pickled Red Onions</span> </button>
+                    <button onClick={() => handleIngredientSelection('Arugula')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/379/arugula-230_2x.jpg' alt='Arugula' title='Arugula'/> <span>Arugula</span> </button>
+                    <button onClick={() => handleIngredientSelection('Spinach')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/406/spinach-230_2x.jpg' alt='Spinach' title='Spinach'/> <span>Spinach</span> </button>
+                    <button onClick={() => handleIngredientSelection('Chopped Greens')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/387/mixed-greens-230_2x.jpg' alt='Chopped Greens' title='Chopped Greens'/> <span>Chopped Greens</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/377/roasted-sweet-potatoes-230_2x.jpg' alt='Roasted Sweet Potatoes' title='Roasted Sweet Potatoes'/> <span>Roasted Sweet Potato</span> </button>
+                    <button onClick={() => handleIngredientSelection('Hummus')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/350/hummus-230_2x.jpg' alt='Spread of Hummus' title='Spread of Hummus'/> <span>Hummus</span> </button>
+                    <button onClick={() => handleIngredientSelection('Feta')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/385/feta-230_2x.jpg' alt='Feta' title='Feta'/> <span>Feta</span> </button>
+                    <button onClick={() => handleIngredientSelection('Mozzarella')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/388/mozzarella-230_2x.jpg' alt='Mozzarella' title='Mozzarella'/> <span>Mozzarella</span> </button>
+                    <button onClick={() => handleIngredientSelection('Parmesan')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/397/parmesan-reggiano-230_2x.jpg' alt='Parmesan' title='Parmesan'/> <span>Parmesan</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/608/sweet-and-spicy-peppers-230_2x.jpg' alt='Sweet and Spicy Peppers' title='Sweet and Spicy Peppers'/> <span>Sweet & Spicy Peppers</span></button>
+                    <button onClick={() => handleIngredientSelection('Strawberries')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/407/strawberries-230_2x.jpg' alt='Strawberries' title='Strawberries'/><span>Strawberries</span> </button>
+                    <button onClick={() => handleIngredientSelection('Bacon')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/362/pancetta-230_2x.jpg' alt='Bacon' title='Bacon'/> <span>Pancetta(Bacon)</span></button>
+                    <button onClick={() => handleIngredientSelection('Broccoli')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/402/roasted-broccoli-230_2x.jpg' alt='Roasted Broccoli' title='Roasted Broccoli'/> <span>Roasted Broccoli</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/408/sweet-corn-and-tomato-230_2x.jpg' alt='Sweet Corn and Tomatoe' title='Sweet Corn and Tomatoe'/> <span>Sweet Corn & Tomato</span></button>
+                    <button onClick={() => handleIngredientSelection('Avocado')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/381/avocado-230_2x.jpg' alt='Sliced Avocado' title='Sliced Avocado'/><span>Avocado</span> </button>
                     </p>
                 </h3>
-                <p>Display Selected Items here: </p>
-                <button onClick={() => addBYOToOrder("")} >
+                <button onClick={() => addBYOToOrder()} >
                     Add to order
                 </button>
             </div>
         ]);
     }
+    const piada_panel = () => {
+        clearBYOSelections();
+        setBYO("Custom Piada");
+        BYO_piada();
+    }
 
-    const salad_panel = () => {
+    const BYO_salad = () => {
         Set_BYO_Panel([
-        <div>
+        <div style={{ overflowY: "auto", maxHeight: "800px" }}>
             <button onClick={main_panel} style={{
                     justifyContent: "flex-end", display: "flex", marginLeft: "10px", marginTop: "10px",
                     }}> Back </button>
@@ -569,61 +905,89 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <h3>
                 Size:
                 <p>
-                    <button> Small </button>
-                    <button> Regular </button>  
+                    <button onClick={() => setCustomSize("SM")} className='custom-select-buttons'> Small </button>
+                    <button onClick={() => setCustomSize("REG")} className='custom-select-buttons'> Regular </button> 
                 </p>
             </h3>
             <h3> Protein: 
                 <p>
-                    <button onClick={() => handleIngredientSelection('Italian Sausage')}> Italian Sausage </button>
-                    <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                    <button onClick={() => handleIngredientSelection('Crispy Chicken')}> Crispy Chicken </button>
-                    <button onClick={() => handleIngredientSelection('Hot Friend Chicken')}> Hot Fried Chicken </button>
-                    <button onClick={() => handleIngredientSelection('Grilled Chicken')}> Grilled Chicken </button>
-                    <button onClick={() => handleIngredientSelection('Meatballs')}> Grass-Fed Meatballs </button>
-                    <button onClick={() => handleIngredientSelection('Calamari & Hot Peppers')}> Calamari & Hot Peppers</button>
-                    <button onClick={() => handleIngredientSelection('Grilled Salmon')}> Grilled Salmon </button>
+                    <button onClick={() => setProtein('Italian Sausage')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/369/sausage-230_2x.jpg' alt='Italian Sausage' title='Italian Sausage'/> <span>Italian Sausage</span></button>
+                    <button onClick={() => setProtein('Grilled Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/366/chicken-230_2x.jpg' alt='Grilled Chicken' title='Grilled Chicken'/> <span>Grilled Chicken</span> </button>
+                    <button onClick={() => setProtein('Crispy Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/365/chicken-fritte-230_2x.jpg' alt='Crispy Chicken Fritte' title='Crispy Chicken Fritte'/> <span>Crispy Chicken</span> </button>
+                    <button onClick={() => setProtein('Hot Friend Chicken')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/368/hot-fried-chicken-230_2x.jpg' alt='Hot Fried Chicken' title='Hot Fried Chicken'/> <span>Hot Fried Chicken</span> </button>
+                    <button onClick={() => setProtein('Grilled Steak')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/367/steak-230_2x.jpg' alt='Grilled Steak' title='Grilled Steak'/> <span>Grilled Steak</span> </button>
+                    <button onClick={() => setProtein('Meatballs')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/370/grass-fed-meatballs-230_2x.jpg' alt='Meatballs' title='Meatballs'/> <span>Grass-Fed Meatballs</span> </button>
+                    <button onClick={() => setProtein('Crispy Calamari')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/364/calamari-230_2x.jpg' alt='Crispy Calamari' title='Crispy Calamari'/> <span>Crispy Calamari</span></button>
+                    <button onClick={() => setProtein('Grilled Salmon')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/371/salmon-230_2x.jpg' alt='Grilled Salmon' title='Grilled Salmon'/> <span>Grilled Salmon</span> </button>
                 </p>
             </h3>
             <h3>
                 Salad Dressings:
-                <p>
-                    <button onClick={() => handleIngredientSelection('Creamy Parmesan Sauce')}> Creamy Parmesan </button>
-                    <button onClick={() => handleIngredientSelection('Lemon Basil Dressing')}> Lemon Basil </button>
-                    <button onClick={() => handleIngredientSelection('Classic Ceasar Dressing')}> Classic Caesar </button>
-                    <button onClick={() => handleIngredientSelection('Basil Parmesan Dressing')}> Creamy Basil Parmesan </button>
-                    <button onClick={() => handleIngredientSelection('Oil & Vinegar Dressing')}> Oil & Vinegar </button>
-                    <button onClick={() => handleIngredientSelection('Spicy Ranch Dressing')}> Spicy Ranch </button>
-                    <button onClick={() => handleIngredientSelection('Yogurt Harissa Dressing')}> Yogurt Harissa </button>
+                <p> 
+                    <button onClick={() => setSauce('Basil Pesto Sauce')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/375/fresh-basil-pesto-230_2x.jpg' alt='Basil Pesto Sauce' title='Basil Pesto Sauce'/> <span>Basil Pesto(Cold)</span> </button>
+                    <button onClick={() => setSauce('Creamy Parmesan Sauce')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/343/creamy-parmesan-230_2x.jpg' alt='Creamy Parmesan' title='Creamy Parmesan'/> <span>Creamy Parmesan(Cold)</span> </button>
+                    <button onClick={() => setSauce('Lemon Basil Dressing')} className='BYOpanel-buttons'>
+                        <img src='https://images.mypiada.com/piada-one/option/346/lemon-basil-dressing-230_2x.jpg' alt='Lemon Basil Dressing' title='Lemon Basil Dressing'/> <span>Lemon Basil Dressing(Cold)</span> </button>
+                    <button onClick={() => setSauce('Classic Caesar Dressing')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/342/caesar-dressing-230_2x.jpg' alt='Caesar Dressing' title='Caesar Dressing'/> <span>Caesar Dressing</span> </button>
+                    <button onClick={() => setSauce('Oil & Vinegar Dressing')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/347/oil-and-vinegar-230_2x.jpg' alt='Oil and Vinegar' title='Oil and Vinegar'/><span>Oil & Vinegar(Cold)</span> </button>
+                    <button onClick={() => setSauce('Spicy Ranch Dressing')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/348/spicy-ranch-230_2x.jpg' alt='Spicy Ranch' title='Spicy Ranch'/> <span>Spicy Ranch</span> </button>
+                    <button onClick={() => setSauce('Yogurt Harissa Dressing')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/345/harissa-and-greek-yogurt-230_2x.jpg' alt='Harissa and Greek Yogurt' title='Harissa and Greek Yogurt'/> <span>Yogurt Harissa</span> </button>
                 </p>
             </h3>
             <h3> 
                 Toppings:
                 <p>
-                    <button onClick={() => handleIngredientSelection('Cucumbers')}> Cucumbers </button>
-                    <button onClick={() => handleIngredientSelection('Cucumber Salad')}> Cucumber Salad </button>
-                    <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')}> Bruschetta Tomatoes </button>
-                    <button onClick={() => handleIngredientSelection('Pickled Red Onions')}> Pickled Red Onions </button>
-                    <button onClick={() => handleIngredientSelection('Romaine')}> Romaine </button>
-                    <button onClick={() => handleIngredientSelection('Arugula')}> Arugula </button>
-                    <button onClick={() => handleIngredientSelection('Spinach')}> Spinach </button>
-                    <button onClick={() => handleIngredientSelection('Chopped Greens')}> Chopped Greens </button>
-                    <button onClick={() => handleIngredientSelection('Sweet Potatoes')}> Roasted Sweet Potato </button>
-                    <button onClick={() => handleIngredientSelection('Hummus')}> Hummus </button>
-                    <button onClick={() => handleIngredientSelection('Feta')}> Feta </button>
-                    <button onClick={() => handleIngredientSelection('Mozzarella')}> Mozzarella </button>
-                    <button onClick={() => handleIngredientSelection('Parmesan')}> Parmesan </button>
-                    <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')}> Sweet & Spicy Peppers</button>
-                    <button onClick={() => handleIngredientSelection('Strawberries')}> Strawberries </button>
-                    <button onClick={() => handleIngredientSelection('Glazed Pecans')}> Glazed Pecans </button>
-                    <button onClick={() => handleIngredientSelection('Bacon')}> Pancetta(Bacon)</button>
-                    <button onClick={() => handleIngredientSelection('Broccoli')}> Roasted Broccoli </button>
-                    <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')}> Sweet Corn & Tomato</button>
-                    <button onClick={() => handleIngredientSelection('Avocado')}> Avocado </button>
+                    <button onClick={() => handleIngredientSelection('Cucumbers')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/384/cucumber-230_2x.jpg' alt='Cucumbers' title='Cucumbers'/> <span>Cucumbers</span> </button>
+                    <button onClick={() => handleIngredientSelection('Bruschetta Tomatoes')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/409/bruschetta-tomatoes-230_2x.jpg' alt='Tomatoes' title='Tomatoes'/> <span>Bruschetta Tomatoes</span> </button>
+                    <button onClick={() => handleIngredientSelection('Pickled Red Onions')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/399/option_web_list.jpg' alt='Pickled Red Onion' title='Pickled Red Onion'/> <span>Pickled Red Onions</span> </button>
+                    <button onClick={() => handleIngredientSelection('Arugula')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/379/arugula-230_2x.jpg' alt='Arugula' title='Arugula'/> <span>Arugula</span> </button>
+                    <button onClick={() => handleIngredientSelection('Spinach')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/406/spinach-230_2x.jpg' alt='Spinach' title='Spinach'/> <span>Spinach</span> </button>
+                    <button onClick={() => handleIngredientSelection('Chopped Greens')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/387/mixed-greens-230_2x.jpg' alt='Chopped Greens' title='Chopped Greens'/> <span>Chopped Greens</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet Potatoes')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/377/roasted-sweet-potatoes-230_2x.jpg' alt='Roasted Sweet Potatoes' title='Roasted Sweet Potatoes'/> <span>Roasted Sweet Potato</span> </button>
+                    <button onClick={() => handleIngredientSelection('Hummus')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/350/hummus-230_2x.jpg' alt='Spread of Hummus' title='Spread of Hummus'/> <span>Hummus</span> </button>
+                    <button onClick={() => handleIngredientSelection('Feta')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/385/feta-230_2x.jpg' alt='Feta' title='Feta'/> <span>Feta</span> </button>
+                    <button onClick={() => handleIngredientSelection('Mozzarella')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/388/mozzarella-230_2x.jpg' alt='Mozzarella' title='Mozzarella'/> <span>Mozzarella</span> </button>
+                    <button onClick={() => handleIngredientSelection('Parmesan')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/397/parmesan-reggiano-230_2x.jpg' alt='Parmesan' title='Parmesan'/> <span>Parmesan</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet & Spicy Peppers')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/608/sweet-and-spicy-peppers-230_2x.jpg' alt='Sweet and Spicy Peppers' title='Sweet and Spicy Peppers'/> <span>Sweet & Spicy Peppers</span></button>
+                    <button onClick={() => handleIngredientSelection('Strawberries')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/407/strawberries-230_2x.jpg' alt='Strawberries' title='Strawberries'/><span>Strawberries</span> </button>
+                    <button onClick={() => handleIngredientSelection('Bacon')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/362/pancetta-230_2x.jpg' alt='Bacon' title='Bacon'/> <span>Pancetta(Bacon)</span></button>
+                    <button onClick={() => handleIngredientSelection('Broccoli')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/402/roasted-broccoli-230_2x.jpg' alt='Roasted Broccoli' title='Roasted Broccoli'/> <span>Roasted Broccoli</span> </button>
+                    <button onClick={() => handleIngredientSelection('Sweet Corn & Tomato')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/408/sweet-corn-and-tomato-230_2x.jpg' alt='Sweet Corn and Tomatoe' title='Sweet Corn and Tomatoe'/> <span>Sweet Corn & Tomato</span></button>
+                    <button onClick={() => handleIngredientSelection('Avocado')} className='BYOpanel-buttons'> 
+                        <img src='https://images.mypiada.com/piada-one/option/381/avocado-230_2x.jpg' alt='Sliced Avocado' title='Sliced Avocado'/><span>Avocado</span> </button>
                 </p>
             </h3>
-            <p>Display Selected Items here: </p>
-            <button onClick={() => addBYOToOrder("")} >
+            <button onClick={() => addBYOToOrder()} >
                 Add to order
             </button>
         </div>
@@ -638,6 +1002,12 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     // For the option buttons
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedPasta, setSelectedPasta] = useState('');
+    
+    const salad_panel = () => {
+        clearBYOSelections();
+        setBYO("Custom Salad");
+        BYO_salad();
+    }
 
     return (
     <div className='Customer'>
@@ -645,46 +1015,6 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                 <b><u>PIADA</u></b>  ~ Customer Self-Service ~ 
-                {/* <Popup trigger=
-                    {<button className='navigate-buttons'> Cart </button>}
-                    position="right center"
-                    modal nested >
-                    {
-                    <h2 style={{width: "50vw"}}>
-                    <div >
-                        <table className="table table-dark">
-                        <thead>
-                              <tr>
-                                <th> # </th>
-                                <th> Name </th>
-                                <th> Price($) </th>
-                                <th><BsFillTrashFill onClick={removeAll}/></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {order.map((order, index) => (
-                                <tr key={index}>
-                                  <td>{index + 1}</td>
-                                  <td>{order}</td>
-                                  <td>{prices.at(index)}</td>
-                                  <td>
-                                  <BsFillTrashFill onClick={() => handleDeleteClick(index)}/>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                    </div>
-                        <button className='pay-button' onClick={addorder}> <u>Pay</u>: 
-                        ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
-                        {showSuccessPanel && 
-                            <div className='payment-confirmation'>
-                                <h3>Successfuly Placed Order!</h3>
-                            </div>
-                        }
-                    </h2> 
-                    }
-                </Popup> */}
                 <button className='navigate-buttons' onClick={handleShow}> Cart </button>
                 <Offcanvas show={show} onHide={handleClose} placement='end' backdrop={false} scroll={true}
                 style={{ width: '55%', backgroundColor: '#736a60' }}>
@@ -727,8 +1057,8 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         </h2> 
                     </Offcanvas.Body>
                 </Offcanvas>
-                {/* <button onClick={() => navigate(-1)} className='navigate-buttons'> <FaHome /> &nbsp; Home </button> */}
-                <button onClick={() => navigate(-1)} className='navigate-buttons'> &nbsp; Home </button>
+                <button onClick={() => navigate(-1)} className='navigate-buttons'> <FaHome /> &nbsp; Home </button>
+                {/* <button onClick={() => navigate(-1)} className='navigate-buttons'> &nbsp; Home </button> */}
             </h1>
         </div>
 
@@ -739,13 +1069,13 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         
         <div>    
         <h3> <p className='CategoryText'>Pasta</p>
-        <p>
+        <div>
         <div className='float-container'>
             <div className='float-child'>
                 <p>Carbonara</p>
                 <Popup trigger=
                 {<button className='MenuItemButton'>
-                    <img src='https://images.mypiada.com/piada-one/product/423/197051.jpg' alt='Carbonara'
+                    <img src='https://images.mypiada.com/piada-one/product/423/197051.jpg' alt='Carbonara' title='Carbonara Pasta Bowl'
                     style={{width: "13.5vw"}}/>
                 </button>}
                     position="right center" onOpen={() => makeorderitem(0, "Carbonara")}>
@@ -785,7 +1115,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <p>Diavolo</p>
                 <Popup trigger=
                     {<button className='MenuItemButton'>
-                        <img src='https://images.mypiada.com/piada-one/product/459/123678.jpg' alt='Diavolo'
+                        <img src='https://images.mypiada.com/piada-one/product/459/123678.jpg' alt='Diavolo' title='Diavolo Pasta Bowl'
                         style={{width: "13.5vw"}}/>
                     </button>}
                     position="right center" onOpen={() => makeorderitem(0, "Diavolo")}>
@@ -824,7 +1154,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <p>Basil Pesto</p>
                 <Popup trigger=
                     {<button className='MenuItemButton'>
-                        <img src='https://images.mypiada.com/piada-one/product/322/197053.jpg' alt='Basil Pesto'
+                        <img src='https://images.mypiada.com/piada-one/product/322/197053.jpg' alt='Basil Pesto' title='Basil Pesto Pasta Bowl'
                         style={{width: "13.5vw"}}/>
                     </button>}
                     position="left center" onOpen={() => makeorderitem(0, "Basil Pesto")}>
@@ -863,7 +1193,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <p>Marinara</p>
                 <Popup trigger=
                     {<button className='MenuItemButton'>
-                        <img src='https://images.mypiada.com/piada-one/product/565/325680.jpg' alt='Marinara'
+                        <img src='https://images.mypiada.com/piada-one/product/565/325680.jpg' alt='Marinara' title='Marinara Pasta Bowl'
                         style={{width: "13.5vw"}}/>
                     </button>}
                     position="left center" onOpen={() => makeorderitem(0, "Marinara")}>
@@ -898,7 +1228,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 <p className='IngredientText'>Pasta, housemade tomato sauce, grated parmesan</p>
             </div>
         </div>
-        </p>
+        </div>
         </h3>
 
         <h3 > <p className='CategoryText'>Piadas</p>  
@@ -907,7 +1237,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <div className='float-child'>
             <p>Avocado Piada <br/><br/></p>
             <button onClick={() => addorderitem("Avocado Piada")} className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/315/196632.jpg' alt='Avocado'
+                <img src='https://images.mypiada.com/piada-one/product/315/196632.jpg' alt='Avocado Piada' title='Avocado Piada on Plate'
                 style={{width: "13.5vw"}}/>
             </button>
             <p className='PriceText'>$9.89</p>
@@ -917,7 +1247,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <div className='float-child'>
             <p>BLT Piada <br/><br/></p>
             <button onClick={() => addorderitem("BLT Piada")} className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/453/185657.jpg' alt='BLT'
+                <img src='https://images.mypiada.com/piada-one/product/453/185657.jpg' alt='BLT Piada' title='BLT Piada'
                 style={{width: "13.5vw"}}/>
             </button>
             <p className='PriceText'>$9.29</p>
@@ -927,7 +1257,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <div className='float-child'>
             <p>Chef's Favorite Piada</p>
             <button onClick={() => addorderitem("Chefs Favorite Piada")} className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/279/196634.jpg' alt="Chef's Favorite"
+                <img src='https://images.mypiada.com/piada-one/product/279/196634.jpg' alt="Chef's Favorite Piada" title="Chef's Favorite Piada on Plate"
                 style={{width: "13.5vw"}}/>
             </button>
             <p className='PriceText'>$9.29</p>
@@ -937,7 +1267,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <div className='float-child'>
             <p>Mediterranean Piada</p>
             <button onClick={() => addorderitem("Mediterranean Piada")} className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/548/386780.jpg' alt='Mediterranean'
+                <img src='https://images.mypiada.com/piada-one/product/548/386780.jpg' alt='Mediterranean Piada' title='Mediterranean Piada on Plate'
                 style={{width: "13.5vw"}}/>
             </button>
             <p className='PriceText'>$10.19</p>
@@ -949,13 +1279,13 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         </h3>
 
         <h3 > <p className='CategoryText'>Salad</p> 
-        <p>
+        <div>
         <div className='float-container'>
           <div className='float-child'>
           <p>Deluxe Ceaser</p>
           <Popup trigger=
             {<button className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/456/196981.jpg' alt='Deluxe Caeser'
+                <img src='https://images.mypiada.com/piada-one/product/456/196981.jpg' alt='Deluxe Caeser Salad' title='Deluxe Caeser Salad'
                 style={{width: "13.5vw"}}/>
             </button>}
             position="right center" onOpen={() => makeorderitem(0, "Deluxe Ceasar Salad")}>
@@ -983,7 +1313,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
           <p>Farmer's Market</p>
           <Popup trigger=
             {<button className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/467/product_web_category.png' alt="Farmer's Market"
+                <img src='https://images.mypiada.com/piada-one/product/467/product_web_category.png' alt="Farmer's Market" title="Farmer's Market Salad"
                 style={{width: "13.5vw"}}/>
             </button>}
             position="right center" onOpen={() => makeorderitem(0, "Farmers Market Salad")}>
@@ -1011,7 +1341,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
           <p>Avocado Chop</p>
           <Popup trigger=
             {<button className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/782/product_web_category.png' alt= 'Avocado Chop'
+                <img src='https://images.mypiada.com/piada-one/product/782/product_web_category.png' alt= 'Avocado Chop' title= 'Avocado Chop Salad'
                 style={{width: "13.5vw"}}/>
             </button>}
             position="left center" onOpen={() => makeorderitem(0, "Avocado Chop Salad")}>
@@ -1038,7 +1368,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <div className='float-child'>
             <p>Power Bowl</p>
             <button onClick={() => addorderitem("Power Bowl")} className='MenuItemButton'>
-                <img src='https://images.mypiada.com/piada-one/product/562/324991.jpg' alt='Power Bowl'
+                <img src='https://images.mypiada.com/piada-one/product/562/324991.jpg' alt='Power Bowl' title='Power Bowl'
                 style={{width: "13.5vw"}}/>
             </button>
             <p className='PriceText'>$11.79</p>
@@ -1046,15 +1376,20 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             roasted broccoli, cucumber salad, pickled red onions, yogurt harissa</p>
             </div>
         </div>
-        </p>
+        </div>
         </h3>
       
 
         <h3 > <p className='CategoryText'>Other</p>
         <div className='float-container'>
-            <div className='float-child'>
+
+            <div className='float-child' >
+            <p>Build Your Own</p>
             <Popup contentStyle={{width: "1200px"}} trigger=
-                {<button className='MenuItemButton'> Build Your Own </button>} 
+                {<button className='MenuItemButton'> 
+                    <img src='https://mypiada.com/assets/bg-garlic-9bb944d7d28a24a67d8bb7afb75474d1724934912f9713f6bff791a8ed8abdc8.jpg' alt='Person Crushing Garlic with Knife' title='Person Grating Cheese on Spaghetti' 
+                    style={{width: "98%", height: "98%"}}/> 
+                </button>} 
                 modal nested onClose={main_panel}>
                 {
                     <div >
@@ -1068,7 +1403,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <p>Street Sides</p>
             <Popup trigger=
                 {<button className='MenuItemButton'> 
-                    <img src='https://images.mypiada.com/piada-one/category/607/category_web_list.png' alt='Sides'
+                    <img src='https://images.mypiada.com/piada-one/category/607/category_web_list.png' alt='Tomatoes and Corn in Bowl' title= 'Tomatoes and Corn in Bowl'
                     style={{width: "13.5vw"}}/>
                 </button>}
                 modal nested >
@@ -1144,7 +1479,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <p>Drinks</p>
             <Popup trigger=
                 {<button className='MenuItemButton'> 
-                    <img src='https://images.mypiada.com/piada-one/category/858/category_web_list.jpg' alt='Drinks'
+                    <img src='https://images.mypiada.com/piada-one/category/858/category_web_list.jpg' alt='Yellow Drink in Piada Cup' title='Yellow Drink in Piada Cup'
                     style={{width: "13.5vw"}}/>
                 </button>} 
                 modal nested>
@@ -1227,44 +1562,52 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             <p>Kids</p>
             <Popup trigger=
                 {<button className='MenuItemButton'> 
-                    <img src='https://images.mypiada.com/piada-one/category/600/category_web_list.jpg' alt='Kids'
+                    <img src='https://images.mypiada.com/piada-one/category/600/category_web_list.jpg' alt='Kids eating Spaghetti' title='Kids Eating Spaghetti'
                     style={{width: "13.5vw"}}/>
                 </button>} 
                 modal nested>
                 {
-                    <div >
+                    <div style={{ overflowY: "auto", maxHeight: "800px" }}>
                         <h2> Kids Menu </h2>
-                        <Popup trigger=
-                        {<button > Kids Pasta  </button>}
-                        position="bottom center" >
-                        <div >
-                        <button > Grilled Chicken </button>
-                        <button > Crispy Chicken </button>
-                        <button > Steak </button>
 
-                        <button > Spaghetti </button>
-                        <button > Penne </button>
-                        <button > Add to Order </button>
+                        <Popup trigger={<button className='BYOpanel-buttons' title='Kids Eating pasta'> <img src='https://images.mypiada.com/piada-one/product/627/185781.jpg' alt='Kids eating pasta' title='Kids eating pasta'/> <span>Kids Pasta</span>  </button>} position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
+                        <div >
+                            <button className='BYOpanel-buttons' title='Grilled Chicken' onClick={() => setKidsProtein("Grilled Chicken")} disabled={kidsProtein === 'Grilled Chicken' ? true : false}> 
+                                <img src='https://images.mypiada.com/piada-one/option/366/chicken-230_2x.jpg' alt='Grilled Chicken' title='Grilled Chicken'/> <span>Grilled Chicken</span> </button>
+                            <button className='BYOpanel-buttons' onClick={() => setKidsProtein("Crispy Chicken")} disabled={kidsProtein === 'Crispy Chicken' ? true : false}> 
+                                <img src='https://images.mypiada.com/piada-one/option/365/chicken-fritte-230_2x.jpg' alt='Crispy Chicken Fritte' title='Crispy Chicken Fritte'/><span>Crispy Chicken</span>  </button>
+                            <button className='BYOpanel-buttons'onClick={() => setKidsProtein("Steak")} disabled={kidsProtein === 'Steak' ? true : false}> 
+                                <img src='https://images.mypiada.com/piada-one/option/367/steak-230_2x.jpg' alt='Grilled Steak' title='Grilled Steak'/><span>Grilled Steak</span> </button>
+                            <br />
+                            <button className='BYOpanel-buttons' onClick={() => setKidsType("Spaghetti")} disabled={kidsType === 'Spaghetti' ? true : false}>
+                                <img src='https://images.mypiada.com/piada-one/option/305/spaghetti-230_2x.jpg' alt='Spaghetti' title='Spaghetti'/> <span>Spaghetti</span></button>
+                            <button className='BYOpanel-buttons' onClick={() => setKidsType("Penne")} disabled={kidsType === 'Penne' ? true : false}> 
+                                <img src='https://images.mypiada.com/piada-one/option/363/penne-230_2x.jpg' alt='Penne' title='Penne Pasta'/> <span>Penne</span> </button>
+                            <button onClick={() => addKidsBYOToOrder()} className='add-to-order'> Add to Order </button>
                         </div>
                         </Popup>
 
-                        <Popup trigger=
-                        {<button > Kids Meatballs  </button>}
-                        position="bottom center" >
+                        <Popup trigger={<button className='BYOpanel-buttons' title='Meatballs and Spaghetti Bowl'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti' title='Meatballs and Spaghetti'/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
                         <div >
-                        <button > Spaghetti </button>
-                        <button > Penne </button>
-                        <button > Add to Order </button>
+                            <button className='BYOpanel-buttons' onClick={() => setKidsType("Spaghetti")} disabled={kidsType === 'Spaghetti' ? true : false}> 
+                            <img src='https://images.mypiada.com/piada-one/option/305/spaghetti-230_2x.jpg' alt='Spaghetti' title='Spaghetti'/> <span>Spaghetti</span> </button>
+                            <button className='BYOpanel-buttons' onClick={() => setKidsType("Penne")} disabled={kidsType === 'Penne' ? true : false}> 
+                            <img src='https://images.mypiada.com/piada-one/option/363/penne-230_2x.jpg' alt='Penne Pasta' title='Penne Pasta'/> <span>Penne</span> </button>
+                            <button onClick={() => addKidsBYOToOrder()} className='add-to-order'> Add to Order </button>
                         </div>
                         </Popup>
                         
-                        <button onClick={() => addorderitem("Kids Chicken Fingers")} > Chicken Fingers </button>
+                        <button className='BYOpanel-buttons' title='Chicken Fingers next to a Heinz Ketchup' onClick={() => addorderitem("Kids Chicken Fingers")} > 
+                            <img src='https://images.mypiada.com/piada-one/product/530/131615.jpg' alt='Chicken Fingers next to a Heinx Ketchup' title='Chicken Fingers next to a Heinx Ketchup'/> <span>Chicken Fingers</span> </button>
 
                         <br /><br />
                         <h3> Drinks: </h3>
-                        <button onClick={() => addorderitem("Kids Low-Fat Milk")} > Low-Fat Milk </button>
-                        <button onClick={() => addorderitem("Kids Chocolate Milk")} > Chocolate Milk </button>
-                        <button onClick={() => addorderitem("Kids Apple Juice")} > Apple Juice </button>
+                        <button className='BYOpanel-buttons' title='Horizon LowFat Milk' onClick={() => addorderitem("Kids Low-Fat Milk")} > 
+                            <img src='https://images.mypiada.com/piada-one/option/698/white-milk-230_2x.jpg' alt='Horizon LowFat Milk' title='Horizon LowFat Milk'/> <span>Low-Fat Milk</span> </button>
+                        <button className='BYOpanel-buttons' title='Horizon Chocolate Milk' onClick={() => addorderitem("Kids Chocolate Milk")} >
+                            <img src='https://images.mypiada.com/piada-one/option/699/chocolate-milk-230_2x.jpg' alt='Horizon Chocolate Milk' title='Horizon Chocolate Milk'/> <span>Chocolate Milk</span> </button>
+                        <button className='BYOpanel-buttons' title='Motts Apple Juice' onClick={() => addorderitem("Kids Apple Juice")} > 
+                            <img src='https://images.mypiada.com/piada-one/option/700/apple-juice-230_2x.jpg' alt='Motts Apple Juice' title='Motts Apple Juice'/> <span>Apple Juice</span> </button>
                     </div>
                 }
             </Popup>

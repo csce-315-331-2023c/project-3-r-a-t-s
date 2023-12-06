@@ -32,7 +32,6 @@ const ManagerGUI: React.FC = () => {
   }, []); 
 
   useEffect(() => {
-    console.log('ManagerEmail in ManagerGUI:', ManagerEmail);
   }, [ManagerEmail]);
 
   const navigate = useNavigate();
@@ -91,8 +90,6 @@ const ManagerGUI: React.FC = () => {
     // .post('http://127.0.0.1:5000/api/manager/check_if_admin', {email : ManagerEmail}, config)
     .post('https://pos-backend-3c6o.onrender.com/api/manager/check_if_admin', {email : ManagerEmail}, config)
     .then((response) => {
-        console.log("Message is :" , response.data.message); 
-        console.log("Status is :" , response.data.isAdmin); 
         setIsAdmin(response.data.isAdmin);
     })
     .catch((error) => {
@@ -149,7 +146,6 @@ const ManagerGUI: React.FC = () => {
    */
   const generateProductReport = async() => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
-      // console.log("Invalid Dates selected");
       return;
     }
     else {
@@ -169,8 +165,6 @@ const ManagerGUI: React.FC = () => {
         .then((response) => {
           
           setProductReport(response.data.report);
-          // console.log(productReport)
-          console.log('Successfully generated Product Report');   
         })
         .catch((error) => {
           console.error('Failed to generate Product Report: ', error);
@@ -219,7 +213,6 @@ const ManagerGUI: React.FC = () => {
             // Set the state with the converted array
             pairsArray.sort((a, b) => b.count - a.count);
             setPairs(pairsArray);
-            console.log("Successfully generated What Sells together");
           } else {
             console.error('Invalid data format received from the API');
           }
@@ -239,7 +232,6 @@ const ManagerGUI: React.FC = () => {
   const generateExcessReport = async () => {
     // query for excess report data
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
-      // console.log("Invalid Dates selected");
       return;
     }
 
@@ -251,7 +243,6 @@ const ManagerGUI: React.FC = () => {
         endDate: report_end_date,
       });
       setExcessReport(response.data.excess_report);
-      console.log('Successfully generated Excess Report');
     } catch (error) {
       console.error("Failed to fetch excess report:", error);
     }
@@ -267,16 +258,13 @@ const ManagerGUI: React.FC = () => {
  
   const generateRestockReport = async () => {
     if (report_start_date > report_end_date || report_end_date.length === 0 || report_start_date.length === 0) {
-      // console.log("Invalid Dates selected");
       return;
     }
     
     try {
       // const response = await axios.post("http://127.0.0.1:5000/api/manager_reports/get_restock_report");
       const response = await axios.post('https://pos-backend-3c6o.onrender.com/api/manager_reports/get_restock_report');
-      // console.log(response.data);
       setRestockReport(response.data.restock_report);
-      console.log("Successfully generated Restock Report");
     } catch (error) {
       console.error("Failed to fetch Restock Report:", error);
     }

@@ -55,6 +55,14 @@ const MenuComponent = () => {
     fetchInventory();
   }, []);
 
+  // useEffect to load menu items from local storage on component mount
+  useEffect(() => {
+    const storedMenuData = localStorage.getItem('menuData');
+    if (storedMenuData) {
+      setMenuData(JSON.parse(storedMenuData));
+    }
+  }, []);
+
   const [query, setQuery] = useState('');
 
 
@@ -118,7 +126,10 @@ const MenuComponent = () => {
       );
       // const response = await axios.get("https://pos-backend-3c6o.onrender.com/api/manager/get_menu_items", config);
       setMenuData(response.data);
-      // console.log(response.data);
+
+      // Save the menu data to local storage
+      localStorage.setItem('menuData', JSON.stringify(response.data));
+      
       console.log("Successfully fetched Menu Items");
       setIsLoading(false);
     } catch (error) {

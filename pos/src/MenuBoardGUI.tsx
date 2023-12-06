@@ -7,6 +7,7 @@ import { FaBagShopping } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import './MenuBoard.css'
 import { url } from 'inspector';
+import axios from 'axios';
 
 /**
  * Props for the MenuBoardGUI component.
@@ -69,11 +70,46 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
     }, [recognizedText]);
     ////Ends HERE
 
+    
+    const [newItems, setNewitems] = useState<string[]>([]);
+    const [ingredients, setIngredients] = useState<string[][]>([]);
+    const [prices, setPrices] = useState<string[]>([]);
+
+    useEffect(() => {
+        getNewItemIngredients();
+    }, [])
+
+    /*
+    *   Fetches New Menu items and their corresponding ingredients
+    */
+    const getNewItemIngredients = () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Client-Type': 'cashier'
+            },
+        };
+        axios
+        //   .post('http://127.0.0.1:5000/api/cashier/get_new_menu_items_ingredients', config)
+        .post(`https://pos-backend-3c6o.onrender.com/api/cashier/get_new_menu_items_ingredients`, config)
+        .then((response) => {
+            console.log(response.data.data);
+            setNewitems(response.data.data);
+            console.log(response.data.ingredients);
+            setIngredients(response.data.ingredients);
+            console.log(response.data.prices);
+            setPrices(response.data.prices);
+        })
+        .catch((error) => {
+            console.error('Failed to get ingredients: ', error);
+        });
+    }
+
     return (
         <div className='menu-board'>
             <div className='menu-home-top-bar'>
                 <h1 style={{fontSize: "5vh"}}> 
-                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
+                <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." title="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                    <b><u>PIADA</u></b>  ~ Menu Board ~
                 <button onClick={() => navigate('/CustomerGUI')} className='navigate-buttons'> 
                 <FaBagShopping />  &nbsp; Order Online Here!  </button>
@@ -84,20 +120,20 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
 
             <div className='menu-bottom-bar'>
                 <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh"}}>
-                <IoMdCheckmarkCircleOutline/> Guest Favorite &nbsp;&nbsp;
-                <GiFireBowl/> Spicy &nbsp;&nbsp;
-                <LuVegan/> Vegan &nbsp;&nbsp;
-                <LuWheatOff/> Gluten Free
+                <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark"/> Guest Favorite &nbsp;&nbsp;
+                <GiFireBowl title="Fire/Spicy Icon"/> Spicy &nbsp;&nbsp;
+                <LuVegan title="Vegan Icon"/> Vegan &nbsp;&nbsp;
+                <LuWheatOff title="Gluten Free Icon"/> Gluten Free
                 </h3>
             </div>
-            <br />
+            <br /><br />
 
             {/* Piadas */}
             <h2 style={{fontSize: "5vh", color: "white"}}> <b><u>Hand-Rolled Piadas</u></b></h2>
             <div className='menu-basic-div'>
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "wheat", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/avocado-piada-866257202de9cdef0468c118aaa43bb4b23feedc3991fcfdc8bdb4dd3f952e9d.png" 
-                    alt="Avocado Piada" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Avocado Piada On A Plate" title="Avocado Piada On A Plate"style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Avocado Piada</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -105,13 +141,13 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                         fresh avocado, sweet corn & tomato, basil aioli
                         <br />
                         <br /> <br /><b>9.89 (880 CAL)</b> 
-                        <br /><br /><IoMdCheckmarkCircleOutline size={40}/>
+                        <br /><br /><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={40}/>
                     </h5>
                 </div>
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/blt-piada-3b78d80293ced204208f7a02b6c793728da8772f933487c1674d4913abb672b8.png" 
-                    alt="BLT Piada" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="BLT Piada On A Plate" title="BLT Piada On A Plate" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>BLT Piada</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -124,27 +160,27 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "wheat", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/chefs-favorite-piada-86ab84da4f231f8014f170d8e45386c98832b5d8f52f9428bedf09c52f2d2445.png" 
-                    alt="Avocado Piada" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Avocado Piada On A Plate" title="Avocado Piada On A Plate" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Chef's Favorite Piada</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
                         Italian-style street wrap with spicy diavolo sauce, romaine, mozzarella, sweet peppers, spicy ranch 
                         <br />
                         <br /> <br /><b>9.29 (540 CAL)</b> 
-                        <br /><br /><GiFireBowl size={40}/>
+                        <br /><br /><GiFireBowl title="Fire/Spicy Icon" size={40}/>
                     </h5>
                 </div>
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/mediterranean-piada-b61f796376c2303f1da1934a4756b4e21e0e470b73d704a52693952f3fc43e23.png" 
-                    alt="Avocado Piada" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Mediterranean Piada On A Plate" title="Mediterranean Piada On A Plate" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Mediterranean Piada</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
                         Italian-style street wrap with harissa grain blend, arugula, hummus, cucumber salad, pickled red onions, 
                         bruschetta tomatoes, feta, basil aioli
                         <br /> <br /><b>10.19 (900 CAL)</b> 
-                        <br /><br /><IoMdCheckmarkCircleOutline size={40}/>
+                        <br /><br /><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={40}/>
                     </h5>
                 </div>
             </div> 
@@ -155,7 +191,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             <div className='menu-basic-div'>
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "rgb(153, 195, 153)", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/blt-caesar-73ab2bc938a0ec2f81e3e6cc8358d6efe35812a4b173d8e22c4bf7183fdd7237.png" 
-                    alt="DELUXE CAESAR" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Deluxe Caesar Salad Bowl" title="Deluxe Caesar Salad Bowl" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Deluxe Caesar</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -163,13 +199,13 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                         <br />
                         <br /> <br />
                         <b>7.69 / 9.99 <br /> (330 CAL / 630 CAL)</b> 
-                        <br /><br /><IoMdCheckmarkCircleOutline size={40}/>
+                        <br /><br /><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={40}/>
                     </h5>
                 </div>
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/farmers-market-salad-98472bbbfc55555fc8b1c67c6e50bc3f697d48dc7312643504cc57e4af93bb99.png" 
-                    alt="Farmer's Market" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Farmer's Market Salad Bowl" title="Farmer's Market Salad Bowl" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Farmer's Market</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -182,7 +218,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "rgb(153, 195, 153)", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/avocado-chop-salad-fd6433d6c5aae85742f5e400536bdd1c8a1572ca18112b0d4a5accb66007c420.png" 
-                    alt="Avocado Chop" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Avocado Chop Salad Bowl" title="Avocado Chop Salad Bowl" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Avocado Chop</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -195,7 +231,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/power-bowl-0f14c26c55ff40a9e44c47aa6d141e92a303785f3800c56f51a5fd72d2d1eded.png" 
-                    alt="Power Bowl" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Power Bowl" title="Power Bowl" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Power Bowl</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -203,7 +239,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                         pickled red onions, yogurt harissa.
                         <br /> 
                         <br /> <br /><b>11.79 (670 CAL)</b> 
-                        <br /><br /><IoMdCheckmarkCircleOutline size={40}/>
+                        <br /><br /><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={40}/>
                     </h5>
                 </div>
             </div> 
@@ -214,32 +250,32 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             <div className='menu-basic-div'>
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "rgb(221, 169, 169)", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/carbonara-dfa3e8b8715b3ca5791c31430ab90edc61b52470d52eded07c0d394f2854400a.png" 
-                    alt="Carbonara Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Bowl of Carbonara Pasta" title="Bowl of Carbonara Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Carbonara Pasta</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
                         Pasta, parmesan alfredo, bruschetta tomatoes, pancetta (bacon), spinach, grated parmesan
                         <br /> <br /><b>8.29 / 10.19 <br />(550 CAL / 1070 CAL)</b> 
-                        <br /><br /><IoMdCheckmarkCircleOutline size={40}/>
+                        <br /><br /><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={40}/>
                     </h5>
                 </div>
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/diavolo-pasta-6c705f25988e2c773945c5fd250e748b6ab5d3f450c5c2c2111ca5216b31e501.png" 
-                    alt="Diavolo Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Bowl of Diavolo Pasta" title="Bowl of Diavolo Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Diavolo Pasta</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
                         Pasta, spicy diavolo sauce, bruschetta tomatoes, chopped green onions, grated parmesan
                         <br />
                         <br /> <br /><b>8.29 / 10.19 <br />(360 CAL / 710 CAL)</b> 
-                        <br /><br /><IoMdCheckmarkCircleOutline size={40}/> &nbsp;<GiFireBowl size={40}/>
+                        <br /><br /><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={40}/> &nbsp;<GiFireBowl title="Fire/Spicy Icon" size={40}/>
                     </h5>
                 </div>
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", backgroundColor: "rgb(221, 169, 169)", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/basil-pesto-b80576bf0136c757e7fc1185477de6b7fdafd91f0b57e0cc6b164e13abc50180.png" 
-                    alt="Basil Pesto Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Bowl of Basil Pesto Pasta" title="Bowl of Basil Pesto Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Basil Pesto Pasta</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -251,7 +287,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
 
                 <div style={{display:'table-cell', width: "20wh", marginLeft: "5vw", padding: "50px 20px 50px 20px"}}>
                     <img src="https://mypiada.com/assets/menu/roasted-tomato-pomodoro-9cd6475b5130e486bb68ca0bf0e6f5391411852ce9854b40e43c27416552b602.png" 
-                    alt="Marinara Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
+                    alt="Bowl of Marinara Pasta" title="Bowl of Marinara Pasta" style={{width: "15vw", backgroundColor: "white", borderRadius: "50%"}}/>
                     <h3 style={{marginTop: "2vh"}}> <b>Marinara Pasta</b>
                     </h3>
                     <h5 style={{padding: "10px 10px 10px 10px", marginLeft: "auto", marginRight: "auto"}}>
@@ -269,7 +305,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                 <h3 style={{fontSize: "3.5vh"}}> <b>Step 1: Choose a Meal.</b></h3>
                 <div style={{display: "table", margin: "0px auto 0px auto", width: "80vw", height: "fit-content"}}>
                     <div style={{display: "table-cell", backgroundColor: "wheat", width: "20vw"}}>
-                        <img src="https://mypiada.com/assets/menu/hot-chicken-piada-8b270c5f55d82d5d53a06bd25557efa0f66570dac097b9294cfd8eeccaa94e47.png" alt="Example Piada" 
+                        <img src="https://mypiada.com/assets/menu/hot-chicken-piada-8b270c5f55d82d5d53a06bd25557efa0f66570dac097b9294cfd8eeccaa94e47.png" alt="Example Piada" title="Example Piada on a Plate" 
                         style={{width: "20vw", backgroundColor: "white", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "4vh"}}><b>
                         PIADA 
@@ -280,7 +316,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                         </b></p>
                     </div>
                     <div style={{display: "table-cell", backgroundColor: "rgb(153, 195, 153)", width: "20vw"}}>
-                    <img src="https://mypiada.com/assets/menu/blt-caesar-73ab2bc938a0ec2f81e3e6cc8358d6efe35812a4b173d8e22c4bf7183fdd7237.png" alt="Example Salad" 
+                    <img src="https://mypiada.com/assets/menu/blt-caesar-73ab2bc938a0ec2f81e3e6cc8358d6efe35812a4b173d8e22c4bf7183fdd7237.png" alt="Example Salad" title="Example Salad on a Plate" 
                         style={{width: "20vw", backgroundColor: "white", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "4vh"}}><b>
                         SALAD 
@@ -291,7 +327,7 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                         </b></p>
                     </div>
                     <div style={{display: "table-cell", backgroundColor: "rgb(221, 169, 169)", width: "20vw"}}>
-                    <img src="https://mypiada.com/assets/menu/carbonara-dfa3e8b8715b3ca5791c31430ab90edc61b52470d52eded07c0d394f2854400a.png" alt="Example Pasta" 
+                    <img src="https://mypiada.com/assets/menu/carbonara-dfa3e8b8715b3ca5791c31430ab90edc61b52470d52eded07c0d394f2854400a.png" alt="Example Pasta" title="Example Pasta on a Plate" 
                         style={{width: "20vw", backgroundColor: "white", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "4vh"}}><b>
                         PASTA 
@@ -307,17 +343,17 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                 <h3 style={{fontSize: "3.5vh"}}> <b>Step 2: Pick a Protein.</b></h3>
                 <div style={{width: "60vw", display: "table", margin: "2vh auto 0vh auto"}}>
                     <p style={{width: "40vw", display: "table-cell", fontSize: "2.5vh"}}> 
-                        <b>ITALIAN SAUSAGE</b> 2.69 (270 CAL)  <IoMdCheckmarkCircleOutline/><LuWheatOff/><br />
-                        <b>GRILLED CHICKEN</b> 2.69 (170 CAL) <LuWheatOff/><br />
+                        <b>ITALIAN SAUSAGE</b> 2.69 (270 CAL)  <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" /><LuWheatOff title="Gluten Free Icon"/><br />
+                        <b>GRILLED CHICKEN</b> 2.69 (170 CAL) <LuWheatOff title="Gluten Free Icon"/><br />
                         <b>CRISPY CHICKEN</b> 2.69 (280 CAL)    <br />
-                        <b>HOT FRIED CHICKEN</b> 2.69 (310 CAL)  <GiFireBowl/> <GiFireBowl/><GiFireBowl/><br />
+                        <b>HOT FRIED CHICKEN</b> 2.69 (310 CAL)  <GiFireBowl title="Fire/Spicy Icon"/> <GiFireBowl title="Fire/Spicy Icon"/><GiFireBowl title="Fire/Spicy Icon"/><br />
                         
                     </p>
                     <p style={{width: "40vw", display: "table-cell", fontSize: "2.5vh"}}>
                         <b>GRILLED STEAK</b> 3.29 (100 CAL) <br />
                         <b>GRASS-FED MEATBALLS</b> 3.99 (500 CAL) <br />
-                        <b>CALAMARI & HOT PEPPERS</b> 3.89 (410 CAL)  <IoMdCheckmarkCircleOutline/> <br />
-                        <b>GRILLED SALMON </b>5.69 (290 CAL) <LuWheatOff/>
+                        <b>CALAMARI & HOT PEPPERS</b> 3.89 (410 CAL)  <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark"/> <br />
+                        <b>GRILLED SALMON </b>5.69 (290 CAL) <LuWheatOff title="Gluten Free Icon"/>
                     </p>
                 </div>
 
@@ -326,76 +362,76 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
                 <h4><b><u>Pasta & Piada Sauces</u></b></h4>
                 <div style={{width: "80vw", display: "table", margin: "2vh auto 0vh auto"}}>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/pomodoro-833963cbf3f3350407cbc7a5d7390ffb339fdbc70a048ba3e7345715a2a9c986.png" alt="Marinara Sauce" 
+                    <img src="https://mypiada.com/assets/menu/sauces/pomodoro-833963cbf3f3350407cbc7a5d7390ffb339fdbc70a048ba3e7345715a2a9c986.png" alt="Marinara Sauce" title="Marinara Sauce" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>MARINARA</b>
-                        <br />Housemade tomato sauce made with basil</p><LuWheatOff size={30}/> <LuVegan size={30}/>
+                        <br />Housemade tomato sauce made with basil</p><LuWheatOff title="Gluten Free Icon" size={30}/> <LuVegan title="Vegan Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/alfredo-0ec32018244825a14d4c2fcd9cfb59116fed3c0daa505bd8be09ef7884c39f4f.png" alt="Alfredo Sauce" 
+                    <img src="https://mypiada.com/assets/menu/sauces/alfredo-0ec32018244825a14d4c2fcd9cfb59116fed3c0daa505bd8be09ef7884c39f4f.png" alt="Alfredo Sauce" title="Alfredo Sauce" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>Alfredo</b>
-                        <br />Classic Italian white sauce made from parmesan</p><IoMdCheckmarkCircleOutline size={30}/><LuVegan size={30}/>
+                        <br />Classic Italian white sauce made from parmesan</p><IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={30}/><LuVegan title="Vegan Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/diavolo-092818f4e70f2b8eba0ca206083ec7101cd3037a792a6f9abd8d078d3402416b.png" alt="Diavolo Sauce" 
+                    <img src="https://mypiada.com/assets/menu/sauces/diavolo-092818f4e70f2b8eba0ca206083ec7101cd3037a792a6f9abd8d078d3402416b.png" alt="Diavolo Sauce" title="Diavolo Sauce"
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>DIAVOLO</b>
-                        <br />Spicy tomato cream sauce with crushed red pepper</p><LuWheatOff size={30}/><GiFireBowl size={30}/><LuVegan size={30}/>
+                        <br />Spicy tomato cream sauce with crushed red pepper</p><LuWheatOff title="Gluten Free Icon" size={30}/><GiFireBowl title="Fire/Spicy Icon" size={30}/><LuVegan  title="Vegan Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/basil-pesto-afe0a1f618a62e68f194fcc0b0763fbc1c91d9dcac409fe80cbd8426f0a7115b.png" alt="Basil Pesto Sauce" 
+                    <img src="https://mypiada.com/assets/menu/sauces/basil-pesto-afe0a1f618a62e68f194fcc0b0763fbc1c91d9dcac409fe80cbd8426f0a7115b.png" alt="Basil Pesto Sauce" title="Basil Pesto Sauce" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>BASIL PESTO</b>
-                        <br />Fresh herb sauce blended with parmesan and garlic</p><LuWheatOff size={30}/><LuVegan size={30}/>
+                        <br />Fresh herb sauce blended with parmesan and garlic</p><LuWheatOff title="Gluten Free Icon" size={30}/><LuVegan title="Vegan Icon" size={30}/>
                     </div>
                 </div> <br /><br />
 
                 <h4><b><u>Salad Dressings</u></b></h4>
                 <div style={{width: "80vw", display: "table", margin: "2vh auto 0vh auto"}}>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/creamy-parm-ae1a4de0c489207179c41e276e86608a8cf7bfb2937290b6e9ee5d328e465081.png" alt="Creamy Paremsan Dressing" 
+                    <img src="https://mypiada.com/assets/menu/sauces/creamy-parm-ae1a4de0c489207179c41e276e86608a8cf7bfb2937290b6e9ee5d328e465081.png" alt="Creamy Paremsan Dressing" title="Creamy Paremsan Dressing"
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>CREAMY PARMESAN</b></p>
-                        <LuWheatOff size={30}/>
+                        <LuWheatOff title="Gluten Free Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/lemon-basil-2affea18ca51469b0500692d9bc00507282c38161d29e12ed04b856db76f17da.png" alt="Lemon Basil Dressings" 
+                    <img src="https://mypiada.com/assets/menu/sauces/lemon-basil-2affea18ca51469b0500692d9bc00507282c38161d29e12ed04b856db76f17da.png" alt="Lemon Basil Dressings" title="Lemon Basil Dressings" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>LEMON BASIL</b></p>
-                        <IoMdCheckmarkCircleOutline size={30}/><LuVegan size={30}/><LuWheatOff size={30}/>
+                        <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={30}/><LuVegan title="Vegan Icon" size={30}/><LuWheatOff title="Gluten Free Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/caesar-719ee00dc379e9fd14f44b80ad918508786a17f3edf507971706d03f94942468.png" alt="Classic Caesar Dressing" 
+                    <img src="https://mypiada.com/assets/menu/sauces/caesar-719ee00dc379e9fd14f44b80ad918508786a17f3edf507971706d03f94942468.png" alt="Classic Caesar Dressing" title="Classic Caesar Dressing" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>CLASSIC CAESAR</b></p>
-                        <IoMdCheckmarkCircleOutline size={30}/>
+                        <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/creamy-basil-parmesan-3ccfeaf78641e47da880d3625f2f011ed9a10afc84ea3708d107093112ee60a6.png" alt="Basil Parmesan Dressing" 
+                    <img src="https://mypiada.com/assets/menu/sauces/creamy-basil-parmesan-3ccfeaf78641e47da880d3625f2f011ed9a10afc84ea3708d107093112ee60a6.png" alt="Basil Parmesan Dressing" title="Basil Parmesan Dressing" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}> BASIL PARMESAN</b></p>
-                        <LuWheatOff size={30}/>
+                        <LuWheatOff title="Gluten Free Icon" size={30}/>
                     </div>
                 </div>
                 <div style={{width: "80vw", display: "table", margin: "0vh auto 0vh auto"}}>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/oil-vinegar-f3fccd3b5b30f3bd1827e0a1499fc9360f4cd07e735f2a94d3033137de5e328d.png" alt="Oil and Vinegar Dressing" 
+                    <img src="https://mypiada.com/assets/menu/sauces/oil-vinegar-f3fccd3b5b30f3bd1827e0a1499fc9360f4cd07e735f2a94d3033137de5e328d.png" alt="Oil and Vinegar Dressing" title="Oil and Vinegar Dressing" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>OIL & VINEGAR</b></p>
-                        <IoMdCheckmarkCircleOutline size={30}/> <LuVegan size={30}/>
+                        <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={30}/> <LuVegan title="Vegan Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/spicy-ranch-ebe5802e1c7849fddc925e4f0f0ef781ef3473df515d2116d2c7cd06a42e9d0a.png" alt="Spicy Ranch Dressing" 
+                    <img src="https://mypiada.com/assets/menu/sauces/spicy-ranch-ebe5802e1c7849fddc925e4f0f0ef781ef3473df515d2116d2c7cd06a42e9d0a.png" alt="Spicy Ranch Dressing" title="Spicy Ranch Dressing" 
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>SPICY RANCH</b></p>
-                        <IoMdCheckmarkCircleOutline size={30}/><GiFireBowl size={30}/>
+                        <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark" size={30}/><GiFireBowl title="Fire/Spicy Icon" size={30}/>
                     </div>
                     <div style={{width: "20vw", display: "table-cell"}}>
-                    <img src="https://mypiada.com/assets/menu/sauces/harissa-yogurt-8f70c6144178c519340b6bca3ae3f2f136dc7735cc3d079358c3146edf10f683.png" alt="Yogurt Harissa Dressing" 
+                    <img src="https://mypiada.com/assets/menu/sauces/harissa-yogurt-8f70c6144178c519340b6bca3ae3f2f136dc7735cc3d079358c3146edf10f683.png" alt="Yogurt Harissa Dressing" title="Yogurt Harissa Dressing"
                         style={{width: "15vw", backgroundColor: "rgb(35,31,32,255)", borderRadius: "50%", margin: "2vh 0px 4vh 0px"}}/>
                         <p style={{fontSize: "2vh"}}> <b style={{fontSize: "3vh"}}>YOGURT HARISSA</b></p>
-                        <LuWheatOff size={30}/><LuVegan size={30}/><GiFireBowl size={30}/>
+                        <LuWheatOff title="Gluten Free Icon" size={30}/><LuVegan title="Vegan Icon" size={30}/><GiFireBowl title="Fire/Spicy Icon" size={30}/>
                     </div>
                 </div>
 
@@ -503,9 +539,17 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             Buttermilk marinated crispy chicken tenders served with a side of ketchup
         </p>
         <br />
-
         </div>
-
+        </div>
+        
+        <div className='menu-basic-div' style={{width: "50vw"}}>
+            <h3><b><u>Seasonal & New Menu Items!</u></b></h3>
+            <img src="https://mypiada.com/assets/our-story-photo-a48b688db804609613306f4e349ac3d098498bd25670d64dfacaa27084b0686e.png" alt="A Piada chef sharpening his knives." 
+            style={{width: "30vw"}}/>
+            {newItems.map((item, index) => (
+                <div><h4>{item} ${prices.at(index)}
+                </h4> {ingredients.at(index)?.join(", ")} <br /></div>
+            ))}
         </div>
 
             <br /><br /><br /><br />

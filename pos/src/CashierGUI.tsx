@@ -16,7 +16,6 @@ import { CiLogout } from "react-icons/ci";
 const CashierGUI = () => {
     const location = useLocation();
     const LoginUsername = location.state && location.state.LoginUsername;
-    console.log("CashierGUI Username", LoginUsername);
 
     /**
      * Effect hook to fetch new menu items when the component mounts.
@@ -289,11 +288,6 @@ const CashierGUI = () => {
     useEffect(() => {    
         if (kidsBYO === 'Kids Pasta') {
             setCustomName(kidsBYO + " " + kidsType);
-            if (kidsType === 'Penne') {
-                setSelectedIngredients(['Penne']); 
-            } else {
-                setSelectedIngredients(['Spaghetti']); 
-            }
         } else if (kidsBYO === 'Kids Meatballs'){
             setCustomName(kidsBYO + " " + kidsType);
         }
@@ -417,11 +411,11 @@ const CashierGUI = () => {
                     <p>
                         <button onClick={() => setProtein('Italian Sausage')} className='custom-select-buttons'> Italian Sausage </button>
                         <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
-                        <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
+                        <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken Fritte</button>
                         <button onClick={() => setProtein('Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
-                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Grilled Steak')} className='custom-select-buttons'> Grilled Steak </button>
                         <button onClick={() => setProtein('Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
-                        <button onClick={() => setProtein('Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Crispy Calamari')} className='custom-select-buttons'> Crispy Calamari</button>
                         <button onClick={() => setProtein('Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
                     </p>
                 </h3>
@@ -524,9 +518,9 @@ const CashierGUI = () => {
                         <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
                         <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
                         <button onClick={() => setProtein('Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
-                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Grilled Steak')} className='custom-select-buttons'> Grilled Steak </button>
                         <button onClick={() => setProtein('Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
-                        <button onClick={() => setProtein('Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Crispy Calamari')} className='custom-select-buttons'> Crsipy Calamari</button>
                         <button onClick={() => setProtein('Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
                     </p>
                 </h3>
@@ -635,9 +629,9 @@ const CashierGUI = () => {
                         <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
                         <button onClick={() => setProtein('Crispy Chicken')} className='custom-select-buttons'> Crispy Chicken </button>
                         <button onClick={() => setProtein('Hot Friend Chicken')} className='custom-select-buttons'> Hot Fried Chicken </button>
-                        <button onClick={() => setProtein('Grilled Chicken')} className='custom-select-buttons'> Grilled Chicken </button>
+                        <button onClick={() => setProtein('Grilled Steak')} className='custom-select-buttons'> Grilled Steak </button>
                         <button onClick={() => setProtein('Meatballs')} className='custom-select-buttons'> Grass-Fed Meatballs </button>
-                        <button onClick={() => setProtein('Calamari & Hot Peppers')} className='custom-select-buttons'> Calamari & Hot Peppers</button>
+                        <button onClick={() => setProtein('Crispy Calamari')} className='custom-select-buttons'> Crispy Calamari</button>
                         <button onClick={() => setProtein('Grilled Salmon')} className='custom-select-buttons'> Grilled Salmon </button>
                     </p>
                 </h3>

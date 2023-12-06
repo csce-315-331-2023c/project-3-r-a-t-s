@@ -201,3 +201,52 @@ def get_new_menu_items():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+
+@cashier_BP.route('/get_new_menu_items_ingredients', methods=['POST'])
+def get_new_menu_items_ingredients():
+    """
+    Retrieves a list of ingredients in the new menu itemsfrom the database.
+
+    :return: JSON response containing the ingredients of new menu items.
+    """
+    
+    try:
+        conn = psycopg2.connect(**DB_PARAMS)
+        cursor = conn.cursor()
+        
+        query = "SELECT menu_item_name FROM menu_items WHERE menu_item_id > 70;"
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        ingredients = []
+        prices = []
+
+        query = '''SELECT 
+                i.name AS ingredient_name
+            FROM 
+                MENU_ITEMS mi
+            JOIN 
+                MENU_ITEM_INGREDIENTS mii ON mi.menu_item_id = mii.menu_item_id
+            JOIN 
+                INVENTORY i ON mii.ingredient_id = i.ingredient_id
+            WHERE 
+                mi.menu_item_name = %s;'''
+        
+        query2 = '''SELECT price FROM menu_items WHERE menu_item_name=%s;'''
+
+        for item in data:
+            cursor.execute(query, (item,))
+            temp = cursor.fetchall()
+            ingredients.append(temp)
+
+            cursor.execute(query2, (item,))
+            temp2 = cursor.fetchone()
+            prices.append(temp2)
+
+        return jsonify({"data": data,
+            "ingredients" : ingredients,
+            "prices" : prices})
+
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
