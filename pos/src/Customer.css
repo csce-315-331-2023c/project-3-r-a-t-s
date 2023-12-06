@@ -9,6 +9,7 @@
     color: white;
     width: 100%;
     height: 8vh;
+    /* position:absolute; */
 }
 
 .PaymentRemoval {
@@ -43,6 +44,20 @@
     /* border: 2px solid red; */
 } 
 
+.float-container2 {
+    border: 3px solid #fff;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    height: 70vh;
+}
+
+.float-child2 {
+    width: 25%;
+    float: left;
+    padding: 20px;
+    /* border: 2px solid red; */
+}
+
 .CategoryText {
     font-size:9vh;
 }
@@ -59,10 +74,24 @@
     font-size: 2.5vh;
 }
 
+.popupHeader {
+    text-align: center;
+}
+
+.popupMenu {
+    background-color:rgb(139, 168, 146)
+}
+
 .selectedButton {
-    color:rgb(215, 97, 38);
+    background-color:rgb(215, 97, 38);
+    width: 7.5vw;
 }
 
 .normalButton {
-    color:rgb(107, 117, 125);
+    background-color:rgb(107, 117, 125);
+    width: 7.5vw;
+}
+
+.addToOrderButton {
+    width: 15vw;
 }
