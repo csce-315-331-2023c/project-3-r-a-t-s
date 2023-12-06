@@ -412,6 +412,7 @@ const ManagerGUI: React.FC = () => {
       {/* <div>
         <GoogleTranslate />
       </div> */}
+      <br /><br />
       <div className="ManagerContainer">
         <Tabs defaultActiveKey={1} className="ManagerTabs"> 
           <Tab eventKey={1} className="nav-link" title="Inventory"> 
@@ -437,8 +438,7 @@ const ManagerGUI: React.FC = () => {
           {/* } */}
 
           <Tab eventKey={6} title="Reports"> 
-            <br />
-            <div>
+            <div style={{marginTop: "1vh"}}>
             <p>
             <b>Start Date:</b> <input type="date" onChange={change_report_start_date} ref={report_ref1} value={report_start_date}/> &nbsp;
             <b>End Date:</b> <input type="date" onChange={change_report_end_date} ref={report_ref2} value={report_end_date}/>

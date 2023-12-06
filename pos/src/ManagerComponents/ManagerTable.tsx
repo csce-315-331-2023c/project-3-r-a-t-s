@@ -409,7 +409,7 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                 }
             </div> <br/> <br/>
 
-            <div style={{overflow: "scroll", height: "50vh", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
+            <div style={{overflow: "scroll", height: "fit-content", width:"95vw", margin: "0px auto 0px auto", border: "3px solid black"}}>
                 {!!managerList.length && (
                     <table className='table table-striped w-100'>
                         <thead>

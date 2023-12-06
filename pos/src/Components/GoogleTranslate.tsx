@@ -52,7 +52,7 @@ const GoogleTranslate: React.FC = () => {
 
   return <div id="google_translate_element" style={{
     width: "15vw",
-              margin: "2vh 0vw 0vh 8vw"
+              margin: "2vh 0vw 0vh 7.5vw"
             }}  
           ></div>;
 };

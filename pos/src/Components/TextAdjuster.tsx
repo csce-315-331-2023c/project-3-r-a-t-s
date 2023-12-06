@@ -77,7 +77,7 @@ const TextSizeAdjuster: React.FC = () => {
         height: "6vh", 
         width: "15vw", 
         borderRadius: "25px", 
-        margin: "2vh 0vw 0vh 7.5vw"
+        margin: "2vh 0vw 0vh 5.5vw"
         }}>
       
       <div style={{ display: 'flex', alignItems: 'center', width: '100%', fontSize: '35px'}}>

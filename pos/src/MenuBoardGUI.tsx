@@ -120,10 +120,10 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
 
             <div className='menu-bottom-bar'>
                 <h3 style={{textAlign: "center", marginTop: "1vh", fontSize: "2.5vh"}}>
-                <IoMdCheckmarkCircleOutline title="Guests Favorite Checkmark"/> Guest Favorite &nbsp;&nbsp;
-                <GiFireBowl title="Fire/Spicy Icon"/> Spicy &nbsp;&nbsp;
-                <LuVegan title="Vegan Icon"/> Vegan &nbsp;&nbsp;
-                <LuWheatOff title="Gluten Free Icon"/> Gluten Free
+                <IoMdCheckmarkCircleOutline/> Guest Favorite &nbsp;&nbsp;
+                <GiFireBowl/> Spicy &nbsp;&nbsp;
+                <LuVegan/> Vegan &nbsp;&nbsp;
+                <LuWheatOff/> Gluten Free
                 </h3>
             </div>
             <br /><br />
@@ -538,7 +538,6 @@ const MenuBoardGUI : React.FC<MenuProps> = ( {startListening, stopListening, rec
             <b>CHICKEN FINGERS 6.99 (480 CAL)</b><br/>
             Buttermilk marinated crispy chicken tenders served with a side of ketchup
         </p>
-        <br />
         </div>
         </div>
         

@@ -11,7 +11,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import {MarkerF} from '@react-google-maps/api'
+import {MarkerF}  from '@react-google-maps/api'
 
 import { BsFillTelephoneFill, BsFillMapFill } from "react-icons/bs";
 import { AiFillShop } from "react-icons/ai";

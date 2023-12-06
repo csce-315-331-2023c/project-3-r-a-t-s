@@ -412,7 +412,6 @@ const InventoryComponent = () => {
         </button> */}
       </div>
 
-      <br /> {isLoading ? "Loading..." : ""}
      
      
       {/* {showRemoveForm && (
