@@ -657,6 +657,16 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
     const goback = () => {
         navigate(-1);
     }
+    
+    /**
+     * Function to delete an ingredient from the selected ingredients list.
+     * @param {number} i - The index of the ingredient to be deleted.
+     */
+    const deleteIngredient = (i : number) => {
+        const temp = [...selectedIngredients]; 
+        temp.splice(i, 1);
+        setSelectedIngredients(temp);
+    }
 
 
     const main_panel = () => {
@@ -811,7 +821,36 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                     </p>
                 </h3>
                 <br />
-                <h2 className='popupHeader'><button onClick={() => addBYOToOrder()}> Add to order </button></h2>
+                <div style={{display:"table-cell", width: "25vw", border: "3px solid black", }}>
+                    <div style={{height: "75vh",}}>
+                        <b style={{fontSize: "2vh", height: "6vh"}}> 
+                        <u>{customSize}&nbsp;{customType}</u> <br /> {protein} &nbsp; {sauce}</b>
+                        <br /><br />
+                    <div style={{border: "3px solid black", height: "70vh"}}>
+                    <table className="table table-dark" style={{overflow: "scroll", }}>
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Name </th>
+                            <th><BsFillTrashFill onClick={() => setSelectedIngredients([])}/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {selectedIngredients.map((ingredient, index) => (
+                            <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{ingredient}</td>
+                            <td>
+                            <BsFillTrashFill onClick={() => deleteIngredient(index)}/>
+                            </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3.5vh"}}> Add to order </button>
+                </div>
                 <br />
             </div>
         ]);
@@ -903,7 +942,36 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         <img src='https://images.mypiada.com/piada-one/option/381/avocado-230_2x.jpg' alt='Sliced Avocado' title='Sliced Avocado'/><span>Avocado</span> </button>
                     </p>
                 </h3>
-                <h2 className='popupHeader'><button onClick={() => addBYOToOrder()}> Add to order </button></h2>
+                <div style={{display:"table-cell", width: "25vw", border: "3px solid black", }}>
+                    <div style={{height: "75vh",}}>
+                        <b style={{fontSize: "2vh", height: "6vh"}}> 
+                        <u>{customSize}&nbsp;{customType}</u> <br /> {protein} &nbsp; {sauce}</b>
+                        <br /><br />
+                    <div style={{border: "3px solid black", height: "70vh"}}>
+                    <table className="table table-dark" style={{overflow: "scroll", }}>
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Name </th>
+                            <th><BsFillTrashFill onClick={() => setSelectedIngredients([])}/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {selectedIngredients.map((ingredient, index) => (
+                            <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{ingredient}</td>
+                            <td>
+                            <BsFillTrashFill onClick={() => deleteIngredient(index)}/>
+                            </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3.5vh"}}> Add to order </button>
+                </div>
             </div>
         ]);
     }
@@ -1005,7 +1073,36 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                         <img src='https://images.mypiada.com/piada-one/option/381/avocado-230_2x.jpg' alt='Sliced Avocado' title='Sliced Avocado'/><span>Avocado</span> </button>
                 </p>
             </h3>
-            <h2 className='popupHeader'><button onClick={() => addBYOToOrder()}> Add to order </button></h2>
+            <div style={{display:"table-cell", width: "25vw", border: "3px solid black", }}>
+                    <div style={{height: "75vh",}}>
+                        <b style={{fontSize: "2vh", height: "6vh"}}> 
+                        <u>{customSize}&nbsp;{customType}</u> <br /> {protein} &nbsp; {sauce}</b>
+                        <br /><br />
+                    <div style={{border: "3px solid black", height: "70vh"}}>
+                    <table className="table table-dark" style={{overflow: "scroll", }}>
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Name </th>
+                            <th><BsFillTrashFill onClick={() => setSelectedIngredients([])}/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {selectedIngredients.map((ingredient, index) => (
+                            <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{ingredient}</td>
+                            <td>
+                            <BsFillTrashFill onClick={() => deleteIngredient(index)}/>
+                            </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                <button onClick={() => addBYOToOrder()} className='add-to-order' style={{marginTop: "3.5vh"}}> Add to order </button>
+                </div>
         </div>
         ]);
     }
