@@ -41,6 +41,356 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+<dl class="py function" id="module-main_app">
+<dt class="sig sig-object py" id="main_app.callback">
+<span class="sig-prename descclassname"><span class="pre">main_app.</span></span><span class="sig-name descname"><span class="pre">callback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main_app.callback" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main_app.login">
+<span class="sig-prename descclassname"><span class="pre">main_app.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main_app.login" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main_app.login_is_required">
+<span class="sig-prename descclassname"><span class="pre">main_app.</span></span><span class="sig-name descname"><span class="pre">login_is_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main_app.login_is_required" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main_app.logout">
+<span class="sig-prename descclassname"><span class="pre">main_app.</span></span><span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main_app.logout" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function" id="module-APIs.cashier_backend">
+<dt class="sig sig-object py" id="APIs.cashier_backend.get_new_menu_items">
+<span class="sig-prename descclassname"><span class="pre">APIs.cashier_backend.</span></span><span class="sig-name descname"><span class="pre">get_new_menu_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.cashier_backend.get_new_menu_items" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves a list of new menu items from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the names of new menu items.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.cashier_backend.get_new_menu_items_ingredients">
+<span class="sig-prename descclassname"><span class="pre">APIs.cashier_backend.</span></span><span class="sig-name descname"><span class="pre">get_new_menu_items_ingredients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.cashier_backend.get_new_menu_items_ingredients" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves a list of ingredients in the new menu itemsfrom the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the ingredients of new menu items.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.cashier_backend.get_price">
+<span class="sig-prename descclassname"><span class="pre">APIs.cashier_backend.</span></span><span class="sig-name descname"><span class="pre">get_price</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.cashier_backend.get_price" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the price of a menu item from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the price of the specified menu item.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.cashier_backend.place_order">
+<span class="sig-prename descclassname"><span class="pre">APIs.cashier_backend.</span></span><span class="sig-name descname"><span class="pre">place_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.cashier_backend.place_order" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the order data and updates the database with the order details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or error of the order placement.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function" id="module-APIs.login_routes">
+<dt class="sig sig-object py" id="APIs.login_routes.check_cashier_login">
+<span class="sig-prename descclassname"><span class="pre">APIs.login_routes.</span></span><span class="sig-name descname"><span class="pre">check_cashier_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.login_routes.check_cashier_login" title="Link to this definition">¶</a></dt>
+<dd><p>Checks the login credentials for a cashier against the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the login attempt.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.login_routes.check_if_employee">
+<span class="sig-prename descclassname"><span class="pre">APIs.login_routes.</span></span><span class="sig-name descname"><span class="pre">check_if_employee</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.login_routes.check_if_employee" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if user is an employee.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating if user is employee.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function" id="module-APIs.manager_backend">
+<dt class="sig sig-object py" id="APIs.manager_backend.add_employee">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">add_employee</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.add_employee" title="Link to this definition">¶</a></dt>
+<dd><p>Adds an employee to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.add_inventory">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">add_inventory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.add_inventory" title="Link to this definition">¶</a></dt>
+<dd><p>Adds an item to the inventory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.add_manager">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">add_manager</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.add_manager" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a manager to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.add_menu_item">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">add_menu_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.add_menu_item" title="Link to this definition">¶</a></dt>
+<dd><p>Adds a menu item to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.change_menu_item">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">change_menu_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.change_menu_item" title="Link to this definition">¶</a></dt>
+<dd><p>Changes information for a menu item in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.check_if_admin">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">check_if_admin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.check_if_admin" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a manager is an admin.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the admin status of the manager.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.delete_menu_item">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">delete_menu_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.delete_menu_item" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes a menu item from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.edit_inventory">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">edit_inventory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.edit_inventory" title="Link to this definition">¶</a></dt>
+<dd><p>Edits the quantity of an item in the inventory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.get_employee_list">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">get_employee_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.get_employee_list" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches a list of employees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the employee list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.get_ingredients">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">get_ingredients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.get_ingredients" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches a list of ingredients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the ingredients list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.get_inventory">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">get_inventory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.get_inventory" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches the current inventory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the inventory data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.get_manager_list">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">get_manager_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.get_manager_list" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches a list of managers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the manager list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.get_menu_items">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">get_menu_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.get_menu_items" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches a list of menu items with their ingredients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the menu items and their ingredients.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.get_order_history">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">get_order_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.get_order_history" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches order history data based on the specified date range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing order history data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.remove_employee">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">remove_employee</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.remove_employee" title="Link to this definition">¶</a></dt>
+<dd><p>Removes an employee from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.remove_inventory">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">remove_inventory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.remove_inventory" title="Link to this definition">¶</a></dt>
+<dd><p>Removes an item from the inventory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.remove_manager">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">remove_manager</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.remove_manager" title="Link to this definition">¶</a></dt>
+<dd><p>Removes a manager from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.update_employee">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">update_employee</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.update_employee" title="Link to this definition">¶</a></dt>
+<dd><p>Updates information for an employee in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.update_inventory_item">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">update_inventory_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.update_inventory_item" title="Link to this definition">¶</a></dt>
+<dd><p>Updates information for an inventory item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_backend.update_manager">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_backend.</span></span><span class="sig-name descname"><span class="pre">update_manager</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_backend.update_manager" title="Link to this definition">¶</a></dt>
+<dd><p>Updates information for a manager in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response indicating the success or failure of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function" id="module-APIs.manager_reports">
+<dt class="sig sig-object py" id="APIs.manager_reports.WhatSellsTogether">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_reports.</span></span><span class="sig-name descname"><span class="pre">WhatSellsTogether</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_reports.WhatSellsTogether" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a report of menu items that are frequently sold together based on orders within a specified date range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing pairs of menu items and their frequency of being sold together.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_reports.get_excess_report">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_reports.</span></span><span class="sig-name descname"><span class="pre">get_excess_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_reports.get_excess_report" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a report of ingredients with excess quantity compared to sales within a specified date range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the excess report.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_reports.get_product_report">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_reports.</span></span><span class="sig-name descname"><span class="pre">get_product_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_reports.get_product_report" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a report of menu items and their sales count within a specified date range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the product sales report.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="APIs.manager_reports.get_restock_report">
+<span class="sig-prename descclassname"><span class="pre">APIs.manager_reports.</span></span><span class="sig-name descname"><span class="pre">get_restock_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#APIs.manager_reports.get_restock_report" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a report of inventory items that need restocking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON response containing the restock report.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

@@ -18,3 +18,30 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. automodule:: main_app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: APIs.cashier_backend
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: APIs.login_routes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: APIs.manager_backend
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: APIs.manager_reports
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
