@@ -1633,63 +1633,77 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                 </button>} 
                 modal nested>
                 {
-                    <div style={{ overflowY: "auto", maxHeight: "600px" }}>
-                        <h2> Kids Menu </h2>
+                    <div className='popupMenu' style={{ overflowY: "auto", maxHeight: "600px" }}>
+                        <h2 className='popupHeader'> Kids Menu </h2>
+                        <div className='float-container3'>
+                            <div className='float-child3'>
+                            <Popup trigger={<button className='BYOpanel-buttons' title='Kids Eating pasta'> <img src='https://images.mypiada.com/piada-one/product/627/185781.jpg' alt='Kids eating pasta' title='Kids eating pasta' style={{width: "12vw"}}/> <span>Kids Pasta</span>  </button>} position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
+                            <div >
+                                <button className={selectedSize === 'Grilled Chicken' ? 'selectedButton' : 'normalButton'} title='Grilled Chicken'
+                                        onClick={() => {setKidsProtein("Grilled Chicken");
+                                                        setSelectedSize('Grilled Chicken')}}
+                                        disabled={kidsProtein === 'Grilled Chicken' ? true : false}> Grilled Chicken </button>
+                                <button className={selectedSize === 'Crispy Chicken' ? 'selectedButton' : 'normalButton'}
+                                        onClick={() => {setKidsProtein("Crispy Chicken");
+                                                        setSelectedSize('Crispy Chicken')}}
+                                        disabled={kidsProtein === 'Crispy Chicken' ? true : false}> Crispy Chicken </button>
+                                <button className={selectedSize === 'Steak' ? 'selectedButton' : 'normalButton'}
+                                        onClick={() => {setKidsProtein("Steak");
+                                                        setSelectedSize('Steak')}}
+                                        disabled={kidsProtein === 'Steak' ? true : false}> Grilled Steak </button>
+                                <br />
+                                <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
+                                        onClick={() => {setKidsType("Spaghetti");
+                                                        setSelectedPasta('Spaghetti')}}
+                                        disabled={kidsType === 'Spaghetti' ? true : false}>Spaghetti</button>
+                                <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
+                                        onClick={() => {setKidsType("Penne");
+                                                        setSelectedPasta('Penne')}}
+                                        disabled={kidsType === 'Penne' ? true : false}>Penne</button>
+                                <button onClick={() => {addKidsBYOToOrder(); setSelectedPasta(''); setSelectedSize('')}} className='add-to-order'> Add to Order </button>
+                            </div>
+                            </Popup>
+                            </div>
 
-                        <Popup trigger={<button className='BYOpanel-buttons' title='Kids Eating pasta'> <img src='https://images.mypiada.com/piada-one/product/627/185781.jpg' alt='Kids eating pasta' title='Kids eating pasta'/> <span>Kids Pasta</span>  </button>} position="bottom center" onOpen={() => setKidsBYO('Kids Pasta')}>
-                        <div >
-                            <button className={selectedSize === 'Grilled Chicken' ? 'selectedButton' : 'normalButton'} title='Grilled Chicken'
-                                    onClick={() => {setKidsProtein("Grilled Chicken");
-                                                    setSelectedSize('Grilled Chicken')}}
-                                    disabled={kidsProtein === 'Grilled Chicken' ? true : false}> Grilled Chicken </button>
-                            <button className={selectedSize === 'Crispy Chicken' ? 'selectedButton' : 'normalButton'}
-                                    onClick={() => {setKidsProtein("Crispy Chicken");
-                                                    setSelectedSize('Crispy Chicken')}}
-                                    disabled={kidsProtein === 'Crispy Chicken' ? true : false}> Crispy Chicken </button>
-                            <button className={selectedSize === 'Steak' ? 'selectedButton' : 'normalButton'}
-                                    onClick={() => {setKidsProtein("Steak");
-                                                    setSelectedSize('Steak')}}
-                                    disabled={kidsProtein === 'Steak' ? true : false}> Grilled Steak </button>
-                            <br />
-                            <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'}
-                                    onClick={() => {setKidsType("Spaghetti");
-                                                    setSelectedPasta('Spaghetti')}}
-                                    disabled={kidsType === 'Spaghetti' ? true : false}>Spaghetti</button>
-                            <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
-                                    onClick={() => {setKidsType("Penne");
-                                                    setSelectedPasta('Penne')}}
-                                    disabled={kidsType === 'Penne' ? true : false}>Penne</button>
-                            <button onClick={() => {addKidsBYOToOrder(); setSelectedPasta(''); setSelectedSize('')}} className='add-to-order'> Add to Order </button>
+                            <div className='float-child3'>
+                            <Popup trigger={<button className='BYOpanel-buttons' title='Meatballs and Spaghetti Bowl'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti' title='Meatballs and Spaghetti' style={{width: "12vw"}}/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
+                            <div >
+                                <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'} 
+                                        onClick={() => {setKidsType("Spaghetti");
+                                                        setSelectedPasta('Spaghetti')}}
+                                        disabled={kidsType === 'Spaghetti' ? true : false}> Spaghetti</button>
+                                <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
+                                        onClick={() => {setKidsType("Penne");
+                                                        setSelectedPasta('Penne')}}
+                                        disabled={kidsType === 'Penne' ? true : false}> Penne</button>
+                                <button onClick={() => {addKidsBYOToOrder();
+                                                        setSelectedPasta('')}}
+                                        className='add-to-order'> Add to Order </button>
+                            </div>
+                            </Popup>
+                            </div>
+                            
+                            <div className='float-child3'>
+                            <button className='BYOpanel-buttons' title='Chicken Fingers next to a Heinz Ketchup' onClick={() => addorderitem("Kids Chicken Fingers")} > 
+                                <img src='https://images.mypiada.com/piada-one/product/530/131615.jpg' alt='Chicken Fingers next to a Heinx Ketchup' title='Chicken Fingers next to a Heinx Ketchup' style={{width: "12vw"}}/> <span>Chicken Fingers</span> </button>
+                            </div>
                         </div>
-                        </Popup>
-
-                        <Popup trigger={<button className='BYOpanel-buttons' title='Meatballs and Spaghetti Bowl'> <img src='https://images.mypiada.com/piada-one/product/630/185780.jpg' alt='Meatballs and Spaghetti' title='Meatballs and Spaghetti'/> <span>Kids Meatballs</span>  </button>} position="bottom center"  onOpen={() => setKidsBYO('Kids Meatballs')}>
-                        <div >
-                            <button className={selectedPasta === 'Spaghetti' ? 'selectedButton' : 'normalButton'} 
-                                    onClick={() => {setKidsType("Spaghetti");
-                                                    setSelectedPasta('Spaghetti')}}
-                                    disabled={kidsType === 'Spaghetti' ? true : false}> Spaghetti</button>
-                            <button className={selectedPasta === 'Penne' ? 'selectedButton' : 'normalButton'}
-                                    onClick={() => {setKidsType("Penne");
-                                                    setSelectedPasta('Penne')}}
-                                    disabled={kidsType === 'Penne' ? true : false}> Penne</button>
-                            <button onClick={() => {addKidsBYOToOrder();
-                                                    setSelectedPasta('')}}
-                                    className='add-to-order'> Add to Order </button>
+                        <div className='float-container3'>
+                            <br /><br />
+                            <h3 className='popupHeader'> Drinks </h3>
+                            <div className='float-child3'>
+                            <button className='BYOpanel-buttons' title='Horizon LowFat Milk' onClick={() => addorderitem("Kids Low-Fat Milk")} > 
+                                <img src='https://images.mypiada.com/piada-one/option/698/white-milk-230_2x.jpg' alt='Horizon LowFat Milk' title='Horizon LowFat Milk' style={{width: "12vw"}}/> <span>Low-Fat Milk</span> </button>
+                            </div>
+                            <div className='float-child3'>
+                            <button className='BYOpanel-buttons' title='Horizon Chocolate Milk' onClick={() => addorderitem("Kids Chocolate Milk")} >
+                                <img src='https://images.mypiada.com/piada-one/option/699/chocolate-milk-230_2x.jpg' alt='Horizon Chocolate Milk' title='Horizon Chocolate Milk' style={{width: "12vw"}}/> <span>Chocolate Milk</span> </button>
+                            </div>
+                            <div className='float-child3'>
+                            <button className='BYOpanel-buttons' title='Motts Apple Juice' onClick={() => addorderitem("Kids Apple Juice")} > 
+                                <img src='https://images.mypiada.com/piada-one/option/700/apple-juice-230_2x.jpg' alt='Motts Apple Juice' title='Motts Apple Juice' style={{width: "12vw"}}/> <span>Apple Juice</span> </button>
+                            </div>
                         </div>
-                        </Popup>
-                        
-                        <button className='BYOpanel-buttons' title='Chicken Fingers next to a Heinz Ketchup' onClick={() => addorderitem("Kids Chicken Fingers")} > 
-                            <img src='https://images.mypiada.com/piada-one/product/530/131615.jpg' alt='Chicken Fingers next to a Heinx Ketchup' title='Chicken Fingers next to a Heinx Ketchup'/> <span>Chicken Fingers</span> </button>
-
-                        <br /><br />
-                        <h3> Drinks: </h3>
-                        <button className='BYOpanel-buttons' title='Horizon LowFat Milk' onClick={() => addorderitem("Kids Low-Fat Milk")} > 
-                            <img src='https://images.mypiada.com/piada-one/option/698/white-milk-230_2x.jpg' alt='Horizon LowFat Milk' title='Horizon LowFat Milk'/> <span>Low-Fat Milk</span> </button>
-                        <button className='BYOpanel-buttons' title='Horizon Chocolate Milk' onClick={() => addorderitem("Kids Chocolate Milk")} >
-                            <img src='https://images.mypiada.com/piada-one/option/699/chocolate-milk-230_2x.jpg' alt='Horizon Chocolate Milk' title='Horizon Chocolate Milk'/> <span>Chocolate Milk</span> </button>
-                        <button className='BYOpanel-buttons' title='Motts Apple Juice' onClick={() => addorderitem("Kids Apple Juice")} > 
-                            <img src='https://images.mypiada.com/piada-one/option/700/apple-juice-230_2x.jpg' alt='Motts Apple Juice' title='Motts Apple Juice'/> <span>Apple Juice</span> </button>
                     </div>
                 }
             </Popup>

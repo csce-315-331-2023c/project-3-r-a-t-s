@@ -58,6 +58,20 @@
     /* border: 2px solid red; */
 }
 
+.float-container3 {
+    border: 3px solid #fff;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    height: 45vh;
+}
+
+.float-child3 {
+    width: 30%;
+    float: left;
+    padding: 30px;
+    /* border: 2px solid red; */
+}
+
 .CategoryText {
     font-size:9vh;
 }
