@@ -458,14 +458,11 @@ const ManagerTableComponent: React.FC<ManagerProps> = ({adminProps}) => {
                                     </span>
                                 )}
                             </td>
-                            :
-                            <td> ---</td>
-                        }
-                        {(adminProps.isAdmin === 'No') && 
+                            : (
                             <td>
                             Disabled
                             </td>
-                        }
+                            )}
                         
                         </tr>
                         ))}
