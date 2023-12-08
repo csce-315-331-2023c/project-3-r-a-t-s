@@ -135,4 +135,51 @@
     margin: 1.5vh 2vw 0px 2vw;
     box-shadow: 3px 3px white;
     letter-spacing: 2px;
+}
+
+.counter {
+    background-color: red;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+    font-size: x-large;
+}
+
+.payButton {
+    background-color: rgb(163, 252, 255);
+    color: rgb(0, 0, 0);
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: center;
+    font-size: 5vh;
+    width: 20vw;
+    height: 10vh;
+    border: 5px solid black;
+    box-shadow: 5px 5px 5px black;
+    border-radius: 25px;
+    position:absolute;
+    left: 33%;
+}
+
+/* .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+  
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .modal-content {
+    text-align: center;
+  } */

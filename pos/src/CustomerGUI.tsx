@@ -22,6 +22,28 @@ interface CustomerProps {
     recognizedText: string;
 }
 
+// interface ModalProps {
+//     isOpen: boolean;
+//     onClose: () => void;
+//     message: string;
+// }
+// const Modal: React.FC<ModalProps> = ({ isOpen, onClose, message }) => {
+//     return (
+//       <>
+//         {isOpen && (
+//           <div className="modal-overlay">
+//             <div className="modal">
+//               <div className="modal-content">
+//                 <p>{message}</p>
+//                 <button onClick={onClose}>Close</button>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+//       </>
+//     );
+//   };
+
 const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, recognizedText}) => {
     const navigate = useNavigate();
     //Speech API Starts Here
@@ -497,7 +519,16 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setItem('');
         setSize('');
         setType('');
+        // setIsModalOpen(true);
+        setCounter(counter + 1);
+        // setTimeout(() => {
+        //     setIsModalOpen(false);
+        //   }, 2000);
     }
+
+    const [counter, setCounter] = useState(0);
+
+    // const [isModalOpen, setIsModalOpen] = useState(false);
 
     /**
      * Function to clear selections for Build Your Own (BYO) items.
@@ -527,6 +558,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setKidsType("");
         setSelectedIngredients([]); // Clear selected ingredients
         main_panel();   // exits to main BYO panel after adding BYO item to order
+        setCounter(counter + 1);
     }
 
     useEffect(() => {
@@ -570,6 +602,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setCustomName(""); //Clear the selected custom item name
         setKidsProtein("");
         setKidsType("");
+        setCounter(counter + 1);
     }
 
     /**
@@ -650,6 +683,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         setOrder([]);
         setPrices([]);
         console.log("Removed All Order Items.");
+        setCounter(0);
     }
 
     // TODO: Add customization back-end
@@ -692,6 +726,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
         const temp2 = [...prices];
         temp2.splice(index, 1);
         setPrices(temp2);
+        setCounter(counter - 1);
     }
 
     /**
@@ -1067,13 +1102,18 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
 
     return (
     <div className='Customer'>
+        {/* <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            message="Added item to order!"
+        /> */}
         <div className='CustomerHeader'>
             <h1 style={{fontSize: "5vh"}}> 
                 <img src="piada-icon.jpg" alt="Piada Icon of a Motor bike." className='icon' onClick={() => navigate('/')}/> &nbsp;
                 <b><u>PIADA</u></b>  ~ Customer Self-Service ~ 
-                <button className='shoppingCart' onClick={handleShow}> &nbsp;&nbsp;<FaShoppingCart/> &nbsp;&nbsp; Cart &nbsp;&nbsp;  &nbsp;&nbsp;</button>
+                <button className='shoppingCart' onClick={handleShow}> &nbsp;&nbsp;<FaShoppingCart/> &nbsp;&nbsp; Cart &nbsp;&nbsp; <span className="counter">{counter}</span> &nbsp;&nbsp;</button>
                 <Offcanvas show={show} onHide={handleClose} placement='end' backdrop={false} scroll={true}
-                style={{ width: '55%', backgroundColor: '#ffffff' }}>
+                style={{ width: '55%', backgroundColor: '#ffffff', overflow: 'scroll' }}>
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title></Offcanvas.Title>
                     </Offcanvas.Header>
@@ -1103,7 +1143,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
                                 </tbody>
                             </table>
                         </div>
-                            <button className='pay-button' onClick={addorder}> <u>Pay</u>: 
+                            <button className='payButton' onClick={addorder}> <u>Pay</u>: 
                             ${prices.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toFixed(2)}</button>
                             {showSuccessPanel && 
                                 <div className='payment-confirmation'>
@@ -1127,7 +1167,7 @@ const CustomerGUI : React.FC<CustomerProps> = ( {startListening, stopListening, 
             </h3>
         </div>
          
-                 
+        
         
         
         <div> 
